@@ -1,0 +1,16 @@
+Package: mgcViz
+Title: mgcv Visualization.
+Version: 0.0.1
+Authors@R: c(person("Matteo", "Fasiolo", email = "matteo.fasiolo@bristol.uk.ac", role = c("aut", "cre")),
+person("Raphael", "Nedellec", email = "raphael.nedellec@edf.fr", role = c("aut")))
+Description: mgcViz.
+Depends: R (>= 3.3.2)
+Imports:
+  mgcv,
+  ggplot2,
+  plotly
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.0.1
+Suggests: testthat
