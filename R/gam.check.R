@@ -8,22 +8,25 @@
 # rename <function>new in <function> in package and use namespaces for selecting the right
 # plot between mgcv and mgcvextra ? e.g. mgcv::qq.gam and mgcvextra::qq.gam ?
 
-#' qqnormnew
+#' qqnorm
 #' 
 #' @param y, 
 #' @param ylim, 
 #' @param main,
 #' @param xlab, 
 #' @param ylab, 
-#' @param datax, Logical. Should data values be on the x-axis?
+#' @param datax, Logical. Should data values be on the x-axis
+#' @import ggplot2
 #' @export
 #' @examples 
-#' y <- rt(200, df = 5)
-#' qqnormnew(y)
-#' qqnorm(y)
-#' qqnormnew(precip, ylab = "Precipitation [in/yr] for 70 US cities")
-#' qqnorm(precip, ylab = "Precipitation [in/yr] for 70 US cities")
-qqnormnew <- function(y, ylim,
+#' y <- rt(500, df = 5)
+#' mgcViz::qqnorm(y)
+#' stats::qqnorm(y)
+#' mgcViz::qqnorm(precip, ylim = c(0,50),
+#'  ylab = "Precipitation [in/yr] for 70 US cities") + theme_minimal()
+#' stats::qqnorm(precip, ylab = "Precipitation [in/yr] for 70 US cities")
+#' plotly::ggplotly(mgcViz::qqnorm(y) + theme_minimal())
+qqnorm <- function(y, ylim,
                       main = "Normal Q-Q Plot",
                       xlab = "Theoretical Quantiles", 
                       ylab = "Sample Quantiles",
@@ -46,44 +49,40 @@ qqnormnew <- function(y, ylim,
   }
   xtitle <- ifelse(datax, ylab, xlab)
   ytitle <- ifelse(datax, xlab, ylab)
+  data <- data.frame(x = x, y = y)
   if (datax) {
-    p <- plot_ly(x = y, y = x, type = "scatter", mode = "markers") 
+    p <- ggplot2::ggplot(data, aes(x = y, y = x)) + ggplot2::geom_point()
+  } else {
+    p <- ggplot2::ggplot(data, aes(x = x, y = y)) + ggplot2::geom_point()
   }
-  else {
-    p <- plot_ly(x = x, y = y, type = "scatter", mode = "markers")
-  }
-  p <- layout(p, title = "Normal Q-Q Plot",
-              xaxis = list(title = xtitle,
-                           zeroline = FALSE,
-                           showline = TRUE,
-                           mirror = "ticks"),
-              yaxis = list(title = ytitle,
-                           zeroline = FALSE,
-                           showline = TRUE,
-                           mirror = "ticks"))
+  p <- p + ylim(ylim) + ggplot2::labs(title = main, x = xlab, y = ylab)
   return(p)
 }
 
-#' qqplotnew
+#' qqplot
 #' 
-#' @param x,	The first sample for qqplotnew.
-#' @param y, The second or only data sample.
+#' @param x, 
+#' @param y, 
 #' @param xlab, 
 #' @param ylab, 
 #' @param main,
-#' @import plotly
+#' @import ggplot2
 #' @examples 
-#' y <- rt(200, df = 5)
-#' qqplot(y, rt(300, df = 5))
-#' qqplotnew(y, rt(300, df = 5))
+#' x <- rt(200, df = 5)
+#' y <- rt(300, df = 5)
+#' stats::qqplot(x, y)
+#' mgcViz::qqplot(x, y)
 #' ## "QQ-Chisquare" : --------------------------
 #' y <- rchisq(500, df = 3)
 #' ## Q-Q plot for Chi^2 data against true theoretical distribution:
-#' qqplot(qchisq(ppoints(500), df = 3), y,
+#' x <- qchisq(ppoints(500), df = 3)
+#' stats::qqplot(qchisq(ppoints(500), df = 3), rchisq(500, df = 3),
 #'       main = expression("Q-Q plot for" ~~ {chi^2}[nu == 3]))
-#' qqplotnew(qchisq(ppoints(500), df = 3), y,
-#'          main = "Q-Q plot for Khi², nu = 3") # latex not working ??
-qqplotnew <- function(x, y,
+#' p <- mgcViz::qqplot(qchisq(ppoints(500), df = 3), rchisq(500, df = 3),
+#'          main = expression("Q-Q plot for" ~~ {chi^2}[nu == 3])) + theme_bw()
+#' p          
+#' plotly::ggplotly(p + theme_minimal()) # title not working
+qqplot <- function(x, y,
                       xlab = deparse(substitute(x)), 
                       ylab = deparse(substitute(y)),
                       main = "Q-Q Plot"){
@@ -95,20 +94,13 @@ qqplotnew <- function(x, y,
     sx <- approx(1L:lenx, sx, n = leny)$y
   if (leny > lenx) 
     sy <- approx(1L:leny, sy, n = lenx)$y
-  p <- plotly::plot_ly(x = ~sx, y = ~sy, type = "scatter", mode = "markers")
-  p <- layout(p, title = main,
-              xaxis = list(title = xlab,
-                           zeroline = FALSE,
-                           showline = TRUE,
-                           mirror = "ticks"),
-              yaxis = list(title = ylab,
-                           zeroline = FALSE,
-                           showline = TRUE,
-                           mirror = "ticks"))
+  data <- data.frame(sx = sx, sy = sy)
+  p <- ggplot2::ggplot(data, aes(x = sx, y = sy)) + ggplot2::geom_point()
+  p <- p + ggplot2::labs(title = main, x = xlab, y = ylab)
   return(p)
 }
 
-#' qq.gamnew
+#' qq.gam
 #'
 #' @param object, 
 #' @param rep, 
@@ -118,7 +110,7 @@ qqplotnew <- function(x, y,
 #' @param rl.col, 
 #' @param rep.col, 
 #' @param ... 
-#'
+#' @import ggplot2
 #' @return
 #' @export
 #'
@@ -135,49 +127,49 @@ qqplotnew <- function(x, y,
 #'               , family = binomial, data = dat,
 #'               weights = n, method = "REML")
 #' ## normal QQ-plot of deviance residuals
-#' qqnorm(residuals(lr.fit),pch=19,cex=.3)
-#' qqnormnew(residuals(lr.fit))
+#' qqnorm(residuals(lr.fit), pch = 19, cex = .3)
+#' qqnorm(residuals(lr.fit))
 #' ## Quick QQ-plot of deviance residuals
-#' qq.gam(lr.fit,pch=19,cex=.3)
-#' qq.gamnew(lr.fit)
+#' mgcv::qq.gam(lr.fit, pch = 19, cex = .3)
+#' mgcViz::qq.gam(lr.fit)
 #' ## Simulation based QQ-plot with reference bands 
-#' qq.gam(lr.fit,rep=100,level=.9)
-#' qq.gamnew(lr.fit, rep = 100, level = .9)
+#' mgcv::qq.gam(lr.fit, rep = 100, level = .9)
+#' mgcViz::qq.gam(lr.fit, rep = 100, level = .9)
 #' ## Simulation based QQ-plot, Pearson resids, all
 #' ## simulated reference plots shown...  
-#' qq.gam(lr.fit,rep=100,level=1,type="pearson",pch=19,cex=.2)
-#' qq.gamnew(lr.fit,rep=100,level=1,type="pearson")
+#' mgcv::qq.gam(lr.fit, rep = 100, level = 1, type = "pearson", pch = 19, cex = .2)
+#' mgcViz::qq.gam(lr.fit, rep = 100, level = 1, type = "pearson")
 #' ## Now fit the wrong model and check....
-#' pif <- gam(y~s(x0)+s(x1)+s(x2)+s(x3)
-#'            ,family=poisson,data=dat,method="REML")
-#' qqnorm(residuals(pif),pch=19,cex=.3)
-#' qqnormnew(residuals(pif))
+#' pif <- gam(y ~ s(x0) + s(x1) + s(x2) + s(x3)
+#'            , family = poisson, data = dat, method = "REML")
+#' qqnorm(residuals(pif), pch = 19, cex = .3)
+#' qqnorm(residuals(pif))
 #' ##
-#' qq.gam(pif,pch=19,cex=.3)
-#' qq.gamnew(pif)
+#' mgcv::qq.gam(pif, pch = 19, cex = .3)
+#' mgcViz::qq.gam(pif)
 #' ##
-#' qq.gam(pif,rep=100,level=.9)
-#' qq.gamnew(pif,rep=100,level=.9)
+#' mgcv::qq.gam(pif, rep = 100, level = .9)
+#' mgcViz::qq.gam(pif, rep = 100, level = .9)
 #' ##
-#' qq.gam(pif,rep=100,level=1,type="pearson",pch=19,cex=.2)
-#' qq.gamnew(pif,rep=100,level=1,type="pearson")
+#' mgcv::qq.gam(pif, rep = 100, level = 1, type = "pearson", pch = 19, cex = .2)
+#' mgcViz::qq.gam(pif, rep = 100, level = 1, type = "pearson")
 #' ## Example of binary data model violation so gross that you see a problem 
 #' ## on the QQ plot...
-#' y <- c(rep(1,10),rep(0,20),rep(1,40),rep(0,10),rep(1,40),rep(0,40))
+#' y <- c(rep(1, 10), rep(0, 20), rep(1, 40), rep(0, 10), rep(1, 40), rep(0, 40))
 #' x <- 1:160
-#' b <- glm(y~x,family=binomial)
+#' b <- glm(y ~ x, family = binomial)
 #' ## Note that the next two are not necessarily similar under gross 
 #' ## model violation...
-#' qq.gam(b)
-#' qq.gamnew(b)
-#' qq.gam(b,rep=50,level=1)
-#' qq.gamnew(b, rep = 50, level = 1)
+#' mgcv::qq.gam(b)
+#' mgcViz::qq.gam(b)
+#' mgcv::qq.gam(b, rep = 50, level = 1)
+#' mgcViz::qq.gam(b, rep = 50, level = 1)
 #' ## alternative model
-#' b <- gam(y~s(x,k=5),family=binomial,method="ML")
-#' qq.gam(b)
-#' qq.gamnew(b)
-#' qq.gam(b,rep=50,level=1)
-#' qq.gamnew(b,rep=50,level=1)
+#' b <- gam(y ~ s(x, k = 5), family = binomial, method = "ML")
+#' mgcv::qq.gam(b)
+#' mgcViz::qq.gam(b)
+#' mgcv::qq.gam(b, rep = 50, level = 1)
+#' mgcViz::qq.gam(b, rep = 50, level = 1)
 qq.gamnew <- function (object, rep = 0,
                        level = 0.9, s.rep = 10,
                        type = c("deviance", "pearson", "response"),
@@ -274,7 +266,7 @@ qq.gamnew <- function (object, rep = 0,
 #'
 #' @param b, 
 #' @param type, 
-#' @param k.sample, 
+#' @param k.sample,
 #' @param k.rep, 
 #' @param rep, 
 #' @param level, 
