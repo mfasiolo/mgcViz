@@ -27,10 +27,10 @@
 #' stats::qqnorm(precip, ylab = "Precipitation [in/yr] for 70 US cities")
 #' plotly::ggplotly(mgcViz::qqnorm(y) + theme_minimal())
 qqnorm <- function(y, ylim,
-                      main = "Normal Q-Q Plot",
-                      xlab = "Theoretical Quantiles", 
-                      ylab = "Sample Quantiles",
-                      datax = FALSE) 
+                   main = "Normal Q-Q Plot",
+                   xlab = "Theoretical Quantiles", 
+                   ylab = "Sample Quantiles",
+                   datax = FALSE) 
 {
   if (has.na <- any(ina <- is.na(y))) {
     yN <- y
@@ -83,9 +83,9 @@ qqnorm <- function(y, ylim,
 #' p          
 #' plotly::ggplotly(p + theme_minimal()) # title not working
 qqplot <- function(x, y,
-                      xlab = deparse(substitute(x)), 
-                      ylab = deparse(substitute(y)),
-                      main = "Q-Q Plot"){
+                   xlab = deparse(substitute(x)), 
+                   ylab = deparse(substitute(y)),
+                   main = "Q-Q Plot"){
   sx <- sort(x)
   sy <- sort(y)
   lenx <- length(sx)
@@ -127,8 +127,8 @@ qqplot <- function(x, y,
 #'               , family = binomial, data = dat,
 #'               weights = n, method = "REML")
 #' ## normal QQ-plot of deviance residuals
-#' qqnorm(residuals(lr.fit), pch = 19, cex = .3)
-#' qqnorm(residuals(lr.fit))
+#' stats::qqnorm(residuals(lr.fit), pch = 19, cex = .3)
+#' stats::qqnorm(residuals(lr.fit))
 #' ## Quick QQ-plot of deviance residuals
 #' mgcv::qq.gam(lr.fit, pch = 19, cex = .3)
 #' mgcViz::qq.gam(lr.fit)
@@ -170,19 +170,20 @@ qqplot <- function(x, y,
 #' mgcViz::qq.gam(b)
 #' mgcv::qq.gam(b, rep = 50, level = 1)
 #' mgcViz::qq.gam(b, rep = 50, level = 1)
-qq.gamnew <- function (object, rep = 0,
-                       level = 0.9, s.rep = 10,
-                       type = c("deviance", "pearson", "response"),
-                       rl.col = 2,
-                       rep.col = "gray80", ...) 
+qq.gam <- function (object, rep = 0,
+                    level = 0.9, s.rep = 10,
+                    type = c("deviance", "pearson", "response"),
+                    rl.col = 2,
+                    rep.col = "gray80", ...) 
 {
   type <- match.arg(type)
   ylab <- paste(type, "residuals")
   if (inherits(object, c("glm", "gam"))) {
     if (is.null(object$sig2)) 
       object$sig2 <- summary(object)$dispersion
+  } else {
+    stop("'object' is not a glm or gam.")
   }
-  else stop("object is not a glm or gam")
   object$na.action <- NULL
   D <- residuals(object, type = type)
   if (object$method %in% c("PQL", "lme.ML", "lme.REML", "lmer.REML", 
@@ -218,8 +219,7 @@ qq.gamnew <- function (object, rep = 0,
       else if (level >= 1) 
         lim <- level
     }
-  }
-  else {
+  } else {
     ix <- rank(D)
     U <- (ix - 0.5)/length(D)
     if (!is.null(fam$qf)) {
@@ -235,28 +235,30 @@ qq.gamnew <- function (object, rep = 0,
     }
   }
   if (!is.null(Dq)) {
-    p <- qqplotnew(Dq, D, ylab = ylab, xlab = "theoretical quantiles") 
-    # ylim = range(c(lim, D)))
-    p <- add_lines(p,
-                   x = range(sort(c(Dq, D)), na.rm = TRUE),
-                   y = range(sort(c(Dq, D)), na.rm = TRUE),
-                   line = list(color = "red"))
-    p <- layout(p, showlegend = FALSE)
-    # abline(0, 1, col = rl.col)
+    p0 <- qqplot(Dq, D, ylab = ylab, xlab = "theoretical quantiles") 
+    p1 <- ggplot() 
     if (!is.null(lim)) {
-      if (level >= 1) 
+      if (level >= 1) {
+        dm2 <- lapply(1:ncol(dm), function(i) {
+          data.frame(id = i, value = dm[, i])
+        })
+        dm2 <- Reduce("rbind", dm2)
+        
         for (i in 1:rep) p <- add_trace(p, x = Dq, y = dm[, i], mode = "lines",
                                         line = list(color = 'rgba(204, 204, 204, 0.5)',
                                                     width = 0.5))
-        else {
-          n <- length(Dq)
-          p <- add_ribbons(p,
-                           x = Dq, 
-                           ymin = lim[1, ], ymax = lim[2, ],
-                           color = I("grey80"))
-        }
+      }  else {
+        n <- length(Dq)
+        p <- add_ribbons(p,
+                         x = Dq, 
+                         ymin = lim[1, ], ymax = lim[2, ],
+                         color = I("grey80"))
+      }
     }
-    # print(p)
+    p1 <- 
+      p1 +
+      geom_abline(colour = "red", size = 1.2) +
+      geom_point(data = p0$data, aes(x = sx, y = sy))
     return(p)
   }
   else qqnormnew(D, ylab = ylab, ...)
