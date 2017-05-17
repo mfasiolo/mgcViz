@@ -30,8 +30,7 @@ qqnorm <- function(y, ylim,
                    main = "Normal Q-Q Plot",
                    xlab = "Theoretical Quantiles", 
                    ylab = "Sample Quantiles",
-                   datax = FALSE) 
-{
+                   datax = FALSE) {
   if (has.na <- any(ina <- is.na(y))) {
     yN <- y
     y <- y[!ina]
@@ -67,6 +66,7 @@ qqnorm <- function(y, ylim,
 #' @param ylab, 
 #' @param main,
 #' @import ggplot2
+#' @export
 #' @examples 
 #' x <- rt(200, df = 5)
 #' y <- rt(300, df = 5)
@@ -115,7 +115,11 @@ qqplot <- function(x, y,
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#' 
 #' ## simulate binomial data...
+#' library(mgcv)
+#' library(mgcViz)
 #' set.seed(0)
 #' n.samp <- 400
 #' dat <- gamSim(1,n=n.samp,dist="binary",scale=.33)
@@ -127,8 +131,7 @@ qqplot <- function(x, y,
 #'               , family = binomial, data = dat,
 #'               weights = n, method = "REML")
 #' ## normal QQ-plot of deviance residuals
-#' stats::qqnorm(residuals(lr.fit), pch = 19, cex = .3)
-#' stats::qqnorm(residuals(lr.fit))
+#' mgcViz::qqnorm(residuals(lr.fit))
 #' ## Quick QQ-plot of deviance residuals
 #' mgcv::qq.gam(lr.fit, pch = 19, cex = .3)
 #' mgcViz::qq.gam(lr.fit)
@@ -142,8 +145,7 @@ qqplot <- function(x, y,
 #' ## Now fit the wrong model and check....
 #' pif <- gam(y ~ s(x0) + s(x1) + s(x2) + s(x3)
 #'            , family = poisson, data = dat, method = "REML")
-#' qqnorm(residuals(pif), pch = 19, cex = .3)
-#' qqnorm(residuals(pif))
+#' mgcViz::qqnorm(residuals(pif))
 #' ##
 #' mgcv::qq.gam(pif, pch = 19, cex = .3)
 #' mgcViz::qq.gam(pif)
@@ -170,12 +172,13 @@ qqplot <- function(x, y,
 #' mgcViz::qq.gam(b)
 #' mgcv::qq.gam(b, rep = 50, level = 1)
 #' mgcViz::qq.gam(b, rep = 50, level = 1)
-qq.gam <- function (object, rep = 0,
-                    level = 0.9, s.rep = 10,
+#' }
+qq.gam <- function (object, rep = 10,
+                    level = 0.8, s.rep = 10,
                     type = c("deviance", "pearson", "response"),
                     rl.col = 2,
-                    rep.col = "gray80", ...) 
-{
+                    rep.col = "gray80", ...) {
+  force(rep.col)
   type <- match.arg(type)
   ylab <- paste(type, "residuals")
   if (inherits(object, c("glm", "gam"))) {
@@ -235,36 +238,31 @@ qq.gam <- function (object, rep = 0,
     }
   }
   if (!is.null(Dq)) {
-    p0 <- qqplot(Dq, D, ylab = ylab, xlab = "theoretical quantiles") 
-    p1 <- ggplot() 
+    p0 <- mgcViz::qqplot(Dq, D, ylab = ylab, xlab = "theoretical quantiles") 
     if (!is.null(lim)) {
       if (level >= 1) {
-        dm2 <- lapply(1:ncol(dm), function(i) {
-          data.frame(id = i, value = dm[, i])
-        })
-        dm2 <- Reduce("rbind", dm2)
-        
-        for (i in 1:rep) p <- add_trace(p, x = Dq, y = dm[, i], mode = "lines",
-                                        line = list(color = 'rgba(204, 204, 204, 0.5)',
-                                                    width = 0.5))
-      }  else {
-        n <- length(Dq)
-        p <- add_ribbons(p,
-                         x = Dq, 
-                         ymin = lim[1, ], ymax = lim[2, ],
-                         color = I("grey80"))
+        dm <- data.frame(id = as.factor(rep(1:ncol(dm), each = nrow(dm))),
+                         x = rep(Dq, ncol(dm)),
+                         value = as.numeric(dm))
+        p1 <- ggplot2::ggplot(dm, ggplot2::aes(x = x, y = value)) 
+        p1 <- p1 + ggplot2::geom_line(aes(group = id), colour = rep.col)
+      } else {
+        dpoly <- data.frame(x = c(Dq, rev(Dq)), y = c(lim[1, ], rev(lim[2, ])))
+        p1 <- ggplot2::ggplot(data = dpoly, ggplot2::aes(x = x, y = y)) + 
+          ggplot2::geom_polygon(fill = rep.col)
       }
     }
     p1 <- 
       p1 +
-      geom_abline(colour = "red", size = 1.2) +
-      geom_point(data = p0$data, aes(x = sx, y = sy))
-    return(p)
+      ggplot2::geom_abline(colour = "red") +
+      ggplot2::geom_point(data = p0$data, ggplot2::aes(x = sx, y = sy))
+    return(p1)
+  } else {
+    return(mgcViz::qqnorm(D, ylab = ylab, ...))
   }
-  else qqnormnew(D, ylab = ylab, ...)
 }
 
-#' gam.checknew
+#' gam.check
 #'
 #' @param b, 
 #' @param type, 
@@ -275,22 +273,20 @@ qq.gam <- function (object, rep = 0,
 #' @param rl.col, 
 #' @param rep.col, 
 #' @param ... 
-#'
 #' @return
 #' @export
-#'
 #' @examples
 #' set.seed(0)
 #' dat <- gamSim(1,n=200)
 #' b <- gam(y ~ s(x0) + s(x1) + s(x2) + s(x3),data = dat)
 #' gam.check(b, pch = 19, cex = .3)
-#' gam.checknew(b)
-gam.checknew <- function(b,
-                         type = c("deviance","pearson","response"),
-                         k.sample = 5000,
-                         k.rep = 200,
-                         rep = 0, level = .9,
-                         rl.col = 2, rep.col = "gray80", ...){
+#' check.gam(b)
+check.gam <- function(b,
+                      type = c("deviance","pearson","response"),
+                      k.sample = 5000,
+                      k.rep = 200,
+                      rep = 0, level = .9,
+                      rl.col = 2, rep.col = "gray80", ...){
   
   type <- match.arg(type)
   resid <- residuals(b, type = type)
@@ -303,7 +299,7 @@ gam.checknew <- function(b,
   #   qqnorm(resid, ...)
   # else
   plots <- list()
-  plots[[1]] <- qq.gamnew(b, rep = rep, level = level, type = type, rl.col = rl.col, 
+  plots[[1]] <- mgcViz::qq.gam(b, rep = rep, level = level, type = type, rl.col = rl.col, 
                           rep.col = rep.col, ...)
   plots[[2]] <- plot_ly(x = ~linpred, y = ~resid, type = "scatter", mode = "markers") %>%
     layout(title = "Resids vs. linear pred.",
