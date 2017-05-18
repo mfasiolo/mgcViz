@@ -4,11 +4,13 @@ Version: 0.0.1
 Authors@R: c(person("Matteo", "Fasiolo", email = "matteo.fasiolo@bristol.uk.ac", role = c("aut", "cre")),
   person("Raphael", "Nedellec", email = "raphael.nedellec@edf.fr", role = c("aut")))
 Description: mgcViz.
-Depends: R (>= 3.3.2)
+Depends: 
+  R (>= 3.3.2),
+  mgcv
 Imports:
-  mgcv,
   ggplot2,
-  plotly
+  shiny,
+  miniUI
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

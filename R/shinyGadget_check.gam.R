@@ -1,9 +1,10 @@
-#' Title
+#' Shiny Gadget for check.gam
 #'
-#' @param plots 
-#'
-#' @return
+#' @param plots, Bla. 
+#' @return Bla.
 #' @export
+#' @import shiny
+#' @import miniUI
 #'
 #' @examples
 check_shiny.gam <- function(plots){
@@ -25,19 +26,10 @@ check_shiny.gam <- function(plots){
     )
   )
   server <- function(input, output, session) {
-    # Render the plot
-    output$plot1 <- renderPlot({
-      print(plots[[1]])
-    })
-    output$plot2 <- renderPlot({
-      print(plots[[2]])
-    })
-    output$plot3 <- renderPlot({
-      print(plots[[3]])
-    })
-    output$plot4 <- renderPlot({
-      print(plots[[4]])
-    })
+    output$plot1 <- renderPlot(print(plots[[1]]))
+    output$plot2 <- renderPlot(print(plots[[2]]))
+    output$plot3 <- renderPlot(print(plots[[3]]))
+    output$plot4 <- renderPlot(print(plots[[4]]))
   }
   runGadget(ui, server)
 }
