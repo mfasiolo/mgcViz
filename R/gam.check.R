@@ -1,115 +1,23 @@
-# code mostly from mgcv:: and stats:: (qqplot, qqnorm, qq.gam, gam.check)
-# TODO : layer in right order : points above and curves behind. Proper labels, and
-# ability for the user to pass graphical options. Also improve multiple lines
-# plotting to it in one pass
-# Also : change output values. returns the object ? the old values and just print the plot ?
-# Available as an option ??
-# In plotly subplot, arrange titles, etc
-# rename <function>new in <function> in package and use namespaces for selecting the right
-# plot between mgcv and mgcvextra ? e.g. mgcv::qq.gam and mgcvextra::qq.gam ?
-
-#' qqnorm
-#' 
-#' @param y, 
-#' @param ylim, 
-#' @param main,
-#' @param xlab, 
-#' @param ylab, 
-#' @param datax, Logical. Should data values be on the x-axis
-#' @import ggplot2
-#' @export
-#' @examples 
-#' y <- rt(500, df = 5)
-#' mgcViz::qqnorm(y)
-#' stats::qqnorm(y)
-#' mgcViz::qqnorm(precip, ylim = c(0,50),
-#'  ylab = "Precipitation [in/yr] for 70 US cities") + theme_minimal()
-#' stats::qqnorm(precip, ylab = "Precipitation [in/yr] for 70 US cities")
-#' plotly::ggplotly(mgcViz::qqnorm(y) + theme_minimal())
-qqnorm <- function(y, ylim,
-                   main = "Normal Q-Q Plot",
-                   xlab = "Theoretical Quantiles", 
-                   ylab = "Sample Quantiles",
-                   datax = FALSE) {
-  if (has.na <- any(ina <- is.na(y))) {
-    yN <- y
-    y <- y[!ina]
-  }
-  if (0 == (n <- length(y))) 
-    stop("y is empty or has only NAs")
-  if (missing(ylim)) 
-    ylim <- range(y)
-  x <- qnorm(ppoints(n))[order(order(y))]
-  if (has.na) {
-    y <- x
-    x <- yN
-    x[!ina] <- y
-    y <- yN
-  }
-  xtitle <- ifelse(datax, ylab, xlab)
-  ytitle <- ifelse(datax, xlab, ylab)
-  data <- data.frame(x = x, y = y)
-  if (datax) {
-    p <- ggplot2::ggplot(data, aes(x = y, y = x)) + ggplot2::geom_point()
-  } else {
-    p <- ggplot2::ggplot(data, aes(x = x, y = y)) + ggplot2::geom_point()
-  }
-  p <- p + ylim(ylim) + ggplot2::labs(title = main, x = xlab, y = ylab)
-  return(p)
-}
-
-#' qqplot
-#' 
-#' @param x, 
-#' @param y, 
-#' @param xlab, 
-#' @param ylab, 
-#' @param main,
-#' @import ggplot2
-#' @export
-#' @examples 
-#' x <- rt(200, df = 5)
-#' y <- rt(300, df = 5)
-#' stats::qqplot(x, y)
-#' mgcViz::qqplot(x, y)
-#' ## "QQ-Chisquare" : --------------------------
-#' y <- rchisq(500, df = 3)
-#' ## Q-Q plot for Chi^2 data against true theoretical distribution:
-#' x <- qchisq(ppoints(500), df = 3)
-#' stats::qqplot(qchisq(ppoints(500), df = 3), rchisq(500, df = 3),
-#'       main = expression("Q-Q plot for" ~~ {chi^2}[nu == 3]))
-#' p <- mgcViz::qqplot(qchisq(ppoints(500), df = 3), rchisq(500, df = 3),
-#'          main = expression("Q-Q plot for" ~~ {chi^2}[nu == 3])) + theme_bw()
-#' p          
-#' plotly::ggplotly(p + theme_minimal()) # title not working
-qqplot <- function(x, y,
-                   xlab = deparse(substitute(x)), 
-                   ylab = deparse(substitute(y)),
-                   main = "Q-Q Plot"){
-  sx <- sort(x)
-  sy <- sort(y)
-  lenx <- length(sx)
-  leny <- length(sy)
-  if (leny < lenx) 
-    sx <- approx(1L:lenx, sx, n = leny)$y
-  if (leny > lenx) 
-    sy <- approx(1L:leny, sy, n = lenx)$y
-  data <- data.frame(sx = sx, sy = sy)
-  p <- ggplot2::ggplot(data, aes(x = sx, y = sy)) + ggplot2::geom_point()
-  p <- p + ggplot2::labs(title = main, x = xlab, y = ylab)
-  return(p)
-}
 
 #' qq.gam
+#' 
+#' @description Takes a fitted gam object produced by [mgcv::gam()] and produces QQ plots of its residuals
+#' (conditional on the fitted model coefficients and scale parameter). If the model 
+#' distributional assumptions are met then usually these plots should be close to a straight
+#' line (although discrete data can yield marked random departures from this line).
 #'
-#' @param object, 
-#' @param rep, 
-#' @param level, 
-#' @param s.rep, 
-#' @param type, 
-#' @param rl.col, 
-#' @param rep.col, 
-#' @param ... 
+#' @param object, A fitted `gam` object as produced by [mgcv::gam()] (or a `glm` object).
+#' @param rep, How many replicate datasets to generate to simulate quantiles of the residual
+#'  distribution. 0 results in an efficient simulation free method for direct calculation,
+#'   if this is possible for the object family.
+#' @param level, If simulation is used for the quantiles, then reference intervals can be provided
+#'  for the QQ-plot, this specifies the level. 0 or less for no intervals, 1 or more to simply plot
+#'   the QQ plot for each replicate generated.
+#' @param s.rep, How many times to randomize uniform quantiles to data under direct computation.
+#' @param type, What sort of residuals should be plotted? See [mgcv::residuals.gam()].
+#' @param rl.col, Color for the reference line on the plot.
+#' @param rep.col, Color for reference bands or replicate reference plots.
+#' @param ..., Extra parameters. 
 #' @import ggplot2
 #' @return
 #' @export
@@ -191,7 +99,7 @@ qq.gam <- function (object, rep = 10,
   D <- residuals(object, type = type)
   if (object$method %in% c("PQL", "lme.ML", "lme.REML", "lmer.REML", 
                            "lmer.ML", "glmer.ML")) {
-    p <- qqnormnew(D, ylab = ylab, ...)
+    p <- qqnorm(D, ylab = ylab, ...)
     return(p)
   }
   lim <- Dq <- NULL
@@ -217,8 +125,8 @@ qq.gam <- function (object, rep = 10,
       if (alpha > 0.5 || alpha < 0) 
         alpha <- 0.05
       if (level > 0 && level < 1) 
-        lim <- apply(dm, 1, FUN = quantile, p = c(alpha, 
-                                                  1 - alpha))
+        lim <- apply(dm, 1, FUN = quantile,
+                     p = c(alpha, 1 - alpha))
       else if (level >= 1) 
         lim <- level
     }
@@ -251,6 +159,8 @@ qq.gam <- function (object, rep = 10,
         p1 <- ggplot2::ggplot(data = dpoly, ggplot2::aes(x = x, y = y)) + 
           ggplot2::geom_polygon(fill = rep.col)
       }
+    } else {
+      p1 <- ggplot()
     }
     p1 <- 
       p1 +
@@ -262,9 +172,9 @@ qq.gam <- function (object, rep = 10,
   }
 }
 
-#' gam.check
+#' check.gam
 #'
-#' @param b, 
+#' @param object, 
 #' @param type, 
 #' @param k.sample,
 #' @param k.rep, 
@@ -281,7 +191,7 @@ qq.gam <- function (object, rep = 10,
 #' b <- gam(y ~ s(x0) + s(x1) + s(x2) + s(x3),data = dat)
 #' gam.check(b, pch = 19, cex = .3)
 #' check.gam(b)
-check.gam <- function(b,
+check.gam <- function(object,
                       type = c("deviance","pearson","response"),
                       k.sample = 5000,
                       k.rep = 200,
@@ -290,56 +200,56 @@ check.gam <- function(b,
   
   type <- match.arg(type)
   resid <- residuals(b, type = type)
-  linpred <- if (is.matrix(b$linear.predictors) && !is.matrix(resid)) 
+  linpred <- if (is.matrix(b$linear.predictors) && !is.matrix(resid)) { 
     napredict(b$na.action, b$linear.predictors[, 1])
-  else napredict(b$na.action, b$linear.predictors)
+  } else {
+    napredict(b$na.action, b$linear.predictors)
+  } 
   # if (is.null(.Platform$GUI) || .Platform$GUI != "RStudio") 
   #   old.par <- par(mfrow = c(2, 2))
   # if (old.style) 
   #   qqnorm(resid, ...)
   # else
-  plots <- list()
-  plots[[1]] <- mgcViz::qq.gam(b, rep = rep, level = level, type = type, rl.col = rl.col, 
-                          rep.col = rep.col, ...)
-  plots[[2]] <- plot_ly(x = ~linpred, y = ~resid, type = "scatter", mode = "markers") %>%
-    layout(title = "Resids vs. linear pred.",
-           xaxis = list(title = "linear predictor",
-                        zeroline = FALSE,
-                        showline = TRUE,
-                        mirror = "ticks"),
-           yaxis = list(title = "residuals",
-                        zeroline = FALSE,
-                        showline = TRUE,
-                        mirror = "ticks"))
-  plots[[3]] <- plot_ly(x = ~resid, type = "histogram") %>% 
-    layout(title = "Histogram of residuals",
-           xaxis = list(title = "Residuals"),
-           yaxis = list(title = "Frequency"))
-  fv <- if (inherits(b$family, "extended.family")) 
+  fv <- if (inherits(b$family, "extended.family")) {
     predict(b, type = "response")
-  else fitted(b)
-  if (is.matrix(fv) && !is.matrix(b$y)) 
-    fv <- fv[, 1]
-  plots[[4]] <- plot_ly(x = ~fv, y = ~ napredict(b$na.action, b$y),
-                        type = "scatter", mode = "markers") %>% 
-    layout(title = "Response vs. Fitted Values",
-           xaxis = list(title = "Fitted Values",
-                        zeroline = FALSE,
-                        showline = TRUE,
-                        mirror = "ticks"),
-           yaxis = list(title = "Response",
-                        zeroline = FALSE,
-                        showline = TRUE,
-                        mirror = "ticks"))
-  if (is.null(.Platform$GUI) || .Platform$GUI != "RStudio"){
-    subplot(plots, nrows = 2, margin = 0.05,
-            titleX = TRUE, titleY = TRUE, shareX = FALSE, shareY = FALSE)
   } else {
-    for (k in plots) print(k)
+    fitted(b)
   }
+  if (is.matrix(fv) && !is.matrix(b$y)) {
+    fv <- fv[, 1]
+  }
+  resp <- napredict(b$na.action, b$y)
+  df <- data.frame(linpred = linpred, resid = resid,
+                   response = resp, fv = fv)
+  plots <- list()
+  plots[[1]] <- 
+    mgcViz::qq.gam(b, rep = rep,
+                   level = level, type = type, rl.col = rl.col, 
+                   rep.col = rep.col)
+  plots[[2]] <- 
+    ggplot2::ggplot(data = df, aes(x = linpred, y = resid)) +
+    ggplot2::geom_point() +
+    ggplot2::labs(title = "Resids vs. linear pred.",
+                  x = "linear predictor", y = "residuals")
+  plots[[3]] <- 
+    ggplot2::ggplot() +
+    ggplot2::geom_histogram(data = df, ggplot2::aes(x = resid)) +
+    ggplot2::labs(title = "Histogram of residuals",
+                  xlab = "Residuals")
+  plots[[4]] <- 
+    ggplot2::ggplot(data = df, aes(x = fv, y = resp)) +
+    ggplot2::geom_point() +
+    ggplot2::labs(title = "Response vs. Fitted Values",
+                  x = "Fitted Values", y = "Response")
+  # if (is.null(.Platform$GUI) || .Platform$GUI != "RStudio"){
+  #   subplot(plots, nrows = 2, margin = 0.05,
+  #           titleX = TRUE, titleY = TRUE, shareX = FALSE, shareY = FALSE)
+  # } else {
+  # for (k in plots) print(k)
+  # }
   if (!(b$method %in% c("GCV", "GACV", "UBRE", "REML", "ML", 
                         "P-ML", "P-REML", "fREML"))) {
-    return(invisible())
+    return(plots)
   }
   cat("\nMethod:", b$method, "  Optimizer:", b$optimizer)
   if (!is.null(b$outer.info)) {
@@ -395,4 +305,44 @@ check.gam <- function(b,
     cat("indicate that k is too low, especially if edf is close to k'.\n\n")
     printCoefmat(kchck, digits = 3)
   }
+  return(plots)
 }
+
+
+
+check_shiny.gam <- function(plots){
+  ui <- miniPage(
+    gadgetTitleBar("Checking results"),
+    miniContentPanel(
+      # The brush="brush" argument means we can listen for
+      # brush events on the plot using input$brush.
+      fillRow(
+        fillCol(
+          plotOutput("plot1", height = "100%"),
+          plotOutput("plot2", height = "100%")
+        ),
+        fillCol(
+          plotOutput("plot3", height = "100%"),
+          plotOutput("plot4", height = "100%")
+        )
+      )
+    )
+  )
+  server <- function(input, output, session) {
+    # Render the plot
+    output$plot1 <- renderPlot({
+      print(plots[[1]])
+    })
+    output$plot2 <- renderPlot({
+      print(plots[[2]])
+    })
+    output$plot3 <- renderPlot({
+      print(plots[[3]])
+    })
+    output$plot4 <- renderPlot({
+      print(plots[[4]])
+    })
+  }
+  runGadget(ui, server)
+}
+
