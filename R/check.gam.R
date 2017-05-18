@@ -1,5 +1,5 @@
 
-#' qq.gam
+#' QQ plots for gam model residuals
 #' 
 #' @description Takes a fitted gam object produced by [mgcv::gam()] and produces QQ plots of its residuals
 #' (conditional on the fitted model coefficients and scale parameter). If the model 
@@ -18,6 +18,8 @@
 #' @param rl.col, Color for the reference line on the plot.
 #' @param rep.col, Color for reference bands or replicate reference plots.
 #' @param ..., Extra parameters. 
+#' @note Help file is mainly from [mgcv::qq.gam] since this is a rewrite of `mgcv::qq.gam` 
+#' function with ggplot2 library.
 #' @import ggplot2
 #' @return
 #' @export
@@ -104,7 +106,7 @@ qq.gam <- function (object, rep = 10,
   }
   lim <- Dq <- NULL
   if (rep == 0) {
-    fam <- fix.family.qf(object$family)
+    fam <- mgcv::fix.family.qf(object$family)
     if (is.null(fam$qf)) 
       rep <- 50
     level <- 0
@@ -164,33 +166,38 @@ qq.gam <- function (object, rep = 10,
     }
     p1 <- 
       p1 +
-      ggplot2::geom_abline(colour = "red") +
+      ggplot2::geom_abline(colour = rl.col) +
       ggplot2::geom_point(data = p0$data, ggplot2::aes(x = sx, y = sy))
     return(p1)
   } else {
-    return(mgcViz::qqnorm(D, ylab = ylab, ...))
+    return(qqnorm(D, ylab = ylab, ...))
   }
 }
 
-#' check.gam
-#'
-#' @param object, 
-#' @param type, 
-#' @param k.sample,
-#' @param k.rep, 
-#' @param rep, 
-#' @param level, 
-#' @param rl.col, 
-#' @param rep.col, 
-#' @param ... 
+#' Some diagnostics for a fitted gam model
+#' 
+#' @description Takes a fitted gam object produced by [mgcv::gam()] and produces some diagnostic
+#'  information about the fitting procedure and results. The default is to produce 4 residual plots,
+#'   some information about the convergence of the smoothness selection optimization, and
+#'    to run diagnostic tests of whether the basis dimension choises are adequate. 
+#' @param object, A fitted `gam` object as produced by [mgcv::gam()].
+#' @param type, Type of residuals, see [mgcv::residuals.gam()], used in all plots.
+#' @param k.sample, Above this k testing uses a random sub-sample of data.
+#' @param k.rep, How many re-shuffles to do to get p-value for k testing.
+#' @param rep,level,rl.col,rep.col, Arguments passed to [qq.gam()].
+#' @param ... Extra parameters. 
 #' @return
+#' @note Help file is mainly from [mgcv::gam.check] since this is a rewrite of `mgcv::gam.check` 
+#' function with ggplot2 library.
 #' @export
 #' @examples
+#' library(ggplot2)
 #' set.seed(0)
-#' dat <- gamSim(1,n=200)
-#' b <- gam(y ~ s(x0) + s(x1) + s(x2) + s(x3),data = dat)
-#' gam.check(b, pch = 19, cex = .3)
-#' check.gam(b)
+#' dat <- mgcv::gamSim(1, n = 200)
+#' b <- mgcv::gam(y ~ s(x0) + s(x1) + s(x2) + s(x3), data = dat)
+#' mgcv::gam.check(b, pch = 19, cex = .3)
+#' cg <- check.gam(b)
+#' for (k in cg) print(k + theme_bw())
 check.gam <- function(object,
                       type = c("deviance","pearson","response"),
                       k.sample = 5000,
@@ -205,11 +212,6 @@ check.gam <- function(object,
   } else {
     napredict(b$na.action, b$linear.predictors)
   } 
-  # if (is.null(.Platform$GUI) || .Platform$GUI != "RStudio") 
-  #   old.par <- par(mfrow = c(2, 2))
-  # if (old.style) 
-  #   qqnorm(resid, ...)
-  # else
   fv <- if (inherits(b$family, "extended.family")) {
     predict(b, type = "response")
   } else {
@@ -241,12 +243,6 @@ check.gam <- function(object,
     ggplot2::geom_point() +
     ggplot2::labs(title = "Response vs. Fitted Values",
                   x = "Fitted Values", y = "Response")
-  # if (is.null(.Platform$GUI) || .Platform$GUI != "RStudio"){
-  #   subplot(plots, nrows = 2, margin = 0.05,
-  #           titleX = TRUE, titleY = TRUE, shareX = FALSE, shareY = FALSE)
-  # } else {
-  # for (k in plots) print(k)
-  # }
   if (!(b$method %in% c("GCV", "GACV", "UBRE", "REML", "ML", 
                         "P-ML", "P-REML", "fREML"))) {
     return(plots)
@@ -307,42 +303,3 @@ check.gam <- function(object,
   }
   return(plots)
 }
-
-
-
-check_shiny.gam <- function(plots){
-  ui <- miniPage(
-    gadgetTitleBar("Checking results"),
-    miniContentPanel(
-      # The brush="brush" argument means we can listen for
-      # brush events on the plot using input$brush.
-      fillRow(
-        fillCol(
-          plotOutput("plot1", height = "100%"),
-          plotOutput("plot2", height = "100%")
-        ),
-        fillCol(
-          plotOutput("plot3", height = "100%"),
-          plotOutput("plot4", height = "100%")
-        )
-      )
-    )
-  )
-  server <- function(input, output, session) {
-    # Render the plot
-    output$plot1 <- renderPlot({
-      print(plots[[1]])
-    })
-    output$plot2 <- renderPlot({
-      print(plots[[2]])
-    })
-    output$plot3 <- renderPlot({
-      print(plots[[3]])
-    })
-    output$plot4 <- renderPlot({
-      print(plots[[4]])
-    })
-  }
-  runGadget(ui, server)
-}
-
