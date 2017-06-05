@@ -1,7 +1,7 @@
 Package: mgcViz
 Title: mgcv Visualization.
 Version: 0.0.1
-Authors@R: c(person("Matteo", "Fasiolo", email = "matteo.fasiolo@bristol.uk.ac", role = c("aut", "cre")),
+Authors@R: c(person("Matteo", "Fasiolo", email = "matteo.fasiolo@gmail.com", role = c("aut", "cre")),
   person("Raphael", "Nedellec", email = "raphael.nedellec@edf.fr", role = c("aut")))
 Description: mgcViz.
 Depends: 
@@ -9,6 +9,7 @@ Depends:
   mgcv
 Imports:
   ggplot2,
+  plotly, 
   shiny,
   miniUI
 License: GPL-3
