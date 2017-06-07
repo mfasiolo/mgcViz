@@ -222,7 +222,7 @@ plot.gam <- function(x,residuals=FALSE,rug=TRUE,se=TRUE,pages=0,select=NULL,scal
                                        ylab=ylab,main=main,ylim=ylim,xlim=xlim,too.far=too.far,shade=shade,
                                        shade.col=shade.col,shift=shift,trans=trans,by.resids=by.resids,scheme=scheme[i], 
                                        inter=inter, ...)
-      if(draw){ if(inter){print(ggplotly(.ggobj[[i]]))}else{print(.ggobj[[i]])} }
+      if(draw){ if(inter){print(ggplotly(.ggobj[[i]]+theme_bw()))}else{print(.ggobj[[i]]+theme_bw())} }
     }, warning = function(w) {
       if (length(grep("Ignoring unknown parameters: ", conditionMessage(w))))
       {

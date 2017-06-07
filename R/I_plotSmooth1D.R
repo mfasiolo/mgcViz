@@ -56,7 +56,7 @@
     .pl <- .pl + .tmpF(.pl, ...)
   } 
   
-  .pl <- .pl + geom_line(...) + theme_bw() 
+  .pl <- .pl + geom_line(...)
   
   return( .pl )
 } 
