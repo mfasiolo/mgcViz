@@ -1,19 +1,4 @@
-##
-## Default plot method for smooth objects `x' inheriting from "mgcv.smooth"
-## `x' is a smooth object, usually part of a `gam' fit. It has an attribute
-##     'coefficients' containg the coefs for the smooth, but usually these
-##     are not needed.
-## `P' is a list of plot data. 
-##     If P is not NULL it will contain 
-##     * fit - the values for plotting 
-##     * se.fit - standard errors of fit (can be NULL)
-##     * the values against which to plot
-##     * any raw data information
-##     * any partial.residuals 
-## `data' is a data frame containing the raw data for the smooth, usually the 
-##        model.frame of the fitted gam. Can be NULL if P is not NULL.
-## `label' is the term label, usually something like e.g. `s(x,12.34)'.
-##
+
 .plot.mgcv.smooth <- function(x, P, data=NULL, label="", se1.mult=1, se2.mult=2,
                                partial.resids=FALSE, rug=TRUE, se=TRUE, scale=TRUE, n=100, n2=40,
                                pers=FALSE, theta=30, phi=30, jit=FALSE, xlab=NULL, ylab=NULL, main=NULL,
@@ -23,8 +8,8 @@
 
   if(x$dim == 1){
     out <- .plotSmooth1D(x=x, P=P, partial.resids=partial.resids, rug=rug, se=se, scale=scale, n=n,
-                         jit=jit, shade=shade, shade.col=shade.col, ylim = ylim,
-                         shift=shift, trans=trans, by.resids=by.resids, scheme=scheme, inter=inter, ...)
+                         jit=jit, shade=shade||(scheme==1), shade.col=shade.col, ylim = ylim,
+                         shift=shift, trans=trans, by.resids=by.resids, inter=inter, ...)
   } else {
     if(x$dim == 2){
       out <- .plotSmooth2D(x=x, P=P, data=data, label=label, se.mult=se1.mult,
