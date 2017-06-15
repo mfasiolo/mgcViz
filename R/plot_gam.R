@@ -1,4 +1,4 @@
-#' Basis GAM plotting
+#' Basic GAM plotting
 #' 
 #' @description XXX
 #' @importFrom plotly ggplotly
@@ -22,8 +22,10 @@ plot.gam <- function(x,residuals=FALSE,rug=TRUE,se=TRUE,pages=0,select=NULL,scal
     scheme <- rep(scheme[1], m)
   }
   
-  # This creates/modifies variables in the environment:
-  # x, w.resid, partial.resids, se2.mult, se1.mult, se, fv.terms, order  
+  # This creates/modifies variables in the environment.
+  # INPUTS: unconditional, x, residuals, se, fitSmooth
+  # NEW/MODIFIED VARIABLES: x, w.resid, partial.resids, se2.mult, se1.mult, se, fv.terms, order  
+  fv.terms <- NULL
   eval( .initializeXXX )
   
   # Loop to get the data for the plots
@@ -31,13 +33,14 @@ plot.gam <- function(x,residuals=FALSE,rug=TRUE,se=TRUE,pages=0,select=NULL,scal
   ii <- 1 # needs a value if no smooths is present, but parametric terms are...
   if (m>0){ 
     for (ii in 1:m) { ## work through smooth terms
-      tmp <- .createP(sm=x$smooth[[ii]], ism=ii, order=order, x=x, partial.resids=partial.resids,
+      tmp <- .createP(sm=x$smooth[[ii]], x=x, partial.resids=partial.resids,
                       rug=rug, se=se, scale=scale, n=n, n2=n2,
                       pers=pers, theta=theta, phi=phi, jit=jit, xlab=xlab, ylab=ylab, main=main, label=term.lab,
                       ylim=ylim, xlim=xlim, too.far=too.far, shade=shade, shade.col=shade.col,
                       se1.mult=se1.mult, se2.mult=se2.mult, shift=shift, trans=trans,
-                      by.resids=by.resids, scheme=scheme[ii], seWithMean=seWithMean, fv.terms=fv.terms,
-                      inter=inter, ...)
+                      by.resids=by.resids, scheme=scheme[ii], seWithMean=seWithMean, 
+                      fitSmooth=fv.terms[ , length(order)+ii],
+                      w.resid=w.resid, inter=inter, ...)
       pd[[ii]] <- tmp[["P"]]
       attr(x$smooth[[ii]], "coefficients") <- tmp[["coef"]]
       rm(tmp)
@@ -90,7 +93,6 @@ plot.gam <- function(x,residuals=FALSE,rug=TRUE,se=TRUE,pages=0,select=NULL,scal
   #####################################
   ## get a common scale, if required...
   #####################################
-  
   if (scale==TRUE && is.null(ylim)) {
     k <- 0
     if (m>0) for (i in 1:m) if (pd[[i]]$plot.me&&pd[[i]]$scale) { ## loop through plot data 
@@ -140,9 +142,7 @@ plot.gam <- function(x,residuals=FALSE,rug=TRUE,se=TRUE,pages=0,select=NULL,scal
         invokeRestart("muffleWarning")
       }
     })
-    
-    
-  } ## end of smooth plotting loop
+  }
   
   ####################################################
   ## Finally deal with any parametric term plotting...
