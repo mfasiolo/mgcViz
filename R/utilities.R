@@ -22,6 +22,43 @@ zto1Creator <- function(o, a){
   return(.f)
 }
 
+#' Extract specific smooth from gamObject
+#' 
+#' @description XXX
+#' @name getSmooth
+#' @examples 
+#' library(mgcViz)
+#' @rdname getSmooth
+#' @export getSmooth
+getSmooth <- function(x, select, fit=NULL){
+  
+  m <- length(x$smooth) # number of smooth effects
+
+  if(length(select)>1){ stop("select should be a scale") }
+  if(select > m){ stop(paste("select should be smaller than", m, "the number of smooths in x")) }
+  
+  if(is.null(fit)){
+    np <- if (is.list(x$pterms)){ length(unlist(lapply(x$pterms,attr,"order"))) } else { length(attr(x$pterms,"order")) }
+    x$fit <- predict(x, type = "terms")[ , np + select]
+  } else {
+    x$fit <- fit
+  }
+  
+  x$smooth <- x$smooth[[select]]
+  x <- x[ c("smooth", "edf", "coefficients", "residuals", "weights", "model", "cmX", "Vp", "Vc", "pterms", "fit") ]
+  x$ism <- select
+  
+  cl <- class(x$smooth)
+  
+  if("mgcv.smooth" %in% cl){
+    cl[which(cl=="mgcv.smooth")] <- paste("mgcv.smooth.", x$smooth$dim, "D", sep='')  
+    class(x) <- cl
+  }
+  
+  return( x )
+  
+}
+
 
 
 
