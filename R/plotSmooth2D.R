@@ -1,0 +1,124 @@
+#' Plotting two dimensional smooth effects
+#' 
+#' @description XXX
+#' @name plot.mgcv.smooth.2D
+#' @examples 
+#' library(mgcViz)
+#' @rdname plot.mgcv.smooth.2D
+#' @export plot.mgcv.smooth.2D
+plot.mgcv.smooth.2D <- function(x, residuals=FALSE, rug=TRUE, se=TRUE, n=40,
+                                pers=FALSE, theta=30, phi=30, jit=FALSE, xlab=NULL, ylab=NULL, main=NULL, 
+                                ylim=NULL, xlim=NULL, too.far=0.1, se.mult=1, shift=0, trans=I, seWithMean=FALSE, 
+                                unconditional=FALSE, by.resids=FALSE, scheme=0, draw=TRUE, hcolors=viridis(50, begin=0.2),
+                                contour.col=1, pFun=zto1Creator(0.05, 3), inter=FALSE, ...)
+
+{
+  if (length(scheme)>1){ 
+    scheme <- scheme[1]
+    warning( "scheme should be a single number" )
+  }
+  
+  # This creates/modifies variables in the environment.
+  # INPUTS: unconditional, x, residuals, se
+  # NEW/MODIFIED VARIABLES: x, w.resid, partial.resids, se2.mult, se1.mult, se, fv.terms, order  
+  fv.terms <- x$fit
+  eval( .initializeXXX )
+  
+  # Prepare for plotting
+  tmp <- .createP(sm=x$smooth, x=x, partial.resids=partial.resids,
+                  rug=rug, se=se, scale=FALSE, n=NULL, n2=n,
+                  pers=pers, theta=theta, phi=phi, jit=jit, xlab=xlab, ylab=ylab, main=main, label=term.lab,
+                  ylim=ylim, xlim=xlim, too.far=too.far, shade=NULL, shade.col=NULL,
+                  se1.mult=se.mult, se2.mult=se.mult, shift=shift, trans=trans,
+                  by.resids=by.resids, scheme=scheme, seWithMean=seWithMean, fitSmooth=fv.terms,
+                  w.resid=w.resid, inter=inter, ...)
+  pd <- tmp[["P"]]
+  attr(x$smooth, "coefficients") <- tmp[["coef"]]
+  rm(tmp)
+  
+  # Plotting
+  .ggobj <- .plot.mgcv.smooth.2D(x=x$smooth, P=pd, partial.resids=partial.resids, rug=rug, se=se, scale=FALSE, n2=n,
+                                 pers=pers, theta=theta, phi=phi, jit=jit, main=main, too.far=too.far, 
+                                 shift=shift, trans=trans, by.resids=by.resids, scheme=scheme, hcolors=hcolors,
+                                 contour.col=contour.col, inter=inter, pFun=pFun, ...)
+  
+  if(draw){ print( if(inter){ggplotly(.ggobj+theme_bw())}else{.ggobj+theme_bw()} ) }
+  
+  attr(.ggobj, "rawData") <- pd
+  invisible(.ggobj)
+}
+
+# Internal function
+.plot.mgcv.smooth.2D <- function(x, P=NULL, partial.resids=FALSE, rug=TRUE, se=TRUE, scale=FALSE, n2=40,
+                                 pers=FALSE, theta=30, phi=30, jit=FALSE, main=NULL, too.far=0.1,
+                                 shift=0, trans=I, by.resids=FALSE, scheme=0, hcolors=viridis(50, begin=0.2),
+                                 contour.col=1, inter = FALSE, pFun = zto1Creator(0.05, 3), 
+                                 # Useless arguments
+                                 data=NA, label=NA, se.mult=NA, xlab=NA, ylab=NA, n=NA,
+                                 shade=NA, shade.col=NA, xlim=NA, ylim=NA,
+                                 #
+                                 ...)
+{
+  
+  if(se){
+    P$fit[P$exclude] <- NA
+    if (pers) scheme <- 1
+    if (scheme == 1) { ## perspective plot 
+      persp(P$x,P$y,matrix(trans(P$fit+shift),n2,n2),xlab=P$xlab,ylab=P$ylab,
+            zlab=P$main,ylim=P$ylim,xlim=P$xlim,theta=theta,phi=phi,...)
+    } else if (scheme==2||scheme==3) {
+      if (scheme==3) hcolors <- grey(0:50/50)
+      .pl <- ggplot(data = data.frame("z"=P$fit, "x"=rep(P$x, length(P$fit)/length(P$x)), 
+                                      "y"=rep(P$y, each=length(P$fit)/length(P$x)), p= pFun(1-pnorm(abs(P$fit)/(P$se)))), 
+                    aes(x=x, y=y, z=z)) + geom_raster(aes(fill = z, alpha = p)) + geom_contour(color=contour.col, na.rm=T) + 
+                    scale_fill_gradientn(colours = hcolors, na.value="grey") + scale_alpha(guide = 'none') +
+                    coord_cartesian(xlim=P$xlim, ylim=P$ylim, expand=F) + labs(title = P$main, x = P$xlab, y = P$ylab)
+      # Add partial residuals
+      if (rug) { 
+          .tmpF <- function(..., shape = ifelse(inter, 'a', '.'), col = ifelse(inter, "grey", "black")) # Alter default shape and col
+          {
+            geom_point(data=data.frame("resx"=P$raw$x, "resy"=P$raw$y), aes(x = resx, y = resy), 
+                       inherit.aes = FALSE, shape = shape, col = col, ...)
+          } 
+          .pl <- .pl + .tmpF(...)
+      }
+    
+    } else { ## contour plot with error contours
+      sp.contour(P$x,P$y,matrix(P$fit,n2,n2),matrix(P$se,n2,n2),
+                 xlab=P$xlab,ylab=P$ylab,zlab=P$main,titleOnly=!is.null(main),
+                 se.mult=1,trans=trans,shift=shift,...)
+      if (rug) { 
+        if (is.null(list(...)[["pch"]]))
+          points(P$raw$x,P$raw$y,pch=".",...) else
+            points(P$raw$x,P$raw$y,...) 
+      }
+    } ## counter plot done 
+  } else {
+    P$fit[P$exclude] <- NA
+    if (!is.null(main)) P$title <- main
+    if (pers) scheme <- 1
+    if (scheme==1) { 
+      persp(P$x,P$y,matrix(trans(P$fit+shift),n2,n2),xlab=P$xlab,ylab=P$ylab,
+            zlab=P$main,theta=theta,phi=phi,xlim=P$xlim,ylim=P$ylim,...)
+    } else if (scheme==2||scheme==3) {
+      if (scheme==3) hcolors <- grey(0:50/50)
+      image(P$x,P$y,matrix(trans(P$fit+shift),n2,n2),xlab=P$xlab,ylab=P$ylab,
+            main=P$main,xlim=P$xlim,ylim=P$ylim,col=hcolors,...)
+      contour(P$x,P$y,matrix(trans(P$fit+shift),n2,n2),add=TRUE,col=contour.col,...)
+      if (rug) {  
+        if (is.null(list(...)[["pch"]])) points(P$raw$x,P$raw$y,pch=".",...) else
+          points(P$raw$x,P$raw$y,...)
+      }
+    } else { 
+      contour(P$x,P$y,matrix(trans(P$fit+shift),n2,n2),xlab=P$xlab,ylab=P$ylab,
+              main=P$main,xlim=P$xlim,ylim=P$ylim,...)
+      if (rug) {  
+        if (is.null(list(...)[["pch"]])) points(P$raw$x,P$raw$y,pch=".",...) else
+          points(P$raw$x,P$raw$y,...)
+      }
+    }
+  }
+  
+  return( .pl )
+  
+}

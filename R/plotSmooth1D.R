@@ -9,8 +9,8 @@
 plot.mgcv.smooth.1D <- function(x, residuals=FALSE,rug=TRUE,se=TRUE,n=100,
                                 jit=FALSE,xlab=NULL,ylab=NULL,main=NULL,
                                 ylim=NULL,xlim=NULL,shade=FALSE,shade.col=I("gray80"),
-                                shift=0,trans=I,seWithMean=FALSE,unconditional=FALSE,by.resids=FALSE,scheme=0,
-                                draw=TRUE, inter=FALSE, ...)
+                                shift=0,trans=I,seWithMean=FALSE,unconditional=FALSE,by.resids=FALSE,
+                                scheme=0, draw=TRUE, inter=FALSE, ...)
 {
   if (length(scheme)>1){ 
     scheme <- scheme[1]
@@ -25,7 +25,7 @@ plot.mgcv.smooth.1D <- function(x, residuals=FALSE,rug=TRUE,se=TRUE,n=100,
   
   # Prepare for plotting
   tmp <- .createP(sm=x$smooth, x=x, partial.resids=partial.resids,
-                  rug=rug, se=se, scale=FALSE, n=n, n2=n2,
+                  rug=rug, se=se, scale=FALSE, n=n, n2=NULL,
                   pers=NULL, theta=NULL, phi=NULL, jit=jit, xlab=xlab, ylab=ylab, main=main, label=term.lab,
                   ylim=ylim, xlim=xlim, too.far=NULL, shade=shade, shade.col=shade.col,
                   se1.mult=se1.mult, se2.mult=se2.mult, shift=shift, trans=trans,
@@ -36,11 +36,11 @@ plot.mgcv.smooth.1D <- function(x, residuals=FALSE,rug=TRUE,se=TRUE,n=100,
   rm(tmp)
   
   # Plotting
-  .ggobj <- .plotSmooth1D(x=x$smooth, P=pd, partial.resids=partial.resids, rug=rug, se=se, scale=FALSE, n=n,
-                          jit=jit, shade=shade||(scheme==1), shade.col=shade.col, ylim = ylim,
-                          shift=shift, trans=trans, by.resids=by.resids, inter=inter, ...)
+  .ggobj <- .plot.mgcv.smooth.1D(x=x$smooth, P=pd, partial.resids=partial.resids, rug=rug, se=se, scale=FALSE, n=n,
+                                 jit=jit, shade=shade||(scheme==1), shade.col=shade.col, ylim = ylim,
+                                 shift=shift, trans=trans, by.resids=by.resids, inter=inter, ...)
   
-  if(draw){ if(inter){print(ggplotly(.ggobj+theme_bw()))}else{print(.ggobj+theme_bw())} }
+  if(draw){ print( if(inter){ggplotly(.ggobj+theme_bw())}else{.ggobj+theme_bw()} ) }
   
   attr(.ggobj, "rawData") <- pd
   invisible(.ggobj)
@@ -48,7 +48,7 @@ plot.mgcv.smooth.1D <- function(x, residuals=FALSE,rug=TRUE,se=TRUE,n=100,
 
 
 # Internal function for plotting one dimensional smooths
-.plotSmooth1D <- function(x, P, partial.resids=FALSE, rug=TRUE, se=TRUE, scale=TRUE, n=100,
+.plot.mgcv.smooth.1D <- function(x, P, partial.resids=FALSE, rug=TRUE, se=TRUE, scale=TRUE, n=100,
                            jit=FALSE, shade=FALSE, shade.col=I("gray80"), ylim = NULL,
                            shift=0, trans=I, by.resids=FALSE, scheme=0, inter = FALSE, ...)
 {
