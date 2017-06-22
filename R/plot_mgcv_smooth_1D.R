@@ -6,7 +6,7 @@
 #' library(mgcViz)
 #' @rdname plot.mgcv.smooth.1D
 #' @export plot.mgcv.smooth.1D
-plot.mgcv.smooth.1D <- function(x, residuals=FALSE,rug=TRUE,se=TRUE,n=100,
+plot.mgcv.smooth.1D <- function(o, residuals=FALSE,rug=TRUE,se=TRUE,n=100,
                                 jit=FALSE,xlab=NULL,ylab=NULL,main=NULL,
                                 ylim=NULL,xlim=NULL,shade=FALSE,shade.col=I("gray80"),
                                 shift=0,trans=I,seWithMean=FALSE,unconditional=FALSE,by.resids=FALSE,
@@ -17,16 +17,16 @@ plot.mgcv.smooth.1D <- function(x, residuals=FALSE,rug=TRUE,se=TRUE,n=100,
     warning( "scheme should be a single number" )
   }
   
-  x$smooth <- x$gObj$smooth[[x$ism]]
+  o$smooth <- o$gObj$smooth[[o$ism]]
   
   # This creates/modifies variables in the environment.
-  # INPUTS: unconditional, x, residuals, se
-  # NEW/MODIFIED VARIABLES: x, w.resid, partial.resids, se2.mult, se1.mult, se, fv.terms, order  
-  fv.terms <- x$store$termsFit[ , x$store$np + x$ism]
+  # INPUTS: unconditional, o, residuals, se
+  # NEW/MODIFIED VARIABLES: o, w.resid, partial.resids, se2.mult, se1.mult, se, fv.terms, order  
+  fv.terms <- o$store$termsFit[ , o$store$np + o$ism]
   eval( .initializeXXX )
   
   # Prepare for plotting
-  tmp <- .createP(sm=x$smooth, x=x$gObj, partial.resids=partial.resids,
+  tmp <- .createP(sm=o$smooth, x=o$gObj, partial.resids=partial.resids,
                   rug=rug, se=se, scale=FALSE, n=n, n2=NULL,
                   pers=NULL, theta=NULL, phi=NULL, jit=jit, xlab=xlab, ylab=ylab, main=main, label=term.lab,
                   ylim=ylim, xlim=xlim, too.far=NULL, shade=shade, shade.col=shade.col,
@@ -34,11 +34,11 @@ plot.mgcv.smooth.1D <- function(x, residuals=FALSE,rug=TRUE,se=TRUE,n=100,
                   by.resids=by.resids, scheme=scheme, seWithMean=seWithMean, fitSmooth=fv.terms,
                   w.resid=w.resid, ...)
   pd <- tmp[["P"]]
-  attr(x$smooth, "coefficients") <- tmp[["coef"]]
+  attr(o$smooth, "coefficients") <- tmp[["coef"]]
   rm(tmp)
   
   # Plotting
-  .ggobj <- .plot.mgcv.smooth.1D(x=x$smooth, P=pd, partial.resids=partial.resids, rug=rug, se=se, scale=FALSE, n=n,
+  .ggobj <- .plot.mgcv.smooth.1D(x=o$smooth, P=pd, partial.resids=partial.resids, rug=rug, se=se, scale=FALSE, n=n,
                                  jit=jit, shade=shade||(scheme==1), shade.col=shade.col, ylim = ylim,
                                  shift=shift, trans=trans, by.resids=by.resids, ...)
   

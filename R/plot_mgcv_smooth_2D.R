@@ -3,11 +3,18 @@
 #' @description XXX
 #' @name plot.mgcv.smooth.2D
 #' @examples 
-#' library(mgcViz)
+#' library(mgcv)
+#' set.seed(2) ## simulate some data...
+#' dat <- gamSim(1,n=1000,dist="normal",scale=2)
+#' b <- gam(y~s(x0)+s(x1, x2)+s(x3), data=dat, method="REML")
+#' b <- getViz(b)
+#' sm <- b(2)
+#' 
+#' plot(sm2, rug = T, residuals = T, scheme=2)
 #' @rdname plot.mgcv.smooth.2D
 #' @export plot.mgcv.smooth.2D
-plot.mgcv.smooth.2D <- function(x, residuals=FALSE, rug=TRUE, se=TRUE, n=40,
-                                pers=FALSE, theta=30, phi=30, jit=FALSE, xlab=NULL, ylab=NULL, main=NULL, 
+plot.mgcv.smooth.2D <- function(o, residuals=FALSE, rug=TRUE, se=TRUE, n=40,
+                                pers=FALSE, theta=30, phi=30, xlab=NULL, ylab=NULL, main=NULL, 
                                 ylim=NULL, xlim=NULL, too.far=0.1, se.mult=1, shift=0, trans=I, seWithMean=FALSE, 
                                 unconditional=FALSE, by.resids=FALSE, scheme=0, hcolors=viridis(50, begin=0.2),
                                 contour.col=1, pFun=zto1(0.05, 3, 0.2), ...)
@@ -18,28 +25,28 @@ plot.mgcv.smooth.2D <- function(x, residuals=FALSE, rug=TRUE, se=TRUE, n=40,
     warning( "scheme should be a single number" )
   }
   
-  x$smooth <- x$gObj$smooth[[x$ism]]
+  o$smooth <- o$gObj$smooth[[o$ism]]
   
   # This creates/modifies variables in the environment.
-  # INPUTS: unconditional, x, residuals, se
-  # NEW/MODIFIED VARIABLES: x, w.resid, partial.resids, se2.mult, se1.mult, se, fv.terms, order  
-  fv.terms <- x$store$termsFit[ , x$store$np + x$ism]
+  # INPUTS: unconditional, o, residuals, se
+  # NEW/MODIFIED VARIABLES: o, w.resid, partial.resids, se2.mult, se1.mult, se, fv.terms, order  
+  fv.terms <- o$store$termsFit[ , o$store$np + o$ism]
   eval( .initializeXXX )
   
   # Prepare for plotting
-  tmp <- .createP(sm=x$smooth, x=x$gObj, partial.resids=partial.resids,
+  tmp <- .createP(sm=o$smooth, x=o$gObj, partial.resids=partial.resids,
                   rug=rug, se=se, scale=FALSE, n=NULL, n2=n,
-                  pers=pers, theta=theta, phi=phi, jit=jit, xlab=xlab, ylab=ylab, main=main, label=term.lab,
+                  pers=pers, theta=theta, phi=phi, jit=NULL, xlab=xlab, ylab=ylab, main=main, label=term.lab,
                   ylim=ylim, xlim=xlim, too.far=too.far, shade=NULL, shade.col=NULL,
                   se1.mult=se.mult, se2.mult=se.mult, shift=shift, trans=trans,
                   by.resids=by.resids, scheme=scheme, seWithMean=seWithMean, fitSmooth=fv.terms,
                   w.resid=w.resid, ...)
   pd <- tmp[["P"]]
-  attr(x$smooth, "coefficients") <- tmp[["coef"]]
+  attr(o$smooth, "coefficients") <- tmp[["coef"]]
   rm(tmp)
   
   # Plotting
-  .ggobj <- .plot.mgcv.smooth.2D(x=x$smooth, P=pd, partial.resids=partial.resids, rug=rug, se=se, scale=FALSE, n2=n,
+  .ggobj <- .plot.mgcv.smooth.2D(x=o$smooth, P=pd, partial.resids=partial.resids, rug=rug, se=se, scale=FALSE, n2=n,
                                  pers=pers, theta=theta, phi=phi, jit=jit, main=main, too.far=too.far, 
                                  shift=shift, trans=trans, by.resids=by.resids, scheme=scheme, hcolors=hcolors,
                                  contour.col=contour.col, pFun=pFun, ...)
@@ -87,7 +94,7 @@ plot.mgcv.smooth.2D <- function(x, residuals=FALSE, rug=TRUE, se=TRUE, n=40,
       }
     
     } else { ## contour plot with error contours
-      sp.contour(P$x,P$y,matrix(P$fit,n2,n2),matrix(P$se,n2,n2),
+      .spContour(P$x,P$y,matrix(P$fit,n2,n2),matrix(P$se,n2,n2),
                  xlab=P$xlab,ylab=P$ylab,zlab=P$main,titleOnly=!is.null(main),
                  se.mult=1,trans=trans,shift=shift,...)
       if (rug) { 
