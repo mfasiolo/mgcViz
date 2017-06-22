@@ -3,7 +3,7 @@
                      pers, theta, phi, jit, xlab, ylab, main, label,
                      ylim, xlim, too.far, shade, shade.col,
                      se1.mult, se2.mult, shift, trans,
-                     by.resids, scheme, seWithMean, fitSmooth, w.resid, inter,  ...)
+                     by.resids, scheme, seWithMean, fitSmooth, w.resid,  ...)
 {
   first <- sm$first.para
   last <- sm$last.para
@@ -15,7 +15,7 @@
                 pers=pers,theta=theta,phi=phi,jit=jit,xlab=xlab,ylab=ylab,main=main,label=term.lab,
                 ylim=ylim,xlim=xlim,too.far=too.far,shade=shade,shade.col=shade.col,
                 se1.mult=se1.mult,se2.mult=se2.mult,shift=shift,trans=trans,
-                by.resids=by.resids,scheme=scheme,inter=inter,...)
+                by.resids=by.resids,scheme=scheme,...)
   
   if (is.null(P)){
     P <- list(plot.me=FALSE) 

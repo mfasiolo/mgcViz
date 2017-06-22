@@ -10,27 +10,29 @@ plot.mgcv.smooth.1D <- function(x, residuals=FALSE,rug=TRUE,se=TRUE,n=100,
                                 jit=FALSE,xlab=NULL,ylab=NULL,main=NULL,
                                 ylim=NULL,xlim=NULL,shade=FALSE,shade.col=I("gray80"),
                                 shift=0,trans=I,seWithMean=FALSE,unconditional=FALSE,by.resids=FALSE,
-                                scheme=0, draw=TRUE, inter=FALSE, ...)
+                                scheme=0, ...)
 {
   if (length(scheme)>1){ 
     scheme <- scheme[1]
     warning( "scheme should be a single number" )
   }
   
+  x$smooth <- x$gObj$smooth[[x$ism]]
+  
   # This creates/modifies variables in the environment.
   # INPUTS: unconditional, x, residuals, se
   # NEW/MODIFIED VARIABLES: x, w.resid, partial.resids, se2.mult, se1.mult, se, fv.terms, order  
-  fv.terms <- x$fit
+  fv.terms <- x$store$termsFit[ , x$store$np + x$ism]
   eval( .initializeXXX )
   
   # Prepare for plotting
-  tmp <- .createP(sm=x$smooth, x=x, partial.resids=partial.resids,
+  tmp <- .createP(sm=x$smooth, x=x$gObj, partial.resids=partial.resids,
                   rug=rug, se=se, scale=FALSE, n=n, n2=NULL,
                   pers=NULL, theta=NULL, phi=NULL, jit=jit, xlab=xlab, ylab=ylab, main=main, label=term.lab,
                   ylim=ylim, xlim=xlim, too.far=NULL, shade=shade, shade.col=shade.col,
                   se1.mult=se1.mult, se2.mult=se2.mult, shift=shift, trans=trans,
                   by.resids=by.resids, scheme=scheme, seWithMean=seWithMean, fitSmooth=fv.terms,
-                  w.resid=w.resid, inter=inter, ...)
+                  w.resid=w.resid, ...)
   pd <- tmp[["P"]]
   attr(x$smooth, "coefficients") <- tmp[["coef"]]
   rm(tmp)
@@ -38,19 +40,19 @@ plot.mgcv.smooth.1D <- function(x, residuals=FALSE,rug=TRUE,se=TRUE,n=100,
   # Plotting
   .ggobj <- .plot.mgcv.smooth.1D(x=x$smooth, P=pd, partial.resids=partial.resids, rug=rug, se=se, scale=FALSE, n=n,
                                  jit=jit, shade=shade||(scheme==1), shade.col=shade.col, ylim = ylim,
-                                 shift=shift, trans=trans, by.resids=by.resids, inter=inter, ...)
+                                 shift=shift, trans=trans, by.resids=by.resids, ...)
   
-  if(draw){ print( if(inter){ggplotly(.ggobj+theme_bw())}else{.ggobj+theme_bw()} ) }
-  
+  .ggobj <- .ggobj+theme_bw()
+
   attr(.ggobj, "rawData") <- pd
-  invisible(.ggobj)
+  .ggobj
 }
 
 
 # Internal function for plotting one dimensional smooths
 .plot.mgcv.smooth.1D <- function(x, P, partial.resids=FALSE, rug=TRUE, se=TRUE, scale=TRUE, n=100,
                            jit=FALSE, shade=FALSE, shade.col=I("gray80"), ylim = NULL,
-                           shift=0, trans=I, by.resids=FALSE, scheme=0, inter = FALSE, ...)
+                           shift=0, trans=I, by.resids=FALSE, scheme=0, ...)
 {
   if (scheme == 1){ shade <- TRUE }
   
@@ -83,7 +85,7 @@ plot.mgcv.smooth.1D <- function(x, residuals=FALSE,rug=TRUE,se=TRUE,n=100,
   # Add partial residuals
   if (partial.resids&&(by.resids||x$by=="NA")) { 
     if (length(P$raw)==length(P$p.resid)) {
-      .tmpF <- function(..., shape = ifelse(inter, 'a', '.'), col = ifelse(inter, "grey", "black")) # Alter default shape and col
+      .tmpF <- function(..., shape = '.', col = "black") # Alter default shape and col
       {
         geom_point(data = data.frame(resx = P$raw, resy = trans(P$p.resid+shift)), aes(x = resx, y = resy),
                    shape = shape, col = col, ...)

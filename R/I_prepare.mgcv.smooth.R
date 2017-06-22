@@ -16,7 +16,7 @@
                               pers=FALSE, theta=30, phi=30, jit=FALSE, xlab=NULL, ylab=NULL, main=NULL,
                               ylim=NULL, xlim=NULL, too.far=0.1, shade=FALSE, shade.col="gray80",
                               shift=0, trans=I, by.resids=FALSE, scheme=0, hcolors=heat.colors(50),
-                              contour.col=3, inter = FALSE, ...) {
+                              contour.col=3, ...) {
   
   if(x$dim == 1){
     out <- .preparePlotSmooth1D(x=x, data=data, label=label, se.mult=se1.mult, n=n, xlim = xlim, xlab=xlab, 
