@@ -189,14 +189,14 @@ qq.gam <- function (object, rep = 10,
 #' @return
 #' @note Help file is mainly from [mgcv::gam.check] since this is a rewrite of `mgcv::gam.check` 
 #' function with ggplot2 library.
-#' @export
+#' @export check.gam
 #' @examples
 #' library(ggplot2)
 #' set.seed(0)
 #' dat <- mgcv::gamSim(1, n = 200)
 #' b <- mgcv::gam(y ~ s(x0) + s(x1) + s(x2) + s(x3), data = dat)
 #' mgcv::gam.check(b, pch = 19, cex = .3)
-#' cg <- check.gam(b)
+#' cg <- check(b) # Calls mgcViz::check.gam
 #' for (k in cg) print(k + theme_bw())
 check.gam <- function(object,
                       type = c("deviance","pearson","response"),
