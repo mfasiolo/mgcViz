@@ -19,7 +19,7 @@
 #' a<-check(o, xlim=c(-1, 1), ylim=c(0, 3))
 #' @rdname check.mgcv.smooth.2D
 #' @importFrom gridExtra grid.arrange
-#' @importFrom dplyr filter
+#' @importFrom dplyr filter sample_n
 #' @export check.mgcv.smooth.2D
 check.mgcv.smooth.2D <- function(o, typeRes="deviance", binw1=NULL, binw2=NULL, 
                                  gridFun=NULL, nco=40, xlimit=NULL, ylimit=NULL, 

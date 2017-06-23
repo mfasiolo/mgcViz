@@ -40,9 +40,14 @@ getViz <- function(o){
 
     if("mgcv.smooth" %in% cl){
       cl[which(cl=="mgcv.smooth")] <- paste("mgcv.smooth.", gObj$smooth[[select]]$dim, "D", sep='')
-      class(out) <- cl
     }
-
+    
+    if("fs.interaction" %in% cl){
+      cl[which(cl=="fs.interaction")] <- paste("fs.interaction.", gObj$smooth[[select]]$dim, "D", sep='')
+    }
+    
+    class(out) <- cl
+    
     return( out )
 
   }
