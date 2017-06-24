@@ -17,15 +17,16 @@
 #' # Check residuals: k is too low to model the effect of x1 and x2 correctly,  
 #' # hence the residuals are far from iid.
 #' a<-check(o, xlim=c(-1, 1), ylim=c(0, 3))
+#' 
+#' a # calls print.check.smooth.2D
 #' @rdname check.mgcv.smooth.2D
-#' @importFrom gridExtra grid.arrange
 #' @importFrom dplyr filter sample_n
 #' @export check.mgcv.smooth.2D
 check.mgcv.smooth.2D <- function(o, typeRes="deviance", binw1=NULL, binw2=NULL, 
                                  gridFun=NULL, nco=40, xlimit=NULL, ylimit=NULL, 
                                  palette1=viridis(50, begin=0.2), 
                                  palette2=rev(gray.colors(20)), 
-                                 acFun=list(NULL, NULL), lay=NULL)
+                                 acFun=list(NULL, NULL))
 {
   if( !("mgcv.smooth.2D" %in% class(o)) ) { stop("\"o\" should be of class \"mgcv.smooth.2D\"") }
   
@@ -34,13 +35,6 @@ check.mgcv.smooth.2D <- function(o, typeRes="deviance", binw1=NULL, binw2=NULL,
       .o <- pnorm(mean(.x), 0, 1/sqrt(length(.x)))
       return( .o )
     }
-  }
-  
-  if( is.null(lay) ){
-    lay <- matrix(c(1, 1, 1, 2, 
-                    1, 1, 1, 2, 
-                    1, 1, 1, 2, 
-                    3, 3, 3, 4), 4, 4)
   }
   
   o$smooth <- o$gObj$smooth[[o$ism]]
@@ -134,10 +128,10 @@ check.mgcv.smooth.2D <- function(o, typeRes="deviance", binw1=NULL, binw2=NULL,
                  colour="black", fill=NA) + 
     guides(fill=FALSE) #+ scale_alpha_identity()
   
-  .pl <- list(.pl1, .pl2, .pl3, .pl4)
+  .pl <- list("pl1"=.pl1, "pl2"=.pl2, "pl3"=.pl3, "pl4"=.pl4)
   .pl <- lapply(.pl, function(.inp) .inp+theme_bw())
   
-  out <- grid.arrange(grobs=.pl, layout_matrix=lay) 
+  class(.pl) <- "check.smooth.2D"
   
   return( invisible(.pl) )
 }
