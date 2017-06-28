@@ -112,8 +112,8 @@ plot.sos.smooth <- function(o, residuals=FALSE, rug=TRUE, se=TRUE, n=40,
   if( scheme==0 ){ .pl <- .pl + geom_raster(aes(fill = z)) + scale_fill_gradientn(colours = hcolors, na.value="white") }
   
   .pl <- .pl + geom_contour(aes(x=x, y=y, z=z), colour = contour.col, na.rm=T) + 
-               geom_contour(aes(x=x, y=y, z=lo), colour="red", linetype=2, na.rm=T, breaks=c(-8:9*20)) + 
-               geom_contour(aes(x=x, y=y, z=la), colour="red", linetype=2, na.rm=T, breaks=c(-8:8*10))
+               geom_contour(aes(x=x, y=y, z=lo), colour= contour.col, linetype=2, na.rm=T, breaks=c(-8:9*20)) + 
+               geom_contour(aes(x=x, y=y, z=la), colour= contour.col, linetype=2, na.rm=T, breaks=c(-8:8*10))
   
   # Add residuals
   if (rug) { 
@@ -130,7 +130,8 @@ plot.sos.smooth <- function(o, residuals=FALSE, rug=TRUE, se=TRUE, n=40,
     ncir <- 200
     theta <- seq(-pi/2,pi/2,length=ncir)
     x <- sin(theta); y <- cos(theta)
-    .pl <- .pl + geom_path(aes(x=x, y=y), data = data.frame("x"=c(x, x[ncir:1]), "y" = c(y,-y[ncir:1])), inherit.aes = FALSE)
+    .pl <- .pl + geom_path(aes(x=x, y=y), data = data.frame("x"=c(x, x[ncir:1]), "y" = c(y,-y[ncir:1])), 
+                           inherit.aes = FALSE, colour = contour.col)
   }
   
   .pl <- .pl + coord_cartesian(expand=F) + theme(axis.line=element_blank(), axis.text.x=element_blank(),
