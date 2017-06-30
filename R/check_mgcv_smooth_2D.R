@@ -31,8 +31,8 @@ check.mgcv.smooth.2D <- function(o, typeRes="deviance", binw1=NULL, binw2=NULL,
   if( !("mgcv.smooth.2D" %in% class(o)) ) { stop("\"o\" should be of class \"mgcv.smooth.2D\"") }
   
   if( is.null(gridFun) ){
-    gridFun <- function(.x){
-      .o <- pnorm(mean(.x), 0, 1/sqrt(length(.x)))
+    gridFun <- function(.x, .sdr){
+      .o <- pnorm(mean(.x), 0, .sdr/sqrt(length(.x)))
       return( .o )
     }
   }
@@ -86,7 +86,7 @@ check.mgcv.smooth.2D <- function(o, typeRes="deviance", binw1=NULL, binw2=NULL,
   
   .pl <- list()
   .pl1 <- ggplot(data = sdat, aes(x=x, y=y, z=z)) + 
-    stat_summary_hex(binwidth = binw1, fun = gridFun) +
+    stat_summary_hex(binwidth = binw1, fun = gridFun, fun.args = list(".sdr" = sqrt(o$gObj$sig2))) +
     scale_fill_gradientn(colours = palette1, na.value="white") +
     coord_cartesian(xlim=NULL, ylim=NULL, expand=F) +
     geom_contour(data=X, aes(x=x, y=y, z=fit), color="black", na.rm=T, inherit.aes = F)
