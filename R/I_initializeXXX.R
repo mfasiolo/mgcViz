@@ -16,7 +16,7 @@
     partial.resids <- TRUE
   } else { partial.resids <- residuals } # use working residuals or none
   
-  if (partial.resids) { # Getting information needed for partial residuals
+  if (partial.resids || (resDen != "none")) { # Getting information needed for partial residuals
     if (is.null(w.resid)) { # produce working residuals if info available
       if (is.null(o$gObj$residuals)||is.null(o$gObj$weights)){ partial.resids <- FALSE } else {
         wr <- sqrt(o$gObj$weights)

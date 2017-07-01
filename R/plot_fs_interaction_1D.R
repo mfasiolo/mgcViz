@@ -35,8 +35,9 @@ plot.fs.interaction.1D <- function(o, n=100, alpha=NULL, legend=TRUE, xlab=NULL,
  
   unconditional<-se<-residuals<-FALSE
   # This creates/modifies variables in the environment.
-  # INPUTS: unconditional, o, residuals, se
-  # NEW/MODIFIED VARIABLES: o, w.resid, partial.resids, se2.mult, se1.mult, se, fv.terms, order  
+  # INPUTS: unconditional, o, residuals, se, resDen 
+  # NEW/MODIFIED VARIABLES: o, w.resid, partial.resids, se2.mult, se1.mult, se, fv.terms, order 
+  resDen <- "none"
   fv.terms <- o$store$termsFit[ , o$store$np + o$ism]
   eval( .initializeXXX )
   
@@ -47,7 +48,7 @@ plot.fs.interaction.1D <- function(o, n=100, alpha=NULL, legend=TRUE, xlab=NULL,
                   ylim=ylim, xlim=xlim, too.far=NULL, shade=NULL, shade.col=NULL,
                   se1.mult=NULL, se2.mult=NULL, shift=shift, trans=trans,
                   by.resids=NULL, scheme=NULL, seWithMean=NULL, fitSmooth=fv.terms,
-                  w.resid=w.resid, ...)
+                  w.resid=w.resid, resDen=resDen, ...)
   pd <- tmp[["P"]]
   attr(o$smooth, "coefficients") <- tmp[["coef"]]
   rm(tmp)

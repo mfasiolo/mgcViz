@@ -3,7 +3,8 @@
                      pers, theta, phi, jit, xlab, ylab, main, label,
                      ylim, xlim, too.far, shade, shade.col,
                      se1.mult, se2.mult, shift, trans,
-                     by.resids, scheme, seWithMean, fitSmooth, w.resid,  ...)
+                     by.resids, scheme, seWithMean, fitSmooth, w.resid,
+                     resDen, ...)
 {
   first <- sm$first.para
   last <- sm$last.para
@@ -39,11 +40,11 @@
             sqrt(pmax(0,rowSums((P$X%*%x$Vp[first:last,first:last,drop=FALSE])*P$X)))
         if (!is.null(P$exclude)) P$se.fit[P$exclude] <- NA
       } ## standard errors for fit completed
-      if (partial.resids) { P$p.resid <- fitSmooth + w.resid }
+      if (partial.resids || (resDen!="none")) { P$p.resid <- fitSmooth + w.resid }
       if (se && P$se) P$se <- se.fit*P$se.mult  # Note multiplier
       P$X <- NULL
     } else { ## P$fit created directly
-      if (partial.resids) { P$p.resid <- fitSmooth + w.resid }
+      if (partial.resids || (resDen!="none")) { P$p.resid <- fitSmooth + w.resid }
     }
     P$plot.me <- TRUE
   }

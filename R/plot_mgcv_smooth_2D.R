@@ -10,7 +10,7 @@
 #' b <- getViz(b)
 #' sm <- b(2)
 #' 
-#' plot(sm2, rug = T, residuals = T, scheme=2)
+#' plot(sm, rug = T, residuals = T, scheme=2)
 #' @rdname plot.mgcv.smooth.2D
 #' @export plot.mgcv.smooth.2D
 plot.mgcv.smooth.2D <- function(o, residuals=FALSE, rug=TRUE, se=TRUE, n=40,
@@ -28,8 +28,9 @@ plot.mgcv.smooth.2D <- function(o, residuals=FALSE, rug=TRUE, se=TRUE, n=40,
   o$smooth <- o$gObj$smooth[[o$ism]]
   
   # This creates/modifies variables in the environment.
-  # INPUTS: unconditional, o, residuals, se
-  # NEW/MODIFIED VARIABLES: o, w.resid, partial.resids, se2.mult, se1.mult, se, fv.terms, order  
+  # INPUTS: unconditional, o, residuals, se, resDen 
+  # NEW/MODIFIED VARIABLES: o, w.resid, partial.resids, se2.mult, se1.mult, se, fv.terms, order 
+  resDen <- "none"
   fv.terms <- o$store$termsFit[ , o$store$np + o$ism]
   eval( .initializeXXX )
   
@@ -40,7 +41,7 @@ plot.mgcv.smooth.2D <- function(o, residuals=FALSE, rug=TRUE, se=TRUE, n=40,
                   ylim=ylim, xlim=xlim, too.far=too.far, shade=NULL, shade.col=NULL,
                   se1.mult=se.mult, se2.mult=se.mult, shift=shift, trans=trans,
                   by.resids=by.resids, scheme=scheme, seWithMean=seWithMean, fitSmooth=fv.terms,
-                  w.resid=w.resid, ...)
+                  w.resid=w.resid, resDen=resDen, ...)
   pd <- tmp[["P"]]
   attr(o$smooth, "coefficients") <- tmp[["coef"]]
   rm(tmp)
