@@ -19,7 +19,8 @@
 #' @export cdCheck
 cdCheck <- function(o, x, y=NULL, typeRes="deviance", n=c(80, 80), bw=NULL, 
                     xlim=NULL, ylim=NULL, palette=viridis(50, begin=0.2), rug=TRUE,
-                    points=TRUE, cont=FALSE, maxp=1e4, tol=1e-6, aFun=NULL, dFun=NULL)
+                    points=TRUE, cont=FALSE, maxp=1e4, tol=1e-6, aFun=NULL, dFun=NULL, 
+                    shape = '.')
 {
   
   ### 1. Preparation
@@ -112,7 +113,7 @@ cdCheck <- function(o, x, y=NULL, typeRes="deviance", n=c(80, 80), bw=NULL,
     }
     
     if( points ){
-      .pl <- .pl + geom_point(data = subS, inherit.aes = F, aes(x = x, y = y), shape = '.')
+      .pl <- .pl + geom_point(data = subS, inherit.aes = F, aes(x = x, y = y), shape = shape)
     }
   }
   

@@ -125,8 +125,8 @@ plot.mgcv.smooth.1D <- function(o, residuals=FALSE,rug=TRUE,se=TRUE,n=100,
     if (length(P$raw)==length(P$p.resid)) {
       .tmpF <- function(..., shape = '.', col = "black") # Alter default shape and col
       {
-        geom_point(data = data.frame(resx = P$raw, resy = trans(P$p.resid+shift)), aes(x = resx, y = resy),
-                   shape = shape, col = col, ...)
+        geom_point(data = data.frame(resx = P$raw, resy = trans(P$p.resid+shift)), 
+                   aes(x = resx, y = resy), na.rm = TRUE, shape = shape, col = col, ...)
       }
       .pl <- .pl + .tmpF(...)
     } else {
