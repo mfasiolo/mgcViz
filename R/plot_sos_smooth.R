@@ -57,8 +57,16 @@ plot.sos.smooth <- function(o, residuals=FALSE, rug=TRUE, se=TRUE, n=40,
   # NEW/MODIFIED VARIABLES: o, w.resid, partial.resids, se2.mult, se1.mult, se, fv.terms, order 
   resDen <- "none"
   fv.terms <- o$store$termsFit[ , o$store$np + o$ism]
-  eval( .initializeXXX )
-  
+  init <- .initializeXXX(o, unconditional, residuals, resDen, se, fv.terms)
+  # affect initialize output
+  o <- init$o
+  w.resid <- init$w.resid
+  partial.resids <- init$partial.resids
+  se2.mult <- init$se2.mult
+  se1.mult <- init$se1.mult
+  se <- init$se
+  fv.terms <- init$fv.terms
+  order <- init$order
   # Prepare for plotting
   tmp <- .createP(sm=o$smooth, x=o$gObj, partial.resids=partial.resids,
                   rug=rug, se=se, scale=FALSE, n=NULL, n2=n,

@@ -5,10 +5,10 @@
 #' @param unconditional, ... 
 #' @param residuals, ... 
 #' @param resDen, ... 
-#' @param fv.terms, ... 
 #' @param se, ... 
+#' @param fv.terms, ...
 #' @return a list
-.initializeXXX <- function(o, unconditional, residuals, resDen, fv.terms, se) {
+.initializeXXX <- function(o, unconditional, residuals, resDen, se, fv.terms) {
   if (unconditional) { # Use Bayesian cov matrix including smoothing parameter uncertainty?
     if (is.null(o$gObj$Vc)) { 
       warning("Smoothness uncertainty corrected covariance not available") 
@@ -39,6 +39,7 @@
       }
     }
     if (partial.resids){ # get individual smooth effects
+      fv.terms <- o$store$termsFit[ , o$store$np + o$ism]
       if(is.null(fv.terms)) { 
         fv.terms <- predict(o, type = "terms")
       }
