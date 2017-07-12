@@ -44,7 +44,16 @@ check.mgcv.smooth.2D <- function(o, typeRes="deviance", binw1=NULL, binw2=NULL,
   # INPUTS: unconditional, o, residuals, se
   # NEW/MODIFIED VARIABLES: o, w.resid, partial.resids, se2.mult, se1.mult, se, fv.terms, order  
   fv.terms <- o$store$termsFit[ , o$store$np + o$ism]
-  eval( mgcViz:::.initializeXXX )
+  init <- .initializeXXX(o, unconditional, residuals, resDen, se, fv.terms)
+  # affect initialize output
+  o <- init$o
+  w.resid <- init$w.resid
+  partial.resids <- init$partial.resids
+  se2.mult <- init$se2.mult
+  se1.mult <- init$se1.mult
+  se <- init$se
+  fv.terms <- init$fv.terms
+  order <- init$order
   
   # Prepare for plotting
   P <- mgcViz:::.createP(sm=o$smooth, x=o$gObj, partial.resids=partial.resids,
