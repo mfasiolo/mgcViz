@@ -26,8 +26,16 @@ plot.gam <- function(x,residuals=FALSE,rug=TRUE,se=TRUE,pages=0,select=NULL,scal
   # INPUTS: unconditional, x, residuals, se, fitSmooth
   # NEW/MODIFIED VARIABLES: x, w.resid, partial.resids, se2.mult, se1.mult, se, fv.terms, order  
   fv.terms <- NULL
-  eval( .initializeXXX )
-  
+  init <- .initializeXXX(o, unconditional, residuals, resDen, se, fv.terms)
+  # affect initialize output
+  o <- init$o
+  w.resid <- init$w.resid
+  partial.resids <- init$partial.resids
+  se2.mult <- init$se2.mult
+  se1.mult <- init$se1.mult
+  se <- init$se
+  fv.terms <- init$fv.terms
+  order <- init$order
   # Loop to get the data for the plots
   pd <- list(); # List of data to be plotted
   ii <- 1 # needs a value if no smooths is present, but parametric terms are...
