@@ -40,3 +40,13 @@ zto1 <- function(o, a, m){
   }
   lab
 } ## end of sub.edf
+
+
+# Function that calculates empirical quantiles by sorting 
+.quBySort <- function(x, p, sortFun){
+  x <- sortFun(x)
+  n <- length(x)
+  np <- n*p
+  q <- ( x[floor(np+1)] + x[ceiling(np)] )/2
+  q
+}

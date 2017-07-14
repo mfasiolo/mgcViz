@@ -88,7 +88,7 @@ qqnorm <- function(y, ylim,
   } else {
     p <- p + ggplot2::geom_point(aes(x = x, y = y))
   }
-  return(p)
+  return(p + theme_bw())
 }
 
 #' @rdname qqplots
@@ -110,7 +110,7 @@ qqplot <- function(x, y,
     ggplot2::ggplot(data, ggplot2::aes(x = sx, y = sy)) +
     ggplot2::geom_point() + 
     ggplot2::labs(title = main, x = xlab, y = ylab)
-  return(p)
+  return(p + theme_bw())
 }
 
 #' @rdname qqplots
