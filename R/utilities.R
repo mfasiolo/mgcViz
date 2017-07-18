@@ -11,14 +11,10 @@
 #' @rdname zto1
 #' @export zto1
 zto1 <- function(o, a, m){
-  
   .f <- function(.p){ 
-    
-    .p<-pmax(0, .p-o) 
-    return( pmax((1-.p)^a, m) ) 
-    
-    }
-  
+    .p <- pmax(0, .p - o) 
+    return(pmax((1 - .p)^a, m)) 
+  }
   return(.f)
 }
 
