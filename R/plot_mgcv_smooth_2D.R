@@ -9,10 +9,10 @@
 #' set.seed(2) ## simulate some data...
 #' dat <- gamSim(1, n = 1000, dist = "normal", scale = 2)
 #' b <- gam(y ~ s(x0) + s(x1, x2) + s(x3), data = dat, method = "REML")
-#' plot(b, scheme = 0, select = 2, se = FALSE)
-#' plot(b, scheme = 0, select = 2, se = TRUE)
-#' plot(b, scheme = 1, select = 2)
-#' plot(b, scheme = 2, select = 2)
+#' mgcv::plot.gam(b, scheme = 0, select = 2, se = FALSE)
+#' mgcv::plot.gam(b, scheme = 0, select = 2, se = TRUE)
+#' mgcv::plot.gam(b, scheme = 1, select = 2)
+#' mgcv::plot.gam(b, scheme = 2, select = 2)
 #' mgcv::plot.gam(b, scheme = 3, select = 2, se = TRUE)
 #' mgcv::plot.gam(b, scheme = 3, select = 2, se = FALSE)
 #' plot(b, scheme = 4, select = 2)
@@ -116,6 +116,20 @@ plot.mgcv.smooth.2D <- function(o, residuals = FALSE, rug = TRUE, se = TRUE, n =
                                  shade = NA, shade.col = NA, xlim = NA, ylim = NA,
                                  #
                                  ...) {
+  # # scheme = 0
+  # if (scheme == 0) {
+  #   
+  # }
+  # # scheme = 1
+  # if (scheme == 1) {
+  #   persp(P$x, P$y, matrix(trans(P$fit + shift), n2, n2), xlab = P$xlab, ylab = P$ylab,
+  #         zlab = P$main, ylim = P$ylim, xlim = P$xlim, theta = theta, phi = phi, ...)
+  #   persp(P$x, P$y, matrix(trans(P$fit + shift), n2, n2), xlab = P$xlab, ylab = P$ylab,
+  #         zlab = P$main, theta = theta, phi = phi, xlim = P$xlim, ylim = P$ylim, ...)
+  # }
+  # # scheme = 2
+  # 
+  # # scheme = 3
   force(P)
   if (se) {
     P$fit[P$exclude] <- NA
@@ -125,7 +139,7 @@ plot.mgcv.smooth.2D <- function(o, residuals = FALSE, rug = TRUE, se = TRUE, n =
     if (scheme == 1) { ## perspective plot 
       persp(P$x, P$y, matrix(trans(P$fit + shift), n2, n2), xlab = P$xlab, ylab = P$ylab,
             zlab = P$main, ylim = P$ylim, xlim = P$xlim, theta = theta, phi = phi, ...)
-    } else if (scheme == 2 || scheme == 3) {
+    } else if (scheme == 2 || scheme == 3) { ## ggplot image like
       if (scheme == 3) {
         hcolors <- grey(0:50 / 50)
       }
