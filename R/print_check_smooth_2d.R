@@ -2,7 +2,7 @@
 #' Printing output of check.mgcv.smooth.2D
 #' 
 #' @description XXX
-#' @name check.mgcv.smooth.2D
+#' @name print.check.smooth.2D
 #' @rdname print.check.smooth.2D
 #' @importFrom gridExtra grid.arrange
 #' @export 
