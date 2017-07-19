@@ -56,7 +56,7 @@ check.mgcv.smooth.2D <- function(o, typeRes="deviance", binw1=NULL, binw2=NULL,
   order <- init$order
   
   # Prepare for plotting
-  P <- mgcViz:::.createP(sm=o$smooth, x=o$gObj, partial.resids=partial.resids,
+  P <- .createP(sm=o$smooth, x=o$gObj, partial.resids=partial.resids,
                          rug=FALSE, se=FALSE, scale=FALSE, n=NULL, n2=nco,
                          pers=FALSE, theta=NULL, phi=NULL, jit=NULL, xlab=NULL, ylab=NULL, main=NULL, label=term.lab,
                          ylim=ylimit, xlim=xlimit, too.far=0, shade=NULL, shade.col=NULL,
