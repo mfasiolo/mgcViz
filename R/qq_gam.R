@@ -25,7 +25,6 @@
 #' @importFrom matrixStats rowSds rowOrderStats
 #' @return
 #' @export
-#'
 #' @examples
 #' ## simulate binomial data...
 #' library(mgcv)
@@ -83,7 +82,41 @@
 #' mgcViz::qq.gam(b, method = "simul2")
 #' mgcv::qq.gam(b, rep = 50, level = 1, pch = 19, cex = .2)
 #' mgcViz::qq.gam(b, rep = 50, show.reps = T, CI = "none", shape = 19)
+#' 
+#' \dontrun{
+#' # A "Big Data" example: 
+#' set.seed(0)
+#' n.samp <- 50000
+#' dat <- gamSim(1,n=n.samp,dist="binary",scale=.33)
+#' p <- binomial()$linkinv(dat$f) ## binomial p
+#' n <- sample(c(1,3),n.samp,replace=TRUE) ## binomial n
+#' dat$y <- rbinom(n,n,p)
+#' dat$n <- n
+#' lr.fit <- bam(y/n ~ s(x0) + s(x1) + s(x2) + s(x3)
+#'               , family = binomial, data = dat,
+#'               weights = n, method = "fREML", discrete = T)
+#' 
+#' # Turning discretization off (on by default for large datasets).
+#' set.seed(414) # Setting the seed because qq.gam is doing simulations
+#' o <- qq.gam(lr.fit, rep = 10, method = "simul1", CI = "normal", show.reps = T, rep.alpha = 0.1, 
+#'             discrete = F)
+#' o # This might take some time!
+#' 
+#' # Using default discretization
+#' set.seed(414)
+#' o <- qq.gam(lr.fit, rep = 10, method = "simul1", CI = "normal", show.reps = T, rep.alpha = 0.1)
+#' o # Much faster plotting!
+#' 
+#' # Very coarse discretization
+#' set.seed(414)
+#' o <- qq.gam(lr.fit, rep = 10, method = "simul1", CI = "normal", show.reps = T, rep.alpha = 0.1, 
+#'             discrete = TRUE, ngr = 1e2, shape = 19)
+#' o 
+#' 
+#' # We can also zoom in at now extra costs (most work already done by qq.gam)
+#' zoom(o, xlim = c(-0.25, 0.25), show.reps = T, rep.alpha = 0.1, discrete = T)
 #'
+#'}
 qq.gam <- function(object, rep = 10,
                     level = 0.8, 
                     method = c("simul1", "simul2", "tnormal", "tunif", "normal"),
@@ -91,6 +124,8 @@ qq.gam <- function(object, rep = 10,
                     CI = c("normal", "quantile", "none"),
                     show.reps = FALSE,
                     sortFun = NULL,
+                    discrete = NULL,
+                    ngr = 1e3,
                     rl.col = 2,
                     rep.col = 1,
                     rep.alpha = 0.05,
@@ -104,6 +139,8 @@ qq.gam <- function(object, rep = 10,
   
   if( is.null(sortFun) ){ sortFun <- function(.x) sort(.x, method="quick") }
   
+  if( is.null(discrete) ){ discrete <- length(object$y) > 1e4 }
+  
   force(rep.col)
   
   if (inherits(object, c("glm", "gam"))) {
@@ -115,29 +152,20 @@ qq.gam <- function(object, rep = 10,
   
   object$na.action <- NULL
   
-  P <- .compute.qq.gam(o=object, type=type, method=method, CI=CI, 
+  P0 <- .compute.qq.gam(o=object, type=type, method=method, CI=CI, 
                        level=level, rep=rep, sortFun=sortFun)
+
+  P1 <- .discretize.qq.gam(P=P0, discrete=discrete, ngr=ngr, CI=(CI!="none"), show.reps=show.reps)
   
-  p1 <- ggplot()
-  if( !is.null(P$conf) ){ # Add confidence intervals
-    dpoly <- data.frame(x = c(P$Dq, rev(P$Dq)), y = c(P$conf[1, ], rev(P$conf[2, ])))
-    p1 <- p1 + geom_polygon(data = dpoly,  aes(x = x, y = y), fill = ci.col)
-  }
+  pl <- .plot.qq.gam(P=P1, CI=(CI!="none"), show.reps=show.reps, rl.col=rl.col, rep.col=rep.col, 
+                     rep.alpha=rep.alpha, ci.col=ci.col, shape=shape)
   
-  if( show.reps && !is.null(P$dm) ){ # Add a line for each simulation rep
-    dlines <- data.frame(id = as.factor(rep(1:ncol(P$dm), each = nrow(P$dm))),
-                         x = rep(P$Dq, ncol(P$dm)),
-                         value = as.numeric(P$dm))
-    p1 <- p1 + geom_line(data=dlines, aes(x = x, y = value, group = id), 
-                         colour = rep.col, alpha = rep.alpha)
-  }
+  out <- list("ggPlot"=pl, "store"=P0)
+  class(out) <- "qqGam"
   
-  p1 <- p1 +
-    ggplot2::geom_abline(colour = rl.col) +
-    ggplot2::geom_point(data = data.frame("sx"=P$Dq, "sy"=P$D), 
-                        ggplot2::aes(x = sx, y = sy), shape=shape, ...) +
-    labs(x = "theoretical quantiles", y = P$ylab, main = paste("Q-Q Plot, method =", P$method)) +
-    theme_bw()
-  
-  return(p1)
+  return(out)
 }
+
+
+
+
