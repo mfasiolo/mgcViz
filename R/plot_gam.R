@@ -92,25 +92,27 @@
 #' 
 #' @rdname plot.gam
 #' @export plot.gam
-plot.gam <- function(x,residuals=FALSE,rug=TRUE,se=TRUE,pages=0,select=NULL,scale=T,n=100,n2=40,
-                     pers=FALSE,theta=30,phi=30,jit=FALSE,xlab=NULL,ylab=NULL,main=NULL,
-                     ylim=NULL,xlim=NULL,too.far=0.1,all.terms=FALSE,shade=FALSE,shade.col="gray80",
-                     shift=0,trans=I,seWithMean=FALSE,unconditional=FALSE,by.resids=FALSE,scheme=0,
-                     draw=TRUE, inter=FALSE, ...)
-{ 
+plot.gam <- function(x, residuals = FALSE, rug = TRUE, se = TRUE, pages = 0, select = NULL,
+                     scale = TRUE, n = 100, n2 = 40, pers = FALSE, theta = 30, phi = 30,
+                     jit = FALSE, xlab = NULL, ylab = NULL, main = NULL,
+                     ylim = NULL, xlim = NULL, too.far = 0.1, all.terms = FALSE,
+                     shade = FALSE, shade.col = "gray80", shift = 0, trans = I,
+                     seWithMean = FALSE, unconditional = FALSE, by.resids = FALSE,
+                     scheme = 0, draw = TRUE, inter = FALSE, ...) { 
   m <- length(x$smooth) # number of smooth effects
-  
-  if (length(scheme)==1) scheme <- rep(scheme, m)
-  if (length(scheme)!=m) { 
-    warning( paste("scheme should be a single number, or a vector with", m, "elements") )
+  if (length(scheme) == 1) {
+    scheme <- rep(scheme, m)
+  }
+  if (length(scheme) != m) {
+    # change warning to error ?
+    warning(paste("scheme should be a single number, or a vector with", m, "elements"))
     scheme <- rep(scheme[1], m)
   }
-  
-  # This creates/modifies variables in the environment.
-  # INPUTS: unconditional, x, residuals, se, fitSmooth
-  # NEW/MODIFIED VARIABLES: x, w.resid, partial.resids, se2.mult, se1.mult, se, fv.terms, order  
   fv.terms <- NULL
-  init <- .initializeXXX(o, unconditional, residuals, resDen, se, fv.terms)
+  # TODO: fix the following
+  # .initializeXXX with x ??
+  # also resDen isn't defined yet
+  init <- .initializeXXX(x, unconditional, residuals, resDen, se, fv.terms)
   # affect initialize output
   o <- init$o
   w.resid <- init$w.resid
@@ -120,40 +122,46 @@ plot.gam <- function(x,residuals=FALSE,rug=TRUE,se=TRUE,pages=0,select=NULL,scal
   se <- init$se
   fv.terms <- init$fv.terms
   order <- init$order
-  # Loop to get the data for the plots
-  pd <- list(); # List of data to be plotted
-  ii <- 1 # needs a value if no smooths is present, but parametric terms are...
-  if (m>0){ 
-    for (ii in 1:m) { ## work through smooth terms
-      tmp <- .createP(sm=x$smooth[[ii]], x=x, partial.resids=partial.resids,
-                      rug=rug, se=se, scale=scale, n=n, n2=n2,
-                      pers=pers, theta=theta, phi=phi, jit=jit, xlab=xlab, ylab=ylab, main=main, label=term.lab,
-                      ylim=ylim, xlim=xlim, too.far=too.far, shade=shade, shade.col=shade.col,
-                      se1.mult=se1.mult, se2.mult=se2.mult, shift=shift, trans=trans,
-                      by.resids=by.resids, scheme=scheme[ii], seWithMean=seWithMean, 
-                      fitSmooth=fv.terms[ , length(order)+ii],
-                      w.resid=w.resid, inter=inter, ...)
-      pd[[ii]] <- tmp[["P"]]
-      attr(x$smooth[[ii]], "coefficients") <- tmp[["coef"]]
-      rm(tmp)
-    }
-  }
-  
+  # mapply instead of loop
+  # TODO: fix fitSmooth = fv.terms in mapply call
+  tmp <- mapply(FUN = .createP,
+                sm = x$smooth, scheme = scheme,
+                fitSmooth = split(fv.terms, rep(1:ncol(fv.terms), each = nrow(fv.terms))),
+                MoreArgs  = list(
+                  x = x, partial.resids = partial.resids,
+                  rug = rug, se = se, scale = scale, n = n, n2 = n2,
+                  pers = pers, theta = theta, phi = phi, jit = jit, xlab = xlab, ylab = ylab,
+                  main = main, label = term.lab, ylim = ylim, xlim = xlim, too.far = too.far, 
+                  shade = shade, shade.col = shade.col, se1.mult = se1.mult, se2.mult = se2.mult,
+                  shift = shift, trans = trans, by.resids = by.resids, 
+                  seWithMean = seWithMean,  w.resid = w.resid, inter = inter, ...
+                ))
+  pd <- lapply(tmp, `[[`, "P")
+  lapply(seq_along(tmp), function(ii) {
+    attr(x$smooth[[ii]], "coefficients") <<- tmp[[ii]][["coef"]]
+  })
   # Plot parametric terms as well?
-  if (all.terms){ n.para <- sum(order==1) } else { n.para <- 0 } 
-  
+  n.para <- ifelse(all.terms, sum(order == 1), 0)
   ##############################################
   ## sort out number of pages and plots per page 
   ##############################################
-  
   n.plots <- n.para
-  if (m>0) for (i in 1:m) n.plots <- n.plots + as.numeric(pd[[i]]$plot.me)
-  
-  if (n.plots==0) stop("No terms to plot - nothing for plot.gam() to do.")
-  
-  if (pages>n.plots) pages<-n.plots
-  if (pages<0) pages<-0
-  if (pages!=0)    # figure out how to display things
+  if (m > 0) {
+    for (i in 1:m) {
+      n.plots <- n.plots + as.numeric(pd[[i]]$plot.me)
+    }
+  } 
+  if (n.plots == 0) {
+    stop("No terms to plot - nothing for plot.gam() to do.")
+  }
+  # TODO: give warning if pb with pages args ?
+  if (pages > n.plots) {
+    pages <- n.plots
+  }
+  if (pages < 0) {
+    pages <- 0
+  }
+  if (pages != 0)    # figure out how to display things
   { ppp<-n.plots%/%pages
   if (n.plots%%pages!=0)
   { ppp<-ppp+1
