@@ -1,23 +1,53 @@
 #' Plotting one dimensional smooth effects
 #' 
+#' @param o 
+#' @param residuals 
+#' @param rug 
+#' @param se 
+#' @param n 
+#' @param jit 
+#' @param xlab 
+#' @param ylab 
+#' @param main 
+#' @param ylim 
+#' @param xlim 
+#' @param shade 
+#' @param shade.col 
+#' @param shift 
+#' @param trans 
+#' @param seWithMean 
+#' @param unconditional 
+#' @param by.resids 
+#' @param scheme 
+#' @param resDen 
+#' @param ngr 
+#' @param bw 
+#' @param tol 
+#' @param alpDen 
+#' @param dTrans 
+#' @param paletteDen 
+#' @param ... 
+#'
 #' @description XXX
 #' @name plot.mgcv.smooth.1D
 #' @examples 
 #' library(mgcViz)
-#' n <- 1e3
-#' x1 <- rnorm(n); x2 <- rnorm(n)
-#' dat <- data.frame("x1"=x1, "x2"=x2, "y"=sin(x1) + 0.5*x2^2 + pmax(x2, 0.2)*rnorm(n))
-#' b <- bam(y ~ s(x1)+s(x2), data=dat, method="fREML", discrete = T)
-#' 
+#' n  <- 1e3
+#' x1 <- rnorm(n)
+#' x2 <- rnorm(n)
+#' dat <- data.frame("x1" = x1, "x2" = x2,
+#'                   "y" = sin(x1) + 0.5 * x2^2 + pmax(x2, 0.2) * rnorm(n))
+#' b <- bam(y ~ s(x1)+s(x2), data = dat, method = "fREML", discrete = TRUE)
 #' v <- getViz(b)
-#' plot(v(1), rug=T, resDen="cond", residuals=T)
+#' plot(v(1), rug = TRUE, resDen = "cond", residuals = TRUE)
 #' @rdname plot.mgcv.smooth.1D
 #' @export plot.mgcv.smooth.1D
-plot.mgcv.smooth.1D <- function(o, residuals=FALSE,rug=TRUE,se=TRUE,n=100,
-                                jit=FALSE,xlab=NULL,ylab=NULL,main=NULL,
-                                ylim=NULL,xlim=NULL,shade=FALSE,shade.col=I("gray80"),
-                                shift=0,trans=I,seWithMean=FALSE,unconditional=FALSE,by.resids=FALSE,
-                                scheme=0, resDen="none", ngr = c(50, 50), bw = NULL, tol = 1e-6, alpDen = 0.7, 
+plot.mgcv.smooth.1D <- function(o, residuals = FALSE, rug = TRUE, se = TRUE, n = 100,
+                                jit = FALSE, xlab = NULL, ylab = NULL, main = NULL,
+                                ylim = NULL, xlim = NULL, shade = FALSE, shade.col = I("gray80"),
+                                shift = 0, trans = I, seWithMean = FALSE, unconditional = FALSE, 
+                                by.resids = FALSE,
+                                scheme = 0, resDen = "none", ngr = c(50, 50), bw = NULL, tol = 1e-6, alpDen = 0.7, 
                                 dTrans = NULL, paletteDen = viridis(50, begin=0.2), ...)
 {
   if (length(scheme)>1){ 
@@ -45,24 +75,27 @@ plot.mgcv.smooth.1D <- function(o, residuals=FALSE,rug=TRUE,se=TRUE,n=100,
   order <- init$order
   
   # Prepare for plotting
-  tmp <- .createP(sm=o$smooth, x=o$gObj, partial.resids=partial.resids,
-                  rug=rug, se=se, scale=FALSE, n=n, n2=NULL,
-                  pers=NULL, theta=NULL, phi=NULL, jit=jit, xlab=xlab, ylab=ylab, main=main, label=term.lab,
-                  ylim=ylim, xlim=xlim, too.far=NULL, shade=shade, shade.col=shade.col,
-                  se1.mult=se1.mult, se2.mult=se2.mult, shift=shift, trans=trans,
-                  by.resids=by.resids, scheme=scheme, seWithMean=seWithMean, fitSmooth=fv.terms,
-                  w.resid=w.resid, resDen=resDen, ...)
+  tmp <- .createP(sm = o$smooth, x = o$gObj, partial.resids = partial.resids,
+                  se = se, n = n, n2 = NULL,
+                  xlab = xlab, ylab = ylab, main = main, 
+                  # label = term.lab,
+                  ylim = ylim, xlim = xlim, too.far = NULL, 
+                  se1.mult = se1.mult, se2.mult = se2.mult,
+                  seWithMean = seWithMean, fitSmooth = fv.terms,
+                  w.resid = w.resid, resDen = resDen, ...)
   pd <- tmp[["P"]]
   attr(o$smooth, "coefficients") <- tmp[["coef"]]
   rm(tmp)
-  
   # Plotting
-  .ggobj <- .plot.mgcv.smooth.1D(x=o$smooth, P=pd, partial.resids=partial.resids, rug=rug, se=se, scale=FALSE, n=n,
-                                 jit=jit, shade=shade||(scheme==1), shade.col=shade.col, ylim = ylim,
-                                 shift=shift, trans=trans, by.resids=by.resids, resDen=resDen, ngr=ngr, bw=bw, tol=tol, alpDen=alpDen, 
-                                 dTrans=dTrans, paletteDen=paletteDen, ...)
+  .ggobj <- .plot.mgcv.smooth.1D(x = o$smooth, P = pd, partial.resids = partial.resids, rug = rug, se = se,
+                                 scale = FALSE, n = n,
+                                 jit = jit, shade = shade ||(scheme == 1), shade.col = shade.col, ylim = ylim,
+                                 shift = shift, trans = trans, by.resids = by.resids, resDen = resDen, ngr = ngr,
+                                 bw = bw, tol = tol, alpDen = alpDen, 
+                                 dTrans = dTrans, paletteDen = paletteDen, ...)
   
-  .ggobj <- .ggobj + theme_bw() + theme(panel.grid.major=element_blank(), panel.grid.minor=element_blank())
+  .ggobj <- .ggobj + theme_bw() +
+    theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
   
   attr(.ggobj, "rawData") <- pd
   .ggobj
