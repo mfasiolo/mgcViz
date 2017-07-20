@@ -1,22 +1,41 @@
+#' @param sm 
+#' @param x 
+#' @param partial.resids 
+#' @param se 
+#' @param n 
+#' @param n2 
+#' @param xlab 
+#' @param ylab 
+#' @param main 
+#' @param ylim 
+#' @param xlim 
+#' @param too.far 
+#' @param se1.mult 
+#' @param se2.mult 
+#' @param seWithMean 
+#' @param fitSmooth 
+#' @param w.resid 
+#' @param resDen 
+#' @param ...
+#' @noRd 
+#' 
 .createP <- function(sm, x, partial.resids, 
-                     rug, se, scale, n, n2,
-                     pers, theta, phi, jit, xlab, ylab, main, label,
-                     ylim, xlim, too.far, shade, shade.col,
-                     se1.mult, se2.mult, shift, trans,
-                     by.resids, scheme, seWithMean, fitSmooth, w.resid,
+                     se, n, n2,
+                     xlab, ylab, main, 
+                     ylim, xlim, too.far,
+                     se1.mult, se2.mult,
+                     seWithMean, fitSmooth, w.resid,
                      resDen, ...) {
   first <- sm$first.para
   last  <- sm$last.para
   edf   <- sum(x$edf[first:last]) ## Effective DoF for this term
   term.lab <- .subEDF(sm$label, edf)
   attr(sm, "coefficients") <- x$coefficients[first:last] # Relevant coeffs for i-th smooth
-  P <- .prepare(sm, data = x$model, partial.resids = partial.resids,
-                rug = rug, se = se, scale = scale, n = n, n2 = n2,
-                pers = pers, theta = theta, phi = phi, jit = jit,
-                xlab = xlab, ylab = ylab, main = main, label = term.lab,
-                ylim = ylim, xlim = xlim, too.far = too.far, shade = shade, shade.col = shade.col,
-                se1.mult = se1.mult, se2.mult = se2.mult, shift = shift,trans = trans,
-                by.resids = by.resids, scheme = scheme, ...)
+  P <- .prepare(x = sm, data = x$model, 
+                se1.mult = se1.mult, se2.mult = se2.mult,
+                n = n, n2 = n2,  xlab = xlab, ylab = ylab, 
+                main = main, label = term.lab,
+                ylim = ylim, xlim = xlim, too.far = too.far, ...)
   if (is.null(P)) {
     P <- list(plot.me = FALSE) 
   } else {
