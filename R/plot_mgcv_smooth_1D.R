@@ -4,13 +4,14 @@
 #' @name plot.mgcv.smooth.1D
 #' @examples 
 #' library(mgcViz)
-#' n <- 1e3
-#' x1 <- rnorm(n); x2 <- rnorm(n)
-#' dat <- data.frame("x1"=x1, "x2"=x2, "y"=sin(x1) + 0.5*x2^2 + pmax(x2, 0.2)*rnorm(n))
-#' b <- bam(y ~ s(x1)+s(x2), data=dat, method="fREML", discrete = T)
-#' 
+#' n  <- 1e3
+#' x1 <- rnorm(n)
+#' x2 <- rnorm(n)
+#' dat <- data.frame("x1" = x1, "x2" = x2,
+#'                   "y" = sin(x1) + 0.5 * x2^2 + pmax(x2, 0.2) * rnorm(n))
+#' b <- bam(y ~ s(x1)+s(x2), data = dat, method = "fREML", discrete = TRUE)
 #' v <- getViz(b)
-#' plot(v(1), rug=T, resDen="cond", residuals=T)
+#' plot(v(1), rug = TRUE, resDen = "cond", residuals = TRUE)
 #' @rdname plot.mgcv.smooth.1D
 #' @export plot.mgcv.smooth.1D
 plot.mgcv.smooth.1D <- function(o, residuals=FALSE,rug=TRUE,se=TRUE,n=100,

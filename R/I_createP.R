@@ -18,7 +18,35 @@
 #' @param resDen 
 #' @param ...
 #' @noRd 
-#' 
+#' @examples 
+#' library(mgcViz)
+#' n  <- 1e3
+#' x1 <- rnorm(n)
+#' x2 <- rnorm(n)
+#' dat <- data.frame("x1" = x1, "x2" = x2,
+#'                   "y" = sin(x1) + 0.5 * x2^2 + pmax(x2, 0.2) * rnorm(n))
+#' b <- bam(y ~ s(x1)+s(x2), data = dat, method = "fREML", discrete = TRUE)
+#' v <- getViz(b)(1)
+#' class(v)
+#' o <- v
+#' o$smooth <- o$gObj$smooth[[o$ism]]
+#' fv.terms <- o$store$termsFit[ , o$store$np + o$ism]
+#' init <- mgcViz:::.initializeXXX(o, unconditional = FALSE, residuals = FALSE, resDen = "cond", se = TRUE, fv.terms)
+#' o <- init$o
+#' w.resid <- init$w.resid
+#' partial.resids <- init$partial.resids
+#' se2.mult <- init$se2.mult
+#' se1.mult <- init$se1.mult
+#' se <- init$se
+#' fv.terms <- init$fv.terms
+#' order <- init$order
+#' sm <- o$smooth
+#' x <- o$gObj
+#' too.far <- 0.1
+#' seWithMean <- FALSE
+#' b <- ylab <- xlim <- ylim <- main <- NULL
+#' resDen = "none"
+
 .createP <- function(sm, x, partial.resids, 
                      se, n, n2,
                      xlab, ylab, main, 
@@ -53,7 +81,7 @@
       }
       if (se && P$se) { ## get standard errors for fit
         ## test whether mean variability to be added to variability (only for centred terms)
-        if (seWithMean && attr(sm, "nCons")>0) {
+        if (seWithMean && attr(sm, "nCons") > 0) {
           if (length(x$cmX) < ncol(x$Vp)) {
             x$cmX <- c(x$cmX, rep(0, ncol(x$Vp) - length(x$cmX)))
           }
