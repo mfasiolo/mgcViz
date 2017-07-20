@@ -21,7 +21,7 @@
     } # Finished preparing prediction data.frame
     X <- PredictMat(x, dat)   # prediction matrix for this term
     xlabel <- ifelse(is.null(xlab), x$term, xlab)
-    ylabel <- ifelse(is.null(ylab), y$term, ylab)
+    ylabel <- ifelse(is.null(ylab), label, ylab)
     if (is.null(xlim)) {
       xlim <- range(xx) 
     }
