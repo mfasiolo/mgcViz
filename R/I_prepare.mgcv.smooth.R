@@ -32,7 +32,7 @@
 #' @param too.far If greater than 0 then this is used to determine when a
 #'   location is too far from data to be plotted when plotting 2-D smooths. This
 #'   is useful since smooths tend to go wild away from data. The data are scaled
-#'   into the unit square before deciding what to exclude, and too.far is a
+#'   into the unit square before deciding what to exclude, and too.far <- <-  is a
 #'   distance within the unit square. Setting to zero can make plotting faster
 #'   for large datasets, but care then needed with interpretation of plots.
 #' @param ... Other graphics parameters to pass on to plotting commands. 
