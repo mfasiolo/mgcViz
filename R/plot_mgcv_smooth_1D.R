@@ -24,7 +24,6 @@
 #' @param bw 
 #' @param tol 
 #' @param alpDen 
-#' @param dTrans 
 #' @param paletteDen 
 #' @param ... 
 #'
@@ -52,7 +51,7 @@ plot.mgcv.smooth.1D <- function(o, residuals = FALSE, rug = TRUE, se = TRUE, n =
                                 shift = 0, trans = I, seWithMean = FALSE, unconditional = FALSE, 
                                 by.resids = FALSE,
                                 scheme = 0, resDen = "none", ngr = c(50, 50), bw = NULL, tol = 1e-6, alpDen = 0.7, 
-                                dTrans = NULL, paletteDen = viridis(50, begin=0.2), alpha.rug = 1, ...)
+                                paletteDen = viridis(50, begin = 0.2), ...)
 {
   if (length(scheme) > 1){ 
     scheme <- scheme[1]
@@ -88,8 +87,8 @@ plot.mgcv.smooth.1D <- function(o, residuals = FALSE, rug = TRUE, se = TRUE, n =
                                  scale = FALSE, n = n, maxpo = maxpo,
                                  jit = jit, shade = shade ||(scheme == 1), shade.col = shade.col, ylim = ylim,
                                  shift = shift, trans = trans, by.resids = by.resids, resDen = resDen, ngr = ngr,
-                                 bw = bw, tol = tol, alpDen = alpDen, 
-                                 dTrans = dTrans, paletteDen = paletteDen, alpha.rug = alpha.rug, ...)
+                                 bw = bw, tol = tol, alpDen = alpDen, paletteDen = paletteDen, alpha.rug = alpha.rug,...)
+  # add theme to plot, can be overriden later
   .ggobj <- .ggobj + theme_bw() +
     theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
   attr(.ggobj, "rawData") <- pd
@@ -103,7 +102,7 @@ plot.mgcv.smooth.1D <- function(o, residuals = FALSE, rug = TRUE, se = TRUE, n =
                                  ylim = NULL, shift = 0, trans = I, by.resids = FALSE,
                                  scheme = 0, resDen = "none", alpha.rug = 1,
                                  ngr = c(50, 50), bw = NULL, tol = 1e-6, alpDen = 0.7, 
-                                 dTrans = NULL, paletteDen = viridis(50, begin = 0.2), ...) {
+                                 paletteDen = viridis(50, begin = 0.2), ...) {
   if (scheme == 1){
     shade <- TRUE 
   }
@@ -149,9 +148,6 @@ plot.mgcv.smooth.1D <- function(o, residuals = FALSE, rug = TRUE, se = TRUE, n =
     labs(title = P$main, x = P$xlab, y = P$ylab)       # add custom labels
   
   if(resDen != "none") { # Plot conditional residual density
-    if(is.null(dTrans)) {
-      dTrans <- function(.x) .x^(1/3)
-    }
     .datR <- cbind(P$raw, trans(P$p.resid + shift))
 >>>>>>> spacing + more comments
     # Suppress warnings related to ngrid being too small relative to bw. Happens with big dataset.
