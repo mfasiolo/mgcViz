@@ -18,7 +18,6 @@
 #' @param seWithMean 
 #' @param unconditional 
 #' @param by.resids 
-#' @param scheme 
 #' @param resDen 
 #' @param ngr 
 #' @param bw 
@@ -45,18 +44,23 @@
 #' plot(v(1), xlab = "XLAB", ylab = "YLAB", main = "TEST", shade = TRUE)
 #' @rdname plot.mgcv.smooth.1D
 #' @export plot.mgcv.smooth.1D
-plot.mgcv.smooth.1D <- function(o, residuals = FALSE, rug = TRUE, se = TRUE, n = 100, maxpo = 1e4,
-                                jit = FALSE, xlab = NULL, ylab = NULL, main = NULL,
-                                ylim = NULL, xlim = NULL, shade = FALSE, shade.col = I("gray80"),
-                                shift = 0, trans = I, seWithMean = FALSE, unconditional = FALSE, 
-                                by.resids = FALSE,
-                                scheme = 0, resDen = "none", ngr = c(50, 50), bw = NULL, tol = 1e-6, alpDen = 0.7, 
-                                paletteDen = viridis(50, begin = 0.2), ...)
+plot.mgcv.smooth.1D <- function(o,  
+                                # axis labels and size
+                                opts.axis = list(main = NULL, xlab = NULL, ylab = NULL,
+                                                 ylim = NULL, xlim = NULL),
+                                # residuals layer
+                                opts.residuals = list(residuals = FALSE, color = "black",
+                                                      by.resids = FALSE, pch = ".",
+                                                      resDen = "none", ngr = c(50, 50),
+                                                      bw = NULL, tol = 1e-6, alpDen = 0.7, 
+                                                      paletteDen = viridis(50, begin = 0.2)),
+                                # rug layer
+                                opts.rug = list(rug = TRUE, color = "black", jit = FALSE, size = 0.2),
+                                # ci layer
+                                opts.ci = list(se = TRUE, shade = FALSE, shade.col = "gray80"),
+                                # other args
+                                n = 100, maxpo = 1e4, shift = 0, trans = I, seWithMean = FALSE, unconditional = FALSE, ...)
 {
-  if (length(scheme) > 1){ 
-    scheme <- scheme[1]
-    warning( "scheme should be a single number" )
-  }
   resDen <- match.arg(resDen, c("none", "cond", "joint"))
   o$smooth <- o$gObj$smooth[[o$ism]]
   fv.terms <- o$store$termsFit[ , o$store$np + o$ism]
@@ -85,7 +89,7 @@ plot.mgcv.smooth.1D <- function(o, residuals = FALSE, rug = TRUE, se = TRUE, n =
   # Plotting
   .ggobj <- .plot.mgcv.smooth.1D(x = o$smooth, P = pd, partial.resids = partial.resids, rug = rug, se = se,
                                  scale = FALSE, n = n, maxpo = maxpo,
-                                 jit = jit, shade = shade ||(scheme == 1), shade.col = shade.col, ylim = ylim,
+                                 jit = jit, shade = shade, shade.col = shade.col, ylim = ylim,
                                  shift = shift, trans = trans, by.resids = by.resids, resDen = resDen, ngr = ngr,
                                  bw = bw, tol = tol, alpDen = alpDen, paletteDen = paletteDen, alpha.rug = alpha.rug,...)
   # add theme to plot, can be overriden later
@@ -95,17 +99,13 @@ plot.mgcv.smooth.1D <- function(o, residuals = FALSE, rug = TRUE, se = TRUE, n =
   return(.ggobj)
 }
 
-# Internal function for plotting one dimensional smooths
-.plot.mgcv.smooth.1D <- function(x, P, partial.resids = FALSE, rug = TRUE,
+.plot.mgcv.smooth.1D <- function(x, P, scale = TRUE, partial.resids = FALSE, rug = TRUE,
                                  se = TRUE, scale = TRUE, n = 100, maxpo = 1e4,
                                  jit = FALSE, shade = FALSE, shade.col = I("gray80"),
                                  ylim = NULL, shift = 0, trans = I, by.resids = FALSE,
-                                 scheme = 0, resDen = "none", alpha.rug = 1,
+                                 resDen = "none", 
                                  ngr = c(50, 50), bw = NULL, tol = 1e-6, alpDen = 0.7, 
                                  paletteDen = viridis(50, begin = 0.2), ...) {
-  if (scheme == 1){
-    shade <- TRUE 
-  }
   ul <- P$fit + P$se ## upper CL
   ll <- P$fit - P$se ## lower CL  
   if (scale == FALSE && is.null(ylim)) { # Calculate ylim of plot
@@ -135,7 +135,7 @@ plot.mgcv.smooth.1D <- function(o, residuals = FALSE, rug = TRUE, se = TRUE, n =
     ylim(trans(ylimit[1]), trans(ylimit[2])) +         # ylim 
     labs(title = P$main, x = P$xlab, y = P$ylab)       # add custom labels
   
-  if(resDen != "none") { # Plot conditional residual density
+  if (resDen != "none") { # Plot conditional residual density
     .datR <- cbind(P$raw, trans(P$p.resid + shift))
     # Suppress warnings related to ngrid being too small relative to bw. Happens with big dataset.
     withCallingHandlers({
