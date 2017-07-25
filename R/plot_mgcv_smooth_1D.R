@@ -131,6 +131,7 @@ plot.mgcv.smooth.1D <- function(o,
                                  # rug layer
                                  args.rug = list(rug = TRUE, color = "black", jit = FALSE, size = 0.2),
                                  # ci layer
+                                 args.ci = list(se = TRUE, shade = FALSE, shade.col = I("gray80")),
                                  # residuals layer
                                  args.residuals = list(residuals = FALSE, color = "black",
                                                        by.resids = FALSE, pch = ".",
@@ -139,9 +140,8 @@ plot.mgcv.smooth.1D <- function(o,
                                                        paletteDen = viridis(50, begin = 0.2)),
                                  # axis layer
                                  partial.resids = FALSE,
-                                 se = TRUE, n = 100, maxpo = 1e4,
-                                 jit = FALSE, shade = FALSE, shade.col = I("gray80"),
-                                 ylim = NULL, shift = 0, trans = I, ...) {
+                                 args.axis = list(ylim = NULL), maxpo = 1e4,
+                                 n = 100, shift = 0, trans = I, ...) {
   ul <- P$fit + P$se ## upper CL
   ll <- P$fit - P$se ## lower CL  
   if (is.null(ylim)) { # Calculate ylim of plot
