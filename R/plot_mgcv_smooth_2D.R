@@ -151,7 +151,7 @@ plot.mgcv.smooth.2D <- function(o, residuals = FALSE, rug = TRUE, se = TRUE, n =
         ggplot(data = dat, aes(x = x, y = y, z = z)) +
         geom_raster(aes(fill = if(noiseup){zno}else{z}, alpha = p)) + 
         geom_contour(color = contour.col, na.rm = TRUE) + 
-        scale_fill_gradientn(colours = hcolors, na.value = "grey") +
+        scale_fill_gradientn(colours = hcolors, na.value = "grey", name = "s(x)") +
         scale_alpha_identity() +
         coord_cartesian(xlim = P$xlim, ylim = P$ylim, expand = FALSE) +
         labs(title = P$main, x = P$xlab, y = P$ylab) 

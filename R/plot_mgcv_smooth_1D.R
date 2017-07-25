@@ -42,13 +42,13 @@
 #' plot(v(1), rug = TRUE, resDen = "cond", residuals = TRUE)
 #' @rdname plot.mgcv.smooth.1D
 #' @export plot.mgcv.smooth.1D
-plot.mgcv.smooth.1D <- function(o, residuals = FALSE, rug = TRUE, se = TRUE, n = 100,
+plot.mgcv.smooth.1D <- function(o, residuals = FALSE, rug = TRUE, se = TRUE, n = 100, maxpo = 1e4,
                                 jit = FALSE, xlab = NULL, ylab = NULL, main = NULL,
                                 ylim = NULL, xlim = NULL, shade = FALSE, shade.col = I("gray80"),
                                 shift = 0, trans = I, seWithMean = FALSE, unconditional = FALSE, 
                                 by.resids = FALSE,
                                 scheme = 0, resDen = "none", ngr = c(50, 50), bw = NULL, tol = 1e-6, alpDen = 0.7, 
-                                dTrans = NULL, paletteDen = viridis(50, begin=0.2), ...)
+                                dTrans = NULL, paletteDen = viridis(50, begin=0.2), alpha.rug = 1, ...)
 {
   if (length(scheme)>1){ 
     scheme <- scheme[1]
@@ -88,11 +88,11 @@ plot.mgcv.smooth.1D <- function(o, residuals = FALSE, rug = TRUE, se = TRUE, n =
   rm(tmp)
   # Plotting
   .ggobj <- .plot.mgcv.smooth.1D(x = o$smooth, P = pd, partial.resids = partial.resids, rug = rug, se = se,
-                                 scale = FALSE, n = n,
+                                 scale = FALSE, n = n, maxpo = maxpo,
                                  jit = jit, shade = shade ||(scheme == 1), shade.col = shade.col, ylim = ylim,
                                  shift = shift, trans = trans, by.resids = by.resids, resDen = resDen, ngr = ngr,
                                  bw = bw, tol = tol, alpDen = alpDen, 
-                                 dTrans = dTrans, paletteDen = paletteDen, ...)
+                                 dTrans = dTrans, paletteDen = paletteDen, alpha.rug = alpha.rug, ...)
   
   .ggobj <- .ggobj + theme_bw() +
     theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
@@ -104,10 +104,10 @@ plot.mgcv.smooth.1D <- function(o, residuals = FALSE, rug = TRUE, se = TRUE, n =
 
 # Internal function for plotting one dimensional smooths
 .plot.mgcv.smooth.1D <- function(x, P, partial.resids=FALSE, rug=TRUE, se=TRUE, scale=TRUE, n=100,
-                                 jit=FALSE, shade=FALSE, shade.col=I("gray80"), ylim = NULL,
+                                 maxpo = 1e4, jit=FALSE, shade=FALSE, shade.col=I("gray80"), ylim = NULL,
                                  shift=0, trans=I, by.resids=FALSE, scheme=0, resDen="none", 
                                  ngr = c(50, 50), bw = NULL, tol = 1e-6, alpDen = 0.7, 
-                                 dTrans = NULL, paletteDen = viridis(50, begin=0.2), ...)
+                                 dTrans = NULL, paletteDen = viridis(50, begin=0.2), alpha.rug = 1, ...)
 {
   if (scheme == 1){ shade <- TRUE }
   
@@ -162,12 +162,18 @@ plot.mgcv.smooth.1D <- function(o, residuals = FALSE, rug = TRUE, se = TRUE, n =
     }
   }
   
+  if( partial.resids || rug ){
+    nrs <- length( P$p.resid )
+    ii <- if( nrs > maxpo ){ sample(1:nrs, maxpo) } else { 1:nrs }
+    .datRes <- data.frame(resx = as.vector(P$raw)[ii], resy = trans(P$p.resid[ii]+shift))
+  }
+  
   # Add partial residuals
   if (partial.resids&&(by.resids||x$by=="NA")) { 
     if (length(P$raw)==length(P$p.resid)) {
       .tmpF <- function(..., shape = '.', col = "black") # Alter default shape and col
       {
-        geom_point(data = data.frame(resx = P$raw, resy = trans(P$p.resid+shift)), 
+        geom_point(data = .datRes, 
                    aes(x = resx, y = resy), na.rm = TRUE, shape = shape, col = col, ...)
       }
       .pl <- .pl + .tmpF(...)
@@ -178,10 +184,10 @@ plot.mgcv.smooth.1D <- function(o, residuals = FALSE, rug = TRUE, se = TRUE, n =
   
   # Add rug
   if (rug) { 
-    .df <- data.frame(x = if(jit){ jitter(as.numeric(P$raw)) } else { as.numeric(P$raw) } )
+    if( jit ){ .datRes$resx <- jitter(.datRes$resx) }
     .tmpF <- function(pl, ..., size = 0.2) # Alter default "size"
     {
-      geom_rug(data = .df, aes(x = x), inherit.aes = F, size = size, ...)
+      geom_rug(data = .datRes, aes(x = resx), inherit.aes = F, size = size, alpha = alpha.rug, ...)
     }
     .pl <- .pl + .tmpF(.pl, ...)
   } 
