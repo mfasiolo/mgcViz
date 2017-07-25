@@ -42,7 +42,7 @@
                                  n = 100, n2 = 40,  xlab = NULL, ylab = NULL, 
                                  main = NULL, ylim = NULL, xlim = NULL, 
                                  too.far = 0.1, ...) {
-  if (!x$dim %in% 1:2) {
+  if ( !(x$dim %in% 1:2) ) {
     warning("no automatic plotting for smooths of more than two variables")
     out <- NULL
   }

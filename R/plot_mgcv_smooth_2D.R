@@ -43,7 +43,7 @@ plot.mgcv.smooth.2D <- function(o, residuals = FALSE, rug = TRUE, se = TRUE, n =
                                 shift = 0, trans = I, seWithMean = FALSE, 
                                 unconditional = FALSE, by.resids = FALSE,
                                 scheme = 0, hcolors = viridis(50, begin = 0.2),
-                                contour.col = 1, pFun = zto1(0.05, 3, 0.2), ...) {
+                                contour.col = 1, noiseup = FALSE, pFun = zto1(0.05, 3, 0.2), ...) {
   if (length(scheme) > 1){ 
     scheme <- scheme[1]
     warning("'scheme' should be a single number")
@@ -66,13 +66,12 @@ plot.mgcv.smooth.2D <- function(o, residuals = FALSE, rug = TRUE, se = TRUE, n =
   order <- init$order
   # Prepare for plotting
   tmp <- .createP(sm = o$smooth, x = o$gObj, partial.resids = partial.resids,
-                  rug = rug, se = se, scale = FALSE, n = NULL, n2 = n,
-                  pers = pers, theta = theta, phi = phi, jit = NULL,
-                  xlab = xlab, ylab = ylab, main = main, label = term.lab,
-                  ylim = ylim, xlim = xlim, too.far = too.far, shade = NULL, shade.col = NULL,
-                  se1.mult = se.mult, se2.mult = se.mult, shift = shift, trans = trans,
-                  by.resids = by.resids, scheme = scheme, seWithMean = seWithMean, fitSmooth = fv.terms,
-                  w.resid = w.resid, resDen = resDen)#, ...)
+                  se = se, n = NULL, n2 = n,
+                  xlab = xlab, ylab = ylab, main = main,
+                  ylim = ylim, xlim = xlim, too.far = too.far,
+                  se1.mult = se.mult, se2.mult = se.mult, 
+                  seWithMean = seWithMean, fitSmooth = fv.terms,
+                  w.resid = w.resid, resDen = resDen, ...)
   pd <- tmp[["P"]]
   attr(o$smooth, "coefficients") <- tmp[["coef"]]
   rm(tmp)
@@ -83,7 +82,7 @@ plot.mgcv.smooth.2D <- function(o, residuals = FALSE, rug = TRUE, se = TRUE, n =
                                  main = main, too.far = too.far, 
                                  shift = shift, trans = trans, by.resids = by.resids,
                                  scheme = scheme, hcolors = hcolors,
-                                 contour.col = contour.col, pFun = pFun, ...)#, ...)
+                                 contour.col = contour.col, noiseup = noiseup, pFun = pFun, ...)
   if (inherits(.ggobj, "ggplot")) {
     .ggobj <- .ggobj + theme_bw()
     attr(.ggobj, "rawData") <- pd
@@ -110,7 +109,7 @@ plot.mgcv.smooth.2D <- function(o, residuals = FALSE, rug = TRUE, se = TRUE, n =
                                  main = NULL, too.far = 0.1,
                                  shift = 0, trans = I, by.resids = FALSE, scheme = 0,
                                  hcolors = viridis(50, begin = 0.2),
-                                 contour.col = 1, pFun = zto1(0.05, 3, 0.2), 
+                                 contour.col = 1, noiseup = FALSE, pFun = zto1(0.05, 3, 0.2), 
                                  # Useless arguments
                                  data = NA, label = NA, se.mult = NA, xlab = NA, ylab = NA, n = NA,
                                  shade = NA, shade.col = NA, xlim = NA, ylim = NA,
@@ -143,12 +142,14 @@ plot.mgcv.smooth.2D <- function(o, residuals = FALSE, rug = TRUE, se = TRUE, n =
       if (scheme == 3) {
         hcolors <- grey(0:50 / 50)
       }
+      dat <- data.frame("z" = P$fit,
+                        "x" = rep(P$x, length(P$fit) / length(P$x)), 
+                        "y" = rep(P$y, each = length(P$fit) / length(P$x)),
+                        "p" = pFun(1 - pnorm(abs(P$fit) / P$se)))
+      if( noiseup ) { dat$zno <- rnorm(length(P$fit), P$fit, P$se) }
       .pl <- 
-        ggplot(data = data.frame("z" = P$fit, "x" = rep(P$x, length(P$fit) / length(P$x)), 
-                                 "y" = rep(P$y, each = length(P$fit) / length(P$x)),
-                                 p = pFun(1 - pnorm(abs(P$fit) / P$se))), 
-               aes(x = x, y = y, z = z)) +
-        geom_raster(aes(fill = z, alpha = p)) + 
+        ggplot(data = dat, aes(x = x, y = y, z = z)) +
+        geom_raster(aes(fill = if(noiseup){zno}else{z}, alpha = p)) + 
         geom_contour(color = contour.col, na.rm = TRUE) + 
         scale_fill_gradientn(colours = hcolors, na.value = "grey") +
         scale_alpha_identity() +
