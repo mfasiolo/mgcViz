@@ -37,7 +37,7 @@
 # .plot.mgcv.smooth.2D <- mgcViz:::.plot.mgcv.smooth.2D
 # .spContour <- mgcViz:::.spContour
 
-plot.mgcv.smooth.2D <- function(o, residuals = FALSE, rug = TRUE, se = TRUE, n = 40,
+plot.mgcv.smooth.2D <- function(o, residuals = FALSE, rug = TRUE, se = TRUE, n = 40, maxpo = 1e4,
                                 pers = FALSE, theta = 30, phi = 30, xlab = NULL, ylab = NULL,
                                 main = NULL, ylim = NULL, xlim = NULL, too.far = 0.1, se.mult = 1,
                                 shift = 0, trans = I, seWithMean = FALSE, 
@@ -77,7 +77,7 @@ plot.mgcv.smooth.2D <- function(o, residuals = FALSE, rug = TRUE, se = TRUE, n =
   rm(tmp)
   # Plotting
   .ggobj <- .plot.mgcv.smooth.2D(x = o$smooth, P = pd, partial.resids = partial.resids,
-                                 rug = rug, se = se, scale = FALSE, n2 = n,
+                                 rug = rug, se = se, scale = FALSE, n2 = n, maxpo = maxpo,
                                  pers = pers, theta = theta, phi = phi, jit = NULL,
                                  main = main, too.far = too.far, 
                                  shift = shift, trans = trans, by.resids = by.resids,
@@ -104,7 +104,7 @@ plot.mgcv.smooth.2D <- function(o, residuals = FALSE, rug = TRUE, se = TRUE, n =
 
 # Internal function
 .plot.mgcv.smooth.2D <- function(x, P = NULL, partial.resids = FALSE, rug = TRUE, se = TRUE,
-                                 scale = FALSE, n2 = 40,
+                                 scale = FALSE, n2 = 40, maxpo = 1e4,
                                  pers = FALSE, theta = 30, phi = 30, jit = FALSE,
                                  main = NULL, too.far = 0.1,
                                  shift = 0, trans = I, by.resids = FALSE, scheme = 0,
@@ -159,7 +159,9 @@ plot.mgcv.smooth.2D <- function(o, residuals = FALSE, rug = TRUE, se = TRUE, n =
       if (rug) { 
         .tmpF <- function(..., shape = '.', col = "black") # Alter default shape and col
         {
-          geom_point(data = data.frame("resx" = P$raw$x, "resy" = P$raw$y),
+          nrs <- length( P$raw$y )
+          ii <- if( nrs > maxpo ){ sample(1:nrs, maxpo) } else { 1:nrs }
+          geom_point(data = data.frame("resx" = P$raw$x[ii], "resy" = P$raw$y[ii]),
                      aes(x = resx, y = resy), 
                      inherit.aes = FALSE, shape = shape, col = col, ...)
         } 
