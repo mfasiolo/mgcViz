@@ -52,7 +52,7 @@ check.gam <- function(object,
   plots[[1]] <- 
     mgcViz::qq.gam(b, rep = rep,
                    level = level, type = type, rl.col = rl.col, 
-                   rep.col = rep.col)
+                   rep.col = rep.col)$ggPlot
   plots[[2]] <- 
     ggplot2::ggplot(data = df, aes(x = linpred, y = resid)) +
     ggplot2::geom_point() +

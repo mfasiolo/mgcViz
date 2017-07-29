@@ -8,17 +8,17 @@ fix.family.cdf <- function(fam) {
   if( is.null(fam$cdf) ){
     
     fam$cdf <- switch(fam$family,
-                      poisson = function(q, mu, wt, scale) {
-                        ppois(q, mu)
+                      poisson = function(q, mu, wt, scale, logp = FALSE) {
+                        ppois(q, mu, log.p=logp)
                       },
-                      binomial = function(q, mu, wt, scale) {
-                        pbinom(q*(wt + as.numeric(wt==0)), wt, mu)
+                      binomial = function(q, mu, wt, scale, logp = FALSE) {
+                        pbinom(q*(wt + as.numeric(wt==0)), wt, mu, log.p=logp)
                       }, 
-                      Gamma = function(q, mu, wt, scale) {
-                        pgamma(q, shape=1/scale, scale=mu*scale)
+                      Gamma = function(q, mu, wt, scale, logp = FALSE) {
+                        pgamma(q, shape=1/scale, scale=mu*scale, log.p=logp)
                       }, 
-                      gaussian = function(q, mu, wt, scale) {
-                        pnorm(q, mean=mu, sd=sqrt(scale/wt))
+                      gaussian = function(q, mu, wt, scale, logp = FALSE) {
+                        pnorm(q, mean=mu, sd=sqrt(scale/wt), log.p=logp)
                       })
   }
   

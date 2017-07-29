@@ -115,11 +115,13 @@
   
   if( !is.null(fam$cdf) ){
     Dq <- p <- (1:n - 0.5)/n
-    D <- sortFun( fam$cdf(D, o$fitted.values, o$prior.weights, o$sig2) )
+    D <- sortFun( fam$cdf(D, o$fitted.values, o$prior.weights, o$sig2, logp = TRUE) )
 
     if( method=="tnormal" ){
       Dq <- qnorm( Dq )
-      D <- qnorm( D )
+      D <- qnorm( D, log.p = TRUE )
+    } else {
+      D <- exp( D )
     }
     
     if( CI != "none" ){

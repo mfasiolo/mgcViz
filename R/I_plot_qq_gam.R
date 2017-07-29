@@ -23,7 +23,7 @@
   p1 <- p1 +
     geom_abline(colour = rl.col) +
     geom_point(data = data.frame("sx"=P$Dq, "sy"=P$D), aes(x = sx, y = sy), shape=shape) +
-    labs(x = "theoretical quantiles", y = P$ylab, main = paste("Q-Q Plot, method =", P$method)) +
+    labs(x = "theoretical quantiles", y = P$ylab, title = paste("Q-Q Plot, method =", P$method)) +
     coord_cartesian(xlim=xlimit, ylim=ylimit, expand=F) + theme_bw()
   
   return( p1 )

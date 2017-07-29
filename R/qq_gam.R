@@ -136,6 +136,7 @@ qq.gam <- function(object, rep = 10,
   method <- match.arg(method)
   type <- match.arg(type)
   if( level<0 || level>1 ){ stop("`level' should be between 0 and 1") }
+  if( method == "simul2" ){ CI <- "none" }
   
   if( is.null(sortFun) ){ sortFun <- function(.x) sort(.x, method="quick") }
   
