@@ -127,24 +127,52 @@ plot.mgcv.smooth.1D <- function(o,
 # # other args
 # n = 100, shift = 0, trans = I, seWithMean = FALSE, unconditional = FALSE, ...
 
-.plot.mgcv.smooth.1D <- function(x, P, 
-                                 # rug layer
-                                 args.rug = list(rug = TRUE, color = "black", jit = FALSE, size = 0.2),
-                                 # ci layer
-                                 args.ci = list(se = TRUE, shade = FALSE, shade.col = I("gray80")),
-                                 # residuals layer
-                                 args.residuals = list(residuals = FALSE, color = "black",
-                                                       by.resids = FALSE, pch = ".",
-                                                       resDen = "none", ngr = c(50, 50),
-                                                       bw = NULL, tol = 1e-6, alpDen = 0.7,
-                                                       paletteDen = viridis(50, begin = 0.2)),
-                                 # axis layer
-                                 partial.resids = FALSE,
-                                 args.axis = list(ylim = NULL), maxpo = 1e4,
-                                 n = 100, shift = 0, trans = I, ...) {
+.plot.mgcv.smooth.1D <- function(
+  x, P, shift = 0, trans = I, 
+  # rug layer
+  args.rug = list(rug = TRUE, jit = FALSE, maxpo = 1e4,
+                  color = "black", size = 0.2),
+  # ci lines layer
+  args.ci = list(se = TRUE, shade = TRUE),
+  args.cilines = list(color = "blue", linetype = "dashed"),
+  # ci shade layer
+  args.cipoly = list(color = "gray80"),
+  # residuals layer
+  args.residuals = list(partial.resids = FALSE, by.resids = FALSE,
+                        color = "black", shape = 46),
+  # density layer
+  args.dens = list(resDen = "none", ngr = c(50, 50),
+                   bw = NULL, tol = 1e-6, alpDen = 0.7,
+                   colors = viridis(50, begin = 0.2)),
+  # axis layer
+  args.axis = list(ylim = NULL), ...) {
+  
+  
+  # handling params
+  # ----
+  # density
+  args.dens.opts <- args.dens[names(args.dens) %in%
+                                c("resDen", "bw", "tol", "alpDen", "ngr")]
+  agrs.dens.grph <- args.dens[names(args.dens) %in%
+                                c("colours", "values",
+                                  "na.value", "space", "guide", "colors")]
+  # ci
+  args.ci      <- args.ci[names(args.ci) %in% c("se", "shade")]
+  args.cilines <- args.ci[names(args.ci) %in% c("color", "linetype")] 
+  args.cipoly  <- args.ci[names(args.ci) %in% c("se", "shade")]
+  
+  # residuals
+  # rug
+  args.rug.opts <- args.rug[names(args.rug) %in%
+                              c("rug", "jit", "maxpo")]
+  
+  args.rug.grph <- args.rug[names(args.rug) %in%
+                              c("color", "size")]
+  # computations
+  # ----
   ul <- P$fit + P$se ## upper CL
   ll <- P$fit - P$se ## lower CL  
-  if (is.null(ylim)) { # Calculate ylim of plot
+  if (is.null(args.axis$ylim)) { # Calculate ylim of plot
     ylimit <- range(c(
       if (partial.resids || (resDen != "none")) {
         P$p.resid 
@@ -155,23 +183,43 @@ plot.mgcv.smooth.1D <- function(o,
         c(ul, ll) # we add upper and lower limit to the ylim calculus
       }), na.rm = TRUE) 
   }
-<<<<<<< HEAD
-  
-  ylimit <- if (is.null(ylim)){ ylimit <- ylimit + shift } else { ylim }
-  
-  .pl <- ggplot(data=data.frame(x=P$x, y=trans(P$fit+shift), uci=trans(ul+shift), lci=trans(ll-shift)), aes(x=x, y=y)) + 
-    xlim(P$xlim[1], P$xlim[2]) + ylim(trans(ylimit[1]), trans(ylimit[2])) + labs(title = P$main, x = P$xlab, y = P$ylab)
-  
-  if( resDen != "none" && length(P$p.resid)  ){ # Plot conditional residual density
-    if( is.null(dTrans) ){ dTrans <- function(.x){ .x^(1/3) } }
-    
-    .datR <- cbind(P$raw, trans(P$p.resid+shift))
-=======
-  ylimit <- if (is.null(ylim)) { # unless specified
+  ylimit <- if (is.null(args.axis$ylim)) { # unless specified
     ylimit + shift               # we add the shift to ylim
   } else {
-    ylim 
+    args.axis$ylim 
   }
+  # Compute conditional residual density
+  if (resDen != "none") { # joint or cond
+    .datR <- cbind(P$raw, trans(P$p.resid + shift))
+    # Suppress warnings related to ngrid being too small relative to bw. Happens with big dataset.
+    withCallingHandlers({
+      if(is.null(bw)) {
+        bw <- c(dpik(.datR[, 1], range.x = P$xlim, gridsize = ngr[1]), 
+                dpik(.datR[, 2], range.x = ylimit, gridsize = ngr[2]))
+      }
+      estXY <- bkde2D(.datR, range.x = list(P$xlim, ylimit),
+                      gridsize = ngr, bandwidth = bw)
+      if(resDen == "cond") { 
+        # Calculate conditional density of residuals | x
+        estXY$fhat <- estXY$fhat / bkde(.datR[, 1], gridsize = ngr[1],
+                                        range.x = P$xlim, bandwidth = bw[1])$y 
+      }
+    }, warning = function(w) invokeRestart("muffleWarning"))
+    estXY$fhat[estXY$fhat <= tol * dnorm(0, 0, sd(.datR[, 2]))] <- NA 
+  }
+  # sample if too many points (> maxpo)
+  if (partial.resids || rug) {
+    nrs <- length(P$p.resid)
+    ii <- if (nrs > maxpo) {
+      sample(1:nrs, maxpo)
+    } else { 
+      1:nrs 
+    }
+    .datRes <- data.frame(resx = as.vector(P$raw)[ii],
+                          resy = trans(P$p.resid[ii] + shift))
+  }
+  # plots
+  # ----
   # base plot
   .pl <- ggplot(data    = 
                   data.frame(x = P$x,                  # x values
@@ -181,91 +229,54 @@ plot.mgcv.smooth.1D <- function(o,
                 mapping = aes(x = x, y = y)) + 
     xlim(P$xlim[1], P$xlim[2]) +                       # xlim already calculated, from P
     ylim(trans(ylimit[1]), trans(ylimit[2])) +         # ylim 
-    labs(title = P$main, x = P$xlab, y = P$ylab)       # add custom labels
-  
-  # density in background
-  if (resDen != "none") { # Plot conditional residual density
-    .datR <- cbind(P$raw, trans(P$p.resid + shift))
->>>>>>> spacing + more comments
-    # Suppress warnings related to ngrid being too small relative to bw. Happens with big dataset.
-    withCallingHandlers({
-      if(is.null(bw)) {
-        bw <- c(dpik(.datR[, 1], range.x = P$xlim, gridsize = ngr[1]), 
-                dpik(.datR[, 2], range.x = ylimit, gridsize = ngr[2]))
-      }
-      estXY <- bkde2D(.datR, range.x = list(P$xlim, ylimit), gridsize = ngr, bandwidth = bw)
-      if(resDen == "cond") { # Calculate conditional density of residuals | x
-        estXY$fhat <- estXY$fhat / bkde(.datR[, 1], gridsize = ngr[1],
-                                        range.x = P$xlim, bandwidth = bw[1])$y 
-      }
-    }, warning = function(w) invokeRestart("muffleWarning"))
-    estXY$fhat[estXY$fhat <= tol * dnorm(0, 0, sd(.datR[, 2]))] <- NA 
-    .pl <- .pl + 
-      geom_raster(data = data.frame("d" = sqrt(as.numeric(t(estXY$fhat))), 
-                                    "x" = rep(estXY$x1, each = ngr[1]), 
-                                    "y" = rep(estXY$x2, ngr[2])),
-                  mapping = aes(x = x, y = y, fill = d),
-                  inherit.aes = FALSE, alpha = alpDen) + 
-      scale_fill_gradientn(colours  = paletteDen,
-                           na.value = "white")
-  }
-  
+    labs(title = P$main, x = P$xlab, y = P$ylab) +     # add custom labels
+    if (resDen != "none") {
+      .pl <- .pl + geom_raster(data = data.frame("d" = sqrt(as.numeric(t(estXY$fhat))), 
+                                                 "x" = rep(estXY$x1, each = ngr[1]), 
+                                                 "y" = rep(estXY$x2, ngr[2])),
+                               mapping = aes(x = x, y = y, fill = d),
+                               inherit.aes = FALSE,
+                               alpha = ifelse(is.null(args.dens.opts$alpDen),
+                                              0.7, args.dens.opts$alpDen)) + 
+        do.call(scale_fill_gradientn, arg.dens.grph)
+    }
   # Add shade or lines for confidence bands
   if (se) {
-    if (shade) { 
-      .pl <- .pl +
-        geom_polygon(data = data.frame("x" = c(P$x, P$x[n:1], P$x[1]),
-                                       "y" = trans(c(ul, ll[n:1], ul[1]) + shift)), 
-                     mapping = aes(x = x, y = y, fill = shade.col),
-                     inherit.aes = FALSE)
-    } else {
-      .tmpF <- function(pl, ..., linetype = "dashed") # Alter default "linetype"
-      {
-        pl <- pl +
-          geom_line(mapping  = aes(x = x, y = uci),
-                    linetype = linetype, ...) + # upper ci line
-          geom_line(mapping  = aes(x = x, y = lci),
-                    linetype = linetype, ...)   # lower ci line
-      }
-      .pl <- .tmpF(.pl, ...)
-    }
+    if (shade) {
+      .pl <- .pl + do.call(
+        "geom_polygon", c(
+          list(
+            data = data.frame("x" = c(P$x, P$x[n:1], P$x[1]),
+                              "y" = trans(c(ul, ll[n:1], ul[1]) + shift)), 
+            mapping = aes(x = x, y = y)),
+          args.cipoly,
+          inherit.aes = FALSE)
+      )
+    } 
+    .pl <- .pl +
+      do.call(geom_line, list(mapping  = aes(x = x, y = uci)), args.cilines) +
+      do.call(geom_line, list(mapping  = aes(x = x, y = lci)), args.cilines)
   }
-  
-  if( partial.resids || rug ){
-    nrs <- length( P$raw )
-    ii <- if( nrs > maxpo ){ sample(1:nrs, maxpo) } else { 1:nrs }
-    .datRes <- data.frame("resx" = P$raw[ii]) 
-    if( !is.null(P$p.resid) ){ .datRes$resy <- trans(P$p.resid[ii]+shift) }
-  }
-  
   # Add partial residuals
   if (partial.resids && (by.resids | x$by == "NA")) { 
     if (length(P$raw) == length(P$p.resid)) {
-      .tmpF <- function(..., shape = '.', col = "black") # Alter default shape and col
-      {
-        geom_point(data = .datRes, 
-                   mapping = aes(x = resx, y = resy),
-                   na.rm = TRUE,
-                   shape = shape,
-                   col = col, ...)
-      }
-      .pl <- .pl + .tmpF(...)
+      .pl <- .pl + geom_point(data = .datRes, 
+                              mapping = aes(x = resx, y = resy),
+                              na.rm = TRUE,
+                              shape = shape,
+                              col = col, ...)
     } else {
       warning("Partial residuals do not have a natural x-axis location for linear functional terms")
     }
   }
   # Add rug
   if (rug) { 
-    if( jit ){ .datRes$resx <- jitter(.datRes$resx) }
-    .tmpF <- function(pl, ..., size = 0.2) # Alter default "size"
-    {
-      geom_rug(data = .datRes, 
-               mapping = aes(x = x),
-               inherit.aes = FALSE, size = size, alpha = alpha.rug,...)
+    if (jit) {
+      .datRes$resx <- jitter(.datRes$resx)
     }
-    .pl <- .pl + .tmpF(.pl, ...)
+    .pl <- .pl + geom_rug(data = .datRes, 
+                          mapping = aes(x = x),
+                          inherit.aes = FALSE, size = size, alpha = alpha.rug,...)
   } 
-  # ??
-  .pl <- .pl + geom_line(...)
   return( .pl )
 } 
