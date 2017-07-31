@@ -123,7 +123,7 @@ plot.mgcv.smooth.1D <- function(o, residuals = FALSE, rug = TRUE, se = TRUE, n =
   .pl <- ggplot(data=data.frame(x=P$x, y=trans(P$fit+shift), uci=trans(ul+shift), lci=trans(ll-shift)), aes(x=x, y=y)) + 
     xlim(P$xlim[1], P$xlim[2]) + ylim(trans(ylimit[1]), trans(ylimit[2])) + labs(title = P$main, x = P$xlab, y = P$ylab)
   
-  if( resDen != "none" ){ # Plot conditional residual density
+  if( resDen != "none" && length(P$p.resid)  ){ # Plot conditional residual density
     if( is.null(dTrans) ){ dTrans <- function(.x){ .x^(1/3) } }
     
     .datR <- cbind(P$raw, trans(P$p.resid+shift))
@@ -163,9 +163,10 @@ plot.mgcv.smooth.1D <- function(o, residuals = FALSE, rug = TRUE, se = TRUE, n =
   }
   
   if( partial.resids || rug ){
-    nrs <- length( P$p.resid )
+    nrs <- length( P$raw )
     ii <- if( nrs > maxpo ){ sample(1:nrs, maxpo) } else { 1:nrs }
-    .datRes <- data.frame(resx = as.vector(P$raw)[ii], resy = trans(P$p.resid[ii]+shift))
+    .datRes <- data.frame("resx" = P$raw[ii]) 
+    if( !is.null(P$p.resid) ){ .datRes$resy <- trans(P$p.resid[ii]+shift) }
   }
   
   # Add partial residuals

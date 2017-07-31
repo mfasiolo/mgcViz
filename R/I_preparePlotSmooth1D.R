@@ -5,7 +5,7 @@
                                  ylab = NULL, main = NULL, ...) {
   out <- NULL
   if (x$plot.me) {
-    raw <- data[x$term][[1]]
+    raw <- as.vector( data[x$term][[1]] )
     if (is.null(xlim)){ # Generate x sequence for prediction
       xx <- seq(min(raw), max(raw), length = n)
       } else {
