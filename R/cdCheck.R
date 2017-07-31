@@ -17,32 +17,47 @@
 #' @importFrom KernSmooth dpik bkde bkde2D
 #' @rdname cdCheck
 #' @export cdCheck
-cdCheck <- function(o, x, y=NULL, typeRes="deviance", n=c(80, 80), bw=NULL, 
+cdCheck <- function(o, x, y=NULL, type="deviance", n=c(80, 80), bw=NULL, 
                     xlim=NULL, ylim=NULL, palette=viridis(50, begin=0.2), rug=TRUE,
-                    points=TRUE, cont=FALSE, maxp=1e4, tol=1e-6, aFun=NULL, dFun=NULL, 
+                    points=TRUE, dens=TRUE, cont=FALSE, maxpo=1e4, tol=1e-6, aFun=NULL, dFun=NULL, 
                     shape = '.')
 {
   
   ### 1. Preparation
+  type <- match.arg(type, c("deviance", "pearson", "scaled.pearson", 
+                                  "working", "response", "tunif", "tnormal"))
+  
   if( is.null(aFun) ){
     aFun <- function(.dx){
-      return( .dx^0.2 )
+      return( .dx*0 + 1 )
     }
   }
   
   if( is.null(dFun) ){
     dFun <- function(.ed, .gr, .y){
-      d <- dnorm(.gr, 0, sd=sd(.y))
-      d <- sqrt(.ed) - sqrt(d)
+      if( type == "tunif" ){ # Comparing with uniform density
+        d <- sqrt(.ed) - 1
+      } else { # Comparing with Gaussian
+        d <- dnorm(.gr, 0, sd=sd(.y))
+        d <- sqrt(.ed) - sqrt(d)
+      }
       return( sign(d) * abs(d) ^ (1/3) )
     }
   }
-  
-  if( is.null(y) ){ y <- residuals(o, type = typeRes) }
-  
-  data <- o$model
+ 
+  # Choose what kind of residuals or transformed responses to use
+  if( is.null(y) ){
+    if( type %in% c("tunif", "tnormal") ){
+      fam <- fix.family.cdf( o$family )
+      y <- fam$cdf(o$y, o$fitted.values, o$prior.weights, o$sig2, logp = TRUE)
+      if( type == "tnormal" ) { y <- qnorm(y, log.p = TRUE) } else { y <- exp(y) } 
+    } else {
+      y <- residuals(o, type = type) 
+    }
+  }
   
   if( is.character(x) ){ # Get data from dataframe
+    data <- o$model
     if( !(x %in% names(data)) ) stop("(x %in% names(data)) == FALSE")
     x <- data[[x]]
   }
@@ -70,19 +85,21 @@ cdCheck <- function(o, x, y=NULL, typeRes="deviance", n=c(80, 80), bw=NULL,
   good <- complete.cases(y, x)
   y <- y[ good ]
   x <- x[ good ]
-  
   m <- length(good)
   
   ### 2. Density Estimation 
-  if( is.null(bw) ){ bw <- c(dpik(x, range.x=xlim, gridsize=n[1]), 
-                             dpik(y,  range.x=ylim, gridsize=n[2])) }
-  
-  estXY <- bkde2D(cbind(x, y), 
-                  range.x = list(xlim, ylim), 
-                  gridsize = n,
-                  bandwidth = bw)
-  
-  estX <- bkde(x, gridsize = n[1], range.x = xlim, bandwidth = bw[1])
+  # Suppress warnings related to ngrid being too small relative to bw. Happens with big dataset.
+  withCallingHandlers({
+    if( is.null(bw) ){ bw <- c(dpik(x, range.x=xlim, gridsize=n[1]), 
+                               dpik(y,  range.x=ylim, gridsize=n[2])) }
+    
+    estXY <- bkde2D(cbind(x, y), 
+                    range.x = list(xlim, ylim), 
+                    gridsize = n,
+                    bandwidth = bw)
+    
+    estX <- bkde(x, gridsize = n[1], range.x = xlim, bandwidth = bw[1])
+  }, warning = function(w) { invokeRestart("muffleWarning") })
   
   estYcX <- estXY$fhat / estX$y
   
@@ -94,10 +111,16 @@ cdCheck <- function(o, x, y=NULL, typeRes="deviance", n=c(80, 80), bw=NULL,
                     "y" = rep(estXY$x2, n[2]), 
                     "dx" = rep(aFun(estX$y), each=n[1]))
   
-  .pl <- ggplot(data = dat, aes(x=x, y=y, z=z)) + 
-    geom_raster(aes_string(fill = "z", alpha = "dx")) + 
-    scale_fill_gradientn(colours = palette, na.value="white") + 
-    xlim(xlim[1], xlim[2]) + ylim(ylim[1], ylim[2])
+  .pl <- ggplot(data = dat, aes(x=x, y=y, z=z))
+  
+  if( dens ){ 
+    .pl <- .pl + geom_raster(aes_string(fill = "z", alpha = "dx")) + 
+                 scale_fill_gradientn(colours = palette, na.value="white")
+  }
+     
+  .pl <- .pl + xlim(xlim[1], xlim[2]) + ylim(ylim[1], ylim[2])
+  
+  if( all(dat$dx==1) ){ .pl <- .pl + scale_alpha_identity()}
   
   if( cont ){
     .pl <- .pl + geom_contour(color=1, na.rm=T) + labs(alpha="p(x)", fill="z")
@@ -105,7 +128,7 @@ cdCheck <- function(o, x, y=NULL, typeRes="deviance", n=c(80, 80), bw=NULL,
   
   if( rug || points){
     # Subsample some data
-    if( m > maxp ){ tmp <- sample(1:m, maxp) } else { tmp <- 1:m }
+    if( m > maxpo ){ tmp <- sample(1:m, maxpo) } else { tmp <- 1:m }
     subS <- data.frame("x"=x[tmp], "y"=y[tmp])
     
     if( rug ){
