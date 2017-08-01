@@ -1,0 +1,19 @@
+
+.argMaster <- function(nam){
+  
+  nam <- match.arg(nam, "plot.mgcv.smooth.1D")
+  
+  out <- switch(nam,
+                "plot.mgcv.smooth.1D" = list(
+                  "a.rug" = list(jit = FALSE, colour = "black", size = 0.2, alpha = 1), # rug layer
+                  "a.ci" = list(shade = TRUE, unconditional = FALSE, seWithMean = FALSE),
+                  "a.cilin" = list(colour = "blue", linetype = "dashed"), # ci lines layer
+                  "a.cipoly" = list(colour = "light blue", alpha = 0.3), # ci shade layer
+                  "a.res" = list(by.resids = FALSE, colour = "black", shape = 46, na.rm = TRUE), # residuals layer
+                  "a.dens" = list(ngr = c(50, 50), bw = NULL, tol = 1e-6, alpDen = 0.7, 
+                                  colours = viridis(50, begin = 0.2), na.value = "white") # density layer
+                ))
+  
+  return( out )
+  
+}

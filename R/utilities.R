@@ -46,3 +46,14 @@ zto1 <- function(o, a, m){
   q <- ( x[floor(np+1)] + x[ceiling(np)] )/2
   q
 }
+
+# Splits a list into two lists according names g
+.splitList <- function(l, g, n = NULL){
+  
+  l1 <- l[ g ]
+  l[g] <- NULL
+  o <- list(l1, l)
+  names(o) <- n
+  return( o )
+  
+}
