@@ -49,7 +49,7 @@ plot.fs.interaction.1D <- function(o, n = 100, alpha = NULL, legend = TRUE,
                   w.resid = init$w.resid, resDen = resDen, ...)
   attr(o$smooth, "coefficients") <- tmp[["coef"]]
   # Plotting
-  .ggobj <- .plot.fs.interaction.1D(x = o$smooth, P = tmp[["P"]], ylim = ylim,
+  .ggobj <- .plot.fs.interaction.1D(x = o$smooth, P = tmp[["P"]], ylim = ylim, xlim = xlim,
                                     shift = shift, trans = trans, alpha = alpha, ...)
   if(!legend){
     .ggobj <- .ggobj + theme(legend.position="none")
@@ -59,7 +59,7 @@ plot.fs.interaction.1D <- function(o, n = 100, alpha = NULL, legend = TRUE,
 }
 
 # Internal function
-.plot.fs.interaction.1D <- function(x, P = NULL, ylim = NULL, shift = 0,
+.plot.fs.interaction.1D <- function(x, P = NULL, ylim = NULL, xlim = NULL, shift = 0,
                                     trans = I, alpha = NULL, ...) {
   .dat <- data.frame("x"  = rep(P$x, P$nf),
                      "y"  = trans(P$fit + shift),
