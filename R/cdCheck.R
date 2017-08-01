@@ -101,9 +101,10 @@ cdCheck <- function(o, x, y=NULL, type="deviance", n=c(80, 80), bw=NULL,
     estX <- bkde(x, gridsize = n[1], range.x = xlim, bandwidth = bw[1])
   }, warning = function(w) { invokeRestart("muffleWarning") })
   
-  estYcX <- estXY$fhat / estX$y
+  # Add small constant, to avoid dividing by almost zero
+  estYcX <- estXY$fhat / ( estX$y + 1e-8/sqrt(2*pi*var(x)) ) 
   
-  estYcX[ estYcX <= tol*dnorm(0, 0, sd(y)) ] <- NA 
+  estYcX[ estYcX <= tol / sqrt(2*pi*var(y)) ] <- NA 
   
   ### 3. Plotting
   dat <- data.frame("z" = dFun(.ed=as.numeric(t(estYcX)), .gr=estXY$x2, .y=y), 

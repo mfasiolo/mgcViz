@@ -150,11 +150,13 @@ plot.mgcv.smooth.1D <- function(o, n = 100, maxpo = 1e4,
                       gridsize = args.dens.opts$ngr, bandwidth = bw)
       if(args.dens.opts$resDen == "cond") { 
         # Calculate conditional density of residuals | x
-        estXY$fhat <- estXY$fhat / bkde(.datR[, 1], gridsize = args.dens.opts$ngr[1],
-                                        range.x = P$xlim, bandwidth = bw[1])$y 
+        tmp <- 1e-8 / sqrt(2*pi*var(.datR[ , 1])) # Small constant, to avoid dividing by almost zero
+        estXY$fhat <- estXY$fhat / 
+                      ( bkde(.datR[ , 1], gridsize = args.dens.opts$ngr[1], 
+                             range.x = P$xlim, bandwidth = bw[1])$y + tmp )
       }
     }, warning = function(w) invokeRestart("muffleWarning"))
-    estXY$fhat[estXY$fhat <= args.dens.opts$tol * dnorm(0, 0, sd(.datR[, 2]))] <- NA 
+    estXY$fhat[ estXY$fhat <= args.dens.opts$tol / sqrt(2*pi*var(.datR[ , 2])) ] <- NA 
   }
   # sample if too many points (> maxpo)
   if (args.res.opts$partial.resids || args.rug.opts$rug) {
