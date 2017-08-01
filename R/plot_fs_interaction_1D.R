@@ -26,7 +26,7 @@
 #' bm <- gamm(y ~ s(x0)+ s(x1, fac, bs = "fs", k = 5) + s(x2, k = 20))
 #' v <- getViz(bm$gam)
 #' plot(v(2))
-#' plot(v(2), ylim = c(-0.5, 0.5))
+#' plot(v(2), ylim = c(-0.5, 0.5), xlim = c(0.25, 0.75))
 #' @rdname plot.fs.interaction.1D
 #' @export plot.fs.interaction.1D
 #' 
@@ -67,6 +67,9 @@ plot.fs.interaction.1D <- function(o, n = 100, alpha = NULL, legend = TRUE,
   if (is.null(ylim)) {
     ylim <- range(.dat$y) 
   }
+  if (is.null(xlim)) {
+    xlim <- range(.dat$x) 
+  }
   if (is.null(alpha)){
     alpha <- 
       if (P$nf < 10){
@@ -81,7 +84,8 @@ plot.fs.interaction.1D <- function(o, n = 100, alpha = NULL, legend = TRUE,
     ggplot(data = .dat, aes("x" = x, "y" = y, "colour" = id)) +
     geom_line(alpha = alpha) + 
     labs(title = P$main, x = P$xlab, y = P$ylab) +
-    ylim(ylim[1], ylim[2])
+    ylim(ylim[1], ylim[2]) +
+    xlim(xlim[1], xlim[2])
   return(.pl)
 } ## end plot.fs.interaction
 

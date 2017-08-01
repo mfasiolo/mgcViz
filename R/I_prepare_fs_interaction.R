@@ -15,7 +15,7 @@
   xlabel <- if (is.null(xlab)) x$base$term else xlab
   ylabel <- if (is.null(ylab)) label else ylab
   return(list(
-    X = X, scale = TRUE, se = FALSE, raw = raw,
+    X = X, scale = TRUE, se = FALSE, raw = raw, xlim = xlim, ylim = ylim,
     xlab = xlabel, ylab = ylabel, main = "", x = xx, n = n, nf = nf
   ))
 } 
