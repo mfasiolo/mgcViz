@@ -8,6 +8,7 @@
 #' @param se, ... 
 #' @param fv.terms, ...
 #' @return a list
+#' @noRd
 .initializeXXX <- function(o, unconditional, residuals, resDen, se, fv.terms) {
   if (unconditional) { # Use Bayesian cov matrix including smoothing parameter uncertainty?
     if (is.null(o$gObj$Vc)) { 
