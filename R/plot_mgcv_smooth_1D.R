@@ -22,16 +22,20 @@
 #'                      bw = NULL, tol = 1e-6, alpDen = 0.7,
 #'                      colors = viridis(50, begin = 0.2), na.value = "white"))
 #' plot(v(1), args.ci = list(shade = FALSE, se = TRUE))
-#' 
-#' # not working because of missing values - so geom_polygon fails...
-#' plot(v(1),
-#'      args.rug = list(rug = FALSE),
-#'      args.cilines = list(color = "blue", linetype = "dashed"), 
-#'      args.dens = list(resDen = "cond", ngr = c(50, 50), # density layer
-#'                      bw = NULL, tol = 1e-6, alpDen = 0.7,
-#'                      colors = viridis(50, begin = 0.2), na.value = "white"),
+#' plot(v(1), args.rug = list(rug = TRUE, jit = TRUE, colour = "orange", aplha = 0.5),
+#'      args.cilines = list(color = "blue", linetype = "dashed", size = 3), 
+#'      args.dens = list(resDen = "none"),
+#'      args.residuals = list(by.resids = FALSE, shape = 15, size = 0.4),
+#'      args.cipoly = list(colour = "gray80", fill = "gray80", alpha = 1),
 #'      args.axis = list(main = "TEST", xlab = "AXIS 1", ylab = "AXIS 2",
 #'                       xlim = c(0, 4), ylim = c(0, 2)))
+#' plot(v(1), args.rug = list(rug = TRUE, jit = TRUE, colour = "orange", aplha = 0.5),
+#'      args.cilines = list(color = "blue", linetype = "dashed", size = 3), 
+#'      args.dens = list(resDen = "none"),
+#'      args.residuals = list(by.resids = FALSE, shape = 15, size = 0.4),
+#'      args.cipoly = list(colour = "gray80", fill = "gray80", alpha = 1),
+#'      args.axis = list(main = "TEST", xlab = "AXIS 1", ylab = "AXIS 2",
+#'                       xlim = c(-10, 10), ylim = c(-10, 10)))
 #' @rdname plot.mgcv.smooth.1D
 #' @export plot.mgcv.smooth.1D
 plot.mgcv.smooth.1D <- function(o, n = 100, maxpo = 1e4,
@@ -65,7 +69,7 @@ plot.mgcv.smooth.1D <- function(o, n = 100, maxpo = 1e4,
                   w.resid = init$w.resid, resDen = args.dens$resDen)
   attr(o$smooth, "coefficients") <- tmp[["coef"]]
   # Plotting
-  .ggobj <- .plot.mgcv.smooth.1D(x = init$o$smooth, P = tmp[["P"]],
+  .ggobj <- .plot.mgcv.smooth.1D(x = init$o$smooth, P = tmp[["P"]], n = n,
                                  shift = shift, trans = trans, 
                                  args.rug = args.rug,
                                  args.ci = args.ci, # ci lines layer
@@ -112,7 +116,7 @@ plot.mgcv.smooth.1D <- function(o, n = 100, maxpo = 1e4,
   args.rug.opts <- args.rug[names(args.rug) %in%
                               c("rug", "jit")]
   args.rug.grph <- args.rug[names(args.rug) %in%
-                              c("color", "size")]
+                              c("color", "colour", "size", "alpha")]
   # computations ----
   ul <- P$fit + P$se ## upper CL
   ll <- P$fit - P$se ## lower CL  
@@ -164,11 +168,11 @@ plot.mgcv.smooth.1D <- function(o, n = 100, maxpo = 1e4,
                           resy = trans(P$p.resid[ii] + shift))
   }
   # base plot ----
-  dataB <- data.frame(x = P$x,                  # x values
+  .dataB <- data.frame(x = P$x,                  # x values
                       y = trans(P$fit + shift), # fitted + shift, after trans if necessary
                       uci = trans(ul + shift),  # upper confidence bound + shift & trans
                       lci = trans(ll + shift)) # lower confidence bound + shift & trans
-  .pl <- ggplot(data    = dataB,
+  .pl <- ggplot(data    = .dataB,
                 mapping = aes(x = x, y = y)) + 
     xlim(P$xlim[1], P$xlim[2]) +                       # xlim already calculated, from P
     ylim(trans(ylimit[1]), trans(ylimit[2])) +         # ylim 
@@ -188,10 +192,13 @@ plot.mgcv.smooth.1D <- function(o, n = 100, maxpo = 1e4,
   # Add shade or lines for confidence bands
   if (args.ci$se) {
     if (args.ci$shade) {
+      .dataPoly <- .dataB
+      .dataPoly$uci[.dataPoly$uci > trans(ylimit[2])] <- ylimit[2]
+      .dataPoly$lci[.dataPoly$lci < trans(ylimit[1])] <- ylimit[1]
       .pl <- .pl +
         do.call(geom_polygon, c(list(
-          data = data.frame("x" = c(dataB$x, dataB$x[n:1]),    # see below
-                            "y" = c(dataB$uci, dataB$lci[n:1])),
+          data = data.frame("x" = c(.dataPoly$x, .dataPoly$x[nrow(.dataPoly):1]),   
+                            "y" = c(.dataPoly$uci, .dataPoly$lci[nrow(.dataPoly):1])),
           mapping = aes(x = x, y = y)),
           args.cipoly,
           inherit.aes = FALSE)
