@@ -82,7 +82,7 @@ plot.mgcv.smooth.1D <- function(o, n = 100, maxpo = 1e4,
   with(a.all, {
     tmp <- c("o", "g")
     assign("a.rug", .splitList(a.rug, g = c("rug", "jit"), n = tmp), envir = env)
-    assign("a.dens", .splitList(a.dens, g = c("bw", "tol", "ngr", "alpDen"), n = tmp), envir = env)
+    assign("a.dens", .splitList(a.dens, g = c("bw", "tol", "ngr", "alpDen", "dTrans"), n = tmp), envir = env)
     assign("a.res", .splitList(a.res, g = c("by.resids"), n = tmp), envir = env)
     assign("a.ci", a.ci, envir = env)
     assign("a.cilin", a.cilin, envir = env)
@@ -142,7 +142,7 @@ plot.mgcv.smooth.1D <- function(o, n = 100, maxpo = 1e4,
   # (conditional|joint) density
   if (resDen != "none") {
     .pl <- .pl +
-      geom_raster(data = data.frame("d" = sqrt(as.numeric(t(dXY$fhat))), 
+      geom_raster(data = data.frame("d" = a.dens$o$dTrans(as.numeric(t(dXY$fhat))), 
                                     "x" = rep(dXY$x1, each = a.dens$o$ngr[1]), 
                                     "y" = rep(dXY$x2, a.dens$o$ngr[2])),
                   mapping = aes(x = x, y = y, fill = d),
