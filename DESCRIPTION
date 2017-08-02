@@ -12,6 +12,7 @@ Imports:
   plotly, 
   shiny,
   miniUI,
+  matrixStats,
   viridis
 Suggests:
   plyr,
