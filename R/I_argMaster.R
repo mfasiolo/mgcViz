@@ -4,7 +4,7 @@
 #' @return A list, with default options and graphical parameters.
 #' @noRd
 .argMaster <- function(nam){
-  nam <- match.arg(nam, "plot.mgcv.smooth.1D", "plot.mgcv.smooth.2D", "plot.fs.interaction")
+  nam <- match.arg(nam, c("plot.mgcv.smooth.1D", "plot.mgcv.smooth.2D", "plot.fs.interaction"))
   out <- switch(nam,
                 "plot.mgcv.smooth.1D" = list(
                   "a.rug" = list(jit = FALSE, colour = "black", size = 0.2, alpha = 1), # rug layer
@@ -16,6 +16,6 @@
                                   colours = viridis(50, begin = 0.2), na.value = "white") # density layer
                 ),
                 "plot.mgcv.smooth.2D" = list(),
-                "plot.fs.intercation" = list())
+                "plot.fs.interaction" = list())
   return(out)
 }

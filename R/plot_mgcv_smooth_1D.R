@@ -176,6 +176,7 @@ plot.mgcv.smooth.1D <- function(o, n = 100, maxpo = 1e4,
                 c(list(
                   data = .datRes, 
                   mapping = aes(x = resx, y = resy)),
+                  na.rm = TRUE,
                   a.res$o$g)
         )
     } else {
