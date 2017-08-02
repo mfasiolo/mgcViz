@@ -88,7 +88,7 @@ shine.qqGam <- function(obj){
       if (rstudioapi::isAvailable()){
         callText <- paste0(
           # get call as a character (dirty)
-          "zoom(", paste(format(attr(o, "call")), collapse = ""), "), ",
+          "zoom(", paste(format(attr(obj, "call")), collapse = ""), ", ",
           ifelse(!is.null(ranges$x),
                  sprintf("xlim = %s, ", deparse(signif(ranges$x, 4))), ""),
           ifelse(!is.null(ranges$y),
