@@ -31,10 +31,10 @@
 #' library(mgcViz)
 #' set.seed(0)
 #' n.samp <- 400
-#' dat <- gamSim(1,n=n.samp,dist="binary",scale=.33)
+#' dat <- gamSim(1,n = n.samp, dist = "binary", scale = .33)
 #' p <- binomial()$linkinv(dat$f) ## binomial p
-#' n <- sample(c(1,3),n.samp,replace=TRUE) ## binomial n
-#' dat$y <- rbinom(n,n,p)
+#' n <- sample(c(1, 3), n.samp, replace = TRUE) ## binomial n
+#' dat$y <- rbinom(n, n, p)
 #' dat$n <- n
 #' lr.fit <- gam(y/n ~ s(x0) + s(x1) + s(x2) + s(x3)
 #'               , family = binomial, data = dat,
@@ -132,41 +132,33 @@ qq.gam <- function(object, rep = 10,
                     ci.col = "gray80",
                     shape = '.', ...) {
   
-  CI <- match.arg(CI)
-  method <- match.arg(method)
-  type <- match.arg(type)
-  if( level<0 || level>1 ){ stop("`level' should be between 0 and 1") }
-  if( method == "simul2" ){ CI <- "none" }
-  
-  if( is.null(sortFun) ){ sortFun <- function(.x) sort(.x, method="quick") }
-  
-  if( is.null(discrete) ){ discrete <- length(object$y) > 1e4 }
-  
-  force(rep.col)
-  
+  CI     <- match.arg(CI, c("normal", "quantile", "none"))
+  method <- match.arg(method, c("simul1", "simul2", "tnormal", "tunif", "normal"))
+  type   <- match.arg(type, c("deviance", "pearson", "response"))
+  if (level < 0 || level > 1){
+    stop("`level' should be between 0 and 1") 
+  }
+  if (method == "simul2") CI <- "none"
+  if (is.null(sortFun))  sortFun  <- function(.x) sort(.x, method = "quick")
+  if (is.null(discrete)) discrete <- length(object$y) > 1e4
+  # force(rep.col)
   if (inherits(object, c("glm", "gam"))) {
     if (is.null(object$sig2)) 
       object$sig2 <- summary(object)$dispersion
   } else {
     stop("'object' is not a glm or gam.")
   }
-  
   object$na.action <- NULL
-  
-  P0 <- .compute.qq.gam(o=object, type=type, method=method, CI=CI, 
-                       level=level, rep=rep, sortFun=sortFun)
-
-  P1 <- .discretize.qq.gam(P=P0, discrete=discrete, ngr=ngr, CI=(CI!="none"), show.reps=show.reps)
-  
-  pl <- .plot.qq.gam(P=P1, CI=(CI!="none"), show.reps=show.reps, rl.col=rl.col, rep.col=rep.col, 
-                     rep.alpha=rep.alpha, ci.col=ci.col, shape=shape)
-  
-  out <- list("ggPlot"=pl, "store"=P0)
-  class(out) <- "qqGam"
-  
+  P0 <- .compute.qq.gam(o = object, type = type, method = method, CI = CI, 
+                       level = level, rep = rep, sortFun = sortFun)
+  P1 <- .discretize.qq.gam(P = P0, discrete = discrete, ngr = ngr,
+                           CI = (CI != "none"), show.reps = show.reps)
+  pl <- .plot.qq.gam(P = P1, CI = (CI != "none"), show.reps = show.reps,
+                     rl.col = rl.col, rep.col = rep.col, 
+                     rep.alpha = rep.alpha, ci.col = ci.col, shape = shape)
+  out <- structure(list("ggPlot" = pl, "store" = P0),
+                   class = "qqGam")
   return(out)
 }
-
-
 
 

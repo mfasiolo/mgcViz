@@ -42,7 +42,7 @@
   n <- length(D)
   if (method == "simul2"){
     CI <- "none" # CI do not make sense with this method
-    fam <- mgcv::fix.family.qf(o$family)
+    fam <- fix.family.qf(o$family)
     ix <- frankv(D) # Or should this be 1:n??
     U <- (ix - 0.5)/n
     if (!is.null(fam$qf)) { # If CDF not available use first method
@@ -69,7 +69,7 @@
       for (ii in 1:rep) {
         yr <- fam$rd(o$fitted.values, o$prior.weights, o$sig2)
         o$y <- yr
-        dm[[ii]] <- sortFun( residuals(o, type = type) )
+        dm[[ii]] <- sortFun(residuals(o, type = type))
       }
       dm <- do.call("cbind", dm)
       Dq <- .quBySort(as.numeric(dm), (1:n - 0.5)/n, sortFun)
