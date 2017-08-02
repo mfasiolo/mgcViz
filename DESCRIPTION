@@ -13,10 +13,12 @@ Imports:
   shiny,
   miniUI,
   matrixStats,
-  viridis
+  viridis,
+  colourpicker
 Suggests:
   plyr,
-  gridExtra
+  gridExtra,
+  rstudioapi
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
