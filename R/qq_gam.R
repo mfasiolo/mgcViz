@@ -157,7 +157,8 @@ qq.gam <- function(object, rep = 10,
                      rl.col = rl.col, rep.col = rep.col, 
                      rep.alpha = rep.alpha, ci.col = ci.col, shape = shape)
   out <- structure(list("ggPlot" = pl, "store" = P0),
-                   class = "qqGam")
+                   "class" = "qqGam", 
+                   "call" = match.call())
   return(out)
 }
 

@@ -3,7 +3,7 @@
 #' @import shiny
 #' @import miniUI
 #' @export
-shiny_qq_gam <- function(obj){
+shine.qqGam <- function(obj){
   name_obj <- deparse(substitute(obj))
   ui <- miniPage(
     gadgetTitleBar("Q-Q GAM"),
@@ -57,7 +57,6 @@ shiny_qq_gam <- function(obj){
   )
   server <- function(input, output, session) {
     ranges <- reactiveValues(x = NULL, y = NULL)
-    qq <- qq.gam(obj)
     shape <- reactive(
       if (input$shape %in% as.character(1:25)) {
         as.integer(input$shape)
@@ -66,7 +65,7 @@ shiny_qq_gam <- function(obj){
       }
     )
     output$plot <- renderPlot(
-      zoom(qq, xlim = ranges$x, ylim = ranges$y,
+      zoom(obj, xlim = ranges$x, ylim = ranges$y,
            shape = shape(),
            CI = as.logical(input$ci),
            show.reps = as.logical(input$show_reps),
@@ -88,7 +87,8 @@ shiny_qq_gam <- function(obj){
     observeEvent(input$done, {
       if (rstudioapi::isAvailable()){
         callText <- paste0(
-          "zoom(qq.gam(", name_obj, "), ",
+          # get call as a character (dirty)
+          "zoom(", paste(format(attr(o, "call")), collapse = ""), "), ",
           ifelse(!is.null(ranges$x),
                  sprintf("xlim = %s, ", deparse(signif(ranges$x, 4))), ""),
           ifelse(!is.null(ranges$y),

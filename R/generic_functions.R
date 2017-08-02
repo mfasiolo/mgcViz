@@ -22,3 +22,6 @@ zoom <- function(x, ...) UseMethod("zoom")
 .prepare <- function(...) UseMethod(".prepare")
 
 .plot <- function(...) UseMethod(".plot")
+
+#' @export
+shine <- function(...) UseMethod("shine")
