@@ -2,7 +2,7 @@
 #' 
 #' @importFrom KernSmooth dpik bkde bkde2D
 #' @importFrom viridis viridis
-#' @description XXX
+#' @description Plotting one dimensional smooth effects.
 #' @name plot.mgcv.smooth.1D
 #' @examples 
 #' library(mgcViz)
@@ -38,9 +38,9 @@ plot.mgcv.smooth.1D <- function(o, n = 100, maxpo = 1e4,
                                 a.rug = list(), a.ci = list(), a.cilin = list(), a.cipoly = list(),
                                 a.res = list(), a.dens = list()) {
   
-  # 1) Deal with arguments
+  # 1) Deal with arguments ----
   # Get internal arguments lists 
-  a.all <- .argMaster( as.character(match.call()[[1]]) ) 
+  a.all <- .argMaster(as.character(match.call()[[1]])) 
   
   # Matching internal and external lists
   for(nam in names(a.all)){
@@ -49,7 +49,7 @@ plot.mgcv.smooth.1D <- function(o, n = 100, maxpo = 1e4,
   
   resDen <- match.arg(resDen, c("none", "cond", "joint"))
   
-  # 2) Prepare for plotting
+  # 2) Prepare for plotting ----
   o$smooth <- o$gObj$smooth[[o$ism]]
   fv.terms <- o$store$termsFit[ , o$store$np + o$ism]
   init <- .initializeXXX(o, a.all$a.ci$unconditional, residuals, resDen, se, fv.terms)
@@ -65,23 +65,18 @@ plot.mgcv.smooth.1D <- function(o, n = 100, maxpo = 1e4,
                   w.resid = init$w.resid, resDen = resDen)
   attr(o$smooth, "coefficients") <- tmp[["coef"]]
   
-  # 3) Plotting
+  # 3) Plotting ----
   .ggobj <- .plot.mgcv.smooth.1D(x = init$o$smooth, P = tmp[["P"]], n = n, se = se,
                                  shift = shift, trans = trans, maxpo = maxpo, partial.resids = init$partial.resids,
                                  resDen = resDen, ylim = ylim, rug = rug, a.all = a.all)
-  
-  # add theme to plot, can be overriden later
-  .ggobj <- .ggobj + theme_bw() +
-    theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
   attr(.ggobj, "rawData") <- tmp[["P"]]
   return(.ggobj)
 }
 
 #' @noRd
-.plot.mgcv.smooth.1D <- function(x, P, n, se, shift, trans, maxpo, partial.resids, resDen, ylim, rug, a.all) { # axis layer
+.plot.mgcv.smooth.1D <- function(x, P, n, se, shift, trans, maxpo,
+                                 partial.resids, resDen, ylim, rug, a.all) { # axis layer
   # handling params ----
-  # density
-  
   # Splitting each argument list in options 'o' and graphical 'g'. Notice the '<<-'.
   env <- environment()
   with(a.all, {
@@ -117,10 +112,10 @@ plot.mgcv.smooth.1D <- function(o, n = 100, maxpo = 1e4,
   # Compute conditional residual density
   if (resDen != "none") { # joint or cond
     dXY <- do.call(".fastKernDens", c(list("dat" = cbind(P$raw, trans(P$p.resid + shift)),
-                                           "xlimit" = P$xlim, "ylimit" = ylimit, "cond" = (resDen=="cond")), 
+                                           "xlimit" = P$xlim, "ylimit" = ylimit,
+                                           "cond" = (resDen == "cond")), 
                                       a.dens$o))$dXY
   }
-  
   # sample if too many points (> maxpo)
   if (partial.resids || rug) {
     nrs <- length(P$p.resid)
@@ -138,10 +133,10 @@ plot.mgcv.smooth.1D <- function(o, n = 100, maxpo = 1e4,
                        y = trans(P$fit + shift), # fitted + shift, after trans if necessary
                        uci = trans(ul + shift),  # upper confidence bound + shift & trans
                        lci = trans(ll + shift)) # lower confidence bound + shift & trans
-  .pl <- ggplot(data    = .dataB,
-                mapping = aes(x = x, y = y)) + 
-    xlim(P$xlim[1], P$xlim[2]) +                       # xlim already calculated, from P
-    ylim(trans(ylimit[1]), trans(ylimit[2])) +         # ylim 
+  .pl <- 
+    ggplot(data    = .dataB,
+           mapping = aes(x = x, y = y)) + 
+    coord_cartesian(xlim = P$xlim, ylim = trans(ylimit)) +         # ylim 
     labs(title = P$main, x = P$xlab, y = P$ylab)      # add custom labels
   
   # (conditional|joint) density
@@ -208,8 +203,15 @@ plot.mgcv.smooth.1D <- function(o, n = 100, maxpo = 1e4,
         a.rug$g)
       )
   }
+  
   # Add mean (or quantile) effect
   .pl <- .pl + geom_line()
+  
+  # add theme to plot, can be overriden later
+  .pl <- .pl + theme_bw() +
+    theme(panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank())
+  
   return(.pl)
 } 
 
