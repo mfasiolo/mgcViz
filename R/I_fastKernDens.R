@@ -14,6 +14,7 @@
     dXY <- bkde2D(dat, range.x = list(xlimit, ylimit), gridsize = ngr, bandwidth = bw)
     
     # Estimate conditional density
+    dX <- NULL
     if( cond ) { 
       # Calculate conditional density of residuals | x
       tmp <- 1e-8 / sqrt(2*pi*var(dat[ , 1])) # Small constant, to avoid dividing by almost zero

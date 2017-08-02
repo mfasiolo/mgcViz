@@ -32,7 +32,7 @@
 #' @rdname plot.mgcv.smooth.1D
 #' @export plot.mgcv.smooth.1D
 plot.mgcv.smooth.1D <- function(o, n = 100, maxpo = 1e4,
-                                shift = 0, trans = I, residuals = TRUE,
+                                shift = 0, trans = I, residuals = FALSE,
                                 rug = TRUE, se = TRUE, resDen = "none", xlim = NULL, ylim = NULL,
                                 main = NULL, xlab = NULL, ylab = NULL,
                                 a.rug = list(), a.ci = list(), a.cilin = list(), a.cipoly = list(),
@@ -116,16 +116,19 @@ plot.mgcv.smooth.1D <- function(o, n = 100, maxpo = 1e4,
                                            "cond" = (resDen == "cond")), 
                                       a.dens$o))$dXY
   }
+  
   # sample if too many points (> maxpo)
   if (partial.resids || rug) {
-    nrs <- length(P$p.resid)
+    nrs <- length( P$raw )
     ii <- if (nrs > maxpo) {
       sample(1:nrs, maxpo)
     } else { 
       1:nrs 
     }
-    .datRes <- data.frame(resx = as.vector(P$raw)[ii],
-                          resy = trans(P$p.resid[ii] + shift))
+    .datRes <- data.frame(resx = as.vector(P$raw)[ii])
+    if( !is.null(P$p.resid) ){ # If rug==T but residuals==F then P$p.resid is NULL
+      .datRes$resy <- trans(P$p.resid[ii]+shift) 
+    }
   }
   
   # base plot ----
