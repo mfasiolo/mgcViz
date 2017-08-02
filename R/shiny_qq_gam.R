@@ -90,9 +90,9 @@ shiny_qq_gam <- function(obj){
         callText <- paste0(
           "zoom(qq.gam(", name_obj, "), ",
           ifelse(!is.null(ranges$x),
-                 sprintf("xlim = %s, ", deparse(round(ranges$x, 2))), ""),
+                 sprintf("xlim = %s, ", deparse(signif(ranges$x, 4))), ""),
           ifelse(!is.null(ranges$y),
-                 sprintf("ylim = %s, ", deparse(round(ranges$y, 2))), ""),
+                 sprintf("ylim = %s, ", deparse(signif(ranges$y, 4))), ""),
           "CI = ", input$ci, ", ",
           "show.reps = ", input$show_reps, ", ",
           "rep.col = \"", input$color_rep, "\", ",
