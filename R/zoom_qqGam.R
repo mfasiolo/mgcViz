@@ -23,28 +23,26 @@
 #' zoom(o, xlim = c(0, 1), show.reps = T, rep.alpha = 0.1, shape = 19)
 #' @rdname zoom.qqGam
 #' @export zoom.qqGam
-zoom.qqGam <- function(o, xlim=NULL, ylim=NULL, discrete=NULL, ngr=1e3, adGrid=TRUE, CI=FALSE, show.reps=F, 
-                       rep.col = 1, rep.alpha = 0.05, rl.col = 2, shape = '.', ci.col = "gray80")
-{
+zoom.qqGam <- function(o, xlim = NULL, ylim = NULL, discrete = NULL, ngr = 1e3,
+                       adGrid = TRUE, CI = FALSE, show.reps = F, 
+                       rep.col = 1, rep.alpha = 0.05, rl.col = 2,
+                       shape = '.', ci.col = "gray80") {
   P <- o$store
-  
   # Subset data according to xlim
-  if( !is.null(xlim) && adGrid ){
+  if (!is.null(xlim) && adGrid) {
     good <- which(P$Dq > xlim[1] & P$Dq < xlim[2])
     P$Dq <- P$Dq[good]
-    P$D <- P$D[good]
+    P$D  <- P$D[good]
     P$dm <- P$dm[good, ]
-    P$conf <- P$conf[ , good]
+    P$conf <- P$conf[, good]
   }
-  
-  if( is.null(discrete) ){ discrete <- length(P$Dq) > 1e4 }
-  
-  P <- .discretize.qq.gam(P=P, discrete=discrete, ngr=ngr, CI=CI, show.reps=show.reps)
-  
-  pl <- .plot.qq.gam(P=P, CI=CI, show.reps=show.reps, rl.col=rl.col, rep.col=rep.col, 
-                     rep.alpha=rep.alpha, ci.col=ci.col, shape=shape, xlimit = xlim, ylimit = ylim)
-  
-  return( pl )
+  if(is.null(discrete)) discrete <- length(P$Dq) > 1e4 
+  P <- .discretize.qq.gam(P = P, discrete = discrete, ngr = ngr,
+                          CI = CI, show.reps = show.reps)
+  .pl <- .plot.qq.gam(P = P, CI = CI, show.reps = show.reps, rl.col = rl.col,
+                      rep.col = rep.col, rep.alpha = rep.alpha, ci.col = ci.col,
+                      shape = shape, xlimit = xlim, ylimit = ylim)
+  return(.pl)
 }
 
 
