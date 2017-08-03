@@ -77,14 +77,17 @@
   }
   
   # Calculate confidence intervals
-  alpha <- (1 - level)/2
-  if (CI == "quantile") {
-    conf <- rbind(rowOrderStats(dm, which = ceiling(rep * alpha)),
-                  rowOrderStats(dm, which = ceiling(rep * (1 - alpha))))
-  }
-  if (CI == "normal") {
-    sdq <- rowSds(dm)
-    conf <- rbind(qnorm(alpha, Dq, sdq), qnorm(1 - alpha, Dq, sdq))
+  if( !is.null(Dq) )
+  {
+    alpha <- (1 - level)/2
+    if (CI == "quantile") {
+      conf <- rbind(rowOrderStats(dm, which = ceiling(rep * alpha)),
+                    rowOrderStats(dm, which = ceiling(rep * (1 - alpha))))
+    }
+    if (CI == "normal") {
+      sdq <- rowSds(dm)
+      conf <- rbind(qnorm(alpha, Dq, sdq), qnorm(1 - alpha, Dq, sdq))
+    }
   }
   
   return(list(
@@ -151,6 +154,6 @@
   }
   return(list(
     "D" = D, "Dq" = Dq, "dm" = dm, "conf" = conf, 
-               "method" = method, "ylab" = paste("normalize", type, "residuals")
+    "method" = method, "ylab" = paste("normalize", type, "residuals")
   ))
 }
