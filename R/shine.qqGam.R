@@ -3,6 +3,25 @@
 #' @import shiny
 #' @import miniUI
 #' @export
+#' @examples 
+#' \dontrun{
+#' 
+#' ## simulate binomial data...
+#' library(mgcv)
+#' library(mgcViz)
+#' set.seed(0)
+#' n.samp <- 400
+#' dat <- gamSim(1,n = n.samp, dist = "binary", scale = .33)
+#' p <- binomial()$linkinv(dat$f) ## binomial p
+#' n <- sample(c(1, 3), n.samp, replace = TRUE) ## binomial n
+#' dat$y <- rbinom(n, n, p)
+#' dat$n <- n
+#' lr.fit <- gam(y/n ~ s(x0) + s(x1) + s(x2) + s(x3)
+#'               , family = binomial, data = dat,
+#'               weights = n, method = "REML")
+#' # launch shiny gagdet
+#' shine(qq.gam(lr.fit))
+#' }
 shine.qqGam <- function(obj){
   name_obj <- deparse(substitute(obj))
   ui <- miniPage(
