@@ -179,8 +179,7 @@ plot.mgcv.smooth.1D <- function(o, n = 100, maxpo = 1e4,
                 c(list(
                   data = .datRes, 
                   mapping = aes(x = resx, y = resy)),
-                  na.rm = TRUE,
-                  a.res$o$g)
+                  a.res$g)
         )
     } else {
       warning("Partial residuals do not have a natural x-axis location for linear functional terms")
