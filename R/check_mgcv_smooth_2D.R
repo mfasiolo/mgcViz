@@ -39,12 +39,12 @@ check.mgcv.smooth.2D <- function(o, typeRes="deviance", binw1=NULL, binw2=NULL,
   
   o$smooth <- o$gObj$smooth[[o$ism]]
   
-  se <- FALSE; jit <- NULL; unconditional <- FALSE; residuals=FALSE;
   # This creates/modifies variables in the environment.
   # INPUTS: unconditional, o, residuals, se
   # NEW/MODIFIED VARIABLES: o, w.resid, partial.resids, se2.mult, se1.mult, se, fv.terms, order  
   fv.terms <- o$store$termsFit[ , o$store$np + o$ism]
-  init <- .initializeXXX(o, unconditional, residuals, resDen, se, fv.terms)
+  init <- .initializeXXX(o = o, unconditional = FALSE, residuals = FALSE, resDen = FALSE, se = FALSE, 
+                         fv.terms = o$store$termsFit[ , o$store$np + o$ism])
   # affect initialize output
   o <- init$o
   w.resid <- init$w.resid
@@ -57,12 +57,9 @@ check.mgcv.smooth.2D <- function(o, typeRes="deviance", binw1=NULL, binw2=NULL,
   
   # Prepare for plotting
   P <- .createP(sm=o$smooth, x=o$gObj, partial.resids=partial.resids,
-                         rug=FALSE, se=FALSE, scale=FALSE, n=NULL, n2=nco,
-                         pers=FALSE, theta=NULL, phi=NULL, jit=NULL, xlab=NULL, ylab=NULL, main=NULL, label=term.lab,
-                         ylim=ylimit, xlim=xlimit, too.far=0, shade=NULL, shade.col=NULL,
-                         se1.mult=NULL, se2.mult=NULL, shift=0, trans=I,
-                         by.resids=FALSE, scheme=scheme, seWithMean=NULL, fitSmooth=fv.terms,
-                         w.resid=w.resid)[["P"]] #, ...) # ... not needed here I guess
+                se=FALSE, n=NULL, n2=nco, xlab=NULL, ylab=NULL, main=NULL, 
+                ylim=ylimit, xlim=xlimit, too.far=0, se1.mult=NULL, se2.mult=NULL, 
+                seWithMean=NULL, fitSmooth=fv.terms, w.resid=w.resid, resDen=FALSE)[["P"]] #, ...) # ... not needed here, I guess
   
   X <- data.frame("x"=rep(P$x, nco), "y"=rep(P$y, each=nco))
   X$fit <- P$fit
@@ -142,5 +139,5 @@ check.mgcv.smooth.2D <- function(o, typeRes="deviance", binw1=NULL, binw2=NULL,
   
   class(.pl) <- "check.smooth.2D"
   
-  return( invisible(.pl) )
+  return( .pl )
 }
