@@ -17,15 +17,18 @@
 #' @importFrom KernSmooth dpik bkde bkde2D
 #' @rdname cdCheck
 #' @export cdCheck
-cdCheck <- function(o, x, y=NULL, type="deviance", n=c(80, 80), bw=NULL, 
+cdCheck <- function(o, x, y=NULL, type="auto", n=c(80, 80), bw=NULL, 
                     xlim=NULL, ylim=NULL, palette=viridis(50, begin=0.2), rug=TRUE,
                     points=TRUE, dens=TRUE, cont=FALSE, maxpo=1e4, tol=1e-6, aFun=NULL, dFun=NULL, 
                     shape = '.')
 {
   
   ### 1. Preparation
-  type <- match.arg(type, c("deviance", "pearson", "scaled.pearson", 
-                                  "working", "response", "tunif", "tnormal"))
+  type <- match.arg(type, c("auto", "deviance", "pearson", "scaled.pearson", 
+                            "working", "response", "tunif", "tnormal"))
+  
+  # Returns the appropriate residual type for each GAM family
+  if( type=="auto" ) { type <- .getResTypeAndMethod(o$family$family)$type }
   
   if( is.null(aFun) ){
     aFun <- function(.dx){
@@ -45,16 +48,8 @@ cdCheck <- function(o, x, y=NULL, type="deviance", n=c(80, 80), bw=NULL,
     }
   }
  
-  # Choose what kind of residuals or transformed responses to use
-  if( is.null(y) ){
-    if( type %in% c("tunif", "tnormal") ){
-      fam <- fix.family.cdf( o$family )
-      y <- fam$cdf(o$y, o$fitted.values, o$prior.weights, o$sig2, logp = TRUE)
-      if( type == "tnormal" ) { y <- qnorm(y, log.p = TRUE) } else { y <- exp(y) } 
-    } else {
-      y <- residuals(o, type = type) 
-    }
-  }
+  # Get residuals or transformed responses
+  if( is.null(y) ){ y <- residuals(o, type = type) }
   
   if( is.character(x) ){ # Get data from dataframe
     data <- o$model

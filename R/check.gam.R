@@ -24,33 +24,39 @@
 #' cg <- check(b) # Calls mgcViz::check.gam
 #' for (k in cg) print(k + theme_bw())
 check.gam <- function(object,
-                      type = c("deviance","pearson","response"),
+                      type = c("auto", "deviance", "pearson", "response", "tunif", "tnormal"),
                       k.sample = 5000,
                       k.rep = 200,
-                      rep = 10, level = .9, method = "simul2",
+                      rep = 10, level = .9, 
+                      method = c("auto", "simul1", "simul2", "tnormal", "tunif", "normal"),
                       rl.col = 2, rep.col = "gray80", ...){
-  
+  o <- object
   type <- match.arg(type)
-  resid <- residuals(b, type = type)
-  linpred <- if (is.matrix(b$linear.predictors) && !is.matrix(resid)) { 
-    napredict(b$na.action, b$linear.predictors[, 1])
+  method <- match.arg(method)
+  tmp <- .getResTypeAndMethod(object$family$family)
+  if (method == "auto") { method = tmp$method }
+  if (type == "auto") { type = tmp$type }
+  
+  resid <- residuals(o, type = type)
+  linpred <- if (is.matrix(o$linear.predictors) && !is.matrix(resid)) { 
+    napredict(o$na.action, o$linear.predictors[, 1])
   } else {
-    napredict(b$na.action, b$linear.predictors)
+    napredict(o$na.action, o$linear.predictors)
   } 
-  fv <- if (inherits(b$family, "extended.family")) {
-    predict(b, type = "response")
+  fv <- if (inherits(o$family, "extended.family")) {
+    predict(o, type = "response")
   } else {
-    fitted(b)
+    fitted(o)
   }
-  if (is.matrix(fv) && !is.matrix(b$y)) {
+  if (is.matrix(fv) && !is.matrix(o$y)) {
     fv <- fv[, 1]
   }
-  resp <- napredict(b$na.action, b$y)
+  resp <- napredict(o$na.action, o$y)
   df <- data.frame(linpred = linpred, resid = resid,
                    response = resp, fv = fv)
   plots <- list()
   plots[[1]] <- 
-    mgcViz::qq.gam(b, rep = rep,
+    mgcViz::qq.gam(o, rep = rep,
                    level = level, type = type, rl.col = rl.col, 
                    rep.col = rep.col)$ggPlot
   plots[[2]] <- 
@@ -68,14 +74,14 @@ check.gam <- function(object,
     ggplot2::geom_point() +
     ggplot2::labs(title = "Response vs. Fitted Values",
                   x = "Fitted Values", y = "Response")
-  if (!(b$method %in% c("GCV", "GACV", "UBRE", "REML", "ML", 
+  if (!(o$method %in% c("GCV", "GACV", "UBRE", "REML", "ML", 
                         "P-ML", "P-REML", "fREML"))) {
     return(plots)
   }
-  cat("\nMethod:", b$method, "  Optimizer:", b$optimizer)
-  if (!is.null(b$outer.info)) {
-    if (b$optimizer[2] %in% c("newton", "bfgs")) {
-      boi <- b$outer.info
+  cat("\nMethod:", o$method, "  Optimizer:", o$optimizer)
+  if (!is.null(o$outer.info)) {
+    if (o$optimizer[2] %in% c("newton", "bfgs")) {
+      boi <- o$outer.info
       cat("\n", boi$conv, " after ", boi$iter, " iteration", 
           sep = "")
       if (boi$iter == 1) 
@@ -83,7 +89,7 @@ check.gam <- function(object,
       else cat("s.")
       cat("\nGradient range [", min(boi$grad), ",", max(boi$grad), 
           "]", sep = "")
-      cat("\n(score ", b$gcv.ubre, " & scale ", b$sig2, 
+      cat("\n(score ", o$gcv.ubre, " & scale ", o$sig2, 
           ").", sep = "")
       ev <- eigen(boi$hess)$values
       if (min(ev) > 0) 
@@ -94,33 +100,33 @@ check.gam <- function(object,
     }
     else {
       cat("\n")
-      print(b$outer.info)
+      print(o$outer.info)
     }
   }
   else {
-    if (length(b$sp) == 0) 
+    if (length(o$sp) == 0) 
       cat("\nModel required no smoothing parameter selection")
     else {
       cat("\nSmoothing parameter selection converged after", 
-          b$mgcv.conv$iter, "iteration")
-      if (b$mgcv.conv$iter > 1) 
+          o$mgcv.conv$iter, "iteration")
+      if (o$mgcv.conv$iter > 1) 
         cat("s")
-      if (!b$mgcv.conv$fully.converged) 
+      if (!o$mgcv.conv$fully.converged) 
         cat(" by steepest\ndescent step failure.\n")
       else cat(".\n")
-      cat("The RMS", b$method, "score gradient at convergence was", 
-          b$mgcv.conv$rms.grad, ".\n")
-      if (b$mgcv.conv$hess.pos.def) 
+      cat("The RMS", o$method, "score gradient at convergence was", 
+          o$mgcv.conv$rms.grad, ".\n")
+      if (o$mgcv.conv$hess.pos.def) 
         cat("The Hessian was positive definite.\n")
       else cat("The Hessian was not positive definite.\n")
     }
   }
-  if (!is.null(b$rank)) {
-    cat("Model rank = ", b$rank, "/", length(b$coefficients), 
+  if (!is.null(o$rank)) {
+    cat("Model rank = ", o$rank, "/", length(o$coefficients), 
         "\n")
   }
   cat("\n")
-  kchck <- mgcv:::k.check(b, subsample = k.sample, n.rep = k.rep)
+  kchck <- mgcv:::k.check(o, subsample = k.sample, n.rep = k.rep)
   if (!is.null(kchck)) {
     cat("Basis dimension (k) checking results. Low p-value (k-index<1) may\n")
     cat("indicate that k is too low, especially if edf is close to k'.\n\n")

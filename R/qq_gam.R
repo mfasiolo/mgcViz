@@ -119,8 +119,8 @@
 #'}
 qq.gam <- function(object, rep = 10,
                     level = 0.8, 
-                    method = c("simul1", "simul2", "tnormal", "tunif", "normal"),
-                    type = c("deviance", "pearson", "response"),
+                    method = c("auto", "simul1", "simul2", "tnormal", "tunif", "normal"),
+                    type = c("auto", "deviance", "pearson", "response", "tunif", "tnormal"),
                     CI = c("normal", "quantile", "none"),
                     show.reps = FALSE,
                     sortFun = NULL,
@@ -133,15 +133,17 @@ qq.gam <- function(object, rep = 10,
                     shape = '.', ...) {
   
   CI     <- match.arg(CI, c("normal", "quantile", "none"))
-  method <- match.arg(method, c("simul1", "simul2", "tnormal", "tunif", "normal"))
-  type   <- match.arg(type, c("deviance", "pearson", "response"))
+  method <- match.arg(method, c("auto", "simul1", "simul2", "tnormal", "tunif", "normal"))
+  type   <- match.arg(type, c("auto", "deviance", "pearson", "response", "tunif", "tnormal"))
+  tmp <- .getResTypeAndMethod(object$family$family)
+  if (method == "auto") { method = tmp$method }
+  if (type == "auto") { type = tmp$type }
   if (level < 0 || level > 1){
     stop("`level' should be between 0 and 1") 
   }
   if (method == "simul2") CI <- "none"
   if (is.null(sortFun))  sortFun  <- function(.x) sort(.x, method = "quick")
   if (is.null(discrete)) discrete <- length(object$y) > 1e4
-  # force(rep.col)
   if (inherits(object, c("glm", "gam"))) {
     if (is.null(object$sig2)) 
       object$sig2 <- summary(object)$dispersion
