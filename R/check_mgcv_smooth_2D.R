@@ -22,7 +22,7 @@
 #' @rdname check.mgcv.smooth.2D
 #' @importFrom dplyr filter sample_n
 #' @export check.mgcv.smooth.2D
-check.mgcv.smooth.2D <- function(o, typeRes="deviance", binw1=NULL, binw2=NULL, 
+check.mgcv.smooth.2D <- function(o, type="deviance", binw1=NULL, binw2=NULL, 
                                  gridFun=NULL, nco=40, xlimit=NULL, ylimit=NULL, 
                                  palette1=viridis(50, begin=0.2), 
                                  palette2=rev(gray.colors(20)), 
@@ -30,11 +30,23 @@ check.mgcv.smooth.2D <- function(o, typeRes="deviance", binw1=NULL, binw2=NULL,
 {
   if( !("mgcv.smooth.2D" %in% class(o)) ) { stop("\"o\" should be of class \"mgcv.smooth.2D\"") }
   
+  type <- match.arg(type, c("deviance", "pearson", "scaled.pearson", 
+                            "working", "response", "tunif", "tnormal"))
+  
   if( is.null(gridFun) ){
     gridFun <- function(.x, .sdr){
       .o <- pnorm(mean(.x), 0, .sdr/sqrt(length(.x)))
       return( .o )
     }
+  }
+  
+  # Choose what kind of residuals or transformed responses to use
+  if( type %in% c("tunif", "tnormal") ){
+    fam <- fix.family.cdf( o$gObj$family )
+    ty <- fam$cdf(o$gObj$y, o$gObj$fitted.values, o$gObj$prior.weights, o$gObj$sig2, logp = TRUE)
+    if( type == "tnormal" ) { ty <- qnorm(ty, log.p = TRUE) } else { ty <- exp(ty) } 
+  } else {
+    ty <- residuals(o, type = type) 
   }
   
   o$smooth <- o$gObj$smooth[[o$ism]]
@@ -64,7 +76,7 @@ check.mgcv.smooth.2D <- function(o, typeRes="deviance", binw1=NULL, binw2=NULL,
   X <- data.frame("x"=rep(P$x, nco), "y"=rep(P$y, each=nco))
   X$fit <- P$fit
   
-  sdat <- filter(data.frame("x"=P$raw$x, "y"=P$raw$y, "z"=residuals(o$gObj, type=typeRes)), 
+  sdat <- filter(data.frame("x"=P$raw$x, "y"=P$raw$y, "z"=ty), 
                  findInterval(x, P$xlim)==1 & findInterval(y, P$ylim)==1) 
   
   if( is.null(acFun[[1]]) || is.null(acFun[[2]]) ){
