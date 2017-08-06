@@ -42,19 +42,25 @@
                                  n = 100, n2 = 40,  xlab = NULL, ylab = NULL, 
                                  main = NULL, ylim = NULL, xlim = NULL, 
                                  too.far = 0.1, ...) {
-  if ( !(x$dim %in% 1:2) ) {
-    warning("no automatic plotting for smooths of more than two variables")
-    out <- NULL
-  }
+
   if(x$dim == 1) {
     out <- .preparePlotSmooth1D(x = x, data = data, label = label, se.mult = se1.mult,
                                 n = n, xlim = xlim, xlab = xlab, 
                                 ylab = ylab, main = main, ...)
-  } else {
+  }
+  
+  if(x$dim == 2) {
     out <- .preparePlotSmooth2D(x = x, data = data, se.mult = se2.mult, n2 = n2, label = label,
                                 xlab = xlab, ylab = ylab, main = main,
                                 ylim = ylim, xlim = xlim, too.far = too.far, ...) 
   }
+  
+  if(x$dim > 2) {
+    out <- .preparePlotSmoothMD(x = x, data = data, se.mult = se2.mult, n2 = n2, label = label,
+                                xlab = xlab, ylab = ylab, main = main,
+                                ylim = ylim, xlim = xlim, too.far = too.far, ...) 
+  }
+  
   return(out)
 } 
 

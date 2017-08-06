@@ -25,3 +25,6 @@ zoom <- function(x, ...) UseMethod("zoom")
 
 #' @export
 shine <- function(...) UseMethod("shine")
+
+#' @export
+slice <- function(...) UseMethod("slice")
