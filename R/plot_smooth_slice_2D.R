@@ -35,6 +35,8 @@
 #' plot(sm)
 #'
 #' @rdname plot.smooth.slice.2D
+#' @importFrom grid unit.c
+#' @importFrom gridExtra arrangeGrob
 #' @export plot.smooth.slice.2D
 #' 
 plot.smooth.slice.2D <- function(o, scaleCom = TRUE, scaleLim = NULL, ncol = NULL, labTsize = 10, 
