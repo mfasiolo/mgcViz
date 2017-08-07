@@ -55,8 +55,12 @@ plot.smooth.slice.2D <- function(o, scaleCom = TRUE, scaleLim = NULL, ncol = NUL
     if( !is.null(scaleLim) ){ # User-defined scale for all plots
       ran <- scaleLim  
     } else{
-      if( scaleCom ){ # Common scale
-        ran <- do.call("range", lapply(plots, function(.inp) range(.inp$data$z, na.rm = TRUE)))
+      if( scaleCom ){ # Common scale: determined by zno or z, depending on whether noiseup==T
+        ran <- do.call("range", lapply(plots, 
+                                       function(.inp){ 
+                                         range(if(o$noiseup){.inp$data$zno}else{.inp$data$z}, na.rm = TRUE)
+                                       })
+                       )
       }
     }
     # Change scale of all ggObjects
