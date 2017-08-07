@@ -43,7 +43,7 @@ plot.mgcv.smooth.2D <- function(o, residuals = FALSE, rug = TRUE, se = TRUE, n =
                                 shift = 0, trans = I, seWithMean = FALSE, 
                                 unconditional = FALSE, by.resids = FALSE,
                                 scheme = 0, hcolors = viridis(50, begin = 0.2),
-                                contour.col = 1, noiseup = FALSE, pFun = zto1(0.05, 3, 0.2), ...) {
+                                contour.col = 1, noiseup = FALSE, pFun = function(.p) 1, ...) {
   if (length(scheme) > 1){ 
     scheme <- scheme[1]
     warning("'scheme' should be a single number")
@@ -109,7 +109,7 @@ plot.mgcv.smooth.2D <- function(o, residuals = FALSE, rug = TRUE, se = TRUE, n =
                                  main = NULL, too.far = 0.1,
                                  shift = 0, trans = I, by.resids = FALSE, scheme = 0,
                                  hcolors = viridis(50, begin = 0.2),
-                                 contour.col = 1, noiseup = FALSE, pFun = zto1(0.05, 3, 0.2), 
+                                 contour.col = 1, noiseup = FALSE, pFun = function(.p) 1, 
                                  # Useless arguments
                                  data = NA, label = NA, se.mult = NA, xlab = NA, ylab = NA, n = NA,
                                  shade = NA, shade.col = NA, xlim = NA, ylim = NA,

@@ -36,7 +36,7 @@ plot.mgcv.smooth.MD <- function(o, fix, residuals = FALSE, rug = TRUE, se = TRUE
                                 shift = 0, trans = I, seWithMean = FALSE, 
                                 unconditional = FALSE, by.resids = FALSE,
                                 scheme = 0, hcolors = viridis(50, begin = 0.2),
-                                contour.col = 1, noiseup = FALSE, pFun = zto1(0.05, 3, 0.2), ...) {
+                                contour.col = 1, noiseup = FALSE, pFun = function(.p) 1, ...) {
   if (length(scheme) > 1){ 
     scheme <- scheme[1]
     warning("'scheme' should be a single number")
