@@ -26,10 +26,22 @@
     }
     xx <- rep(xm, n2)
     yy <- rep(ym, each = n2)
-    if (too.far > 0) {
-      exclude <- exclude.too.far(xx, yy, raw$x, raw$y, dist = too.far)
+    
+    # Mark cells on X-Y grid are too far from any observation  
+    if (too.far[1] > 0) { 
+      exclude <- exclude.too.far(xx, yy, raw$x, raw$y, dist = too.far[1])
     } else {
       exclude <- rep(FALSE, n2 * n2)
+    }
+    
+    # Mark covariate vectors (and corresponding residuals) that are too 
+    # far from X-Y plane (the slice of interest)
+    if (is.na(too.far[2]) || too.far[2] > 0) {
+      tmp <- sapply(ov, function(.nm) as.numeric(data[.nm][[1]])) 
+      tmp <- sqrt(maha(tmp, fix, diag(diag(cov(tmp)), ncol(tmp)))) # Euclidean distance
+      exclude2 <- tmp > if( is.na(too.far[2]) ){ quantile(tmp, 0.1) } else { too.far[2] } 
+    } else { 
+      exclude2 <- FALSE
     }
     if (x$by != "NA") {        # deal with any by variables
       by <- rep(1, n2^2)
@@ -56,7 +68,7 @@
     out <- list(X = X, x = xm, y = ym, scale = FALSE, se = TRUE,
                 raw = raw, xlab = xlabel, ylab = ylabel,
                 main = main, se.mult = se.mult, ylim = ylim,
-                xlim = xlim, exclude = exclude)
+                xlim = xlim, exclude = exclude, exclude2 = exclude2)
   }
   return(out)
 }

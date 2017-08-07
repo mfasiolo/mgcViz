@@ -157,15 +157,23 @@ plot.mgcv.smooth.2D <- function(o, residuals = FALSE, rug = TRUE, se = TRUE, n =
         labs(title = P$main, x = P$xlab, y = P$ylab) 
       # Add partial residuals
       if (rug) { 
-        .tmpF <- function(..., shape = '.', col = "black") # Alter default shape and col
-        {
-          nrs <- length( P$raw$y )
+        # Exclude points too far from current slice (relevant only when called by plot.mgcv.smooth.MD)
+        if ( !is.null(P$exclude2) && any(P$exclude2) ){
+          P$raw <- P$raw[ !P$exclude2,  ]  
+        }
+        nrs <- nrow( P$raw )
+        if(nrs > 0){
+          # Sub-sample if too many points
           ii <- if( nrs > maxpo ){ sample(1:nrs, maxpo) } else { 1:nrs }
-          geom_point(data = data.frame("resx" = P$raw$x[ii], "resy" = P$raw$y[ii]),
-                     aes(x = resx, y = resy), 
-                     inherit.aes = FALSE, shape = shape, col = col, ...)
-        } 
-        .pl <- .pl + .tmpF(...)
+          
+          .tmpF <- function(..., shape = '.', col = "black") # Alter default shape and col
+          {
+            geom_point(data = data.frame("resx" = P$raw$x[ii], "resy" = P$raw$y[ii]),
+                       aes(x = resx, y = resy), 
+                       inherit.aes = FALSE, shape = shape, col = col, ...)
+          }
+          .pl <- .pl + .tmpF(...)
+        }
       }
       
     } else { ## contour plot with error contours

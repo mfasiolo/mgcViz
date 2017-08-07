@@ -27,11 +27,12 @@
 #' plot(v(1), fix = c("z"=0, "z2"=1), scheme = 2 ) 
 #'
 #' @rdname plot.mgcv.smooth.MD
+#' @importFrom mvnfast maha
 #' @export plot.mgcv.smooth.MD
 
 plot.mgcv.smooth.MD <- function(o, fix, residuals = FALSE, rug = TRUE, se = TRUE, n = 40, maxpo = 1e4,
                                 pers = FALSE, theta = 30, phi = 30, xlab = NULL, ylab = NULL,
-                                main = NULL, ylim = NULL, xlim = NULL, too.far = 0.1, se.mult = 1,
+                                main = NULL, ylim = NULL, xlim = NULL, too.far = c(0.1, NA), se.mult = 1,
                                 shift = 0, trans = I, seWithMean = FALSE, 
                                 unconditional = FALSE, by.resids = FALSE,
                                 scheme = 0, hcolors = viridis(50, begin = 0.2),
@@ -43,6 +44,7 @@ plot.mgcv.smooth.MD <- function(o, fix, residuals = FALSE, rug = TRUE, se = TRUE
   if (!(scheme %in% 0:4)){
     stop("'scheme' must be in 0:4")
   }
+  if ( length(too.far) == 1 ){ too.far <- c(too.far, NA)  }
   o$smooth <- o$gObj$smooth[[o$ism]]
   resDen <- "none"
   fv.terms <- o$store$termsFit[ , o$store$np + o$ism]
