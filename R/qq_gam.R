@@ -122,6 +122,7 @@ qq.gam <- function(object, rep = 10,
                     method = c("auto", "simul1", "simul2", "tnormal", "tunif", "normal"),
                     type = c("auto", "deviance", "pearson", "response", "tunif", "tnormal"),
                     CI = c("normal", "quantile", "none"),
+                    worm = FALSE,
                     show.reps = FALSE,
                     sortFun = NULL,
                     discrete = NULL,
@@ -130,6 +131,8 @@ qq.gam <- function(object, rep = 10,
                     rep.col = 1,
                     rep.alpha = 0.05,
                     ci.col = "gray80",
+                    xlim = NULL,
+                    ylim = NULL,
                     shape = '.', ...) {
   
   CI     <- match.arg(CI, c("normal", "quantile", "none"))
@@ -155,9 +158,9 @@ qq.gam <- function(object, rep = 10,
                        level = level, rep = rep, sortFun = sortFun)
   P1 <- .discretize.qq.gam(P = P0, discrete = discrete, ngr = ngr,
                            CI = (CI != "none"), show.reps = show.reps)
-  pl <- .plot.qq.gam(P = P1, CI = (CI != "none"), show.reps = show.reps,
+  pl <- .plot.qq.gam(P = P1, CI = (CI != "none"), worm = worm, show.reps = show.reps,
                      rl.col = rl.col, rep.col = rep.col, 
-                     rep.alpha = rep.alpha, ci.col = ci.col, shape = shape)
+                     rep.alpha = rep.alpha, ci.col = ci.col, shape = shape, xlim = xlim, ylim = ylim)
   out <- structure(list("ggPlot" = pl, "store" = P0),
                    "class" = "qqGam", 
                    "call" = match.call())

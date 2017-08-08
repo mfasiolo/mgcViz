@@ -24,7 +24,7 @@
 #' @rdname zoom.qqGam
 #' @export zoom.qqGam
 zoom.qqGam <- function(o, xlim = NULL, ylim = NULL, discrete = NULL, ngr = 1e3,
-                       adGrid = TRUE, CI = FALSE, show.reps = F, 
+                       adGrid = TRUE, CI = FALSE, worm = FALSE, show.reps = FALSE, 
                        rep.col = 1, rep.alpha = 0.05, rl.col = 2,
                        shape = '.', ci.col = "gray80") {
   P <- o$store
@@ -39,7 +39,7 @@ zoom.qqGam <- function(o, xlim = NULL, ylim = NULL, discrete = NULL, ngr = 1e3,
   if(is.null(discrete)) discrete <- length(P$Dq) > 1e4 
   P <- .discretize.qq.gam(P = P, discrete = discrete, ngr = ngr,
                           CI = CI, show.reps = show.reps)
-  .pl <- .plot.qq.gam(P = P, CI = CI, show.reps = show.reps, rl.col = rl.col,
+  .pl <- .plot.qq.gam(P = P, CI = CI, worm = worm, show.reps = show.reps, rl.col = rl.col,
                       rep.col = rep.col, rep.alpha = rep.alpha, ci.col = ci.col,
                       shape = shape, xlimit = xlim, ylimit = ylim)
   return(.pl)

@@ -6,8 +6,16 @@
 #' @param show.reps,rl.col,rep.col,rep.alpha,ci.col See [qq.gam()] documentation.
 #' @return A ggplot object.
 #' @noRd
-.plot.qq.gam <- function(P, CI, show.reps, rl.col, rep.col, rep.alpha,
-                         ci.col, shape, xlimit = NULL, ylimit = NULL, ...) {
+.plot.qq.gam <- function(P, CI, worm, show.reps, rl.col, rep.col, rep.alpha,
+                         ci.col, shape, xlimit, ylimit, ...) {
+  
+  # Rotate everything if worm plot needed
+  if( worm ){
+    if (CI && !is.null(P$conf)) { P$conf$y <- P$conf$y - P$conf$x }
+    if (show.reps && !is.null(P$dm)){ P$dm$y <- P$dm$y - P$dm$x }
+    P$D <- P$D - P$Dq
+  } 
+  
   .pl <- ggplot()
   if (CI && !is.null(P$conf)) { # Add confidence intervals
     .pl <- .pl + geom_polygon(data = P$conf,
@@ -20,7 +28,7 @@
                          colour = rep.col, alpha = rep.alpha)
   }
   .pl <- .pl +
-    geom_abline(colour = rl.col) +
+    geom_abline(intercept = 0, slope = !worm, colour = rl.col) +
     geom_point(data = data.frame("sx" = P$Dq, "sy" = P$D),
                aes(x = sx, y = sy), shape = shape) +
     labs(x = "Theoretical quantiles", y = P$ylab,

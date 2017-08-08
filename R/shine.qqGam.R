@@ -54,6 +54,12 @@ shine.qqGam <- function(obj){
                   choices = c(TRUE, FALSE),
                   selected = "FALSE"
                 ),
+                selectizeInput(
+                  inputId = "worm",
+                  label = "Worm-plot ?",
+                  choices = c(TRUE, FALSE),
+                  selected = "FALSE"
+                ),
                 colourpicker::colourInput(
                   inputId = "color_rep",
                   label = "Color for rep.",
@@ -88,6 +94,7 @@ shine.qqGam <- function(obj){
            shape = shape(),
            CI = as.logical(input$ci),
            show.reps = as.logical(input$show_reps),
+           worm = as.logical(input$worm),
            rl.col = input$color_line,
            ci.col = input$color_CI,
            rep.col = input$color_rep,
@@ -114,6 +121,7 @@ shine.qqGam <- function(obj){
                  sprintf("ylim = %s, ", deparse(signif(ranges$y, 4))), ""),
           "CI = ", input$ci, ", ",
           "show.reps = ", input$show_reps, ", ",
+          "worm = ", input$worm, ", ",
           "rep.col = \"", input$color_rep, "\", ",
           "rep.alpha = ", input$rep_alpha, ", ",
           "rl.col = \"", input$color_line, "\", ",
