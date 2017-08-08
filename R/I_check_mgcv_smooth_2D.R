@@ -72,7 +72,7 @@
     scale_fill_gradientn(colours = palette1, na.value="white") +
     coord_cartesian(xlim=NULL, ylim=NULL, expand=F) +
     geom_contour(data=X, aes(x=x, y=y, z=fit), color="black", na.rm=T, inherit.aes = F) + 
-    labs(title = paste(P$main, if(any(P$exclude2)){paste(", n =", nrow(P$raw))}else{''}, sep=''), 
+    labs(title = paste(P$main, if(!is.null(P$exclude2)){paste(", n =", nrow(P$raw))}else{''}, sep=''), 
          x = P$xlab, y = P$ylab)
   
   # ACF plots
