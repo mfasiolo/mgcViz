@@ -22,7 +22,7 @@
 #' b <- mgcv::gam(y ~ s(x0) + s(x1) + s(x2) + s(x3), data = dat)
 #' mgcv::gam.check(b, pch = 19, cex = .3)
 #' cg <- check(b) # Calls mgcViz::check.gam
-#' for (k in cg) print(k + theme_bw())
+#' cg
 check.gam <- function(object,
                       type = c("auto", "deviance", "pearson", "response", "tunif", "tnormal"),
                       k.sample = 5000,
@@ -74,63 +74,65 @@ check.gam <- function(object,
     ggplot2::geom_point() +
     ggplot2::labs(title = "Response vs. Fitted Values",
                   x = "Fitted Values", y = "Response")
-  if (!(o$method %in% c("GCV", "GACV", "UBRE", "REML", "ML", 
-                        "P-ML", "P-REML", "fREML"))) {
-    return(plots)
-  }
-  cat("\nMethod:", o$method, "  Optimizer:", o$optimizer)
-  if (!is.null(o$outer.info)) {
-    if (o$optimizer[2] %in% c("newton", "bfgs")) {
-      boi <- o$outer.info
-      cat("\n", boi$conv, " after ", boi$iter, " iteration", 
-          sep = "")
-      if (boi$iter == 1) 
-        cat(".")
-      else cat("s.")
-      cat("\nGradient range [", min(boi$grad), ",", max(boi$grad), 
-          "]", sep = "")
-      cat("\n(score ", o$gcv.ubre, " & scale ", o$sig2, 
-          ").", sep = "")
-      ev <- eigen(boi$hess)$values
-      if (min(ev) > 0) 
-        cat("\nHessian positive definite, ")
-      else cat("\n")
-      cat("eigenvalue range [", min(ev), ",", max(ev), 
-          "].\n", sep = "")
+  
+  if ( (o$method %in% c("GCV", "GACV", "UBRE", "REML", "ML",  "P-ML", "P-REML", "fREML")) ) {
+    cat("\nMethod:", o$method, "  Optimizer:", o$optimizer)
+    if (!is.null(o$outer.info)) {
+      if (o$optimizer[2] %in% c("newton", "bfgs")) {
+        boi <- o$outer.info
+        cat("\n", boi$conv, " after ", boi$iter, " iteration", 
+            sep = "")
+        if (boi$iter == 1) 
+          cat(".")
+        else cat("s.")
+        cat("\nGradient range [", min(boi$grad), ",", max(boi$grad), 
+            "]", sep = "")
+        cat("\n(score ", o$gcv.ubre, " & scale ", o$sig2, 
+            ").", sep = "")
+        ev <- eigen(boi$hess)$values
+        if (min(ev) > 0) 
+          cat("\nHessian positive definite, ")
+        else cat("\n")
+        cat("eigenvalue range [", min(ev), ",", max(ev), 
+            "].\n", sep = "")
+      }
+      else {
+        cat("\n")
+        print(o$outer.info)
+      }
     }
     else {
-      cat("\n")
-      print(o$outer.info)
+      if (length(o$sp) == 0) 
+        cat("\nModel required no smoothing parameter selection")
+      else {
+        cat("\nSmoothing parameter selection converged after", 
+            o$mgcv.conv$iter, "iteration")
+        if (o$mgcv.conv$iter > 1) 
+          cat("s")
+        if (!o$mgcv.conv$fully.converged) 
+          cat(" by steepest\ndescent step failure.\n")
+        else cat(".\n")
+        cat("The RMS", o$method, "score gradient at convergence was", 
+            o$mgcv.conv$rms.grad, ".\n")
+        if (o$mgcv.conv$hess.pos.def) 
+          cat("The Hessian was positive definite.\n")
+        else cat("The Hessian was not positive definite.\n")
+      }
+    }
+    if (!is.null(o$rank)) {
+      cat("Model rank = ", o$rank, "/", length(o$coefficients), 
+          "\n")
+    }
+    cat("\n")
+    kchck <- mgcv:::k.check(o, subsample = k.sample, n.rep = k.rep)
+    if (!is.null(kchck)) {
+      cat("Basis dimension (k) checking results. Low p-value (k-index<1) may\n")
+      cat("indicate that k is too low, especially if edf is close to k'.\n\n")
+      printCoefmat(kchck, digits = 3)
     }
   }
-  else {
-    if (length(o$sp) == 0) 
-      cat("\nModel required no smoothing parameter selection")
-    else {
-      cat("\nSmoothing parameter selection converged after", 
-          o$mgcv.conv$iter, "iteration")
-      if (o$mgcv.conv$iter > 1) 
-        cat("s")
-      if (!o$mgcv.conv$fully.converged) 
-        cat(" by steepest\ndescent step failure.\n")
-      else cat(".\n")
-      cat("The RMS", o$method, "score gradient at convergence was", 
-          o$mgcv.conv$rms.grad, ".\n")
-      if (o$mgcv.conv$hess.pos.def) 
-        cat("The Hessian was positive definite.\n")
-      else cat("The Hessian was not positive definite.\n")
-    }
-  }
-  if (!is.null(o$rank)) {
-    cat("Model rank = ", o$rank, "/", length(o$coefficients), 
-        "\n")
-  }
-  cat("\n")
-  kchck <- mgcv:::k.check(o, subsample = k.sample, n.rep = k.rep)
-  if (!is.null(kchck)) {
-    cat("Basis dimension (k) checking results. Low p-value (k-index<1) may\n")
-    cat("indicate that k is too low, especially if edf is close to k'.\n\n")
-    printCoefmat(kchck, digits = 3)
-  }
+  
+  class(plots) <- "check.gam"
+  
   return(plots)
 }
