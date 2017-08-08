@@ -39,7 +39,7 @@
   X$fit <- P$fit
   
   # Drop data too far from current slice (relevant when called from check.mgcv.smooth.MD)
-  if( !is.null(P$exclude2) && any(P$exclude2) ){
+  if( any(P$exclude2) ){
    ty <- ty[ !P$exclude2 ]
    P$raw <- P$raw[ !P$exclude2, ]
   }
@@ -71,7 +71,9 @@
                      fun.args = list(".sdr" = sqrt(init$o$gObj$sig2))) +
     scale_fill_gradientn(colours = palette1, na.value="white") +
     coord_cartesian(xlim=NULL, ylim=NULL, expand=F) +
-    geom_contour(data=X, aes(x=x, y=y, z=fit), color="black", na.rm=T, inherit.aes = F)
+    geom_contour(data=X, aes(x=x, y=y, z=fit), color="black", na.rm=T, inherit.aes = F) + 
+    labs(title = paste(P$main, if(any(P$exclude2)){paste(", n =", nrow(P$raw))}else{''}, sep=''), 
+         x = P$xlab, y = P$ylab)
   
   # ACF plots
   .pl2 <- ggplot(data = acfO$df[[1]], mapping = aes(x = lag, y = acf)) +
@@ -94,6 +96,7 @@
     scale_fill_gradientn(colours = palette2) + 
     geom_polygon(data=data.frame("x"=P$xlim[c(1, 1, 2, 2)], "y"=P$ylim[c(1, 2, 2, 1)]), 
                  colour="black", fill=NA) + 
+    labs(x = P$xlab, y = P$ylab) + 
     guides(fill=FALSE) #+ scale_alpha_identity()
   
   .pl <- list("pl1"=.pl1, "pl2"=.pl2, "pl3"=.pl3, "pl4"=.pl4)
