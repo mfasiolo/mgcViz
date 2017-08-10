@@ -13,7 +13,7 @@
   
   if( is.null(gridFun) ){
     gridFun <- function(.x, .sdr){
-      .o <- mean(.x) / { .sdr/sqrt(length(.x)) }
+      .o <- mean(.x) * sqrt(length(.x)) 
       return( .o )
     }
   }
@@ -34,7 +34,7 @@
                 #, ...) # ... not needed here, I guess
   
   # Get residuals or transformed responses
-  ty <- residuals(init$o$gObj, type = type) 
+  ty <- residuals(o$gObj, type = type) 
   X <- data.frame("x"=rep(P$x, nco), "y"=rep(P$y, each=nco))
   X$fit <- P$fit
   
@@ -86,7 +86,7 @@
     geom_hline(aes(yintercept = 0)) +
     geom_hline(aes(yintercept = acfO$ci[2]), color = "red", linetype="dashed") +
     geom_hline(aes(yintercept = -acfO$ci[2]), color = "red", linetype="dashed") +
-    geom_segment(mapping = aes(xend = lag, yend = 0)) + coord_flip()
+    geom_segment(mapping = aes(xend = lag, yend = 0)) 
   
   # Plot of observations, using hexagon
   .pl4 <- ggplot(P$raw, aes(x=x, y=y)) + 
@@ -100,7 +100,6 @@
     guides(fill=FALSE) #+ scale_alpha_identity()
   
   .pl <- list("pl1"=.pl1, "pl2"=.pl2, "pl3"=.pl3, "pl4"=.pl4)
-  .pl <- lapply(.pl, function(.inp) .inp+theme_bw())
-  
+ 
   return( .pl )
 }

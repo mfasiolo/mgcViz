@@ -15,6 +15,10 @@ print.check.smooth.2D <- function(pl, lay = NULL, ...)
                     3, 3, 3, 4), 4, 4)
   } 
   
+  pl$pl3 <- pl$pl3 + coord_flip()
+  
+  pl <- lapply(pl, function(.inp) .inp+theme_bw())
+  
   out <- grid.arrange(grobs=pl, layout_matrix=lay, ...)
 
   return( invisible(out) )

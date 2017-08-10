@@ -23,7 +23,7 @@
 #' @importFrom dplyr filter sample_n
 #' @export check.mgcv.smooth.2D
 check.mgcv.smooth.2D <- function(o, type="auto", binw1=NULL, binw2=NULL, 
-                                 gridFun=NULL, nco=40, xlimit=NULL, ylimit=NULL, 
+                                 gridFun=NULL, nco=40, xlim=NULL, ylim=NULL, 
                                  palette1=viridis(50, begin=0.2), 
                                  palette2=rev(gray.colors(20)), 
                                  acFun=list(NULL, NULL))
@@ -31,7 +31,7 @@ check.mgcv.smooth.2D <- function(o, type="auto", binw1=NULL, binw2=NULL,
   if( !("mgcv.smooth.2D" %in% class(o)) ) { stop("\"o\" should be of class \"mgcv.smooth.2D\"") }
   
   .pl <- .check.mgcv.smooth.2D(o=o, type=type, binw1=binw1, binw2=binw2, 
-                               gridFun=gridFun, nco=nco, xlimit=xlimit, ylimit=ylimit, 
+                               gridFun=gridFun, nco=nco, xlimit=xlim, ylimit=ylim, 
                                palette1=palette1, palette2=palette2, acFun=acFun, too.far=0)
   
   class(.pl) <- "check.smooth.2D"
