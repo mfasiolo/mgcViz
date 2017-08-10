@@ -47,7 +47,9 @@ gridCheck1D <- function(o, x, y=NULL, gridFun = NULL, ngr = 20, rep = 10, type="
   # Get residuals or transformed responses
   if( is.null(y) ){ y <- residuals(o, type = type) }
   
+  xnm <- "x"
   if( is.character(x) ){ # Get data from dataframe
+    xnm <- x
     data <- o$model
     if( !(x %in% names(data)) ) stop("(x %in% names(data)) == FALSE")
     x <- xfull <- data[[x]]
@@ -151,7 +153,8 @@ gridCheck1D <- function(o, x, y=NULL, gridFun = NULL, ngr = 20, rep = 10, type="
     }
   }
   
-  .pl <- .pl + geom_point(na.rm = TRUE, shape = shape1) + geom_rug(sides = "b")
+  .pl <- .pl + geom_point(na.rm = TRUE, shape = shape1) + geom_rug(sides = "b") +
+         labs(x = xnm, y = "f(r)")
 
   return( .pl + theme_bw() )
  

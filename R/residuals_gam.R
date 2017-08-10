@@ -11,6 +11,8 @@
 residuals.gam <- function(object, type = "deviance", ...)
 {
   
+  type <- match.arg(type, c("deviance", "pearson", "scaled.pearson", "working", "response", "tunif", "tnormal"))
+  
   o <- object
 
   if( type %in% c("tunif", "tnormal") ){

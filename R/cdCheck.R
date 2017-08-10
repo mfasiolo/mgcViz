@@ -51,7 +51,9 @@ cdCheck <- function(o, x, y=NULL, type="auto", n=c(80, 80), bw=NULL,
   # Get residuals or transformed responses
   if( is.null(y) ){ y <- residuals(o, type = type) }
   
+  xnm <- "x"
   if( is.character(x) ){ # Get data from dataframe
+    xnm <- x
     data <- o$model
     if( !(x %in% names(data)) ) stop("(x %in% names(data)) == FALSE")
     x <- data[[x]]
@@ -135,6 +137,8 @@ cdCheck <- function(o, x, y=NULL, type="auto", n=c(80, 80), bw=NULL,
       .pl <- .pl + geom_point(data = subS, inherit.aes = F, aes(x = x, y = y), shape = shape)
     }
   }
+  
+  .pl <- .pl + labs(x = xnm, y = expression("f{ p(r|x) - " * hat(p) * "(r|x) }"))
   
   .pl <-  .pl + theme_bw() + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
   
