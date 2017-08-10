@@ -3,9 +3,7 @@
 #' @description XXX
 #' @name plot.mgcv.smooth.2D
 #' @examples 
-#' library(mgcv)
 #' library(mgcViz)
-#' library(viridis)
 #' set.seed(2) ## simulate some data...
 #' dat <- gamSim(1, n = 1000, dist = "normal", scale = 2)
 #' b <- gam(y ~ s(x0) + s(x1, x2) + s(x3), data = dat, method = "REML")
@@ -55,29 +53,21 @@ plot.mgcv.smooth.2D <- function(o, residuals = FALSE, rug = TRUE, se = TRUE, n =
   resDen <- "none"
   fv.terms <- o$store$termsFit[ , o$store$np + o$ism]
   init <- .initializeXXX(o, unconditional, residuals, resDen, se, fv.terms)
-  # affect initialize output
-  o <- init$o
-  w.resid <- init$w.resid
-  partial.resids <- init$partial.resids
-  se2.mult <- init$se2.mult
-  se1.mult <- init$se1.mult
-  se <- init$se
-  fv.terms <- init$fv.terms
-  order <- init$order
+
   # Prepare for plotting
-  tmp <- .createP(sm = o$smooth, x = o$gObj, partial.resids = partial.resids,
-                  se = se, n = NULL, n2 = n,
+  tmp <- .createP(sm = init$o$smooth, x = init$o$gObj, partial.resids = init$partial.resids,
+                  se = init$se, n = NULL, n2 = n,
                   xlab = xlab, ylab = ylab, main = main,
                   ylim = ylim, xlim = xlim, too.far = too.far,
-                  se1.mult = se.mult, se2.mult = se.mult, 
-                  seWithMean = seWithMean, fitSmooth = fv.terms,
-                  w.resid = w.resid, resDen = resDen, ...)
+                  se1.mult = init$se1.mult, se2.mult = init$se2.mult, 
+                  seWithMean = seWithMean, fitSmooth = init$fv.terms,
+                  w.resid = init$w.resid, resDen = resDen, ...)
   pd <- tmp[["P"]]
-  attr(o$smooth, "coefficients") <- tmp[["coef"]]
+  attr(init$o$smooth, "coefficients") <- tmp[["coef"]]
   rm(tmp)
   # Plotting
-  .ggobj <- .plot.mgcv.smooth.2D(x = o$smooth, P = pd, partial.resids = partial.resids,
-                                 rug = rug, se = se, scale = FALSE, n2 = n, maxpo = maxpo,
+  .ggobj <- .plot.mgcv.smooth.2D(x = init$o$smooth, P = pd, partial.resids = init$partial.resids,
+                                 rug = rug, se = init$se, scale = FALSE, n2 = n, maxpo = maxpo,
                                  pers = pers, theta = theta, phi = phi, jit = NULL,
                                  main = main, too.far = too.far, 
                                  shift = shift, trans = trans, by.resids = by.resids,
