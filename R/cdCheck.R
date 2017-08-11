@@ -5,7 +5,7 @@
 #' @examples 
 #' library(mgcViz);
 #' 
-#' Dataset where variance increases linearly with x2, for x2 > 0.2
+#' # Dataset where variance increases linearly with x2, for x2 > 0.2
 #' n <- 1e3
 #' x1 <- rnorm(1e3)
 #' x2 <- rnorm(1e3)

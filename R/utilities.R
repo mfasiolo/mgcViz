@@ -5,9 +5,9 @@
 #' @examples 
 #' library(mgcViz)
 #' x <- seq(0, 1, by = 0.01)
-#' plot(x, zto1(0.05, 2)(x))
-#' lines(x, zto1(0.05, 1)(x), col = 2)
-#' lines(x, zto1(0.1, 3)(x), col = 3)
+#' plot(x, zto1(0.05, 2, 0.1)(x), ylim = c(0, 1))
+#' lines(x, zto1(0.05, 1, 0.2)(x), col = 2)
+#' lines(x, zto1(0.1, 3, 0)(x), col = 3)
 #' @rdname zto1
 #' @export zto1
 zto1 <- function(o, a, m){
@@ -17,8 +17,6 @@ zto1 <- function(o, a, m){
   }
   return(.f)
 }
-
-
 
 
 ## Local function for producing labels
