@@ -1,0 +1,137 @@
+#' Visualizing 2D smooth effects in 3D (interactively)
+#' 
+#' @description XXX
+#' @name plotRGL.mgcv.smooth.2D
+#' @examples 
+#' # Example 1: taken from ?mgcv::te, shows how tensor pruduct deals nicely with 
+#' # badly scaled covariates (range of x 5% of range of z )
+#' library(mgcViz)
+#' 
+#' # Simulate some data
+#' test1 <- function(x,z,sx=0.3,sz=0.4) { 
+#'   x <- x*20
+#'   (pi**sx*sz)*(1.2*exp(-(x-0.2)^2/sx^2-(z-0.3)^2/sz^2)+
+#'                  0.8*exp(-(x-0.7)^2/sx^2-(z-0.8)^2/sz^2))
+#' }
+#' n <- 500
+#' old.par <- par(mfrow=c(2,2))
+#' x <- runif(n)/20;z <- runif(n);
+#' xs <- seq(0,1,length=30)/20;zs <- seq(0,1,length=30)
+#' pr <- data.frame(x=rep(xs,30),z=rep(zs,rep(30,30)))
+#' truth <- matrix(test1(pr$x,pr$z),30,30)
+#' f <- test1(x,z)
+#' y <- f + rnorm(n)*0.2
+#' 
+#' # Fit with t.p.r.s. basis and plot
+#' b1 <- gam(y~s(x,z))
+#' plotRGL(getViz(b1)(1))
+#' 
+#' rgl.close() # Close
+#' 
+#' # Fit with tensor products basis and plot (with residuals)
+#' b2 <- gam(y~te(x,z))
+#' plotRGL(getViz(b2)(1), residuals = TRUE)
+#' 
+#' # We can still work on the plot, for instance change the aspect ratio
+#' library(rgl)
+#' aspect3d(1, 2, 1)
+#' 
+#' rgl.close() # Close
+#' @importFrom rgl open3d light3d surface3d axes3d title3d spheres3d aspect3d
+#' @rdname plotRGL.mgcv.smooth.2D
+#' @export plotRGL.mgcv.smooth.2D
+plotRGL.mgcv.smooth.2D <- function(o, se = TRUE, n = 40, residuals = FALSE, type = "auto", 
+                                   maxpo = 1e3, too.far = 0, xlab = NULL, ylab = NULL, 
+                                   main = NULL, xlim = NULL, ylim = NULL,  se.mult = 1, 
+                                   shift = 0, trans = I, seWithMean = FALSE, 
+                                   unconditional = FALSE){
+  
+  if (type == "auto") { type <- mgcViz:::.getResTypeAndMethod(o$gObj$family$family)$type }
+  
+  P <- .prepareP(o = o, unconditional = unconditional, residuals = residuals, 
+                 resDen = "none", se = se, se.mult = se.mult, n = NULL, n2 = n,  
+                 xlab = xlab, ylab = ylab, main = main, ylim = ylim, xlim = xlim,
+                 too.far = too.far, seWithMean = seWithMean)
+  
+  R <- list()
+  if( residuals ) {
+    # NB we are not passing P$xlim or P$ylim here
+    R <- .getResidualsPlotRGL(gamObj = o$gObj, X = P$raw, type = type, maxpo = maxpo,
+                              xlimit = xlim, ylimit = ylim, exclude = P$exclude2)
+    P$raw <- R$raw
+  }
+
+  # Actual plotting
+  .plotRGL.mgcv.smooth.2D(P = P, res = R$res)
+  
+}
+
+# Internal function that gets the residuals and checks that they are within the boundaries
+.getResidualsPlotRGL <- function(gamObj, X, type, maxpo, xlimit, ylimit, exclude)
+{
+  res <- residuals(gamObj, type = type) 
+
+  # Checking if we are too far from current slice: relevant only for plotRGL.mgcv.smooth.MD
+  if( any(exclude) ){
+    res <- res[ !exclude ]
+    X <- X[ !exclude, ]
+  }
+  
+  # Boundary checking for residuals: inefficient, but simple approach.
+  if( !is.null(xlimit) || !is.null(ylimit) ){
+    if( is.null(xlimit) ) xlimit <- c(-Inf, Inf)
+    if( is.null(ylimit) ) ylimit <- c(-Inf, Inf)
+    if( residuals ){
+      rin <- X$x > xlimit[1] & X$x < xlimit[2] & X$y > ylimit[1] & X$y < ylimit[2]
+      X <- X[rin, , drop = F]
+      res <- res[rin]
+    }
+  }
+  
+  # Subsample residuals
+  if( length(res) > maxpo){
+    ind <- sample(1:length(res), maxpo)
+    X <- X[ind, ]
+    res <- res[ ind ]
+  }
+  
+  return( list("res" = res, "raw" = X) )
+  
+}
+
+.plotRGL.mgcv.smooth.2D <- function(P, res = NULL) {
+  
+  # New window and setup env
+  open3d()
+  light3d()
+  
+  # Draws non-parametric density
+  n <- length(P$x)
+  surface3d(P$x, P$y, matrix(P$fit, n, n), color="#FF2222", alpha=0.5)
+  surface3d(P$x, P$y, matrix(P$fit + 2*P$se, n, n), 
+            alpha=0.5, color="#CCCCFF",front="lines")
+  surface3d(P$x, P$y, matrix(P$fit - 2*P$se, n, n), 
+            alpha=0.5, color= "#CCCCFF", front="lines")
+  
+  # Draws the simulated data as spheres on the baseline
+  if( !is.null(res) ){
+    cent = min(P$fit-3*P$se)
+    surface3d(P$x, P$y, matrix(cent, n, n), color="#CCCCFF",
+              front = "lines", back = "lines")
+    axes3d(c('x', 'y', 'z'))
+    title3d(xlab = P$xlab, zlab = P$main, ylab = P$ylab)
+    res <- res / max(abs(res)) * max(P$se)
+    spheres3d(P$raw$x, P$raw$y, cent + res, 
+              radius=max(c(abs(P$fit), P$x, P$y))/100, 
+              color= ifelse(res<0, "red", "blue"))
+  } else {
+    axes3d(c('x', 'y', 'z')) 
+    title3d(xlab = P$xlab, zlab = P$main, ylab = P$ylab)
+  }
+  
+  aspect3d(1, 1, 1)
+  
+  return( invisible(NULL) )
+  
+}
+
