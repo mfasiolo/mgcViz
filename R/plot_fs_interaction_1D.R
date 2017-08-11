@@ -9,7 +9,6 @@
 #' @param args.axis
 #' @name plot.fs.interaction.1D
 #' @examples 
-#' library(mgcv)
 #' library(mgcViz)
 #' set.seed(0)
 #' ## simulate data...
@@ -31,8 +30,7 @@
 #' ## using gamm)...
 #' bm <- gamm(y ~ s(x0)+ s(x1, fac, bs = "fs", k = 5) + s(x2, k = 20))
 #' v <- getViz(bm$gam)
-#' plot(v(2), args.axis = list(main = "Smooth factor interactions")) + 
-#'      theme(legend.position = "none")
+#' plot(v(2), args.axis = list(main = "Smooth factor interactions"))
 #' plot(v(2), args.axis = list(ylim = c(-0.5, 0.5), xlim = c(0.25, 0.75)))
 #' plot(v(2), args.axis = list(ylim = c(-0.5, 0.5), xlim = c(0.25, 0.75)),
 #'      args.lines = list(alpha = NULL, size = 1.3, linetype = "dotted"))
@@ -42,29 +40,23 @@ plot.fs.interaction.1D <- function(o, n = 100, shift = 0, trans = I,
                                    args.lines = list(alpha = NULL),
                                    args.axis = list(xlab = NULL, ylab = NULL, main = NULL,
                                                     ylim = NULL, xlim = NULL), ...) {
-  o$smooth <- o$gObj$smooth[[o$ism]]
-  unconditional <- se <- residuals <- FALSE
-  resDen <- "none"
-  fv.terms <- o$store$termsFit[ , o$store$np + o$ism]
-  init <- .initializeXXX(o, unconditional, residuals, resDen, se, fv.terms)
-  # Prepare for plotting
-  tmp <- .createP(sm = init$o$smooth, x = o$gObj, partial.resids = init$partial.resids,
-                  se = init$se, n = n, n2 = NULL,
-                  xlab = args.axis$xlab, ylab = args.axis$ylab, main = args.axis$main, 
-                  ylim = args.axis$ylim, xlim = args.axis$xlim, too.far = NULL, 
-                  se1.mult = NULL, se2.mult = NULL, 
-                  seWithMean = NULL, fitSmooth = init$fv.terms,
-                  w.resid = init$w.resid, resDen = resDen, ...)
-  attr(o$smooth, "coefficients") <- tmp[["coef"]]
+  
+  # Prepare for plotting ----
+  P <- .prepareP(o = o, unconditional = FALSE, residuals = FALSE, 
+                 resDen = FALSE, se = FALSE, se.mult = NULL, n = n, n2 = NULL,  
+                 xlab = args.axis$xlab, ylab = args.axis$ylab, main = args.axis$main,
+                 ylim = args.axis$ylim, xlim = args.axis$xlim,
+                 too.far = NULL, seWithMean = FALSE)
+  
   # Plotting
-  .ggobj <- .plot.fs.interaction.1D(x = o$smooth, P = tmp[["P"]], 
+  .ggobj <- .plot.fs.interaction.1D(x = P$smooth, P = P, trans = trans, shift = shift, 
                                     args.lines = args.lines, ...)
-  attr(.ggobj, "rawData") <- tmp[["P"]]
+  attr(.ggobj, "rawData") <- P
   return(.ggobj)
 }
 
 # Internal function
-.plot.fs.interaction.1D <- function(x, P = NULL, 
+.plot.fs.interaction.1D <- function(x, P, trans, shift, 
                                     args.lines  = list(alpha = NULL), ...) {
   .dat <- data.frame("x"  = rep(P$x, P$nf),
                      "y"  = trans(P$fit + shift),

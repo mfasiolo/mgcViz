@@ -15,11 +15,11 @@
 #' mgcv::plot.gam(b, scheme = 3, select = 2, se = FALSE)
 #' plot(b, scheme = 4, select = 2)
 #' sm <- getViz(b)(2)
-#' plot(sm, rug = TRUE, se = FALSE, residuals = TRUE, scheme = 0)
-#' plot(sm, rug = TRUE, se = TRUE, residuals = TRUE, scheme = 0)
-#' plot(sm, rug = TRUE, se = TRUE, residuals = TRUE, scheme = 1)
+#' #plot(sm, rug = TRUE, se = FALSE, residuals = TRUE, scheme = 0) # TODO
+#' #plot(sm, rug = TRUE, se = TRUE, residuals = TRUE, scheme = 0)
+#' #plot(sm, rug = TRUE, se = TRUE, residuals = TRUE, scheme = 1)
 #' plot(sm, rug = TRUE, residuals = TRUE, scheme = 2)
-#' plot(sm, rug = TRUE, residuals = TRUE, scheme = 3)
+#' #plot(sm, rug = TRUE, residuals = TRUE, scheme = 3)
 #' @rdname plot.mgcv.smooth.2D
 #' @export plot.mgcv.smooth.2D
 
@@ -49,25 +49,15 @@ plot.mgcv.smooth.2D <- function(o, residuals = FALSE, rug = TRUE, se = TRUE, n =
   if (!(scheme %in% 0:4)){
     stop("'scheme' must be in 0:4")
   }
-  o$smooth <- o$gObj$smooth[[o$ism]]
-  resDen <- "none"
-  fv.terms <- o$store$termsFit[ , o$store$np + o$ism]
-  init <- .initializeXXX(o, unconditional, residuals, resDen, se, fv.terms)
-
-  # Prepare for plotting
-  tmp <- .createP(sm = init$o$smooth, x = init$o$gObj, partial.resids = init$partial.resids,
-                  se = init$se, n = NULL, n2 = n,
-                  xlab = xlab, ylab = ylab, main = main,
-                  ylim = ylim, xlim = xlim, too.far = too.far,
-                  se1.mult = init$se1.mult, se2.mult = init$se2.mult, 
-                  seWithMean = seWithMean, fitSmooth = init$fv.terms,
-                  w.resid = init$w.resid, resDen = resDen, ...)
-  pd <- tmp[["P"]]
-  attr(init$o$smooth, "coefficients") <- tmp[["coef"]]
-  rm(tmp)
+  
+  # Prepare for plotting ----
+  P <- .prepareP(o = o, unconditional = unconditional, residuals = residuals, 
+                 resDen = "none", se = se, se.mult = se.mult, n = NULL, n2 = n,  
+                 xlab = xlab, ylab = ylab, main = main, ylim = ylim, xlim = xlim,
+                 too.far = too.far, seWithMean = seWithMean)
   # Plotting
-  .ggobj <- .plot.mgcv.smooth.2D(x = init$o$smooth, P = pd, partial.resids = init$partial.resids,
-                                 rug = rug, se = init$se, scale = FALSE, n2 = n, maxpo = maxpo,
+  .ggobj <- .plot.mgcv.smooth.2D(x = P$smooth, P = P, partial.resids = P$doPlotResid,
+                                 rug = rug, se = se, scale = FALSE, n2 = n, maxpo = maxpo,
                                  pers = pers, theta = theta, phi = phi, jit = NULL,
                                  main = main, too.far = too.far, 
                                  shift = shift, trans = trans, by.resids = by.resids,
@@ -75,7 +65,7 @@ plot.mgcv.smooth.2D <- function(o, residuals = FALSE, rug = TRUE, se = TRUE, n =
                                  contour.col = contour.col, noiseup = noiseup, pFun = pFun, ...)
   if (inherits(.ggobj, "ggplot")) {
     .ggobj <- .ggobj + theme_bw()
-    attr(.ggobj, "rawData") <- pd
+    attr(.ggobj, "rawData") <- P
     return(.ggobj)
   } else {
     return(invisible(.ggobj))

@@ -19,19 +19,10 @@
   }
   
   #### 1) Preparation
-  o$smooth <- o$gObj$smooth[[o$ism]]
-  
-  # Initialization
-  fv.terms <- o$store$termsFit[ , o$store$np + o$ism]
-  init <- .initializeXXX(o = o, unconditional = FALSE, residuals = FALSE, resDen = FALSE, se = FALSE, 
-                         fv.terms = o$store$termsFit[ , o$store$np + o$ism])
-
-  # Prepare for plotting
-  P <- .createP(sm=init$o$smooth, x=init$o$gObj, partial.resids=init$partial.resids,
-                se=FALSE, n=NULL, n2=nco, xlab=NULL, ylab=NULL, main=NULL, 
-                ylim=ylimit, xlim=xlimit, too.far=too.far, se1.mult=init$se1.mult, se2.mult=init$se2.mult, 
-                seWithMean=NULL, fitSmooth=init$fv.terms, w.resid=init$w.resid, fix=fix, resDen=FALSE)[["P"]] 
-                #, ...) # ... not needed here, I guess
+  P <- .prepareP(o = o, unconditional = FALSE, residuals = FALSE, 
+                 resDen = "none", se = FALSE, se.mult = 1, n = NULL, n2 = nco,  
+                 xlab = NULL, ylab = NULL, main = NULL, ylim = ylimit, xlim = xlimit,
+                 too.far = too.far, seWithMean = FALSE, fix = fix)
   
   # Get residuals or transformed responses
   ty <- residuals(o$gObj, type = type) 
@@ -68,7 +59,7 @@
   .pl1 <- ggplot(data = sdat, aes(x=x, y=y, z=z)) + 
     stat_summary_hex(binwidth = binw1, 
                      fun = function(.x, .sdr){ gridFun(na.omit(.x), .sdr) }, 
-                     fun.args = list(".sdr" = sqrt(init$o$gObj$sig2))) +
+                     fun.args = list(".sdr" = sqrt(o$gObj$sig2))) +
     scale_fill_gradientn(colours = palette1, na.value="white") +
     coord_cartesian(xlim=NULL, ylim=NULL, expand=F) +
     geom_contour(data=X, aes(x=x, y=y, z=fit), color="black", na.rm=T, inherit.aes = F) + 

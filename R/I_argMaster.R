@@ -8,7 +8,7 @@
   out <- switch(nam,
                 "plot.mgcv.smooth.1D" = list(
                   "a.rug" = list(jit = FALSE, colour = "black", size = 0.2, alpha = 1), # rug layer
-                  "a.ci" = list(shade = TRUE, unconditional = FALSE, seWithMean = FALSE),
+                  "a.ci" = list(shade = TRUE, se.mult = 2, unconditional = FALSE, seWithMean = FALSE),
                   "a.cilin" = list(colour = "blue", linetype = "dashed"), # ci lines layer
                   "a.cipoly" = list(colour = "light blue", alpha = 0.3), # ci shade layer
                   "a.res" = list(by.resids = FALSE, colour = "black", shape = 46, na.rm = TRUE), # residuals layer

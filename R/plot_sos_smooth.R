@@ -36,60 +36,40 @@
 #' sm <- getViz(bp)(1)
 #' plot(sm, scheme=0)
 #' plot(sm, scheme=1)
-#' plot(sm, scheme=2)
+#' # plot(sm, scheme=2) # Needs fixing
 #' @rdname plot.sos.smooth
 #' @export plot.sos.smooth
 plot.sos.smooth <- function(o, residuals=FALSE, rug=TRUE, se=TRUE, n=40,
                             pers=FALSE, theta=30, phi=30, xlab=NULL, ylab=NULL, main=NULL, 
                             ylim=NULL, xlim=NULL, too.far=0.1, se.mult=1, shift=0, trans=I, seWithMean=FALSE, 
                             unconditional=FALSE, by.resids=FALSE, scheme=0, hcolors=viridis(50, begin=0.2),
-                            contour.col=1, pFun=zto1(0.05, 3, 0.2), ...)
+                            contour.col=1, pFun = function(.p) 1, ...)
 {
   if (length(scheme)>1){ 
     scheme <- scheme[1]
     warning( "scheme should be a single number" )
   }
   
-  o$smooth <- o$gObj$smooth[[o$ism]]
-  
-  # This creates/modifies variables in the environment.
-  # INPUTS: unconditional, o, residuals, se, resDen 
-  # NEW/MODIFIED VARIABLES: o, w.resid, partial.resids, se2.mult, se1.mult, se, fv.terms, order 
-  resDen <- "none"
-  fv.terms <- o$store$termsFit[ , o$store$np + o$ism]
-  init <- .initializeXXX(o, unconditional, residuals, resDen, se, fv.terms)
-  # affect initialize output
-  o <- init$o
-  w.resid <- init$w.resid
-  partial.resids <- init$partial.resids
-  se2.mult <- init$se2.mult
-  se1.mult <- init$se1.mult
-  se <- init$se
-  fv.terms <- init$fv.terms
-  order <- init$order
-  # Prepare for plotting
-  tmp <- .createP(sm=o$smooth, x=o$gObj, partial.resids=partial.resids,
-                  rug=rug, se=se, scale=FALSE, n=NULL, n2=n,
-                  pers=pers, theta=theta, phi=phi, jit=NULL, xlab=xlab, ylab=ylab, main=main, label=term.lab,
-                  ylim=ylim, xlim=xlim, too.far=too.far, shade=NULL, shade.col=NULL,
-                  se1.mult=se.mult, se2.mult=se.mult, shift=shift, trans=trans,
-                  by.resids=by.resids, scheme=scheme, seWithMean=seWithMean, fitSmooth=fv.terms,
-                  w.resid=w.resid, resDen=resDen, ...)
-  pd <- tmp[["P"]]
-  attr(o$smooth, "coefficients") <- tmp[["coef"]]
-  rm(tmp)
-  
-  
+  # Prepare for plotting ----
+  P <- .prepareP(o = o, unconditional = unconditional, residuals = residuals, 
+                 resDen = "none", se = se, se.mult = se.mult, n = NULL, n2 = n,  
+                 xlab = xlab, ylab = ylab, main = main, ylim = ylim, xlim = xlim,
+                 too.far = too.far, seWithMean = seWithMean)
+ 
   # Plotting
-  .ggobj <- .plot.sos.smooth(x=o$smooth, P=pd, partial.resids=partial.resids, rug=rug, se=se, scale=FALSE, n2=n,
-                             pers=pers, theta=theta, phi=phi, jit=jit, main=main, too.far=too.far, 
+  .ggobj <- if(scheme < 2){
+    .plot.sos.smooth(x=o$smooth, P=P, partial.resids=P$doPlotResid, rug=rug, se=se, scale=FALSE, n2=n,
+                             pers=pers, theta=theta, phi=phi, jit=FALSE, main=main, too.far=too.far, 
                              shift=shift, trans=trans, by.resids=by.resids, scheme=scheme, hcolors=hcolors,
                              contour.col=contour.col, pFun=pFun, ...)
-  
-  .ggobj <- .ggobj
-  
-  attr(.ggobj, "rawData") <- pd
-  .ggobj
+  } else {
+    .plot.mgcv.smooth.2D(x=o$smooth, P = P, partial.resids = P$doPlotResid, rug = rug, se = se, scale = FALSE, n2 = n,
+                         maxpo = 1e4, pers = pers, theta = theta, phi = phi, jit = FALSE, main = main, too.far = too.far, 
+                         shift = shift, trans = trans, by.resids = by.resids, scheme = scheme, hcolors = hcolors,
+                         contour.col = contour.col, pFun = pFun, ...)
+  }
+  attr(.ggobj, "rawData") <- P
+  return( .ggobj )
 }
 
 # Internal function
@@ -103,10 +83,6 @@ plot.sos.smooth <- function(o, residuals=FALSE, rug=TRUE, se=TRUE, n=40,
                              #
                              ...)
 {
-  if (scheme>1){ return( .plot.mgcv.smooth.2D(x=x, P=P, partial.resids=partial.resids, rug=rug, se=se, scale=scale, n2=n,
-                                              pers=pers, theta=theta, phi=phi, jit=jit, main=main, too.far=too.far, 
-                                              shift=shift, trans=trans, by.resids=by.resids, scheme=scheme, hcolors=hcolors,
-                                              contour.col=contour.col, pFun=pFun, ...) ) }
   m <- length(P$xm); 
   zz <- lo <- la <- rep(NA,m*m)
   

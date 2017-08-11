@@ -50,26 +50,17 @@ plot.mgcv.smooth.1D <- function(o, n = 100, maxpo = 1e4,
   resDen <- match.arg(resDen, c("none", "cond", "joint"))
   
   # 2) Prepare for plotting ----
-  o$smooth <- o$gObj$smooth[[o$ism]]
-  fv.terms <- o$store$termsFit[ , o$store$np + o$ism]
-  init <- .initializeXXX(o, a.all$a.ci$unconditional, residuals, resDen, se, fv.terms)
-  
-  tmp <- .createP(sm = init$o$smooth, x = init$o$gObj,
-                  partial.resids = init$partial.resids,
-                  se = init$se, n = n, n2 = NULL,
-                  xlab = xlab, ylab = ylab, main = main, 
-                  # label = term.lab,
-                  ylim = ylim, xlim = xlim, too.far = NULL, 
-                  se1.mult = init$se1.mult, se2.mult = init$se2.mult,
-                  seWithMean = a.all$a.ci$seWithMean, fitSmooth = init$fv.terms,
-                  w.resid = init$w.resid, resDen = resDen)
-  attr(o$smooth, "coefficients") <- tmp[["coef"]]
+  P <- .prepareP(o = o, unconditional = a.all$a.ci$unconditional, residuals = residuals, 
+                  resDen = resDen, se = se, se.mult = a.all$a.ci$se.mult, n = n, n2 = NULL,  
+                  xlab = xlab, ylab = ylab, main = main, ylim = ylim, xlim = xlim,
+                  too.far = NULL, seWithMean = a.all$a.ci$seWithMean)
   
   # 3) Plotting ----
-  .ggobj <- .plot.mgcv.smooth.1D(x = init$o$smooth, P = tmp[["P"]], n = n, se = se,
-                                 shift = shift, trans = trans, maxpo = maxpo, partial.resids = init$partial.resids,
+  .ggobj <- .plot.mgcv.smooth.1D(x = P$smooth, P = P, n = n, se = se,
+                                 shift = shift, trans = trans, maxpo = maxpo, 
+                                 partial.resids = P$doPlotResid,
                                  resDen = resDen, ylim = ylim, rug = rug, a.all = a.all)
-  attr(.ggobj, "rawData") <- tmp[["P"]]
+  attr(.ggobj, "rawData") <- P
   return(.ggobj)
 }
 

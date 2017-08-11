@@ -45,32 +45,14 @@ plot.mgcv.smooth.MD <- function(o, fix, residuals = FALSE, rug = TRUE, se = TRUE
     stop("'scheme' must be in 0:4")
   }
   if ( length(too.far) == 1 ){ too.far <- c(too.far, NA)  }
-  o$smooth <- o$gObj$smooth[[o$ism]]
-  resDen <- "none"
-  fv.terms <- o$store$termsFit[ , o$store$np + o$ism]
-  init <- .initializeXXX(o, unconditional, residuals, resDen, se, fv.terms)
-  # affect initialize output
-  o <- init$o
-  w.resid <- init$w.resid
-  partial.resids <- init$partial.resids
-  se2.mult <- init$se2.mult
-  se1.mult <- init$se1.mult
-  se <- init$se
-  fv.terms <- init$fv.terms
-  order <- init$order
-  # Prepare for plotting
-  tmp <- .createP(sm = o$smooth, x = o$gObj, partial.resids = partial.resids,
-                  se = se, n = NULL, n2 = n,
-                  xlab = xlab, ylab = ylab, main = main,
-                  ylim = ylim, xlim = xlim, too.far = too.far,
-                  se1.mult = se.mult, se2.mult = se.mult, 
-                  seWithMean = seWithMean, fitSmooth = fv.terms,
-                  w.resid = w.resid, resDen = resDen, fix = fix, ...)
-  pd <- tmp[["P"]]
-  attr(o$smooth, "coefficients") <- tmp[["coef"]]
-  rm(tmp)
+  
+  # Prepare for plotting ----
+  P <- .prepareP(o = o, unconditional = unconditional, residuals = residuals, 
+                 resDen = "none", se = se, se.mult = se.mult, n = NULL, n2 = n,  
+                 xlab = xlab, ylab = ylab, main = main, ylim = ylim, xlim = xlim,
+                 too.far = too.far, seWithMean = seWithMean, fix = fix)
   # Plotting
-  .ggobj <- .plot.mgcv.smooth.2D(x = o$smooth, P = pd, partial.resids = partial.resids,
+  .ggobj <- .plot.mgcv.smooth.2D(x = P$smooth, P = P, partial.resids = P$doPlotResid,
                                  rug = rug, se = se, scale = FALSE, n2 = n, maxpo = maxpo,
                                  pers = pers, theta = theta, phi = phi, jit = NULL,
                                  main = main, too.far = too.far, 
@@ -79,7 +61,7 @@ plot.mgcv.smooth.MD <- function(o, fix, residuals = FALSE, rug = TRUE, se = TRUE
                                  contour.col = contour.col, noiseup = noiseup, pFun = pFun, ...)
   if (inherits(.ggobj, "ggplot")) {
     .ggobj <- .ggobj + theme_bw()
-    attr(.ggobj, "rawData") <- pd
+    attr(.ggobj, "rawData") <- P
     return(.ggobj)
   } else {
     return(invisible(.ggobj))

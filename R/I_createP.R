@@ -67,6 +67,7 @@
   if (is.null(P)) {
     P <- list(plot.me = FALSE) 
   } else {
+    P$smooth <- sm
     if (is.null(P$fit)) { 
       p <- x$coefficients[first:last]   ## relevant coefficients 
       offset <- attr(P$X, "offset")      ## any term specific offset
@@ -114,8 +115,5 @@
     }
     P$plot.me <- TRUE
   }
-  return(list(
-    "P" = P,
-    "coef" = attr(sm, "coefficients")
-  )) 
+  return( P ) 
 }
