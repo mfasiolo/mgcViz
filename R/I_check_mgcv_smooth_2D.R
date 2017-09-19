@@ -1,8 +1,8 @@
 
 # Internal function, used by check.mgcv.smooth.2D and check.mgcv.smooth.MD
 
-.check.mgcv.smooth.2D <- function(o, type, binw1, binw2, 
-                                  gridFun, nco, xlimit, ylimit, 
+.check.mgcv.smooth.2D <- function(o, type, rep, binw1, binw2, 
+                                  gridFun, addCont, nco, xlimit, ylimit, 
                                   palette1, palette2, acFun, too.far=0, fix=NULL)
 {
   type <- match.arg(type, c("auto", "deviance", "pearson", "scaled.pearson", 
@@ -11,12 +11,29 @@
   # Returns the appropriate residual type for each GAM family
   if( type=="auto" ) { type <- .getResTypeAndMethod(o$gObj$family$family)$type }
   
-  if( is.null(gridFun) ){
-    gridFun <- function(.x, .sdr){
-      .o <- mean(.x) * sqrt(length(.x)) 
+  if( is.null(gridFun) ){ gridFun <- mean }
+  
+  getGridFun <- function(.ifun){
+      # Internal wrapper  
+      .f <- function(.ii, .r, .sim){
+      
+      if( length(.ii) ){
+      .r <- .r[ .ii ]
+      .o <- .ifun( .r )
+      
+      if( !is.null(.sim) ){
+        sk <- apply(.sim[ , .ii, drop = F], 1, .ifun)
+        .o <- (.o - mean(sk)) / sd(sk)
+      }
+      
       return( .o )
+      } else {
+        return( NA)
+      }
     }
+    return( .f )  
   }
+  gridWrapper <- getGridFun( gridFun )
   
   #### 1) Preparation
   P <- .prepareP(o = o, unconditional = FALSE, residuals = FALSE, 
@@ -29,15 +46,30 @@
   X <- data.frame("x"=rep(P$x, nco), "y"=rep(P$y, each=nco))
   X$fit <- P$fit
   
+  # Simulated data from model
+  sim <- NULL
+  if( rep > 0 ){
+    sim <- simulate(o$gObj, n = rep)
+    sim <- aaply(sim, 1, 
+                 function(.yy){  
+                   o$gObj$y <- .yy
+                   return( residuals(o$gObj, type = type) )
+                 })
+  }
+  
   # Drop data too far from current slice (relevant when called from check.mgcv.smooth.MD)
   if( any(P$exclude2) ){
    ty <- ty[ !P$exclude2 ]
    P$raw <- P$raw[ !P$exclude2, ]
+   if( !is.null(sim) ){ sim <- sim[ , !P$exclude2] }
   }
   
   # Drop data outside limits
-  sdat <- filter(data.frame("x"=P$raw$x, "y"=P$raw$y, "z"=ty), 
-                 findInterval(x, P$xlim)==1 & findInterval(y, P$ylim)==1) 
+  tmp <- findInterval(P$raw$x, P$xlim)==1 & findInterval(P$raw$y, P$ylim)==1
+  sdat <- filter(data.frame("x"=P$raw$x, "y"=P$raw$y), tmp)
+  sdat$z <- 1:nrow(sdat)
+  ty <- ty[ tmp ]
+  sim <- sim[ , tmp]
   
   # Determine bin widths for the two plots
   if( is.null(binw1) ){  binw1 <- c(diff(range(sdat$x))/20,  diff(range(sdat$y))/20)  }
@@ -58,14 +90,16 @@
   # Plot with hexagons
   .pl1 <- ggplot(data = sdat, aes(x=x, y=y, z=z)) + 
     stat_summary_hex(binwidth = binw1, 
-                     fun = function(.x, .sdr){ gridFun(na.omit(.x), .sdr) }, 
-                     fun.args = list(".sdr" = sqrt(o$gObj$sig2))) +
+                     fun = gridWrapper, 
+                     fun.args = list(".r" = ty, ".sim" = sim)) +
     scale_fill_gradientn(colours = palette1, na.value="white") +
-    coord_cartesian(xlim=NULL, ylim=NULL, expand=F) +
-    geom_contour(data=X, aes(x=x, y=y, z=fit), color="black", na.rm=T, inherit.aes = F) + 
+    coord_cartesian(xlim=NULL, ylim=NULL, expand=F) + 
     labs(title = paste(P$main, if(!is.null(P$exclude2)){paste(", n =", nrow(P$raw))}else{''}, sep=''), 
          x = P$xlab, y = P$ylab)
   
+  if( addCont ) .pl1 <- .pl1 + geom_contour(data=X, aes(x=x, y=y, z=fit), color="black", 
+                                            na.rm=T, inherit.aes = F) 
+
   # ACF plots
   .pl2 <- ggplot(data = acfO$df[[1]], mapping = aes(x = lag, y = acf)) +
     geom_hline(aes(yintercept = 0)) +
