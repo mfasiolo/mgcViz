@@ -36,7 +36,7 @@
 # .spContour <- mgcViz:::.spContour
 
 plot.mgcv.smooth.2D <- function(o, residuals = FALSE, rug = TRUE, se = TRUE, n = 40, maxpo = 1e4,
-                                pers = FALSE, theta = 30, phi = 30, xlab = NULL, ylab = NULL,
+                                addCont = TRUE, pers = FALSE, theta = 30, phi = 30, xlab = NULL, ylab = NULL,
                                 main = NULL, ylim = NULL, xlim = NULL, too.far = 0.1, se.mult = 1,
                                 shift = 0, trans = I, seWithMean = FALSE, 
                                 unconditional = FALSE, by.resids = FALSE,
@@ -58,6 +58,7 @@ plot.mgcv.smooth.2D <- function(o, residuals = FALSE, rug = TRUE, se = TRUE, n =
   # Plotting
   .ggobj <- .plot.mgcv.smooth.2D(x = P$smooth, P = P, partial.resids = P$doPlotResid,
                                  rug = rug, se = se, scale = FALSE, n2 = n, maxpo = maxpo,
+                                 addCont = addCont, 
                                  pers = pers, theta = theta, phi = phi, jit = NULL,
                                  main = main, too.far = too.far, 
                                  shift = shift, trans = trans, by.resids = by.resids,
@@ -84,7 +85,7 @@ plot.mgcv.smooth.2D <- function(o, residuals = FALSE, rug = TRUE, se = TRUE, n =
 
 # Internal function
 .plot.mgcv.smooth.2D <- function(x, P = NULL, partial.resids = FALSE, rug = TRUE, se = TRUE,
-                                 scale = FALSE, n2 = 40, maxpo = 1e4,
+                                 scale = FALSE, n2 = 40, maxpo = 1e4, addCont = TRUE,
                                  pers = FALSE, theta = 30, phi = 30, jit = FALSE,
                                  main = NULL, too.far = 0.1,
                                  shift = 0, trans = I, by.resids = FALSE, scheme = 0,
@@ -130,11 +131,15 @@ plot.mgcv.smooth.2D <- function(o, residuals = FALSE, rug = TRUE, se = TRUE, n =
       .pl <- 
         ggplot(data = dat, aes(x = x, y = y, z = z)) +
         geom_raster(aes(fill = if(noiseup){zno}else{z}, alpha = p)) + 
-        geom_contour(color = contour.col, na.rm = TRUE) + 
         scale_fill_gradientn(colours = hcolors, na.value = "grey", name = "s(x)") +
         scale_alpha_identity() +
         coord_cartesian(xlim = P$xlim, ylim = P$ylim, expand = FALSE) +
         labs(title = P$main, x = P$xlab, y = P$ylab) 
+      
+      if( addCont ){
+        .pl <- .pl + geom_contour(color = contour.col, na.rm = TRUE) 
+      }
+      
       # Add partial residuals
       if (rug) { 
         # Exclude points too far from current slice (relevant only when called by plot.mgcv.smooth.MD)

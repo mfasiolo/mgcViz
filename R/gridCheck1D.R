@@ -27,8 +27,9 @@
 #' @importFrom plyr aaply
 #' @rdname gridCheck1D
 #' @export gridCheck1D
-gridCheck1D <- function(o, x, y=NULL, gridFun = NULL, ngr = 20, rep = 10, type="auto", level = 0.8, stand = "none", 
-                        show.reps = TRUE, xlim=NULL, ylim=NULL, shape1 = 19, shape2 = 46)
+gridCheck1D <- function(o, x, y=NULL, gridFun = NULL, ngr = 20, rep = 10, type="auto",
+                        level = 0.8, stand = "none", show.reps = TRUE, xlim=NULL, 
+                        ylim=NULL, shape1 = 19, shape2 = 46)
 {
   ### 1. Preparation
   type <- match.arg(type, c("auto", "deviance", "pearson", "scaled.pearson", 
@@ -148,13 +149,12 @@ gridCheck1D <- function(o, x, y=NULL, gridFun = NULL, ngr = 20, rep = 10, type="
     if(level > 0){
 
       datCI <- data.frame("x" = goX, "ll" = conf[1, ], "ul" = conf[2, ])
-      .pl <- .pl + geom_line(data = datCI, aes(x = x, y = ll), na.rm = TRUE, linetype = 2)
-      .pl <- .pl + geom_line(data = datCI, aes(x = x, y = ul), na.rm = TRUE, linetype = 2)
+      .pl <- .pl + geom_line(data = datCI, aes(x = x, y = ll), na.rm = TRUE, linetype = 2, colour = "red")
+      .pl <- .pl + geom_line(data = datCI, aes(x = x, y = ul), na.rm = TRUE, linetype = 2, colour = "red")
     }
   }
   
-  .pl <- .pl + geom_point(na.rm = TRUE, shape = shape1) + geom_rug(sides = "b") +
-         labs(x = xnm, y = "f(r)")
+  .pl <- .pl + geom_point(na.rm = TRUE, shape = shape1) + labs(x = xnm, y = "f(r)")
 
   return( .pl + theme_bw() )
  

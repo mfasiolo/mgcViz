@@ -138,7 +138,7 @@ cdCheck <- function(o, x, y=NULL, type="auto", n=c(80, 80), bw=NULL,
     }
   }
   
-  .pl <- .pl + labs(x = xnm, y = expression("f{ p(r|x) - " * hat(p) * "(r|x) }"))
+  .pl <- .pl + labs(x = xnm, y = "r")
   
   .pl <-  .pl + theme_bw() + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
   
