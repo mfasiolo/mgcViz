@@ -6,9 +6,9 @@ Authors@R: c(person("Matteo", "Fasiolo", email = "matteo.fasiolo@gmail.com", rol
 Description: mgcViz.
 Depends: 
   R (>= 3.3.2),
-  mgcv
+  mgcv, 
+  ggplot2
 Imports:
-  ggplot2,
   plotly, 
   shiny,
   miniUI,

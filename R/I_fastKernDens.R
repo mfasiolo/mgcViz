@@ -1,6 +1,9 @@
 
 .fastKernDens <- function(dat, bw, ngr, xlimit, ylimit, tol, cond, ...) {
   
+  if( is.null(xlimit) ) { xlimit <- range(dat[ , 1]) }
+  if( is.null(ylimit) ) { ylimit <- range(dat[ , 2]) }
+  
   # Suppress warnings related to ngrid being too small relative to bw. Happens with big dataset.
   withCallingHandlers({
     
