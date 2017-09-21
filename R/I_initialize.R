@@ -45,9 +45,9 @@
       }
     }
     
-    fv.terms <- o$store$termsFit[ , o$store$np + o$ism]
+    fv.terms <- o$gObj$store$termsFit[ , o$gObj$store$np + o$ism]
     if(is.null(fv.terms)) { 
-      fv.terms <- predict(o, type = "terms")
+      fv.terms <- predict(o$gObj, type = "terms")
     }
   }
   
