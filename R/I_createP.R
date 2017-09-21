@@ -1,22 +1,22 @@
-#' @param sm 
-#' @param x 
-#' @param partial.resids 
-#' @param se 
-#' @param n 
-#' @param n2 
-#' @param xlab 
-#' @param ylab 
-#' @param main 
-#' @param ylim 
-#' @param xlim 
-#' @param too.far 
-#' @param se1.mult 
-#' @param se2.mult 
-#' @param seWithMean 
-#' @param fitSmooth 
-#' @param w.resid 
-#' @param resDen 
-#' @param ...
+#' @param sm XXX
+#' @param x  XXX
+#' @param partial.resids  XXX
+#' @param se  XXX
+#' @param n  XXX
+#' @param n2  XXX
+#' @param xlab  XXX
+#' @param ylab  XXX
+#' @param main  XXX
+#' @param ylim  XXX
+#' @param xlim  XXX
+#' @param too.far  XXX
+#' @param se1.mult  XXX
+#' @param se2.mult  XXX
+#' @param seWithMean  XXX
+#' @param fitSmooth  XXX
+#' @param w.resid  XXX
+#' @param resDen  XXX
+#' @param ...  XXX
 #' @noRd 
 #' @examples 
 #' library(mgcViz)
@@ -46,7 +46,7 @@
 #' seWithMean <- FALSE
 #' b <- ylab <- xlim <- ylim <- main <- NULL
 #' resDen = "none"
-
+#' @noRd
 .createP <- function(sm, x, partial.resids, 
                      se, n, n2,
                      xlab, ylab, main, 

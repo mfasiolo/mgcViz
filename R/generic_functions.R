@@ -4,7 +4,6 @@
 #' Generic check function
 #'
 #' @title check
-#' @examples
 #' @rdname check
 #' @export check
 check <- function(x, ...) UseMethod("check")
@@ -14,7 +13,6 @@ check <- function(x, ...) UseMethod("check")
 #' Generic zooming function
 #'
 #' @title zooming
-#' @examples
 #' @rdname zoom
 #' @export zoom
 zoom <- function(x, ...) UseMethod("zoom")

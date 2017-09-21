@@ -23,7 +23,7 @@
 #' @import ggplot2
 #' @importFrom data.table frankv
 #' @importFrom matrixStats rowSds rowOrderStats
-#' @return
+#' @return An object of class \code{qqGam}.
 #' @export
 #' @examples
 #' ## simulate binomial data...

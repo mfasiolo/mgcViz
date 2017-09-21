@@ -11,7 +11,7 @@
 #' @param k.rep, How many re-shuffles to do to get p-value for k testing.
 #' @param rep,level,method,rl.col,rep.col, Arguments passed to [qq.gam()].
 #' @param ... Extra parameters. 
-#' @return
+#' @return An object of class \code{check.gam}, which is simply a list of \code{ggplot} objects.
 #' @note Help file is mainly from [mgcv::gam.check] since this is a rewrite of `mgcv::gam.check` 
 #' function with ggplot2 library.
 #' @export check.gam
