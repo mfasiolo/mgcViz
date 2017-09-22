@@ -1,3 +1,4 @@
+#'
 #' Plotting one dimensional smooth factor interactions
 #' 
 #' @description Plotting one dimensional smooth factor interactions.
@@ -14,7 +15,7 @@
 #' ## simulate data...
 #' f0 <- function(x) 2 * sin(pi * x)
 #' f1 <- function(x, a = 2, b = -1) exp(a * x) + b
-#' f2 <- function(x) 0.2 * x^11 * (10 * (1 - x))^6 + 10 * 
+#' f2 <- function(x) 0.2 * x^11 * (10 * (1 - x))^6 + 10 *
 #'   (10 * x)^3 * (1 - x)^10
 #' n <- 500; nf <- 25
 #' fac <- sample(1:nf, n, replace = TRUE)
@@ -23,65 +24,59 @@
 #' f <- f0(x0) + f1(x1, a[fac], b[fac]) + f2(x2)
 #' fac <- factor(fac)
 #' y <- f + rnorm(n) * 2
-#' ## so response depends on global smooths of x0 and 
+#' ## so response depends on global smooths of x0 and
 #' ## x2, and a smooth of x1 for each level of fac.
 #' 
-#' ## fit model (note p-values not available when fit 
+#' ## fit model (note p-values not available when fit
 #' ## using gamm)...
 #' bm <- gamm(y ~ s(x0)+ s(x1, fac, bs = "fs", k = 5) + s(x2, k = 20))
 #' v <- getViz(bm$gam)
-#' plot(v(2), args.axis = list(main = "Smooth factor interactions"))
-#' plot(v(2), args.axis = list(ylim = c(-0.5, 0.5), xlim = c(0.25, 0.75)))
-#' plot(v(2), args.axis = list(ylim = c(-0.5, 0.5), xlim = c(0.25, 0.75)),
-#'      args.lines = list(alpha = NULL, size = 1.3, linetype = "dotted"))
+#' 
+#' # Plot with fitted effects and changing title 
+#' plot(sm(v, 2)) + fitLine(alpha = 0.6) + labs(title = "Smooth factor interactions")
+#' 
+#' # Changing plotting limits
+#' plot(sm(v, 2)) + fitLine() + ylim(-0.5, 0.5) + xlim(0.25, 0.75)
+#' 
+#' # Change line type and remove legend
+#' plot(sm(v, 2)) + fitLine(size = 1.3, linetype="dotted") + 
+#'   wrapTheme(theme(legend.position="none"))
 #' @rdname plot.fs.interaction.1D
 #' @export plot.fs.interaction.1D
-plot.fs.interaction.1D <- function(o, n = 100, shift = 0, trans = I,
-                                   args.lines = list(alpha = NULL),
-                                   args.axis = list(xlab = NULL, ylab = NULL, main = NULL,
-                                                    ylim = NULL, xlim = NULL), ...) {
+#' 
+plot.fs.interaction.1D <- function(o, n = 100, trans = I, 
+                                   unconditional = FALSE, seWithMean = FALSE) {
   
-  # Prepare for plotting ----
+  # 1) Prepare data
   P <- .prepareP(o = o, unconditional = FALSE, residuals = FALSE, 
-                 resDen = FALSE, se = FALSE, se.mult = NULL, n = n, n2 = NULL,  
-                 xlab = args.axis$xlab, ylab = args.axis$ylab, main = args.axis$main,
-                 ylim = args.axis$ylim, xlim = args.axis$xlim,
+                 resDen = "none", se = TRUE, se.mult = 1, n = n, n2 = NULL,  
+                 xlab = NULL, ylab = NULL, main = NULL, ylim = NULL, xlim = NULL,
                  too.far = NULL, seWithMean = FALSE)
   
-  # Plotting
-  .ggobj <- .plot.fs.interaction.1D(x = P$smooth, P = P, trans = trans, shift = shift, 
-                                    args.lines = args.lines, ...)
-  attr(.ggobj, "rawData") <- P
-  return(.ggobj)
+  # 2) Produce output object
+  out <- .plot.fs.interaction.1D(x = P$smooth, P = P, trans = trans)
+  
+  class(out) <- c("plotSmooth", "fs", "1D")
+  
+  return(out)
 }
 
-# Internal function
-.plot.fs.interaction.1D <- function(x, P, trans, shift, 
-                                    args.lines  = list(alpha = NULL), ...) {
-  .dat <- data.frame("x"  = rep(P$x, P$nf),
-                     "y"  = trans(P$fit + shift),
-                     "id" = as.factor(rep(x$flev, each = P$n)))
-  if (is.null(P$ylim)) {
-    P$ylim <- range(.dat$y) 
-  }
-  if (is.null(P$xlim)) {
-    P$xlim <- range(.dat$x) 
-  }
-  if (is.null(args.lines$alpha)){
-    args.lines$alpha <- 
-      if (P$nf < 10){
-        1
-      } else if (P$nf < 100) {
-        0.5
-      } else {
-        0.3
-      }
-  }
-  .pl <- 
-    ggplot(data = .dat, aes("x" = x, "y" = y, "colour" = id)) +
-    do.call(geom_line, args.lines) + 
-    labs(title = P$main, x = P$xlab, y = P$ylab) +
-    coord_cartesian(xlim = P$xlim, ylim = P$ylim)
-  return(.pl)
+########################
+#' @noRd
+.plot.fs.interaction.1D <- function(x, P, trans) {
+  
+  .dat <- list()
+  # 1) Build dataset on fitted effect
+  .dat$fit <- data.frame("x"  = rep(P$x, P$nf),
+                         "y"  = trans(P$fit),
+                         "id" = as.factor(rep(x$flev, each = P$n)))
+  .dat$misc <- list("trans" = trans)
+  
+  .pl <- ggplot(data = .dat$fit, aes("x" = x, "y" = y, "colour" = id)) +
+    labs(title = P$main, x = P$xlab, y = P$ylab) + 
+    theme_bw() +
+    theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+  
+  return( list("ggObj" = .pl, "data" = .dat) ) 
+  
 } ## end .plot.fs.interaction.1D
-
