@@ -34,6 +34,7 @@ ciLine.plotSmooth1D <- function(a){
   
   if( is.null(a$linetype) ){ a$linetype <- "dashed"}
   if( is.null(a$na.rm) ){ a$na.rm <- TRUE}
+  a$inherit.aes <- FALSE
   
   # Call ggplot2::geom_line
   out <- list()

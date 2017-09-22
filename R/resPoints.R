@@ -21,6 +21,7 @@ resPoints.plotSmooth1D <- function(a){
   
   a$data <- a$data$res[a$data$res$sub, ]
   a$mapping <- aes(x = x, y = y)
+  a$inherit.aes <- FALSE
   if( is.null(a$shape) ) { a$shape <- 46 } 
   if( is.null(a$na.rm) ) { a$na.rm <- TRUE } 
   
@@ -32,4 +33,12 @@ resPoints.plotSmooth1D <- function(a){
     out <- NULL
   }
   return( out )
+}
+
+######## Internal method 
+#' @noRd
+resPoints.plotSmooth2D <- function(a){
+  
+  return( resPoints.plotSmooth1D(a) )
+  
 }

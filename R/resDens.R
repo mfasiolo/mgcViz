@@ -68,3 +68,11 @@ resDens.plotSmooth1D <- function(a){
   
   return( out )
 }
+
+######## Internal method 
+#' @noRd
+resDens.plotSmooth2D <- function(a){
+ 
+  return( resDens.plotSmooth1D(a) )
+  
+}
