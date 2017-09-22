@@ -28,9 +28,9 @@
 #' dat <- data.frame("x1" = x1, "x2" = x2,
 #'                   "y" = sin(x1) + 0.5 * x2^2 + pmax(x2, 0.2) * rnorm(n))
 #' b <- bam(y ~ s(x1)+s(x2), data = dat, method = "fREML", discrete = TRUE)
-#' v <- getViz(b)
+#' b <- getViz(b)
 #' 
-#' o <- plot( v(1) ) 
+#' o <- plot( sm(b, 1) ) 
 #' 
 #' # Plot with fitted effect + rug on both axis
 #' ( o <- o + fitLine(colour = "red") + 
@@ -44,7 +44,7 @@
 #'     wrapTheme(theme_classic()) )
 #' 
 #' # Get second effect plot
-#' o2 <- plot( v(2) )
+#' o2 <- plot( sm(b, 2) )
 #' 
 #' # Plot it with polygon for partial residuals
 #' o2 + ciPoly(mul = 5, fill = "light blue") + 
@@ -60,12 +60,12 @@ plot.mgcv.smooth.1D <- function(o, n = 100, maxpo = 1e4, trans = I,
   
   # 1) Prepare data
   P <- .prepareP(o = o, unconditional = unconditional, residuals = TRUE, 
-                 resDen = FALSE, se = TRUE, se.mult = 1, n = n, n2 = NULL,  
+                 resDen = "none", se = TRUE, se.mult = 1, n = n, n2 = NULL,  
                  xlab = NULL, ylab = NULL, main = NULL, ylim = NULL, xlim = NULL,
                  too.far = NULL, seWithMean = seWithMean)
   
   # 2) Produce output object
-  out <- .plot.mgcv.smooth.1D(x = P$smooth, P = P, n = n, trans = trans, maxpo = maxpo)
+  out <- .plot.mgcv.smooth.1D(x = P$smooth, P = P, trans = trans, maxpo = maxpo)
   
   class(out) <- c("plotSmooth", "1D")
   
@@ -74,7 +74,7 @@ plot.mgcv.smooth.1D <- function(o, n = 100, maxpo = 1e4, trans = I,
 
 ########################
 #' @noRd
-.plot.mgcv.smooth.1D <- function(x, P, n, trans, maxpo) { # axis layer
+.plot.mgcv.smooth.1D <- function(x, P, trans, maxpo) {
   
   .dat <- list()
   

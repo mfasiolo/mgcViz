@@ -1,4 +1,4 @@
-#' Printing output of print.check.gam
+#' Printing output of check.gam
 #' 
 #' @description XXX
 #' @name print.check.gam

@@ -9,6 +9,8 @@
 #' @export sm
 sm <- function(o, select){
   
+  if( !("gamViz" %in% class(o)) ){ stop("`o` should be of class `gamViz`") }
+  
   m <- length(o$smooth) # number of smooth effects
   
   if(length(select)>1){ stop("select should be a scalar") }
