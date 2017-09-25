@@ -32,6 +32,6 @@
 }
 
 
-#' @rdname plotSmooth-add
-#' @export
-"%+%" <- `+.plotSmooth`
+#' #' @rdname plotSmooth-add
+#' #' @export
+#' "%+%" <- `+.plotSmooth`

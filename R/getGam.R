@@ -15,8 +15,8 @@ getGam <- function(o){
   
   if( !("gamViz" %in% class(o)) ){ stop("\"o\" should be of class \"gamViz\"") }
   
-  out <- get("gObj", envir = environment(o))
-  out$termsFit <- NULL
+  o$store <- NULL
+  class(o) <- class(o)[ -(which(class(o) == "gamViz"))] 
   
-  return( out )
+  return( o )
 }

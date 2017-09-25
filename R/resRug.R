@@ -19,7 +19,7 @@ resRug <- function(jit = c(FALSE, FALSE), ...){
 
 ######## Internal method for 1D plots
 #' @noRd
-resRug.plotSmooth1D <- function(a){
+resRug.plotSmooth1D <- resRug.plotSmoothCheck1D <- function(a){
   
   if( is.null(a$mapping) ) { a$mapping <- aes(x = x) }
   

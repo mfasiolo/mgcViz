@@ -17,7 +17,7 @@ resPoints <- function(...){
 
 ######## Internal method 
 #' @noRd
-resPoints.plotSmooth1D <- function(a){
+resPoints.plotSmooth1D <- resPoints.plotSmoothCheck1D <- function(a){
   
   a$data <- a$data$res[a$data$res$sub, ]
   a$mapping <- aes(x = x, y = y)

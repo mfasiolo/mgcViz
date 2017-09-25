@@ -10,7 +10,7 @@
 #' b <- getViz(b)
 #'
 #' plot(sm(b,1)) + fitLine() + ciLine() + resRug() + resPoints()
-#' plot(sm(b,2), rug = T, residuals = T, scheme=2)
+#' plot(sm(b,2)) + resRug() + fitRaster() + fitLine()
 #' @rdname getViz
 #' @export getViz
 getViz <- function(o){

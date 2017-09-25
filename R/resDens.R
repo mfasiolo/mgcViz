@@ -6,7 +6,7 @@
 #' @param type if set to "cond" then the conditional residual density is plotted.
 #'             If set to "joint" the joint density of residuals and corresponding 
 #'             covariate is plotted.
-#' @param ngr vector of two positive integers, indicating the number of grid points
+#' @param n vector of two positive integers, indicating the number of grid points
 #'            at which the density is evaluated on the x and y axes.
 #' @param bw vector with two positive entried, indicating the bandwidth to be used
 #'           by the kernel density estimator along x and y.
@@ -22,11 +22,11 @@
 #' @return An object of class \code{gamLayer}.
 #' @export resDens
 #'
-resDens <- function(type = 'cond', ngr = c(50, 50), 
+resDens <- function(type = 'cond', n = c(50, 50), 
                     bw = NULL, tol = 1e-6, trans = sqrt, ...){
   arg <- list(...)
   match.arg(type, c("cond", "joint"))
-  arg$xtra <- list("type" = type, "ngr" = ngr, "bw" = bw, 
+  arg$xtra <- list("type" = type, "n" = n, "bw" = bw, 
                    "tol" = tol, "trans" = trans, "grad" = list())
   o <- structure(list("fun" = "resDens",
                       "arg" = arg), 
@@ -36,7 +36,7 @@ resDens <- function(type = 'cond', ngr = c(50, 50),
 
 ######## Internal method 
 #' @noRd
-resDens.plotSmooth1D <- function(a){
+resDens.plotSmooth1D <- resDens.plotSmoothCheck1D <- function(a){
   
   xtra <- a$xtra
   a$xtra <- NULL
@@ -48,13 +48,13 @@ resDens.plotSmooth1D <- function(a){
   
   # Computed joint or conditional residual density
   dXY <- .fastKernDens(dat = a$data$res, xlimit = NULL, ylimit = NULL,
-                       cond = (xtra$type == "cond"), bw = xtra$bw, ngr = xtra$ngr, 
+                       cond = (xtra$type == "cond"), bw = xtra$bw, n = xtra$n, 
                        tol = xtra$tol)$dXY
   
   # Add arguments for `geom_raster`
   a$data <- data.frame("d" = xtra$trans(as.numeric(t(dXY$fhat))),
-                       "x" = rep(dXY$x1, each = xtra$ngr[1]),
-                       "y" = rep(dXY$x2, xtra$ngr[2]))
+                       "x" = rep(dXY$x1, each = xtra$n[1]),
+                       "y" = rep(dXY$x2, xtra$n[2]))
   a$mapping <- aes(x = x, y = y, fill = d)
   a$inherit.aes <- FALSE
   if( is.null(a$na.rm) ){ a$na.rm <- TRUE }
