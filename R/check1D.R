@@ -6,9 +6,7 @@
 #' @param o an object of class \code{gamObject} or \code{gamViz}.
 #' @param x should be either a single character or a numeric vector. 
 #'          In the first case it should be the name of one of the variables in the dataframe used to fit \code{o}.
-#' @param y a numeric vector of the same lenght as \code{x}. By default \code{y} is \code{NULL} and 
-#'          \code{y} is obtained by calling \code{residuals(o, type=type)}.
-#' @param type the type of residuals to be used to obtain \code{y}. See \code{?residuals.gam}
+#' @param type the type of residuals to be used. See \code{?residuals.gam}
 #' @param maxpo maximum number of residuals points that will be used by layers such as
 #'              \code{resRug()} and \code{resPoints()}. If number of datapoints > \code{maxpo},
 #'              then a subsample of \code{maxpo} points will be taken.
@@ -43,7 +41,7 @@
 #' @rdname check1D
 #' @export check1D
 #' 
-check1D <- function(o, x, y=NULL, type = "auto", maxpo = 1e4, na.rm = TRUE){
+check1D <- function(o, x, type = "auto", maxpo = 1e4, na.rm = TRUE){
   
   ### 1. Preparation
   type <- match.arg(type, c("auto", "deviance", "pearson", "scaled.pearson", 
@@ -52,8 +50,8 @@ check1D <- function(o, x, y=NULL, type = "auto", maxpo = 1e4, na.rm = TRUE){
   # Returns the appropriate residual type for each GAM family
   if( type=="auto" ) { type <- mgcViz:::.getResTypeAndMethod(o$family$family)$type }
   
-  # Get residuals or transformed responses
-  if( is.null(y) ){ y <- residuals(o, type = type) }
+  # Get residuals
+  y <- residuals(o, type = type)
   
   xnm <- "x" # If `x` is char, get related vector from dataframe
   if( is.character(x) ){ 
@@ -81,7 +79,7 @@ check1D <- function(o, x, y=NULL, type = "auto", maxpo = 1e4, na.rm = TRUE){
     rep(T, m) 
   }
   
-  ### 2. Simulate residuals
+  ### 2. Transform responses to residuals
   sim <- NULL
   if( !is.null(o$store$sim) ){
     sim <- aaply(o$store$sim, 1, 
