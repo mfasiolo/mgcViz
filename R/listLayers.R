@@ -15,7 +15,8 @@ listLayers <- function(o){
                 "plotSmooth2D" = c("fitLine", "fitRaster", "resDens", "resPoints", "resRug"), 
                 "plotSmoothMD" = c("fitLine", "fitRaster", "resDens", "resPoints", "resRug"), 
                 
-                "plotSmoothCheck1D" = c("denCheck", "gridCheck", "resDens", "resPoints", "resRug"), 
+                "plotSmoothCheck1D" = c("denCheck", "gridCheck1D", "resDens", "resPoints", "resRug"), 
+                "plotSmoothCheck1D" = c("gridCheck2D", "resDens", "resPoints", "resRug"),
                 
                 message(paste("No layers for obj of this class", paste(class(o), collapse = ' '))))
   

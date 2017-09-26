@@ -29,7 +29,7 @@ resRug.plotSmooth1D <- resRug.plotSmoothCheck1D <- function(a){
 
 ######## Internal method for 2D plots
 #' @noRd
-resRug.plotSmooth2D <- function(a){
+resRug.plotSmooth2D <- resRug.plotSmoothCheck2D <- function(a){
   
   if( is.null(a$mapping) ) { a$mapping <- aes(x = x, y = y) }
   

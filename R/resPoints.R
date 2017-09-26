@@ -37,8 +37,9 @@ resPoints.plotSmooth1D <- resPoints.plotSmoothCheck1D <- function(a){
 
 ######## Internal method 
 #' @noRd
-resPoints.plotSmooth2D <- function(a){
+resPoints.plotSmooth2D <- resPoints.plotSmoothCheck2D <- function(a){
   
   return( resPoints.plotSmooth1D(a) )
   
 }
+

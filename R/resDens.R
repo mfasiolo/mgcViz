@@ -71,7 +71,7 @@ resDens.plotSmooth1D <- resDens.plotSmoothCheck1D <- function(a){
 
 ######## Internal method 
 #' @noRd
-resDens.plotSmooth2D <- function(a){
+resDens.plotSmooth2D <- resDens.plotSmoothCheck2D <- function(a){
  
   return( resDens.plotSmooth1D(a) )
   
