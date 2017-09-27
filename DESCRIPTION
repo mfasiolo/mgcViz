@@ -14,7 +14,8 @@ Imports:
   miniUI,
   matrixStats,
   viridis,
-  colourpicker
+  colourpicker, 
+  GGally
 Suggests:
   plyr,
   gridExtra,

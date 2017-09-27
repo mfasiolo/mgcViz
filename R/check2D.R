@@ -35,7 +35,7 @@
 #' check2D(b, x1 = "x1", x2 = "x2") + gridCheck2D(bw = c(0.05, 0.1)) + 
 #'                                    xlim(-1, 1) + ylim(0, 3)
 #' # Fit can be improved by increasing k in the bam() call
-#'                            
+#' 
 #' @rdname check2D
 #' @importFrom dplyr filter sample_n
 #' @export check2D
@@ -104,7 +104,7 @@ check2D <- function(o, x1, x2, bw = NULL, type = "auto", maxpo = 1e4, na.rm = TR
     theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + 
     labs(x = xnm1, y = xnm2)
   
-  misc <- list("type" = type)
+  misc <- list("type" = type, "vnam" = c(xnm1, xnm2))
   
   out <- structure(list("ggObj" = pl, 
                         "data" = list("res" = res, 
