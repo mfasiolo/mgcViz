@@ -26,15 +26,15 @@
 #' ck <- check1D(b, "x") 
 #' 
 #' # Can't see that much
-#' ck + resDens(alpha = 0.8) + resPoints() + resRug(alpha = 0.2)
+#' ck + l_dens(type = "cond", alpha = 0.8) + l_points() + l_rug(alpha = 0.2)
 #' 
 #' # Some evidence of heteroscedasticity
-#' ck + densCheck() 
+#' ck + l_densCheck() 
 #' 
 #' # Compare observed residuals std dev with that of simulated data,
 #' # heteroscedasticity is clearly visible
 #' b <- getSim(b, n = 50)
-#' check1D(b, "x") + gridCheck(gridFun = sd, show.reps = T)
+#' check1D(b, "x") + l_gridCheck1D(gridFun = sd, show.reps = T)
 #' 
 #' @importFrom matrixStats colSds
 #' @importFrom plyr aaply

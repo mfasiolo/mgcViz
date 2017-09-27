@@ -33,13 +33,13 @@
 #' v <- getViz(bm$gam)
 #' 
 #' # Plot with fitted effects and changing title 
-#' plot(sm(v, 2)) + fitLine(alpha = 0.6) + labs(title = "Smooth factor interactions")
+#' plot(sm(v, 2)) + l_fitLine(alpha = 0.6) + labs(title = "Smooth factor interactions")
 #' 
 #' # Changing plotting limits
-#' plot(sm(v, 2)) + fitLine() + ylim(-0.5, 0.5) + xlim(0.25, 0.75)
+#' plot(sm(v, 2)) + l_fitLine() + ylim(-0.5, 0.5) + xlim(0.25, 0.75)
 #' 
 #' # Change line type and remove legend
-#' plot(sm(v, 2)) + fitLine(size = 1.3, linetype="dotted") + 
+#' plot(sm(v, 2)) + l_fitLine(size = 1.3, linetype="dotted") + 
 #'   wrapTheme(theme(legend.position="none"))
 #' @rdname plot.fs.interaction.1D
 #' @export plot.fs.interaction.1D

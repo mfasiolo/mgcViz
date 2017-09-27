@@ -5,12 +5,12 @@
 #'
 #' @param ... graphical arguments to be passed to \code{ggplot2::geom_raster}.
 #' @return An object of class \code{gamLayer}.
-#' @export fitRaster
+#' @export l_fitRaster
 #'
-fitRaster <- function(pFun = function(.p) 1, noiseup = FALSE, mul = 1, ...){
+l_fitRaster <- function(pFun = function(.p) 1, noiseup = FALSE, mul = 1, ...){
   arg <- list(...)
   arg$xtra <- list("pFun" = pFun, "noiseup" = noiseup, "mul" = mul)
-  o <- structure(list("fun" = "fitRaster",
+  o <- structure(list("fun" = "l_fitRaster",
                       "arg" = arg), 
                  class = "gamLayer")
   return(o)
@@ -19,7 +19,7 @@ fitRaster <- function(pFun = function(.p) 1, noiseup = FALSE, mul = 1, ...){
 
 ######## Internal method 
 #' @noRd
-fitRaster.plotSmooth2D <- function(a){
+l_fitRaster.plotSmooth2D <- function(a){
   
   xtra <- a$xtra
   a$xtra <- NULL

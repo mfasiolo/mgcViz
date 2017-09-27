@@ -24,15 +24,15 @@
 #' b <- getViz(b)
 #' 
 #' # Plot joint density of observed covariate x1 and x2
-#' check2D(b, x1 = "x1", x2 = "x2") + resRug() + resDens(type="joint", alpha=0.6) + resPoints() 
+#' check2D(b, x1 = "x1", x2 = "x2") + l_rug() + l_dens(type="joint", alpha=0.6) + l_points() 
 #' 
 #' # Look at how mean of residuals varies across x1 and x2
 #' b <- getSim(b) # Simulate some residuals to standardise (see ?gridCheck2D)
-#' check2D(b, x1 = "x1", x2 = "x2") + gridCheck2D() + resPoints()
+#' check2D(b, x1 = "x1", x2 = "x2") + l_gridCheck2D() + l_points()
 #' 
 #' # Can't see much in previous plot, let's zoom in central area, where most
 #' # data is. Here we can clearly see that the mean model is mispecified
-#' check2D(b, x1 = "x1", x2 = "x2") + gridCheck2D(bw = c(0.05, 0.1)) + 
+#' check2D(b, x1 = "x1", x2 = "x2") + l_gridCheck2D(bw = c(0.05, 0.1)) + 
 #'                                    xlim(-1, 1) + ylim(0, 3)
 #' # Fit can be improved by increasing k in the bam() call
 #' 

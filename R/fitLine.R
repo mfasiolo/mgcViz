@@ -6,11 +6,11 @@
 #' @param ... graphical arguments to be passed to \code{ggplot2::geom_line} (for 1D smooths) or 
 #'            \code{ggplot2::geom_contour} (for 2D smooths).
 #' @return An object of class \code{gamLayer}.
-#' @export fitLine
+#' @export l_fitLine
 #'
-fitLine <- function(...){
+l_fitLine <- function(...){
   arg <- list(...)
-  o <- structure(list("fun" = "fitLine",
+  o <- structure(list("fun" = "l_fitLine",
                       "arg" = arg), 
                  class = "gamLayer")
   return(o)
@@ -18,7 +18,7 @@ fitLine <- function(...){
 
 ######## Internal method 
 #' @noRd
-fitLine.plotSmooth1D <- function(a){
+l_fitLine.plotSmooth1D <- function(a){
   
   a$data <- a$data$fit
   if( is.null(a$na.rm) ){ a$na.rm <- TRUE}
@@ -30,7 +30,7 @@ fitLine.plotSmooth1D <- function(a){
 
 ######## Internal method 
 #' @noRd
-fitLine.plotSmooth2D <- function(a){
+l_fitLine.plotSmooth2D <- function(a){
   
   a$data <- a$data$fit
   if( is.null(a$na.rm) ){ a$na.rm <- TRUE}
@@ -43,7 +43,7 @@ fitLine.plotSmooth2D <- function(a){
 
 ######## Internal method 
 #' @noRd
-fitLine.plotSmoothfs1D <- function(a){
+l_fitLine.plotSmoothfs1D <- function(a){
   
   a$data <- a$data$fit
   if( is.null(a$na.rm) ){ a$na.rm <- TRUE}

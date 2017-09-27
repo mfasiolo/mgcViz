@@ -3,6 +3,7 @@
 #' @description XXX
 #' @name print.check.gam
 #' @rdname print.check.gam
+#' @importFrom gridExtra grid.arrange
 #' @export 
 print.check.gam <- function(pl, lay = NULL, ...)
 {

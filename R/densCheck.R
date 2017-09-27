@@ -30,15 +30,15 @@
 #' b <- gam(y ~ s(x1)+s(x2), data=dat)
 #' 
 #' # Heteroschedasticity clearly visible
-#' check1D(b, "x2") + densCheck()
+#' check1D(b, "x2") + l_densCheck()
 #'
-#' @rdname densCheck
-#' @export densCheck
+#' @rdname l_densCheck
+#' @export l_densCheck
 #'
-densCheck <- function(n=c(80, 80), bw=NULL, tol=1e-6, dFun=NULL, ...){
+l_densCheck <- function(n=c(80, 80), bw=NULL, tol=1e-6, dFun=NULL, ...){
   arg <- list(...)
   arg$xtra <- list("n"=n, "bw"=bw, "tol"=tol, "dFun"=dFun)
-  o <- structure(list("fun" = "densCheck",
+  o <- structure(list("fun" = "l_densCheck",
                       "arg" = arg), 
                  class = "gamLayer")
   return(o)
@@ -46,7 +46,7 @@ densCheck <- function(n=c(80, 80), bw=NULL, tol=1e-6, dFun=NULL, ...){
 
 ######## Internal method 
 #' @noRd
-densCheck.plotSmoothCheck1D <- function(a){
+l_densCheck.plotSmoothCheck1D <- function(a){
   
   ### 1. Preparation
   xtra <- a$xtra

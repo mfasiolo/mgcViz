@@ -6,12 +6,12 @@
 #' @param jit should the x's and y's be jittered.
 #' @param ... graphical arguments to be passed to \code{ggplot2::geom_rug}.
 #' @return an object of class \code{gamLayer}.
-#' @export resRug
+#' @export l_rug
 #'
-resRug <- function(jit = c(FALSE, FALSE), ...){
+l_rug <- function(jit = c(FALSE, FALSE), ...){
   arg <- list(...)
   arg$xtra <- list("jit" = jit)
-  o <- structure(list("fun" = "resRug",
+  o <- structure(list("fun" = "l_rug",
                       "arg" = arg), 
                  class = "gamLayer")
   return(o)
@@ -19,27 +19,27 @@ resRug <- function(jit = c(FALSE, FALSE), ...){
 
 ######## Internal method for 1D plots
 #' @noRd
-resRug.plotSmooth1D <- resRug.plotSmoothCheck1D <- function(a){
+l_rug.plotSmooth1D <- l_rug.plotSmoothCheck1D <- function(a){
   
   if( is.null(a$mapping) ) { a$mapping <- aes(x = x) }
   
-  .resRug.plotSmooth( a )
+  .l_rug.plotSmooth( a )
   
 }
 
 ######## Internal method for 2D plots
 #' @noRd
-resRug.plotSmooth2D <- resRug.plotSmoothCheck2D <- function(a){
+l_rug.plotSmooth2D <- l_rug.plotSmoothCheck2D <- function(a){
   
   if( is.null(a$mapping) ) { a$mapping <- aes(x = x, y = y) }
   
-  .resRug.plotSmooth( a )
+  .l_rug.plotSmooth( a )
   
 }
 
 ######## Internal method
 #' @noRd
-.resRug.plotSmooth <- function(a){
+.l_rug.plotSmooth <- function(a){
   a$data <- a$data$res[a$data$res$sub, ]
   a$inherit.aes <- FALSE
   if( is.null(a$size) ){ a$size <- 0.2 }

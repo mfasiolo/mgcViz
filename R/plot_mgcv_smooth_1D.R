@@ -33,26 +33,26 @@
 #' o <- plot( sm(b, 1) ) 
 #' 
 #' # Plot with fitted effect + rug on both axis
-#' ( o <- o + fitLine(colour = "red") + 
-#'     resRug(mapping = aes(x=x, y=y), alpha = 0.8) )
+#' ( o <- o + l_fitLine(colour = "red") + 
+#'     l_rug(mapping = aes(x=x, y=y), alpha = 0.8) )
 #' 
 #' # Add CI lines at 1*sigma and 5*sigma
-#' ( o <- o + ciLine(mul = 1) + ciLine(mul = 5, colour = "blue", linetype = 2) )
+#' ( o <- o + l_ciLine(mul = 1) + l_ciLine(mul = 5, colour = "blue", linetype = 2) )
 #' 
 #' # Add partial residuals and change theme
-#' ( o + resPoints(shape = 19, size = 1, alpha = 0.2) + 
+#' ( o + l_points(shape = 19, size = 1, alpha = 0.2) + 
 #'     wrapTheme(theme_classic()) )
 #' 
 #' # Get second effect plot
 #' o2 <- plot( sm(b, 2) )
 #' 
 #' # Plot it with polygon for partial residuals
-#' o2 + ciPoly(mul = 5, fill = "light blue") + 
-#'   fitLine(linetype = 2, colour = "red")
+#' o2 + l_ciPoly(mul = 5, fill = "light blue") + 
+#'   l_fitLine(linetype = 2, colour = "red")
 #' 
 #' # Plot is with conditional density of partial residuals
-#' o2 + resDens(alpha = 0.9)  + 
-#'   fitLine(linetype = 2, colour = "red")
+#' o2 + l_dens(type = "cond", alpha = 0.9)  + 
+#'   l_fitLine(linetype = 2, colour = "red")
 #' @rdname plot.mgcv.smooth.1D
 #' @export plot.mgcv.smooth.1D
 plot.mgcv.smooth.1D <- function(o, n = 100, maxpo = 1e4, trans = I, 

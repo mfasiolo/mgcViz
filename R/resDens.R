@@ -20,15 +20,15 @@
 #' @importFrom viridis viridis
 #' @importFrom KernSmooth dpik bkde bkde2D
 #' @return An object of class \code{gamLayer}.
-#' @export resDens
+#' @export l_dens
 #'
-resDens <- function(type = 'cond', n = c(50, 50), 
+l_dens <- function(type, n = c(50, 50), 
                     bw = NULL, tol = 1e-6, trans = sqrt, ...){
   arg <- list(...)
   match.arg(type, c("cond", "joint"))
   arg$xtra <- list("type" = type, "n" = n, "bw" = bw, 
                    "tol" = tol, "trans" = trans, "grad" = list())
-  o <- structure(list("fun" = "resDens",
+  o <- structure(list("fun" = "l_dens",
                       "arg" = arg), 
                  class = "gamLayer")
   return(o)
@@ -36,13 +36,13 @@ resDens <- function(type = 'cond', n = c(50, 50),
 
 ######## Internal method 
 #' @noRd
-resDens.plotSmooth1D <- resDens.plotSmoothCheck1D <- function(a){
+l_dens.plotSmooth1D <- l_dens.plotSmoothCheck1D <- function(a){
   
   xtra <- a$xtra
   a$xtra <- NULL
   
   if( is.null(a$data$res$y) ){ 
-    message("resDens(): Partial residuals are not available")  
+    message("l_dens(): Partial residuals are not available")  
     return( NULL )
   }
   
@@ -71,8 +71,8 @@ resDens.plotSmooth1D <- resDens.plotSmoothCheck1D <- function(a){
 
 ######## Internal method 
 #' @noRd
-resDens.plotSmooth2D <- resDens.plotSmoothCheck2D <- function(a){
+l_dens.plotSmooth2D <- l_dens.plotSmoothCheck2D <- function(a){
  
-  return( resDens.plotSmooth1D(a) )
+  return( l_dens.plotSmooth1D(a) )
   
 }

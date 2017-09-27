@@ -30,7 +30,7 @@
 #' b <- bam(y ~ s(x1,k=30) + s(x2, k=30), data = dat, discrete = TRUE)
 #' 
 #' pl <- check2D(b, x1 = "x1", x2 = "x2", type = "tnormal") + 
-#'   resPoints(colour = "blue", alpha = 0.5)
+#'   l_points(colour = "blue", alpha = 0.5)
 #' 
 #' # Look at distributions of residuals across x1 and x2
 #' # Approach 1: using binned kernel density estimate
@@ -42,7 +42,7 @@
 #'   return( .qq )
 #' }
 #' 
-#' pl + resGlyphs2D(glyFun = glyFun, ggLay = "geom_path", n = c(8, 8),
+#' pl + l_glyphs2D(glyFun = glyFun, ggLay = "geom_path", n = c(8, 8),
 #'                  mapping = aes(x=gx, y=gy, group = gid, colour = I(colour)), 
 #'                  height=1.5, width = 1) 
 #' 
@@ -56,13 +56,13 @@
 #'   return( data.frame("x" = P$x, "y" = P$y - P$x, "colour" = clr))
 #' }
 #' 
-#' pl + resGlyphs2D(glyFun = glyFun, ggLay = "geom_point", n = c(10, 10),
+#' pl + l_glyphs2D(glyFun = glyFun, ggLay = "geom_point", n = c(10, 10),
 #'                  mapping = aes(x=gx, y=gy, group = gid, colour = I(colour)),
 #'                  height=2, width = 1, size = 0.2) 
 #' 
-#' @export resGlyphs2D
+#' @export l_glyphs2D
 #'
-resGlyphs2D <- function(glyFun, ggLay = "geom_points", n = c(4, 4), mapping = NULL,  
+l_glyphs2D <- function(glyFun, ggLay = "geom_points", n = c(4, 4), mapping = NULL,  
                         data = NULL, polar = FALSE, height = ggplot2::rel(0.95), 
                         width = ggplot2::rel(0.95), y_scale = I, x_scale = I, ...){
   arg <- list(...)
@@ -70,7 +70,7 @@ resGlyphs2D <- function(glyFun, ggLay = "geom_points", n = c(4, 4), mapping = NU
                    "data" = data, "polar" = polar, "height" = height, "width" = width, 
                    "y_scale" = y_scale, "x_scale" = x_scale)
   
-  o <- structure(list("fun" = "resGlyphs2D",
+  o <- structure(list("fun" = "l_glyphs2D",
                       "arg" = arg), 
                  class = "gamLayer")
   return(o)
@@ -78,7 +78,7 @@ resGlyphs2D <- function(glyFun, ggLay = "geom_points", n = c(4, 4), mapping = NU
 
 ######## Internal method
 #' @noRd
-resGlyphs2D.plotSmoothCheck2D <- function(a){
+l_glyphs2D.plotSmoothCheck2D <- function(a){
   
   xtra <- a$xtra
   a$xtra <- NULL

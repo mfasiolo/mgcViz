@@ -7,12 +7,12 @@
 #'            standard error curves or surfaces.
 #' @param ... graphical arguments to be passed to \code{ggplot2::geom_line}.
 #' @return An object of class \code{gamLayer}.
-#' @export ciLine
+#' @export l_ciLine
 #'
-ciLine <- function(mul = 2, ...){
+l_ciLine <- function(mul = 2, ...){
   arg <- list(...)
   arg$xtra <- list("mul" = mul)
-  o <- structure(list("fun" = "ciLine",
+  o <- structure(list("fun" = "l_ciLine",
                       "arg" = arg), 
                  class = "gamLayer")
   return(o)
@@ -20,7 +20,7 @@ ciLine <- function(mul = 2, ...){
 
 ######## Internal method 
 #' @noRd
-ciLine.plotSmooth1D <- function(a){
+l_ciLine.plotSmooth1D <- function(a){
   
   xtra <- a$xtra
   a$xtra <- NULL

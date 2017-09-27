@@ -2,7 +2,7 @@
 #' Checking GAM residuals along one covariate
 #' 
 #' @description XXX
-#' @name gridCheck1D
+#' @name l_gridCheck1D
 #' @param gridFun function used to summarize the residuals in each bin. 
 #'                By default it is \code{mean(r)*sqrt(length(r)}, where \code{r} is
 #'                the vector of residuals in that bin.
@@ -26,24 +26,24 @@
 #' b <- bam(ob ~ s(x,k=30) + s(y, k=30), discrete = TRUE)
 #' 
 #' # Don't see much by looking at mean
-#' check1D(b, "x") + gridCheck1D()
+#' check1D(b, "x") + l_gridCheck1D()
 #' 
 #' # Heteroscedasticity clearly visible here
 #' b <- getSim(b, n = 50)
-#' check1D(b, "x") + gridCheck1D(gridFun = sd, stand = "sc") # <- we are scaling and centering
+#' check1D(b, "x") + l_gridCheck1D(gridFun = sd, stand = "sc") # <- we are scaling and centering
 #' # Last point on the right of the rug seems to indicate that a bin is missing.
 #' # It is not an error, only on observation falls in that bin, hence the
 #' # standard deviation is not defined there.
 #' 
 #' @importFrom matrixStats colSds
 #' @importFrom plyr aaply
-#' @rdname gridCheck1D
-#' @export gridCheck1D
-gridCheck1D <- function(gridFun = NULL, n = 20, level = 0.8, stand = "none", show.reps = TRUE, ...){
+#' @rdname l_gridCheck1D
+#' @export l_gridCheck1D
+l_gridCheck1D <- function(gridFun = NULL, n = 20, level = 0.8, stand = "none", show.reps = TRUE, ...){
   arg <- list(...)
   arg$xtra <- list("gridFun"=gridFun, "n"=n, 
                    "level"=level, "stand"=stand, "show.reps"=show.reps)
-  o <- structure(list("fun" = "gridCheck1D",
+  o <- structure(list("fun" = "l_gridCheck1D",
                       "arg" = arg), 
                  class = "gamLayer")
   return(o)
@@ -51,7 +51,7 @@ gridCheck1D <- function(gridFun = NULL, n = 20, level = 0.8, stand = "none", sho
 
 ######## Internal method 
 #' @noRd
-gridCheck1D.plotSmoothCheck1D <- function(a){
+l_gridCheck1D.plotSmoothCheck1D <- function(a){
   
   ### 1. Preparation
   xtra <- a$xtra

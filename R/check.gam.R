@@ -18,9 +18,8 @@
 #' @examples
 #' library(ggplot2)
 #' set.seed(0)
-#' dat <- mgcv::gamSim(1, n = 200)
-#' b <- mgcv::gam(y ~ s(x0) + s(x1) + s(x2) + s(x3), data = dat)
-#' mgcv::gam.check(b, pch = 19, cex = .3)
+#' dat <- gamSim(1, n = 200)
+#' b <- gam(y ~ s(x0) + s(x1) + s(x2) + s(x3), data = dat)
 #' cg <- check(b) # Calls mgcViz::check.gam
 #' cg
 check.gam <- function(object,

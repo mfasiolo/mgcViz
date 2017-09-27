@@ -2,7 +2,7 @@
 #' Checking GAM residuals along one covariate
 #' 
 #' @description XXX
-#' @name gridCheck2D
+#' @name l_gridCheck2D
 #' @param gridFun function used to summarize the residuals in each bin. By default it is `mean`.
 #' @param bw numeric vector giving bin width in both vertical and horizontal directions. See the `binwidth`
 #'           arguments in \code{?ggplot2::stat_summary_hex}. If left to \code{NA} is will set to one 20th
@@ -25,21 +25,21 @@
 #' b <- getSim(b, n = 50)
 #' 
 #' # Don't see much by looking at mean
-#' check2D(b, "x", "y") + gridCheck2D(gridFun = mean, bw = c(0.4, 0.4))
+#' check2D(b, "x", "y") + l_gridCheck2D(gridFun = mean, bw = c(0.4, 0.4))
 #' 
 #' # Variance pattern along x-axis clearer now
-#' check2D(b, "x", "y") + gridCheck2D(gridFun = sd, bw = c(0.4, 0.4))
+#' check2D(b, "x", "y") + l_gridCheck2D(gridFun = sd, bw = c(0.4, 0.4))
 #'  
 #' @importFrom matrixStats colSds
 #' @importFrom plyr aaply
-#' @rdname gridCheck2D
-#' @export gridCheck2D
+#' @rdname l_gridCheck2D
+#' @export l_gridCheck2D
 #' 
 #' 
-gridCheck2D <- function(gridFun = mean, bw = c(NA, NA), stand = TRUE, ...){
+l_gridCheck2D <- function(gridFun = mean, bw = c(NA, NA), stand = TRUE, ...){
   arg <- list(...)
   arg$xtra <- list("gridFun"=gridFun, "bw"=bw, "stand"=stand)
-  o <- structure(list("fun" = "gridCheck2D",
+  o <- structure(list("fun" = "l_gridCheck2D",
                       "arg" = arg), 
                  class = "gamLayer")
   return(o)
@@ -47,7 +47,7 @@ gridCheck2D <- function(gridFun = mean, bw = c(NA, NA), stand = TRUE, ...){
 
 ######## Internal method 
 #' @noRd
-gridCheck2D.plotSmoothCheck2D <- function(a){
+l_gridCheck2D.plotSmoothCheck2D <- function(a){
   
   ### 1. Preparation
   xtra <- a$xtra

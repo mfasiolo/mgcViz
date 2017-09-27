@@ -7,12 +7,12 @@
 #'            standard error curves or surfaces.
 #' @param ... graphical arguments to be passed to \code{ggplot2::geom_polygon}.
 #' @return An object of class \code{gamLayer}
-#' @export ciPoly
+#' @export l_ciPoly
 #'
-ciPoly <- function(mul = 2, ...){
+l_ciPoly <- function(mul = 2, ...){
   arg <- list(...)
   arg$xtra <- list("mul" = mul)
-  o <- structure(list("fun" = "ciPoly",
+  o <- structure(list("fun" = "l_ciPoly",
                       "arg" = arg), 
                  class = "gamLayer")
   return(o)
@@ -20,7 +20,7 @@ ciPoly <- function(mul = 2, ...){
 
 ######## Internal method 
 #' @noRd
-ciPoly.plotSmooth1D <- function(a){
+l_ciPoly.plotSmooth1D <- function(a){
   
   xtra <- a$xtra
   a$xtra <- NULL
