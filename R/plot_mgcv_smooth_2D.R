@@ -2,6 +2,7 @@
 #' Plotting two dimensional smooth effects
 #' 
 #' @description XXX
+#' @param ... currently unused.
 #' @name plot.mgcv.smooth.2D
 #' @examples 
 #' library(mgcViz)
@@ -22,7 +23,7 @@
 #' @export plot.mgcv.smooth.2D
 #' 
 plot.mgcv.smooth.2D <- function(o, n = 40, maxpo = 1e4, too.far = 0.1, trans = I, 
-                                seWithMean = FALSE, unconditional = FALSE) {
+                                seWithMean = FALSE, unconditional = FALSE, ...) {
   
   # 1) Prepare data
   P <- .prepareP(o = o, unconditional = unconditional, residuals = TRUE, 

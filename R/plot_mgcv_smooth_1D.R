@@ -19,6 +19,7 @@
 #'                   relates purely to the centred smooth itself. Marra and Wood (2012) suggests 
 #'                   that TRUE results in better coverage performance, and this is also suggested 
 #'                   by simulation.
+#' @param ... currently unused.
 #' @return An objects of class \code{plotSmooth}.
 #' @examples 
 #' library(mgcViz)
@@ -56,7 +57,7 @@
 #' @rdname plot.mgcv.smooth.1D
 #' @export plot.mgcv.smooth.1D
 plot.mgcv.smooth.1D <- function(o, n = 100, maxpo = 1e4, trans = I, 
-                                unconditional = FALSE, seWithMean = FALSE) {
+                                unconditional = FALSE, seWithMean = FALSE, ...) {
   
   # 1) Prepare data
   P <- .prepareP(o = o, unconditional = unconditional, residuals = TRUE, 

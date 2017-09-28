@@ -3,11 +3,7 @@
 #' 
 #' @description Plotting one dimensional smooth factor interactions.
 #' @param o
-#' @param n
-#' @param shift
-#' @param trans
-#' @param args.lines
-#' @param args.axis
+#' @param ... currently unused.
 #' @name plot.fs.interaction.1D
 #' @examples 
 #' library(mgcViz)
@@ -45,7 +41,7 @@
 #' @export plot.fs.interaction.1D
 #' 
 plot.fs.interaction.1D <- function(o, n = 100, trans = I, 
-                                   unconditional = FALSE, seWithMean = FALSE) {
+                                   unconditional = FALSE, seWithMean = FALSE, ...) {
   
   # 1) Prepare data
   P <- .prepareP(o = o, unconditional = FALSE, residuals = FALSE, 

@@ -1,6 +1,7 @@
 #' Plotting slice of higher-dimensional smooth effects
 #' 
 #' @description XXX
+#' @param ... currently unused.
 #' @name plot.mgcv.smooth.MD
 #' @examples 
 #' ## 3D example
@@ -33,7 +34,7 @@
 #' 
 plot.mgcv.smooth.MD <- function(o, fix, n = 40, maxpo = 1e4,
                                 too.far = c(0.1, NA), trans = I, seWithMean = FALSE, 
-                                unconditional = FALSE) {
+                                unconditional = FALSE, ...) {
 
   if ( length(too.far) == 1 ){ too.far <- c(too.far, NA)  }
   
