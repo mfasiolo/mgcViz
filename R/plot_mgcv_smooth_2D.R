@@ -13,10 +13,10 @@
 #' # Plot 2D effect with noised-up raster, contour and rug for design points 
 #' # Opacity is proportional to the significance of the effect
 #' plot(sm(b, 2)) + l_fitRaster(pFun = zto1(0.05, 2, 0.1), noiseup = T) + 
-#'   l_rug() + l_fitLine()  
+#'   l_rug() + l_fitContour()  
 #' 
 #' # Plot contour of effect joint density of design points
-#' plot(sm(b, 2)) + l_dens(type = "joint") + l_points() + l_fitLine() + 
+#' plot(sm(b, 2)) + l_dens(type = "joint") + l_points() + l_fitContour() + 
 #'   coord_cartesian(expand = FALSE) # Fill the plot
 #' @rdname plot.mgcv.smooth.2D
 #' @export plot.mgcv.smooth.2D

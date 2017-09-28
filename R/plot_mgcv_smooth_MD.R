@@ -14,7 +14,7 @@
 #' 
 #' # Plot one 2D slice
 #' plot( sm(b, 1), fix = c("z"=0) ) + l_fitRaster(noiseup=T, mul = 3) + 
-#'   l_fitLine(linetype = 2) + l_points(shape =  2)
+#'   l_fitContour(linetype = 2) + l_points(shape =  2)
 #' 
 #' ## 4D
 #' n <- 5e3
@@ -25,7 +25,7 @@
 #' b1 <- getViz(b1)
 #' 
 #' # Plot one 2D slice
-#' plot(sm(b1, 1), fix = c("z"=0, "z2"=1)) + l_fitRaster() + l_fitLine()
+#' plot(sm(b1, 1), fix = c("z"=0, "z2"=1)) + l_fitRaster() + l_fitContour()
 #'
 #' @rdname plot.mgcv.smooth.MD
 #' @importFrom mvnfast maha

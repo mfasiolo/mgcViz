@@ -1,15 +1,15 @@
 #'
-#' Add fitted smooth effect curve
+#' Add fitted smooth effect contour
 #' 
 #' @description XXX
 #'
-#' @param ... graphical arguments to be passed to \code{ggplot2::geom_line}.
+#' @param ... graphical arguments to be passed to  \code{ggplot2::geom_contour}.
 #' @return An object of class \code{gamLayer}.
-#' @export l_fitLine
+#' @export l_fitContour
 #'
-l_fitLine <- function(...){
+l_fitContour <- function(...){
   arg <- list(...)
-  o <- structure(list("fun" = "l_fitLine",
+  o <- structure(list("fun" = "l_fitContour",
                       "arg" = arg), 
                  class = "gamLayer")
   return(o)
@@ -17,11 +17,12 @@ l_fitLine <- function(...){
 
 ######## Internal method 
 #' @noRd
-l_fitLine.plotSmooth1D <- function(a){
+l_fitContour.plotSmooth2D <- function(a){
   
   a$data <- a$data$fit
   if( is.null(a$na.rm) ){ a$na.rm <- TRUE}
-  fun <- "geom_line"
+  if( is.null(a$colour) ){ a$colour <- "black" }
+  fun <- "geom_contour"
   out <- do.call(fun, a)
   return( out )
   
@@ -29,7 +30,7 @@ l_fitLine.plotSmooth1D <- function(a){
 
 ######## Internal method 
 #' @noRd
-l_fitLine.plotSmoothfs1D <- function(a){
+l_fitContour.plotSmoothfs1D <- function(a){
   
   a$data <- a$data$fit
   if( is.null(a$na.rm) ){ a$na.rm <- TRUE}
@@ -37,10 +38,9 @@ l_fitLine.plotSmoothfs1D <- function(a){
     nf <- length( levels(a$data$id) ) # number of curves
     a$alpha <- c(1, 0.5, 0.3)[ findInterval(nf, c(0, 10, 100))  ]
   }
- 
+  
   a$mapping <- aes("x" = x, "y" = y, "colour" = id)  
   out <- do.call("geom_line", a)
   return( out )
   
 }
-
