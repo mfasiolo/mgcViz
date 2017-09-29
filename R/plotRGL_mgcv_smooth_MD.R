@@ -13,11 +13,11 @@
 #' b <- gam(ob ~ s(x, y, z))
 #' v <- getViz(b)
 #' 
-#' plotRGL(v(1), fix = c("z" = 0))
+#' plotRGL(sm(v, 1), fix = c("z" = 0))
 #' 
 #' rgl.close() # Close
 #' 
-#' plotRGL(v(1), fix = c("z" = 1), residuals = T)
+#' plotRGL(sm(v, 1), fix = c("z" = 1), residuals = T)
 #' 
 #' # We can still work on the plot, for instance change the aspect ratio
 #' library(rgl)

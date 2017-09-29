@@ -24,13 +24,13 @@
 #' 
 #' # Fit with t.p.r.s. basis and plot
 #' b1 <- gam(y~s(x,z))
-#' plotRGL(getViz(b1)(1))
+#' plotRGL(sm(getViz(b1), 1))
 #' 
 #' rgl.close() # Close
 #' 
 #' # Fit with tensor products basis and plot (with residuals)
 #' b2 <- gam(y~te(x,z))
-#' plotRGL(getViz(b2)(1), residuals = TRUE)
+#' plotRGL(sm(getViz(b2), 1), residuals = TRUE)
 #' 
 #' # We can still work on the plot, for instance change the aspect ratio
 #' library(rgl)
@@ -40,6 +40,7 @@
 #' @importFrom rgl .check3d light3d surface3d axes3d title3d spheres3d aspect3d
 #' @rdname plotRGL.mgcv.smooth.2D
 #' @export plotRGL.mgcv.smooth.2D
+#' 
 plotRGL.mgcv.smooth.2D <- function(o, se = TRUE, n = 40, residuals = FALSE, type = "auto", 
                                    maxpo = 1e3, too.far = 0, xlab = NULL, ylab = NULL, 
                                    main = NULL, xlim = NULL, ylim = NULL,  se.mult = 1, 
@@ -66,6 +67,7 @@ plotRGL.mgcv.smooth.2D <- function(o, se = TRUE, n = 40, residuals = FALSE, type
   
 }
 
+##########
 # Internal function that gets the residuals and checks that they are within the boundaries
 .getResidualsPlotRGL <- function(gamObj, X, type, maxpo, xlimit, ylimit, exclude)
 {
@@ -99,6 +101,8 @@ plotRGL.mgcv.smooth.2D <- function(o, se = TRUE, n = 40, residuals = FALSE, type
   
 }
 
+##########
+# Internal function for plotting
 .plotRGL.mgcv.smooth.2D <- function(P, res = NULL) {
   
   # New window and setup env
