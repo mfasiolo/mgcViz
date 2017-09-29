@@ -5,7 +5,7 @@
 #'  information about the fitting procedure and results. The default is to produce 4 residual plots,
 #'   some information about the convergence of the smoothness selection optimization, and
 #'    to run diagnostic tests of whether the basis dimension choises are adequate. 
-#' @param object, A fitted `gam` object as produced by [mgcv::gam()].
+#' @param o, A fitted `gam` object as produced by [mgcv::gam()].
 #' @param type, Type of residuals, see [mgcv::residuals.gam()], used in all plots.
 #' @param k.sample, Above this k testing uses a random sub-sample of data.
 #' @param k.rep, How many re-shuffles to do to get p-value for k testing.
@@ -14,29 +14,56 @@
 #' @return An object of class \code{check.gam}, which is simply a list of \code{ggplot} objects.
 #' @note Help file is mainly from [mgcv::gam.check] since this is a rewrite of `mgcv::gam.check` 
 #' function with ggplot2 library.
-#' @export check.gam
 #' @examples
 #' library(ggplot2)
 #' set.seed(0)
 #' dat <- gamSim(1, n = 200)
 #' b <- gam(y ~ s(x0) + s(x1) + s(x2) + s(x3), data = dat)
-#' cg <- check(b) # Calls mgcViz::check.gam
-#' cg
-check.gam <- function(object,
+#' 
+#' # Checks using default options
+#' cg <- check(b)
+#' 
+#' # Change some algorithmic and graphical parameters
+#' check(b,
+#'       a.qq = list(method = "tnorm", 
+#'                   a.cipoly = list(fill = "light blue")), 
+#'       a.respoi = list(size = 0.5), 
+#'       a.hist = list(bins = 10))
+#' 
+#' @export check.gam
+#' 
+check.gam <- function(o,
                       type = c("auto", "deviance", "pearson", "response", "tunif", "tnormal"),
                       k.sample = 5000,
                       k.rep = 200,
-                      rep = 10, level = .9, 
-                      method = c("auto", "simul1", "simul2", "tnormal", "tunif", "normal"),
-                      rl.col = 2, rep.col = "gray80", ...){
-  o <- object
+                      maxpo = 1e4,
+                      a.qq = list(),
+                      a.hist = list(),
+                      a.respoi = list(),
+                      a.reshex = list()
+                      ){
+  
   type <- match.arg(type)
-  method <- match.arg(method)
-  tmp <- .getResTypeAndMethod(object$family$family)
-  if (method == "auto") { method = tmp$method }
-  if (type == "auto") { type = tmp$type }
+  if (type == "auto") { type <- .getResTypeAndMethod(o$family$family)$type }
+  
+  # Overwriting user-provided argument lists
+  a.all <- .argMaster("check.gam")
+  for(nam in names(a.all)){
+    assign(nam, .argSetup(a.all[[nam]], get(nam), nam, verbose = FALSE), envir = environment())
+  }
+  
+  print(a.respoi)
   
   resid <- residuals(o, type = type)
+ 
+  # Sample if too many points (> maxpo) 
+  nres <- length( resid )
+  subS <- if(nres > maxpo) { 
+    sample( c(rep(T, maxpo), rep(F, nres-maxpo)) )
+  } else { 
+    rep(T, nres) 
+  }  
+  
   linpred <- if (is.matrix(o$linear.predictors) && !is.matrix(resid)) { 
     napredict(o$na.action, o$linear.predictors[, 1])
   } else {
@@ -53,25 +80,25 @@ check.gam <- function(object,
   resp <- napredict(o$na.action, o$y)
   df <- data.frame(linpred = linpred, resid = resid,
                    response = resp, fv = fv)
+  dfS <- df[subS, ]
+  
   plots <- list()
   plots[[1]] <- 
-    mgcViz::qq.gam(o, rep = rep,
-                   level = level, type = type, rl.col = rl.col, 
-                   rep.col = rep.col)$ggPlot
+    do.call("qq.gam", c(list("o" = o), a.qq))$ggPlot
   plots[[2]] <- 
-    ggplot2::ggplot(data = df, aes(x = linpred, y = resid)) +
-    ggplot2::geom_point() +
-    ggplot2::labs(title = "Resids vs. linear pred.",
+    ggplot(data = dfS, aes(x = linpred, y = resid)) +
+    do.call("geom_point", a.respoi) +
+    labs(title = "Resids vs. linear pred.",
                   x = "linear predictor", y = "residuals")
   plots[[3]] <- 
-    ggplot2::ggplot() +
-    ggplot2::geom_histogram(data = df, ggplot2::aes(x = resid)) +
-    ggplot2::labs(title = "Histogram of residuals",
+    ggplot(data = df, mapping = aes(x = resid)) +
+    do.call("geom_histogram", a.hist)  +
+    labs(title = "Histogram of residuals",
                   xlab = "Residuals")
   plots[[4]] <- 
-    ggplot2::ggplot(data = df, aes(x = fv, y = resp)) +
-    ggplot2::geom_point() +
-    ggplot2::labs(title = "Response vs. Fitted Values",
+    ggplot(data = dfS, aes(x = fv, y = response)) +
+    do.call("geom_point", a.respoi) +
+    labs(title = "Response vs. Fitted Values",
                   x = "Fitted Values", y = "Response")
   
   if ( (o$method %in% c("GCV", "GACV", "UBRE", "REML", "ML",  "P-ML", "P-REML", "fREML")) ) {
