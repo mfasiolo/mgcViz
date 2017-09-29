@@ -21,6 +21,7 @@
 #'               weights = n, method = "REML")
 #' # launch shiny gagdet
 #' shine(qq.gam(lr.fit))
+#'  
 #' }
 shine.qqGam <- function(obj){
   name_obj <- deparse(substitute(obj))
@@ -91,14 +92,14 @@ shine.qqGam <- function(obj){
     )
     output$plot <- renderPlot(
       zoom(obj, xlim = ranges$x, ylim = ranges$y,
-           shape = shape(),
            CI = as.logical(input$ci),
            show.reps = as.logical(input$show_reps),
            worm = as.logical(input$worm),
-           rl.col = input$color_line,
-           ci.col = input$color_CI,
-           rep.col = input$color_rep,
-           rep.alpha = input$rep_alpha)
+           a.qqpoi = list(shape = shape()),
+           a.ablin = list(colour = input$color_line),
+           a.cipoly = list(colour = input$color_CI),
+           a.replin = list(colour = input$color_rep, 
+                           alpha = input$rep_alpha) )
     )
     observeEvent(input$plot_dblclick, {
       brush <- input$plot_brush
@@ -122,13 +123,12 @@ shine.qqGam <- function(obj){
           "CI = ", input$ci, ", ",
           "show.reps = ", input$show_reps, ", ",
           "worm = ", input$worm, ", ",
-          "rep.col = \"", input$color_rep, "\", ",
-          "rep.alpha = ", input$rep_alpha, ", ",
-          "rl.col = \"", input$color_line, "\", ",
-          ifelse(is.character(shape()), "shape = \".\", ",
-                 sprintf("shape = %i, ", shape())),
-          "ci.col = \"", input$color_CI,
-          "\")")
+          "a.replin = list(colour = \"", input$color_rep, "\", alpha = ", input$rep_alpha, "), ",
+          "a.ablin = list(colour = \"", input$color_line, "\"), ",
+          "a.cipoly = list(colour = \"", input$color_CI, "\"), ",
+          "a.qqpoi = list(", ifelse(is.character(shape()), "shape = \".\"",
+                 sprintf("shape = %i", shape())),"))"
+           )
         rstudioapi::insertText(callText)
       }
       stopApp()

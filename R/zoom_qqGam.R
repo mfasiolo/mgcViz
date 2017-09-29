@@ -20,13 +20,20 @@
 #' o # This is the whole qqplot
 #' 
 #' # We can zoom in along x at little extra costs (most computation already done by qq.gam)
-#' zoom(o, xlim = c(0, 1), show.reps = T, rep.alpha = 0.1, shape = 19)
+#' zoom(o, xlim = c(0, 1), show.reps = T, 
+#'      a.replin = list(alpha = 0.1), a.qqpoi =  list(shape = 19))
 #' @rdname zoom.qqGam
 #' @export zoom.qqGam
 zoom.qqGam <- function(o, xlim = NULL, ylim = NULL, discrete = NULL, ngr = 1e3,
                        adGrid = TRUE, CI = FALSE, worm = FALSE, show.reps = FALSE, 
-                       rep.col = 1, rep.alpha = 0.05, rl.col = 2,
-                       shape = '.', ci.col = "gray80") {
+                       a.qqpoi = list(), a.ablin = list(), a.cipoly = list(), 
+                       a.replin = list()) {
+  
+  a.all <- .argMaster("qq.gam")
+  for(nam in names(a.all)){
+    a.all[[nam]] <- .argSetup(a.all[[nam]], get(nam), nam, verbose = FALSE)
+  }
+  
   P <- o$store
   # Subset data according to xlim
   if (!is.null(xlim) && adGrid) {
@@ -39,9 +46,8 @@ zoom.qqGam <- function(o, xlim = NULL, ylim = NULL, discrete = NULL, ngr = 1e3,
   if(is.null(discrete)) discrete <- length(P$Dq) > 1e4 
   P <- .discretize.qq.gam(P = P, discrete = discrete, ngr = ngr,
                           CI = CI, show.reps = show.reps)
-  .pl <- .plot.qq.gam(P = P, CI = CI, worm = worm, show.reps = show.reps, rl.col = rl.col,
-                      rep.col = rep.col, rep.alpha = rep.alpha, ci.col = ci.col,
-                      shape = shape, xlimit = xlim, ylimit = ylim)
+  .pl <- .plot.qq.gam(P = P, CI = CI, worm = worm, show.reps = show.reps,
+                      xlimit = xlim, ylimit = ylim, a.all = a.all)
   return(.pl)
 }
 
