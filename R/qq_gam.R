@@ -6,7 +6,7 @@
 #' distributional assumptions are met then usually these plots should be close to a straight
 #' line (although discrete data can yield marked random departures from this line).
 #'
-#' @param object, A fitted `gam` object as produced by [mgcv::gam()] (or a `glm` object).
+#' @param o, A fitted `gam` object as produced by [mgcv::gam()] (or a `glm` object).
 #' @param rep, How many replicate datasets to generate to simulate quantiles of the residual
 #'  distribution. 0 results in an efficient simulation free method for direct calculation,
 #'   if this is possible for the object family.
@@ -121,7 +121,7 @@
 #' zoom(o, xlim = c(-0.25, 0.25), show.reps = T, discrete = T, a.replin = list(alpha = 0.2))
 #' }
 #' 
-qq.gam <- function(object, rep = 10,
+qq.gam <- function(o, rep = 10,
                    level = 0.8, 
                    method = c("auto", "simul1", "simul2", "tnormal", "tunif", "normal"),
                    type = c("auto", "deviance", "pearson", "response", "tunif", "tnormal"),
@@ -147,7 +147,7 @@ qq.gam <- function(object, rep = 10,
   CI     <- match.arg(CI, c("normal", "quantile", "none"))
   method <- match.arg(method, c("auto", "simul1", "simul2", "tnormal", "tunif", "normal"))
   type   <- match.arg(type, c("auto", "deviance", "pearson", "response", "tunif", "tnormal"))
-  tmp <- .getResTypeAndMethod(object$family$family)
+  tmp <- .getResTypeAndMethod(o$family$family)
   if (method == "auto") { method = tmp$method }
   if (type == "auto") { type = tmp$type }
   if (level < 0 || level > 1){
@@ -155,15 +155,15 @@ qq.gam <- function(object, rep = 10,
   }
   if (method == "simul2") CI <- "none"
   if (is.null(sortFun))  sortFun  <- function(.x) sort(.x, method = "quick")
-  if (is.null(discrete)) discrete <- length(object$y) > 1e4
-  if (inherits(object, c("glm", "gam"))) {
-    if (is.null(object$sig2)) 
-      object$sig2 <- summary(object)$dispersion
+  if (is.null(discrete)) discrete <- length(o$y) > 1e4
+  if (inherits(o, c("glm", "gam"))) {
+    if (is.null(o$sig2)) 
+      o$sig2 <- summary(o)$dispersion
   } else {
-    stop("'object' is not a glm or gam.")
+    stop("'o' is not a glm or gam.")
   }
-  object$na.action <- NULL
-  P0 <- .compute.qq.gam(o = object, type = type, method = method, CI = CI, 
+  o$na.action <- NULL
+  P0 <- .compute.qq.gam(o = o, type = type, method = method, CI = CI, 
                        level = level, rep = rep, sortFun = sortFun)
   P1 <- .discretize.qq.gam(P = P0, discrete = discrete, ngr = ngr,
                            CI = (CI != "none"), show.reps = show.reps)

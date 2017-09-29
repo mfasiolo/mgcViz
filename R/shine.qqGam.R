@@ -23,8 +23,8 @@
 #' shine(qq.gam(lr.fit))
 #'  
 #' }
-shine.qqGam <- function(obj){
-  name_obj <- deparse(substitute(obj))
+shine.qqGam <- function(o){
+  name_obj <- deparse(substitute(o))
   ui <- miniPage(
     gadgetTitleBar("Q-Q GAM"),
     miniContentPanel(
@@ -91,7 +91,7 @@ shine.qqGam <- function(obj){
       }
     )
     output$plot <- renderPlot(
-      zoom(obj, xlim = ranges$x, ylim = ranges$y,
+      zoom(o, xlim = ranges$x, ylim = ranges$y,
            CI = as.logical(input$ci),
            show.reps = as.logical(input$show_reps),
            worm = as.logical(input$worm),
@@ -115,7 +115,7 @@ shine.qqGam <- function(obj){
       if (rstudioapi::isAvailable()){
         callText <- paste0(
           # get call as a character (dirty)
-          "zoom(", paste(format(attr(obj, "call")), collapse = ""), ", ",
+          "zoom(", paste(format(attr(o, "call")), collapse = ""), ", ",
           ifelse(!is.null(ranges$x),
                  sprintf("xlim = %s, ", deparse(signif(ranges$x, 4))), ""),
           ifelse(!is.null(ranges$y),
