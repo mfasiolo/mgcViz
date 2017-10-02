@@ -13,7 +13,6 @@
 #' @param ... graphical arguments to be passed to \code{ggplot2::stat_summary_hex}.
 #' @return An object of class \code{gamLayer}
 #' @examples 
-#' 
 #' library(mgcViz);
 #' set.seed(4124)
 #' n <- 1e4
@@ -22,7 +21,7 @@
 #' # Residuals are heteroscedastic w.r.t. x
 #' ob <- (x)^2 + (y)^2 + (1*abs(x) + 1)  * rnorm(n)
 #' b <- bam(ob ~ s(x,k=30) + s(y, k=30), discrete = TRUE)
-#' b <- getSim(b, n = 50)
+#' b <- getViz(b, nsim = 50)
 #' 
 #' # Don't see much by looking at mean
 #' check2D(b, "x", "y") + l_gridCheck2D(gridFun = mean, bw = c(0.4, 0.4))
@@ -91,7 +90,7 @@ l_gridCheck2D.plotSmoothCheck2D <- function(a){
   sim <- a$data$sim   # Simulated residuals
   
   if( stand && is.null(sim) ){
-    message("stand==TRUE but object does not contain any simulations. See ?getSim.")
+    message("stand==TRUE but object does not contain any simulations. See ?getViz.")
   }
   
   # Determine bin widths for the two plots

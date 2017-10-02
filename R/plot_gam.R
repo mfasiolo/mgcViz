@@ -25,7 +25,7 @@
 #' dat <- gamSim(1,n=1e3,dist="normal",scale=2)
 #' b <- bam(y~s(x0)+s(x1, x2)+s(x3), data=dat)
 #' 
-#' # Plotting as mgcv::plot.gam() would
+#' # Default smooth effect plotting
 #' plot(b)
 #' 
 #' # Now on one page and with out title on the second plot
@@ -53,7 +53,7 @@
 #' x <- rnorm(n); y <- rnorm(n); z <- rnorm(n); z2 <- rnorm(n)
 #' 
 #' ob <- (x-z)^2 + (y-z)^2 + z2^3 + rnorm(n)
-#' b1 <- bam(ob ~ s(x, y, z) + s(z2), discrete = T)
+#' b1 <- bam(ob ~ s(x, y, z) + s(z2), discrete = TRUE)
 #' b1 <- getViz(b1)
 #' 
 #' # Only second effect get plotted
@@ -85,7 +85,7 @@ plot.gam <- function(x, n = 100, n2 = 40, select = NULL, ...) {
     if( "mgcv.smooth.MD" %in% class(.smo) ) { return(NULL) }
     if( "mgcv.smooth.2D" %in% class(.smo) ) { .n <- .n2 }
     
-    return( plot(o = .smo, n = .n, ...) )
+    return( plot(x = .smo, n = .n, ...) )
   }
   
   # Plotting each smooth. If a plot is NULL we don't include it in the list `pls`.

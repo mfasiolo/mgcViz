@@ -1,4 +1,4 @@
-#' Trasparency level as function of p value
+#' Function going from one to zero
 #' 
 #' @description XXX
 #' @name zto1

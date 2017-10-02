@@ -20,7 +20,7 @@
 #' o # This is the whole qqplot
 #' 
 #' # We can zoom in along x at little extra costs (most computation already done by qq.gam)
-#' zoom(o, xlim = c(0, 1), show.reps = T, 
+#' zoom(o, xlim = c(0, 1), show.reps = TRUE, 
 #'      a.replin = list(alpha = 0.1), a.qqpoi =  list(shape = 19))
 #' @rdname zoom.qqGam
 #' @export zoom.qqGam

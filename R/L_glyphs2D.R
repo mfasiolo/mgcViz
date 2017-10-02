@@ -50,15 +50,17 @@
 #' # An horizontal plot indicates well specified residual model. 
 #' # Increasing (decreasing) worm indicates over (under) dispersion
 #' glyFun <- function(.d){
-#'   P <- stats::qqnorm(.d$z, plot.it = F)
-#'   clr <- if(length(P$x)>50) { "black" } else { "red" }
-#'   clr <- rep(clr, length(P$x))
-#'   return( data.frame("x" = P$x, "y" = P$y - P$x, "colour" = clr))
+#'   n <- nrow(.d)
+#'   px <- qnorm( (1:n - 0.5)/(n) )
+#'   py <- sort( .d$z )
+#'   clr <- if(n > 50) { "black" } else { "red" }
+#'   clr <- rep(clr, n)
+#'   return( data.frame("x" = px, "y" = py - px, "colour" = clr))
 #' }
 #' 
 #' pl + l_glyphs2D(glyFun = glyFun, ggLay = "geom_point", n = c(10, 10),
-#'                  mapping = aes(x=gx, y=gy, group = gid, colour = I(colour)),
-#'                  height=2, width = 1, size = 0.2) 
+#'                 mapping = aes(x=gx, y=gy, group = gid, colour = I(colour)),
+#'                 height=2, width = 1, size = 0.2) 
 #' 
 #' @export l_glyphs2D
 #'

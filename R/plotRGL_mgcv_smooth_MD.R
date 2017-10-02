@@ -17,7 +17,7 @@
 #' 
 #' rgl.close() # Close
 #' 
-#' plotRGL(sm(v, 1), fix = c("z" = 1), residuals = T)
+#' plotRGL(sm(v, 1), fix = c("z" = 1), residuals = TRUE)
 #' 
 #' # We can still work on the plot, for instance change the aspect ratio
 #' library(rgl)
@@ -44,7 +44,7 @@ plotRGL.mgcv.smooth.MD <- function(x, fix, se = TRUE, n = 40, residuals = FALSE,
   R <- list()
   if( residuals ) {
     # NB we are not passing P$xlim or P$ylim here
-    R <- .getResidualsPlotRGL(gamObj = o$gObj, X = P$raw, type = type, maxpo = maxpo,
+    R <- .getResidualsPlotRGL(gamObj = x$gObj, X = P$raw, type = type, maxpo = maxpo,
                               xlimit = xlim, ylimit = ylim, exclude = P$exclude2)
     P$raw <- R$raw
   }

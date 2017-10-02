@@ -86,7 +86,7 @@
 #' b <- gam(y ~ s(x, k = 5), family = binomial, method = "ML")
 #' 
 #' mgcViz::qq.gam(b, method = "simul2")
-#' mgcViz::qq.gam(b, rep = 50, show.reps = T, CI = "none", shape = 19)
+#' mgcViz::qq.gam(b, rep = 50, show.reps = TRUE, CI = "none", shape = 19)
 #' 
 #' \dontrun{
 #' ########  "Big Data" example: 
@@ -99,28 +99,28 @@
 #' dat$n <- n
 #' lr.fit <- bam(y/n ~ s(x0) + s(x1) + s(x2) + s(x3)
 #'               , family = binomial, data = dat,
-#'               weights = n, method = "fREML", discrete = T)
+#'               weights = n, method = "fREML", discrete = TRUE)
 #' 
 #' # Turning discretization off (on by default for large datasets).
 #' set.seed(414) # Setting the seed because qq.gam is doing simulations
-#' o <- qq.gam(lr.fit, rep = 10, method = "simul1", CI = "normal", show.reps = T, 
+#' o <- qq.gam(lr.fit, rep = 10, method = "simul1", CI = "normal", show.reps = TRUE, 
 #'             discrete = F, a.replin = list(alpha = 0.1))
 #' o # This might take some time!
 #' 
 #' # Using default discretization
 #' set.seed(414)
-#' o <- qq.gam(lr.fit, rep = 10, method = "simul1", CI = "normal", show.reps = T, 
+#' o <- qq.gam(lr.fit, rep = 10, method = "simul1", CI = "normal", show.reps = TRUE, 
 #'             a.replin = list(alpha = 0.1))
 #' o # Much faster plotting!
 #' 
 #' # Very coarse discretization
 #' set.seed(414)
-#' o <- qq.gam(lr.fit, rep = 10, method = "simul1", CI = "normal", show.reps = T,
+#' o <- qq.gam(lr.fit, rep = 10, method = "simul1", CI = "normal", show.reps = TRUE,
 #'             ngr = 1e2, a.replin = list(alpha = 0.1), a.qqpoi = list(shape = 19))
 #' o 
 #' 
 #' # We can also zoom in at no extra costs (most work already done by qq.gam)
-#' zoom(o, xlim = c(-0.25, 0.25), show.reps = T, discrete = T, a.replin = list(alpha = 0.2))
+#' zoom(o, xlim = c(-0.25, 0.25), show.reps = TRUE, discrete = TRUE, a.replin = list(alpha = 0.2))
 #' }
 #' 
 qq.gam <- function(o, rep = 10,

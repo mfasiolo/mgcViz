@@ -24,12 +24,12 @@
 #' # Residuals are heteroscedastic w.r.t. x
 #' ob <- (x)^2 + (y)^2 + (0.2*abs(x) + 1)  * rnorm(n)
 #' b <- bam(ob ~ s(x,k=30) + s(y, k=30), discrete = TRUE)
+#' b <- getViz(b, nsim = 50)
 #' 
 #' # Don't see much by looking at mean
 #' check1D(b, "x") + l_gridCheck1D()
 #' 
 #' # Heteroscedasticity clearly visible here
-#' b <- getSim(b, n = 50)
 #' check1D(b, "x") + l_gridCheck1D(gridFun = sd, stand = "sc") # <- we are scaling and centering
 #' # Last point on the right of the rug seems to indicate that a bin is missing.
 #' # It is not an error, only on observation falls in that bin, hence the
@@ -80,10 +80,10 @@ l_gridCheck1D.plotSmoothCheck1D <- function(a){
   sim <- a$data$sim
   if( is.null(sim) ){ # NO simulations
     if( level > 0 ){
-      message("level>0 but object does not contain any simulations. See ?getSim.")
+      message("level>0 but object does not contain any simulations. See ?getViz.")
     } else {
       if( xtra$stand != "none" ){
-        message("stand!=`none` but object does not contain any simulations. See ?getSim.")
+        message("stand!=`none` but object does not contain any simulations. See ?getViz.")
       }
     }
   } else {  # YES simulations!

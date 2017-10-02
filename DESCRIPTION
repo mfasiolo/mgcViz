@@ -7,7 +7,8 @@ Description: mgcViz.
 Depends: 
   R (>= 3.3.2),
   mgcv, 
-  ggplot2
+  ggplot2,
+  rgl
 Imports:
   shiny,
   matrixStats,
@@ -21,8 +22,7 @@ Imports:
   dplyr,
   gridExtra,
   mvnfast,
-  plyr, 
-  rgl
+  plyr
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

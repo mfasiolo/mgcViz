@@ -20,14 +20,13 @@
 #' n <- 1e4
 #' X <- data.frame("x1"=rnorm(n, 0.5, 0.5), "x2"=rnorm(n, 1.5, 1))
 #' X$y <- (1-X$x1)^2 + 100*(X$x2 - X$x1^2)^2 + rnorm(n, 0, 2)
-#' b <- bam(y ~ te(x1, x2, k = 5), data = X, discrete = T)
-#' b <- getViz(b)
+#' b <- bam(y ~ te(x1, x2, k = 5), data = X, discrete = TRUE)
+#' b <- getViz(b, nsim = 50)
 #' 
 #' # Plot joint density of observed covariate x1 and x2
 #' check2D(b, x1 = "x1", x2 = "x2") + l_rug() + l_dens(type="joint", alpha=0.6) + l_points() 
 #' 
 #' # Look at how mean of residuals varies across x1 and x2
-#' b <- getSim(b) # Simulate some residuals to standardise (see ?gridCheck2D)
 #' check2D(b, x1 = "x1", x2 = "x2") + l_gridCheck2D() + l_points()
 #' 
 #' # Can't see much in previous plot, let's zoom in central area, where most

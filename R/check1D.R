@@ -6,7 +6,7 @@
 #' @param o an object of class \code{gamObject} or \code{gamViz}.
 #' @param x should be either a single character or a numeric vector. 
 #'          In the first case it should be the name of one of the variables in the dataframe used to fit \code{o}.
-#' @param type the type of residuals to be used. See \code{?residuals.gam}
+#' @param type the type of residuals to be used. See \code{?residuals.gam}.
 #' @param maxpo maximum number of residuals points that will be used by layers such as
 #'              \code{resRug()} and \code{resPoints()}. If number of datapoints > \code{maxpo},
 #'              then a subsample of \code{maxpo} points will be taken.
@@ -34,7 +34,7 @@
 #' 
 #' # Compare observed residuals std dev with that of simulated data,
 #' # heteroscedasticity is clearly visible
-#' b <- getSim(b, n = 50)
+#' b <- getViz(b, nsim = 50)
 #' check1D(b, "x") + l_gridCheck1D(gridFun = sd, show.reps = TRUE)
 #' 
 #' @importFrom matrixStats colSds

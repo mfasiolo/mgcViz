@@ -22,7 +22,7 @@
 #' b <- gam(y ~ s(x0) + s(x1) + s(x2) + s(x3), data = dat)
 #' 
 #' # Checks using default options
-#' cg <- check(b)
+#' check(b)
 #' 
 #' # Change some algorithmic and graphical parameters
 #' check(b,

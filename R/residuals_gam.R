@@ -2,10 +2,6 @@
 #' 
 #' @description Wrapper around \code{mgcv::residuals.gam}.
 #' @name residuals.gam
-#' @details ...
-#' @examples 
-#' library(mgcViz)
-#' 
 #' @rdname residuals.gam
 #' @export residuals.gam
 residuals.gam <- function(object, type = "deviance", ...)
