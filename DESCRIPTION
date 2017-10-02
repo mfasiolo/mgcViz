@@ -9,13 +9,19 @@ Depends:
   mgcv, 
   ggplot2
 Imports:
-  plotly, 
   shiny,
-  miniUI,
   matrixStats,
   viridis,
   colourpicker, 
-  GGally
+  miniUI,
+  GGally, 
+  KernSmooth, 
+  data.table,
+  dplyr,
+  gridExtra,
+  mvnfast,
+  plyr, 
+  rgl
 Suggests:
   plyr,
   gridExtra,

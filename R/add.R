@@ -1,5 +1,5 @@
 #'
-#' Add components smooth effect plot
+#' Adding layers to smooth effect plots
 #'
 #' @param e1 an object of class \code{plotSmooth}.
 #' @param e2 a plot component, as described below.

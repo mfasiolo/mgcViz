@@ -48,7 +48,7 @@ l_dens.plotSmooth1D <- l_dens.plotSmoothCheck1D <- function(a){
   
   # Computed joint or conditional residual density
   dXY <- .fastKernDens(dat = a$data$res, xlimit = NULL, ylimit = NULL,
-                       cond = (xtra$type == "cond"), bw = xtra$bw, n = xtra$n, 
+                       cond = (xtra$type == "cond"), bw = xtra$bw, ngr = xtra$n, 
                        tol = xtra$tol)$dXY
   
   # Add arguments for `geom_raster`

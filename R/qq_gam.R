@@ -168,7 +168,7 @@ qq.gam <- function(o, rep = 10,
   P1 <- .discretize.qq.gam(P = P0, discrete = discrete, ngr = ngr,
                            CI = (CI != "none"), show.reps = show.reps)
   pl <- .plot.qq.gam(P = P1, CI = (CI != "none"), worm = worm, show.reps = show.reps,
-                     xlim = xlim, ylim = ylim, a.all = a.all)
+                     xlimit = xlim, ylimit = ylim, a.all = a.all)
   out <- structure(list("ggPlot" = pl, "store" = P0),
                    "class" = "qqGam", 
                    "call" = match.call())

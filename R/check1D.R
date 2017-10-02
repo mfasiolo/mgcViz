@@ -34,7 +34,7 @@
 #' # Compare observed residuals std dev with that of simulated data,
 #' # heteroscedasticity is clearly visible
 #' b <- getSim(b, n = 50)
-#' check1D(b, "x") + l_gridCheck1D(gridFun = sd, show.reps = T)
+#' check1D(b, "x") + l_gridCheck1D(gridFun = sd, show.reps = TRUE)
 #' 
 #' @importFrom matrixStats colSds
 #' @importFrom plyr aaply

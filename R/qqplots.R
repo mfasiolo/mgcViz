@@ -30,7 +30,7 @@
 #' 
 #' # You can also convert ggplot2 graphs to interactive plots with
 #' # plotly::ggplotly() function. Use with caution.
-#' plotly::ggplotly(mgcViz::qqnorm(y) + theme_minimal())
+#' # plotly::ggplotly(mgcViz::qqnorm(y) + theme_minimal())
 #' 
 #' # Compare new and old version of qqplot
 #' x <- rt(200, df = 5)

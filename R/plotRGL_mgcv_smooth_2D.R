@@ -83,11 +83,9 @@ plotRGL.mgcv.smooth.2D <- function(o, se = TRUE, n = 40, residuals = FALSE, type
   if( !is.null(xlimit) || !is.null(ylimit) ){
     if( is.null(xlimit) ) xlimit <- c(-Inf, Inf)
     if( is.null(ylimit) ) ylimit <- c(-Inf, Inf)
-    if( residuals ){
       rin <- X$x > xlimit[1] & X$x < xlimit[2] & X$y > ylimit[1] & X$y < ylimit[2]
       X <- X[rin, , drop = F]
       res <- res[rin]
-    }
   }
   
   # Subsample residuals
