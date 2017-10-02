@@ -1,75 +1,85 @@
-**mgcViz**: visual tools for modern Generalized Additive Models
-===============================================================
+
+# **mgcViz**: visual tools for Generalized Additive Models
 
 This R package offers visual tool for Generalized Additive Models
-(GAMs). So far `mgcViz` provides: 1. Layered smooth effect plots. The
-plots provided by `mgcv::plot.gam` have been re-written in `ggplot2`. 2.
-New layered model checks
+(GAMs). So far `mgcViz` provides: 
 
-The main fitting functions are:
+1. Layered smooth effect plots;  
 
--   `qgam()` fits an additive quantile regression model to a
-    single quantile. Very similar to `mgcv::gam()`. It returns an object
-    of class `qgam`, which inherits from `mgcv::gamObject`.
--   `mqgam()` fits the same additive quantile regression model to
-    several quantiles. It is more efficient that calling `qgam()`
-    several times, especially in terms of memory usage.
--   `tuneLearn()` useful for tuning the learning rate of the
-    Gibbs posterior. It evaluates a calibration loss function on a grid
-    of values provided by the user.
--   `tuneLearnFast()` similar to `tuneLearn()`, but here the learning
-    rate is selected by minimizing the calibration loss, using
-    Brent method.
+2. New layered model checks;
 
-A first example: smoothing the motorcycle dataset
-=================================================
+3. Upgraded versions of the model checks provided by `mgcv`.
 
-Let's start with a simple example. Here we are fitting a regression
-model with an adaptive spline basis to quantile 0.8 of the motorcycle
-dataset.
+## Layered smooth effect plots
 
-    library(mgcViz)
-    n  <- 1e3
-    x1 <- rnorm(n)
-    x2 <- rnorm(n)
-    dat <- data.frame("x1" = x1, "x2" = x2,
-                      "y" = sin(x1) + 0.5 * x2^2 + pmax(x2, 0.2) * rnorm(n))
-    b <- bam(y ~ s(x1)+s(x2), data = dat, method = "fREML", discrete = TRUE)
-    b <- getViz(b)
+We work our way from the bottom up, starting with the smooth-specific plotting
+methods and ending with the new `plot.gam` function, which wraps several plots
+together.
 
-    o <- plot( sm(b, 1) ) 
+#### Smooth-specific plots
 
-    # Plot with fitted effect + rug on both axis
-    ( o <- o + l_fitLine(colour = "red") + 
-        l_rug(mapping = aes(x=x, y=y), alpha = 0.8) )
+Let's start with a simple example:
 
-<img src="README_files/figure-markdown_strict/1-1.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+```R
+library(mgcViz)
+n  <- 1e3
+x1 <- rnorm(n)
+x2 <- rnorm(n)
+dat <- data.frame("x1" = x1, "x2" = x2,
+                  "y" = sin(x1) + 0.5 * x2^2 + pmax(x2, 0.2) * rnorm(n))
+b <- bam(y ~ s(x1)+s(x2), data = dat, method = "fREML", discrete = TRUE)
+```
 
-    # Add CI lines at 1*sigma and 5*sigma
-    ( o <- o + l_ciLine(mul = 1) + l_ciLine(mul = 5, colour = "blue", linetype = 2) )
+Now we convert the fitted object to the `gamViz` class. Doing this allows to save
+quite a lot of time when producing multiple plots using the same fitted GAM model.
 
-<img src="README_files/figure-markdown_strict/1-2.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+```R
+b <- getViz(b)
+```
 
-    # Add partial residuals and change theme
-    ( o + l_points(shape = 19, size = 1, alpha = 0.2) + 
-        wrapTheme(theme_classic()) )
+We then extract the same smooth component using the `sm` function we plot it.
+The resulting `o` object contains, among other things, a `ggplot` object, which
+allows us to add several layers.
+```R
+o <- plot( sm(b, 1) )
+( o <- o + l_fitLine(colour = "red") + l_rug(mapping = aes(x=x, y=y), alpha = 0.8) )
+```
 
-<img src="README_files/figure-markdown_strict/1-3.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+Here we added only the fitted smooth and rugs on the x and y axes. Now we add in 
+confidence lines at 1 and 5 standard deviations, partial residual points and we
+change the theme to `ggplot2::theme_classic`.
+```R
+o + l_ciLine(mul = 1) + 
+    l_ciLine(mul = 5, colour = "blue", linetype = 2) + 
+    l_points(shape = 19, size = 1, alpha = 0.1) + 
+    wrapTheme(theme_classic())
+```
 
-    # Get second effect plot
-    o2 <- plot( sm(b, 2) )
+Notice that `ggplot2` themes need to be wrapped using `wrapTheme`, before being 
+added to the object. Functions such as `l_fitLine` or `l_rug` provide smooth-specific layers. So see all
+the layers available for each smooth effect plot we can do:
 
-    # Plot it with polygon for partial residuals
-    o2 + l_ciPoly(mul = 5, fill = "light blue") + 
-      l_fitLine(linetype = 2, colour = "red")
+```R
+listLayers(o)
+```
 
-<img src="README_files/figure-markdown_strict/1-4.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+Similar methods exist for 2D smooth smooth effect plots, for instance if we fit:
 
-    # Plot is with conditional density of partial residuals
-    o2 + l_dens(type = "cond", alpha = 0.9)  + 
-      l_fitLine(linetype = 2, colour = "red")
+```R
+b <- bam(y ~ s(x1, x2), data = dat, method = "fREML", discrete = TRUE)
+b <- getViz(b)
+```
 
-<img src="README_files/figure-markdown_strict/1-5.png" style="display:block; margin: auto" style="display: block; margin: auto;" />
+we can do
+
+```R
+plot(sm(b, 1)) + l_fitRaster() + l_fitContour() + l_points()
+```
+
+To convert a `gamViz` object back to its original form, we do:
+```R
+b <- getGam(b)
+```
 
 References
 ==========
