@@ -30,16 +30,17 @@
 #'
 #' @rdname plot.mgcv.smooth.MD
 #' @importFrom mvnfast maha
+#' @importFrom stats cov quantile
 #' @export plot.mgcv.smooth.MD
 #' 
-plot.mgcv.smooth.MD <- function(o, fix, n = 40, maxpo = 1e4,
+plot.mgcv.smooth.MD <- function(x, fix, n = 40, maxpo = 1e4,
                                 too.far = c(0.1, NA), trans = I, seWithMean = FALSE, 
                                 unconditional = FALSE, ...) {
 
   if ( length(too.far) == 1 ){ too.far <- c(too.far, NA)  }
   
   # 1) Prepare data
-  P <- .prepareP(o = o, unconditional = unconditional, residuals = TRUE, 
+  P <- .prepareP(o = x, unconditional = unconditional, residuals = TRUE, 
                  resDen = "none", se = TRUE, se.mult = 1, n = NULL, n2 = n,  
                  xlab = NULL, ylab = NULL, main = NULL, ylim = NULL, xlim = NULL,
                  too.far = too.far, seWithMean = seWithMean, fix = fix)

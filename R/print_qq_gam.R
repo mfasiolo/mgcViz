@@ -1,10 +1,11 @@
 #' Printing output of qq.gam
 #' 
-#' @description XXX
+#' @param x an object of class \code{qqGam}.
+#' @param ... currently unused.
 #' @name print.qqGam
 #' @rdname print.qqGam
 #' @export 
-print.qqGam <- function(o) {
-  print(o$ggPlot)
+print.qqGam <- function(x, ...) {
+  print(x$ggPlot)
   return(invisible(NULL))
 } 

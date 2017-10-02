@@ -21,6 +21,8 @@
 #' @note Help file is mainly from [mgcv::qq.gam] since this is a rewrite of `mgcv::qq.gam` 
 #' function with ggplot2 library.
 #' @import ggplot2
+#' @importFrom stats residuals sd qnorm dnorm qbeta approx var predict
+#' @importFrom mgcv fix.family.qf fix.family.rd
 #' @importFrom data.table frankv
 #' @importFrom matrixStats rowSds rowOrderStats
 #' @return An object of class \code{qqGam}.

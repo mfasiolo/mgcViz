@@ -19,14 +19,15 @@
 #' # Plot contour of effect joint density of design points
 #' plot(sm(b, 2)) + l_dens(type = "joint") + l_points() + l_fitContour() + 
 #'   coord_cartesian(expand = FALSE) # Fill the plot
+#' @importFrom mgcv exclude.too.far
 #' @rdname plot.mgcv.smooth.2D
 #' @export plot.mgcv.smooth.2D
 #' 
-plot.mgcv.smooth.2D <- function(o, n = 40, maxpo = 1e4, too.far = 0.1, trans = I, 
+plot.mgcv.smooth.2D <- function(x, n = 40, maxpo = 1e4, too.far = 0.1, trans = I, 
                                 seWithMean = FALSE, unconditional = FALSE, ...) {
   
   # 1) Prepare data
-  P <- .prepareP(o = o, unconditional = unconditional, residuals = TRUE, 
+  P <- .prepareP(o = x, unconditional = unconditional, residuals = TRUE, 
                  resDen = "none", se = TRUE, se.mult = 1, n = NULL, n2 = n,  
                  xlab = NULL, ylab = NULL, main = NULL, ylim = NULL, xlim = NULL,
                  too.far = too.far, seWithMean = seWithMean)

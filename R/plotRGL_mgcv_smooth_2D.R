@@ -45,9 +45,9 @@ plotRGL.mgcv.smooth.2D <- function(o, se = TRUE, n = 40, residuals = FALSE, type
                                    maxpo = 1e3, too.far = 0, xlab = NULL, ylab = NULL, 
                                    main = NULL, xlim = NULL, ylim = NULL,  se.mult = 1, 
                                    shift = 0, trans = I, seWithMean = FALSE, 
-                                   unconditional = FALSE){
+                                   unconditional = FALSE, ...){
   
-  if (type == "auto") { type <- mgcViz:::.getResTypeAndMethod(o$gObj$family$family)$type }
+  if (type == "auto") { type <- .getResTypeAndMethod(o$gObj$family$family)$type }
   
   P <- .prepareP(o = o, unconditional = unconditional, residuals = residuals, 
                  resDen = "none", se = se, se.mult = se.mult, n = NULL, n2 = n,  

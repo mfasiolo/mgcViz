@@ -17,6 +17,7 @@
 #'
 #' plot(sm(b,1)) + l_fitLine() + l_ciLine() + l_rug() + l_points()
 #' plot(sm(b,2)) + l_rug() + l_fitRaster() + l_fitContour()
+#' @importFrom stats simulate
 #' @rdname getViz
 #' @export getViz
 getViz <- function(o, nsim = 10, ...){
@@ -34,7 +35,7 @@ getViz <- function(o, nsim = 10, ...){
     class(o) <- c("gamViz", class(o))
   }
   
-  if( nsim > 0 ){ o$store$sim <- simulate(o, n = nsim, ...) }
+  if( nsim > 0 ){ o$store$sim <- simulate(o, nsim = nsim, ...) }
   
   return( o )
 }

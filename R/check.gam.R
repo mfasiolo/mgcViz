@@ -14,6 +14,7 @@
 #' @return An object of class \code{check.gam}, which is simply a list of \code{ggplot} objects.
 #' @note Help file is mainly from [mgcv::gam.check] since this is a rewrite of `mgcv::gam.check` 
 #' function with ggplot2 library.
+#' @importFrom stats napredict fitted printCoefmat 
 #' @examples
 #' library(ggplot2)
 #' set.seed(0)
@@ -29,7 +30,6 @@
 #'                   a.cipoly = list(fill = "light blue")), 
 #'       a.respoi = list(size = 0.5), 
 #'       a.hist = list(bins = 10))
-#' 
 #' @export check.gam
 #' 
 check.gam <- function(o,
@@ -40,8 +40,8 @@ check.gam <- function(o,
                       a.qq = list(),
                       a.hist = list(),
                       a.respoi = list(),
-                      a.reshex = list()
-                      ){
+                      a.reshex = list(),
+                      ...){
   
   type <- match.arg(type)
   if (type == "auto") { type <- .getResTypeAndMethod(o$family$family)$type }

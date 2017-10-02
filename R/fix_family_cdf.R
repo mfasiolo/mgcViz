@@ -1,5 +1,12 @@
-
-
+#'
+#' Getting the CDF of a gam family
+#' 
+#' @description XXX
+#' @name fix.family.cdf
+#' @importFrom stats ppois pbinom pgamma pnorm
+#' @rdname fix.family.cdf
+#' @export fix.family.cdf
+#'
 fix.family.cdf <- function(fam) {
   ## add cdf to family object
   

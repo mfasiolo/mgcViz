@@ -2,7 +2,7 @@
 #' Plotting one dimensional smooth factor interactions
 #' 
 #' @description Plotting one dimensional smooth factor interactions.
-#' @param o
+#' @param x
 #' @param ... currently unused.
 #' @name plot.fs.interaction.1D
 #' @examples 
@@ -37,14 +37,15 @@
 #' # Change line type and remove legend
 #' plot(sm(v, 2)) + l_fitLine(size = 1.3, linetype="dotted") + 
 #'   wrapTheme(theme(legend.position="none"))
+#' @importFrom mgcv PredictMat
 #' @rdname plot.fs.interaction.1D
 #' @export plot.fs.interaction.1D
 #' 
-plot.fs.interaction.1D <- function(o, n = 100, trans = I, 
+plot.fs.interaction.1D <- function(x, n = 100, trans = I, 
                                    unconditional = FALSE, seWithMean = FALSE, ...) {
   
   # 1) Prepare data
-  P <- .prepareP(o = o, unconditional = FALSE, residuals = FALSE, 
+  P <- .prepareP(o = x, unconditional = FALSE, residuals = FALSE, 
                  resDen = "none", se = TRUE, se.mult = 1, n = n, n2 = NULL,  
                  xlab = NULL, ylab = NULL, main = NULL, ylim = NULL, xlim = NULL,
                  too.far = NULL, seWithMean = FALSE)

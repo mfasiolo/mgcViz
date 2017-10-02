@@ -6,7 +6,7 @@
 #' @title check
 #' @rdname check
 #' @export check
-check <- function(x, ...) UseMethod("check")
+check <- function(o, ...) UseMethod("check")
 
 #' Generic zooming function
 #'
@@ -15,7 +15,7 @@ check <- function(x, ...) UseMethod("check")
 #' @title zooming
 #' @rdname zoom
 #' @export zoom
-zoom <- function(x, ...) UseMethod("zoom")
+zoom <- function(o, ...) UseMethod("zoom")
 
 .prepare <- function(...) UseMethod(".prepare")
 

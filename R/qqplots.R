@@ -15,6 +15,7 @@
 #' @note Help file is mainly from `stats::qqnorm` since this is a rewrite of `stats::qqplot`, `stats::qqline` and
 #' `stats::qqnorm` with ggplot2 library.
 #' @name qqplots
+#' @importFrom stats ppoints runif
 #' @examples 
 #' library(mgcViz)
 #' library(ggplot2)

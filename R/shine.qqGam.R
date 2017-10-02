@@ -2,6 +2,7 @@
 #' @description ...
 #' @import shiny
 #' @import miniUI
+#' @importFrom rstudioapi isAvailable insertText
 #' @export
 #' @examples 
 #' \dontrun{
@@ -23,7 +24,7 @@
 #' shine(qq.gam(lr.fit))
 #'  
 #' }
-shine.qqGam <- function(o){
+shine.qqGam <- function(o, ...){
   name_obj <- deparse(substitute(o))
   ui <- miniPage(
     gadgetTitleBar("Q-Q GAM"),

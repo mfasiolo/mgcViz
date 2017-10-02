@@ -5,6 +5,7 @@
 #'
 #' @param ... graphical arguments to be passed to \code{ggplot2::geom_raster}.
 #' @return An object of class \code{gamLayer}.
+#' @importFrom stats rnorm
 #' @export l_fitRaster
 #'
 l_fitRaster <- function(pFun = function(.p) 1, noiseup = FALSE, mul = 1, ...){

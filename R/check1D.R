@@ -12,6 +12,7 @@
 #'              then a subsample of \code{maxpo} points will be taken.
 #' @param na.rm if \code{TRUE} missing cases in \code{x} or \code{y} will be dropped out 
 #' @return An object of class \code{c("plotSmooth", "Check", "1D")}.
+#' @importFrom stats complete.cases
 #' @examples 
 #' library(mgcViz);
 #' set.seed(4124)
@@ -48,7 +49,7 @@ check1D <- function(o, x, type = "auto", maxpo = 1e4, na.rm = TRUE){
                             "working", "response", "tunif", "tnormal"))
   
   # Returns the appropriate residual type for each GAM family
-  if( type=="auto" ) { type <- mgcViz:::.getResTypeAndMethod(o$family$family)$type }
+  if( type=="auto" ) { type <- .getResTypeAndMethod(o$family$family)$type }
   
   # Get residuals
   y <- residuals(o, type = type)

@@ -27,16 +27,16 @@
 #' 
 #' @rdname plotRGL.mgcv.smooth.MD
 #' @export plotRGL.mgcv.smooth.MD
-plotRGL.mgcv.smooth.MD <- function(o, fix, se = TRUE, n = 40, residuals = FALSE, type = "auto", 
+plotRGL.mgcv.smooth.MD <- function(x, fix, se = TRUE, n = 40, residuals = FALSE, type = "auto", 
                                    maxpo = 1e3, too.far = c(0, NA), xlab = NULL, ylab = NULL, 
                                    main = NULL, xlim = NULL, ylim = NULL, se.mult = 1, 
                                    shift = 0, trans = I, seWithMean = FALSE, 
-                                   unconditional = FALSE){
+                                   unconditional = FALSE, ...){
   
-  if (type == "auto") { type <- mgcViz:::.getResTypeAndMethod(o$gObj$family$family)$type }
+  if (type == "auto") { type <- .getResTypeAndMethod(x$gObj$family$family)$type }
   if ( length(too.far) == 1 ){ too.far <- c(too.far, NA)  }
   
-  P <- .prepareP(o = o, unconditional = unconditional, residuals = residuals, 
+  P <- .prepareP(o = x, unconditional = unconditional, residuals = residuals, 
                  resDen = "none", se = se, se.mult = se.mult, n = NULL, n2 = n,  
                  xlab = xlab, ylab = ylab, main = main, ylim = ylim, xlim = xlim,
                  too.far = too.far, seWithMean = seWithMean, fix = fix)

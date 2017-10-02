@@ -2,7 +2,7 @@
 #' 
 #' @description Plotting one dimensional smooth effects.
 #' @name plot.mgcv.smooth.1D
-#' @param o a smooth effect object.
+#' @param x a smooth effect object.
 #' @param n number of grid points used to compute main effect and c.i. lines. 
 #'          For a nice smooth plot this needs to be several times the estimated degrees of 
 #'          freedom for the smooth.
@@ -56,11 +56,11 @@
 #'   l_fitLine(linetype = 2, colour = "red")
 #' @rdname plot.mgcv.smooth.1D
 #' @export plot.mgcv.smooth.1D
-plot.mgcv.smooth.1D <- function(o, n = 100, maxpo = 1e4, trans = I, 
+plot.mgcv.smooth.1D <- function(x, n = 100, maxpo = 1e4, trans = I, 
                                 unconditional = FALSE, seWithMean = FALSE, ...) {
   
   # 1) Prepare data
-  P <- .prepareP(o = o, unconditional = unconditional, residuals = TRUE, 
+  P <- .prepareP(o = x, unconditional = unconditional, residuals = TRUE, 
                  resDen = "none", se = TRUE, se.mult = 1, n = n, n2 = NULL,  
                  xlab = NULL, ylab = NULL, main = NULL, ylim = NULL, xlim = NULL,
                  too.far = NULL, seWithMean = seWithMean)

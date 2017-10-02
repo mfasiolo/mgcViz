@@ -47,7 +47,7 @@ check2D <- function(o, x1, x2, bw = NULL, type = "auto", maxpo = 1e4, na.rm = TR
                             "working", "response", "tunif", "tnormal"))
   
   # Returns the appropriate residual type for each GAM family
-  if( type=="auto" ) { type <- mgcViz:::.getResTypeAndMethod(o$family$family)$type }
+  if( type=="auto" ) { type <- .getResTypeAndMethod(o$family$family)$type }
   
   # Get residuals
   y <- residuals(o, type = type)

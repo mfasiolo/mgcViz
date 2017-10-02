@@ -3,7 +3,7 @@
 #'
 #' @description This function overwrites \code{mgcv::plot.gam()}.
 #' 
-#' @param o A fitted gam object as produced by \code{mgcv::gam()} or a \code{gamViz} object, 
+#' @param x A fitted gam object as produced by \code{mgcv::gam()} or a \code{gamViz} object, 
 #'          produced by \code{mgcViz::getViz()}.
 #' @param n number of points used for each 1-d plot. For a nice smooth plot 
 #'          this needs to be several times the estimated degrees of freedom for the smooth.
@@ -14,6 +14,7 @@
 #' @param ... other parameters, such as \code{maxpo} or \code{trans} to be passed to the specific
 #'            plotting methods for each effect (e.g. to \code{plot.mgcv.smooth.1D}).
 #' @name plot.gam
+#' @importFrom graphics plot
 #' @examples
 #' 
 #' library(mgcViz)
@@ -65,18 +66,18 @@
 #' @rdname plot.gam
 #' @export plot.gam
 #'
-plot.gam <- function(o, n = 100, n2 = 40, select = NULL, ...) {
+plot.gam <- function(x, n = 100, n2 = 40, select = NULL, ...) {
   
-  if( !("gamViz" %in% class(o)) ) { o <- getViz(o)  }
+  if( !("gamViz" %in% class(x)) ) { x <- getViz(x)  }
   
-  nsm <- length(o$smooth)
+  nsm <- length(x$smooth)
   if( is.null(select) ) { select <- 1:nsm }
   if( any(select > nsm) ) { 
     stop(paste("No element of `select` can be greater than ", nsm, ", the number of smooths.", sep=''))
   }
   
   # Extract smooths
-  smo <- lapply(select, sm, o = o)
+  smo <- lapply(select, sm, o = x)
   
   # Wrapper function to plot each smooth
   wrap <- function(.smo, .n, .n2, ...){
