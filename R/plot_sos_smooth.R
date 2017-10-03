@@ -37,8 +37,10 @@
 #' plot(sm, scheme=0)
 #' plot(sm, scheme=1)
 #' # plot(sm, scheme=2) # Needs fixing
+#' @importFrom grDevices heat.colors
 #' @rdname plot.sos.smooth
-#' @export plot.sos.smooth
+#' @noRd
+# #' @export plot.sos.smooth
 plot.sos.smooth <- function(o, residuals=FALSE, rug=TRUE, se=TRUE, n=40,
                             pers=FALSE, theta=30, phi=30, xlab=NULL, ylab=NULL, main=NULL, 
                             ylim=NULL, xlim=NULL, too.far=0.1, se.mult=1, shift=0, trans=I, seWithMean=FALSE, 

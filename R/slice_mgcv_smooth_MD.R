@@ -3,7 +3,7 @@
 #' @description XXX
 #' @name slice.mgcv.smooth.MD
 #' @rdname slice.mgcv.smooth.MD
-#' @export 
+# #' @export 
 slice.mgcv.smooth.MD <- function(o, fix, ...){
   
   l <- list(...)
