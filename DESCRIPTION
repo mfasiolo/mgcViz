@@ -16,6 +16,7 @@ Imports:
   colourpicker, 
   miniUI,
   rstudioapi,
+  plotly,
   GGally, 
   KernSmooth, 
   data.table,

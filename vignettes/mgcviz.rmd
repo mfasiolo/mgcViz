@@ -1,10 +1,20 @@
+<!--
+%\VignetteEngine{knitr::docco_linear}
+%\VignetteIndexEntry{mgcViz_vignette}
+-->
+  
+```{r setup, include=FALSE}
+library(knitr)
+opts_chunk$set(out.extra='style="display:block; margin: auto"', fig.align="center", tidy=FALSE)
+```
+
 
 # **mgcViz**: visual tools for Generalized Additive Models
 
 This R package offers visual tools for Generalized Additive Models
 (GAMs). Most of the tools provided by `mgcViz` fall in one of the following classes: 
-
-1. Layered smooth effect plots;  
+  
+  1. Layered smooth effect plots;  
 
 2. Traditional and layered model checks;
 
@@ -19,27 +29,27 @@ Here we start by describing smooth-specific plotting methods and then we move to
 
 Let's start with a simple example with two smooth effects:
 
-```R
+```{r 1, message = F}
 library(mgcViz)
 n  <- 1e3
 x1 <- rnorm(n)
 x2 <- rnorm(n)
 dat <- data.frame("x1" = x1, "x2" = x2,
-                  "y" = sin(x1) + 0.5 * x2^2 + pmax(x2, 0.2) * rnorm(n))
+"y" = sin(x1) + 0.5 * x2^2 + pmax(x2, 0.2) * rnorm(n))
 b <- gam(y ~ s(x1)+s(x2), data = dat, method = "REML")
 ```
 
 Now we convert the fitted object to the `gamViz` class. Doing this allows to save
 quite a lot of time when producing multiple plots using the same fitted GAM model.
 
-```R
+```{r 2}
 b <- getViz(b)
 ```
 
 We extract the first smooth component using the `sm` function and we plot it.
 The resulting `o` object contains, among other things, a `ggplot` object. This
 allows us to add several layers.
-```R
+```{r 3}
 o <- plot( sm(b, 1) )
 ( o <- o + l_fitLine(colour = "red") + l_rug(mapping = aes(x=x, y=y), alpha = 0.8) )
 ```
@@ -47,42 +57,42 @@ o <- plot( sm(b, 1) )
 We added only the fitted smooth effect and rugs on the x and y axes. Now we add 
 confidence lines at 1 and 5 standard deviations, partial residual points and we
 change the theme to `ggplot2::theme_classic`.
-```R
+```{r 4}
 o + l_ciLine(mul = 1) + 
-    l_ciLine(mul = 5, colour = "blue", linetype = 2) + 
-    l_points(shape = 19, size = 1, alpha = 0.1) + 
-    wrapTheme(theme_classic())
+l_ciLine(mul = 5, colour = "blue", linetype = 2) + 
+l_points(shape = 19, size = 1, alpha = 0.1) + 
+wrapTheme(theme_classic())
 ```
 
 Notice that `ggplot2` themes need to be wrapped using `wrapTheme`, before being 
 added to the object. Functions such as `l_fitLine` or `l_rug` provide smooth-specific layers. To see all
 the layers available for each smooth effect plot we can do:
 
-```R
+```{r 5}
 listLayers(o)
 ```
 
 Similar methods exist for 2D smooth smooth effect plots, for instance if we fit:
 
-```R
+```{r 6}
 b <- gam(y ~ s(x1, x2), data = dat, method = "REML")
 b <- getViz(b)
 ```
 
 we can do
 
-```R
+```{r 7}
 plot(sm(b, 1)) + l_fitRaster() + l_fitContour() + l_points()
 ```
 
 This can be converted to an intervative `plotly` plot as follows:
-```R
+```{r 8, message = F, warning = F}
 library(plotly)
 ggplotly( plot(sm(b, 1)) + l_fitRaster() + l_points() + l_fitContour()  )
 ```
 
 If needed, we can convert a `gamViz` object back to its original form by doing:
-```R
+```{r 9}
 b <- getGam(b)
 ```
 
@@ -91,13 +101,13 @@ b <- getGam(b)
 The new `plot.gam` function masks `mgcv::plot.gam` when `mgcViz` is loaded. This function
 wraps together the plotting methods related to each specific smooth effect, which can 
 save time when doing GAM modelling. Consider this model:
-```R
+```{r 10}
 dat <- gamSim(1,n=1e3,dist="normal",scale=2)
 b <- gam(y~s(x0)+s(x1, x2)+s(x3), data=dat)
 ```
 
 To plot all the effects we do:
-```R
+```{r 11}
 b <- getViz(b)
 plot(b)         # Calls print.plotGam()
 ```
@@ -105,7 +115,7 @@ plot(b)         # Calls print.plotGam()
 Here `getViz` is now strictly necessary, but converting to a `gamViz` object first saves
 time when we need to call `plot.gam` several times. To plot all three plots on one page 
 we can do:
-```R
+```{r 12}
 print(plot(b) + labs(title = NULL), pages = 1)
 ```
 
@@ -115,9 +125,9 @@ confidence interval lines) have been added by `print.plotGam`, which adds some d
 to empty `plotGam` objects. This can be avoided by setting `addLay = FALSE` in the call to 
 `print.plotGam`. A `plotGam` object in considered not empty when we add a object of class
 `gamLayer`, for instance:
-```R
+```{r 13}
 pl <- plot(b) + l_points() + l_fitLine(linetype = 3) + l_fitContour() + 
-       l_ciLine(colour = 2) + wrapTheme(theme_get()) + labs(title = NULL)
+l_ciLine(colour = 2) + wrapTheme(theme_get()) + labs(title = NULL)
 print(pl, pages = 1)
 pl$empty # FALSE: because we added gamLayers
 ```
@@ -127,11 +137,11 @@ are not relevant to all smooths. For instance, `l_fitContour` is added only to t
 The `+.plotGam` method automatically adds each layer only to compatible smooth effect plots.
 
 We can plot individuals effects by using the `select` arguments. For instance:
-```R
+```{r 14}
 plot(b, select = 1)
 ```
 where only the default layers are added. Obviously we can have our custom layers instead
-```R
+```{r 15}
 plot(b, select = 1) + l_dens(type = "cond") + l_fitLine() + l_ciLine()
 ```
 where the `l_dens` layer represents the conditional density of the partial residuals.
@@ -141,7 +151,7 @@ where the `l_dens` layer represents the conditional density of the partial resid
 `mgcViz` provides tools for generating interactive plots of multidimensional smooths
 via the `rgl` R package. Here is an example where we are plotting a 2D slice of 
 a 3D smooth effect with confidence intervals:
-```R
+```{r 16, warning = F}
 library(mgcViz)
 n <- 1e3
 x <- rnorm(n); y <- rnorm(n); z <- rnorm(n)
@@ -156,12 +166,12 @@ The `fix` argument is used to determine the slice. The plot also show some resid
 depending on sign) that fall close (in term of Euclidean distance) to the selected slice.  
 Notice that `plotRGL` is not layered at the moment, and most options need to be specified in the initial function call. But the interactive plot can still be manipulated once the `rgl` window is open,
 for instance here we change the aspect ratio:
-```R
+```{r 17}
 aspect3d(1, 2, 1)
 ```
 
 We then close the window using 
-```R
+```{r 18}
 rgl.close()
 ```
 
@@ -177,7 +187,7 @@ sustitutes `gam.check` with the `check.gam` method.
 
 Consider the following model with
 binomial responses:
-```R
+```{r 19, message = F}
 set.seed(0)
 n.samp <- 400
 dat <- gamSim(1,n = n.samp, dist = "binary", scale = .33)
@@ -186,29 +196,29 @@ n <- sample(c(1, 3), n.samp, replace = TRUE) ## binomial n
 dat$y <- rbinom(n, n, p)
 dat$n <- n
 lr.fit <- gam(y/n ~ s(x0) + s(x1) + s(x2) + s(x3)
-              , family = binomial, data = dat,
-              weights = n, method = "REML")
+, family = binomial, data = dat,
+weights = n, method = "REML")
 ```
 
 We can get a QQ-plot of the residuals as follows:
-```R
+```{r 20}
 qq.gam(lr.fit, method = "simul1", 
-       a.qqpoi = list("shape" = 1), 
-       a.ablin = list("linetype" = 2))
+               a.qqpoi = list("shape" = 1), 
+               a.ablin = list("linetype" = 2))
 ```
 Here `method` determines the method used to compute the QQ-plot, while the arguments
 starting with `a.` are lists that will be passed directly to the corresponding `ggplot2`
 layer (`geom_point` and `geom_abline` here). We can remove the confidence intervals and 
 show all simulated (model-based) QQ-curves as follows:
-```R
+```{r 21}
 qq.gam(lr.fit, rep = 20, show.reps = T, CI = "none",
-       a.qqpoi = list("shape" = 19),
-       a.replin = list("alpha" = 0.2))
+               a.qqpoi = list("shape" = 19),
+               a.replin = list("alpha" = 0.2))
 ```
 
 Importantly, `mgcViz::qq.gam` can handle large datasets by discretizing the QQ-plot before
 plotting. For instance, let's increase `n.samp` in the previous example :
-```R
+```{r 22, message = F}
 set.seed(0)
 n.samp <- 50000
 dat <- gamSim(1,n=n.samp,dist="binary",scale=.33)
@@ -223,14 +233,14 @@ lr.fit <- bam(y/n ~ s(x0) + s(x1) + s(x2) + s(x3)
 
 Here the `discrete` argument determined whether the QQ-plot is discretized or not.
 Notice that we can compute the QQ-plot, store it in `o` and then plot it (via `print.qqGam`).
-```R
+```{r 23}
 o <- qq.gam(lr.fit, rep = 10, method = "simul1", CI = "normal", show.reps = TRUE, 
             a.replin = list(alpha = 0.1), discrete = TRUE)
 o 
 ```
 
 The coarseness of the discretization grid is determined by the `ngr` argument:
-```R
+```{r 24}
 o <- qq.gam(lr.fit, rep = 10, method = "simul1", CI = "normal", show.reps = TRUE,
             ngr = 1e2, a.replin = list(alpha = 0.1), a.qqpoi = list(shape = 19))
 o 
@@ -242,7 +252,7 @@ The `check.gam` method is similar to `mgcv::gam.check`, with the difference that
 produces a sequence of `ggplot` objects and that it sub-samples the residuals to 
 avoid over-plotting (or stalling entirely) when dealing with large data sets.
 Here is an example:
-```R
+```{r 25}
 library(ggplot2)
 set.seed(0)
 dat <- gamSim(1, n = 200)
@@ -268,7 +278,7 @@ section are fully layered, hence easy to extend and customize.
 
 This function allows to verify how the residuals vary along one covariate. Consider the 
 following model:
-```R
+```{r 26}
 set.seed(4124)
 n <- 1e4
 x <- rnorm(n); y <- rnorm(n);
@@ -280,7 +290,7 @@ b <- bam(ob ~ s(x,k=30) + s(y, k=30), discrete = TRUE)
 Here the response's variance varies a lot along $x$. Assume that we didn't know this, but
 that we wanted to find out whether the residuals are heteroscedastic. We can start by doing
 the following:
-```R
+```{r 27}
 ck <- check1D(b, "x")
 ck
 ```
@@ -288,19 +298,19 @@ ck
 This produces a view along $x$, but as you can see that plot is initially empty. We might
 want to add a layer showing the conditional distribution of the residuals along $x$ and another
 containing a rug:
-```R
+```{r 28}
 ck + l_dens(type = "cond", alpha = 0.8) + l_rug(alpha = 0.2)
 ```
 
 This suggests that the variance of the residuals might be lowest in the middle ($x=0$), but it
 is not entirely clear. The `l_densCheck` layer gives a more clear answer in this case:
-```R
+```{r 29}
 ck + l_densCheck()
 ```
 This layers adds an heatmap proportional to $\{p(r|x)^{1/2} - p_m(r|x)^{1/2}\}^{1/3}$, where $r$ are the residuals, while $p$ and $p_m$ are their empirical and theoretical (model based) density. In particular, $p$ is estimated using the the fast k.d.e. method of Wand (1994) (implemented by the `kernSmooth` package) and $p_m$ is a standard normal density here. This plot makes clear that the residuals are over-dispersed when $x$ is far from zero.
 
 The `l_gridCheck1D` provides another way of finding residuals patterns. For instance:
-```R
+```{r 30}
 b <- getViz(b, nsim = 50)
 check1D(b, "x") + l_gridCheck1D(gridFun = sd, show.reps = TRUE)
 ```
@@ -313,7 +323,7 @@ inside `b`. `l_gridCheck1D` simply bins the residuals according to their $x$ val
 
 `check2D` is quite similar to `check1D`, but looks at the residuals along two covariates. Here is an
 example where the mean effect follows the Rosenbrock function:
-```R
+```{r 31}
 n <- 1e4
 X <- data.frame("x1"=rnorm(n, 0.5, 0.5), "x2"=rnorm(n, 1.5, 1))
 X$y <- (1-X$x1)^2 + 100*(X$x2 - X$x1^2)^2 + rnorm(n, 0, 2)
@@ -322,29 +332,29 @@ b <- getViz(b, nsim = 50)
 ```
 
 We start by generating a 2D view:
-```R
+```{r 32}
 ck <- check2D(b, x1 = "x1", x2 = "x2")
 ```
 
 Then we add the `l_gridCheck2D`:
-```R
+```{r 33}
 ck + l_gridCheck2D(gridFun = mean)
 ```
 
 `l_gridCheck2D` bins the observed and simulated residuals, summarizes the using a scalar-valued
 function (`mean` here), and adds an heatmap proportional to the observed summary in each cell, normalized
 using the `nsim` summaries obtained using the simulations. Here the pattern in the residual means is not very well visible, due to outliers in the far-right. The pattern is made more visible by zooming on the center of the distribution and by changing the size of the bins:
-```R
+```{r 34}
 ck + l_gridCheck2D(bw = c(0.05, 0.1)) + xlim(-1, 1) + ylim(0, 3)
 ```
 
 As for smooth effect plots, we can list the available layers by doing:
-```R
+```{r 35}
 listLayers( ck ) 
 ```
 
 The most sophisticated layer is probably `l_glyphs2D` which we illustrate here using a heteroscedastic model:
-```R
+```{r 36}
 set.seed(4124)
 n <- 1e4
 dat <- data.frame("x1" = rnorm(n), "x2" = rnorm(n))
@@ -356,7 +366,7 @@ ck <- check2D(b, x1 = "x1", x2 = "x2", type = "tnormal")
 
 Similarly to `l_gridCheck2D`, `l_glyphs2D` bin the residuals according to two covariates, but the user-defined function used to summarize the residuals in each bin has to return a `data.frame` rather than a scalar. Here is 
 an example:
-```R
+```{r 37}
 glyFun <- function(.d){
   .r <- .d$z
   .qq <- as.data.frame( density(.r)[c("x", "y")], n = 100 )
@@ -365,12 +375,12 @@ glyFun <- function(.d){
 }
 
 ck + l_glyphs2D(glyFun = glyFun, ggLay = "geom_path", n = c(8, 8),
-                 mapping = aes(x=gx, y=gy, group = gid, colour = I(colour)), 
-                 height=1.5, width = 1)
+                mapping = aes(x=gx, y=gy, group = gid, colour = I(colour)), 
+                height=1.5, width = 1)
 ```
 
 Each glyph represend a kernel density of the residuals, with colours indicating whether we have more (black) or less (red) that 50 obs in that bin. It clear that the residuals are much less variable for $x \approx 0$ than elsewhere. We can do the same using binned worm-plots: 
-```R
+```{r 38}
 glyFun <- function(.d){
   n <- nrow(.d)
   px <- qnorm( (1:n - 0.5)/(n) )
@@ -391,8 +401,8 @@ Notice that worm-plots (Buuren and Fredriks, 2001) are simply rotated QQ-plots. 
 
 References
 ==========
-
--   Buuren, S. v. and Fredriks, M. (2001) Worm plot: a simple diagnostic device for modelling
+  
+  -   Buuren, S. v. and Fredriks, M. (2001) Worm plot: a simple diagnostic device for modelling
 growth reference curves, Statistics in medicine, 20, 1259–1277.
 
 -   Murdoch, D. (2001) Rgl: An r interface to opengl, in Proceedings of DSC, p. 2.
@@ -402,8 +412,8 @@ growth reference curves, Statistics in medicine, 20, 1259–1277.
 -   Wickham, H. (2009) ggplot2: Elegant Graphics for Data Analysis, Springer-Verlag New York.
 
 -   Wickham, H. (2010) A layered grammar of graphics, Journal of
-    Computational and Graphical Statistics, 19, 3–28.
-    
+Computational and Graphical Statistics, 19, 3–28.
+
 -   Wood, S.N. (2017) Generalized Additive Models: An Introduction with R (2nd edition). 
-    Chapman and Hall/CRC.
+Chapman and Hall/CRC.
 
