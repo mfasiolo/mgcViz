@@ -2,7 +2,7 @@
 # **mgcViz**: visual tools for Generalized Additive Models
 
 This R package offers visual tools for Generalized Additive Models
-(GAMs). Most of the tools provided by `mgcViz` fall in one of the following classes: 
+(GAMs). Most of the tools provided by `mgcViz` fall in one of the following categories: 
 
 1. Layered smooth effect plots;  
 
@@ -62,7 +62,7 @@ the layers available for each smooth effect plot we can do:
 listLayers(o)
 ```
 
-Similar methods exist for 2D smooth smooth effect plots, for instance if we fit:
+Similar methods exist for 2D smooth effect plots, for instance if we fit:
 
 ```R
 b <- gam(y ~ s(x1, x2), data = dat, method = "REML")
@@ -75,7 +75,7 @@ we can do
 plot(sm(b, 1)) + l_fitRaster() + l_fitContour() + l_points()
 ```
 
-This can be converted to an intervative `plotly` plot as follows:
+This can be converted to an interactive `plotly` plot as follows:
 ```R
 library(plotly)
 ggplotly( plot(sm(b, 1)) + l_fitRaster() + l_points() + l_fitContour()  )
@@ -84,6 +84,7 @@ ggplotly( plot(sm(b, 1)) + l_fitRaster() + l_points() + l_fitContour()  )
 If needed, we can convert a `gamViz` object back to its original form by doing:
 ```R
 b <- getGam(b)
+class(b)
 ```
 
 #### 1.2 The new `plot.gam` method
@@ -102,8 +103,8 @@ b <- getViz(b)
 plot(b)         # Calls print.plotGam()
 ```
 
-Here `getViz` is now strictly necessary, but converting to a `gamViz` object first saves
-time when we need to call `plot.gam` several times. To plot all three plots on one page 
+Here `getViz` is not strictly necessary, but converting to a `gamViz` object first saves
+time when we need to call `plot.gam` several times. To see all three plots on one page 
 we can do:
 ```R
 print(plot(b) + labs(title = NULL), pages = 1)
@@ -113,8 +114,8 @@ where we have also removed the titles. Notice that `plot.gam` returns an object 
 `plotGam`, which is initially empty. The layers in the previous plots (e.g. the rug and the
 confidence interval lines) have been added by `print.plotGam`, which adds some default layers
 to empty `plotGam` objects. This can be avoided by setting `addLay = FALSE` in the call to 
-`print.plotGam`. A `plotGam` object in considered not empty when we add a object of class
-`gamLayer`, for instance:
+`print.plotGam`. A `plotGam` object in considered not empty if we added an object of class
+`gamLayer` to it, for instance:
 ```R
 pl <- plot(b) + l_points() + l_fitLine(linetype = 3) + l_fitContour() + 
        l_ciLine(colour = 2) + wrapTheme(theme_get()) + labs(title = NULL)
@@ -130,7 +131,7 @@ We can plot individuals effects by using the `select` arguments. For instance:
 ```R
 plot(b, select = 1)
 ```
-where only the default layers are added. Obviously we can have our custom layers instead
+where only the default layers are added. Obviously we can have our custom layers instead:
 ```R
 plot(b, select = 1) + l_dens(type = "cond") + l_fitLine() + l_ciLine()
 ```
@@ -143,7 +144,7 @@ via the `rgl` R package. Here is an example where we are plotting a 2D slice of
 a 3D smooth effect with confidence intervals:
 ```R
 library(mgcViz)
-n <- 1e3
+n <- 500
 x <- rnorm(n); y <- rnorm(n); z <- rnorm(n)
 ob <- (x-z)^2 + (y-z)^2 + rnorm(n)
 b <- gam(ob ~ s(x, y, z))
@@ -152,15 +153,14 @@ b <- getViz(b)
 plotRGL(sm(b, 1), fix = c("z" = 0), residuals = TRUE)
 ```
 
-The `fix` argument is used to determine the slice. The plot also show some residuals (colour-coded
-depending on sign) that fall close (in term of Euclidean distance) to the selected slice.  
+The `fix` argument is used to determine the slice along the z-axis. The plot also shows some residuals (colour-coded depending on sign) that fall close (in term of Euclidean distance) to the selected slice.  
 Notice that `plotRGL` is not layered at the moment, and most options need to be specified in the initial function call. But the interactive plot can still be manipulated once the `rgl` window is open,
 for instance here we change the aspect ratio:
 ```R
 aspect3d(1, 2, 1)
 ```
 
-We then close the window using 
+We then close the window using:
 ```R
 rgl.close()
 ```
@@ -170,13 +170,12 @@ rgl.close()
 #### 2.1 New version of traditional model checks
 
 Most of the model checks provided by `mgcv` are contained in `qq.gam` and `gam.check`.
-`mgcv` provides a new version of `qq.gam` (which masks the one provided by `mgcv`) and
-sustitutes `gam.check` with the `check.gam` method. 
+`mgcViz` provides a new version of `qq.gam` (which masks the one provided by `mgcv`) and
+substitutes `gam.check` with the `check.gam` method. 
 
-##### 2.1.1 New `qq.gam`
+##### 2.1.1 The new `qq.gam` function
 
-Consider the following model with
-binomial responses:
+Consider the following model with binomial responses:
 ```R
 set.seed(0)
 n.samp <- 400
@@ -207,7 +206,7 @@ qq.gam(lr.fit, rep = 20, show.reps = T, CI = "none",
 ```
 
 Importantly, `mgcViz::qq.gam` can handle large datasets by discretizing the QQ-plot before
-plotting. For instance, let's increase `n.samp` in the previous example :
+plotting. For instance, let's increase `n.samp` in the previous example:
 ```R
 set.seed(0)
 n.samp <- 50000
@@ -221,7 +220,7 @@ lr.fit <- bam(y/n ~ s(x0) + s(x1) + s(x2) + s(x3)
               weights = n, method = "fREML", discrete = TRUE)
 ```
 
-Here the `discrete` argument determined whether the QQ-plot is discretized or not.
+Here the `discrete` argument determines whether the QQ-plot is discretized or not.
 Notice that we can compute the QQ-plot, store it in `o` and then plot it (via `print.qqGam`).
 ```R
 o <- qq.gam(lr.fit, rep = 10, method = "simul1", CI = "normal", show.reps = TRUE, 
@@ -243,7 +242,6 @@ produces a sequence of `ggplot` objects and that it sub-samples the residuals to
 avoid over-plotting (or stalling entirely) when dealing with large data sets.
 Here is an example:
 ```R
-library(ggplot2)
 set.seed(0)
 dat <- gamSim(1, n = 200)
 b <- gam(y ~ s(x0) + s(x1) + s(x2) + s(x3), data = dat)
@@ -260,7 +258,7 @@ The `a.qq` argument is a list that gets passed directly to `mgcViz::qq.gam`. Sim
 
 #### 2.2 New layered model checks
 
-The `qq.gam` and `check.gam` are not layered, and in fact require using lists of arguments
+The `qq.gam` and `check.gam` functions are not layered, and in fact require using lists of arguments
 to be passed to the underlying `ggplot2` layers. Instead, the methods described in this
 section are fully layered, hence easy to extend and customize.
 
@@ -277,7 +275,7 @@ ob <- (x)^2 + (y)^2 + (0.2*abs(x) + 1)  * rnorm(n)
 b <- bam(ob ~ s(x,k=30) + s(y, k=30), discrete = TRUE)
 ```
 
-Here the response's variance varies a lot along $x$. Assume that we didn't know this, but
+Here the responses variance varies a lot along $x$. Assume that we didn't know this, but
 that we wanted to find out whether the residuals are heteroscedastic. We can start by doing
 the following:
 ```R
@@ -292,7 +290,7 @@ containing a rug:
 ck + l_dens(type = "cond", alpha = 0.8) + l_rug(alpha = 0.2)
 ```
 
-This suggests that the variance of the residuals might be lowest in the middle ($x=0$), but it
+This suggests that the variance of the residuals might be lower in the middle ($x=0$), but it
 is not entirely clear. The `l_densCheck` layer gives a more clear answer in this case:
 ```R
 ck + l_densCheck()
@@ -306,7 +304,7 @@ check1D(b, "x") + l_gridCheck1D(gridFun = sd, show.reps = TRUE)
 ```
 
 Before calling `check1D` we convert `b` using `getViz`. This is because `l_gridCheck1D` need some
-simulations to compute the confidence intervals. The simulations are done by `getViz` and then store
+simulations to compute the confidence intervals. The simulations are done by `getViz` and then stored
 inside `b`. `l_gridCheck1D` simply bins the residuals according to their $x$ values, and evaluates a user-defined function (`sd` here) over the observed and simulated residuals.
 
 ##### 2.2.2 Two dimensional checks using `check2D`
@@ -314,6 +312,7 @@ inside `b`. `l_gridCheck1D` simply bins the residuals according to their $x$ val
 `check2D` is quite similar to `check1D`, but looks at the residuals along two covariates. Here is an
 example where the mean effect follows the Rosenbrock function:
 ```R
+set.seed(566)
 n <- 1e4
 X <- data.frame("x1"=rnorm(n, 0.5, 0.5), "x2"=rnorm(n, 1.5, 1))
 X$y <- (1-X$x1)^2 + 100*(X$x2 - X$x1^2)^2 + rnorm(n, 0, 2)
@@ -326,14 +325,14 @@ We start by generating a 2D view:
 ck <- check2D(b, x1 = "x1", x2 = "x2")
 ```
 
-Then we add the `l_gridCheck2D`:
+Then we add the `l_gridCheck2D` layer:
 ```R
 ck + l_gridCheck2D(gridFun = mean)
 ```
 
-`l_gridCheck2D` bins the observed and simulated residuals, summarizes the using a scalar-valued
+`l_gridCheck2D` bins the observed and simulated residuals, summarizes them using a scalar-valued
 function (`mean` here), and adds an heatmap proportional to the observed summary in each cell, normalized
-using the `nsim` summaries obtained using the simulations. Here the pattern in the residual means is not very well visible, due to outliers in the far-right. The pattern is made more visible by zooming on the center of the distribution and by changing the size of the bins:
+using the `nsim` summaries obtained using the simulations. Here the pattern in the residual means is not very well visible, due to outliers on the far right. The pattern is made more visible by zooming on the center of the distribution and by changing the size of the bins:
 ```R
 ck + l_gridCheck2D(bw = c(0.05, 0.1)) + xlim(-1, 1) + ylim(0, 3)
 ```
@@ -343,7 +342,7 @@ As for smooth effect plots, we can list the available layers by doing:
 listLayers( ck ) 
 ```
 
-The most sophisticated layer is probably `l_glyphs2D` which we illustrate here using a heteroscedastic model:
+The most sophisticated layer is probably `l_glyphs2D` which we illustrate here using an heteroscedastic model:
 ```R
 set.seed(4124)
 n <- 1e4
@@ -354,7 +353,7 @@ b <- bam(y ~ s(x1,k=30) + s(x2, k=30), data = dat, discrete = TRUE)
 ck <- check2D(b, x1 = "x1", x2 = "x2", type = "tnormal")
 ```
 
-Similarly to `l_gridCheck2D`, `l_glyphs2D` bin the residuals according to two covariates, but the user-defined function used to summarize the residuals in each bin has to return a `data.frame` rather than a scalar. Here is 
+Similarly to `l_gridCheck2D`, `l_glyphs2D` bins the residuals according to two covariates, but the user-defined function used to summarize the residuals in each bin has to return a `data.frame` rather than a scalar. Here is 
 an example:
 ```R
 glyFun <- function(.d){
@@ -369,7 +368,7 @@ ck + l_glyphs2D(glyFun = glyFun, ggLay = "geom_path", n = c(8, 8),
                  height=1.5, width = 1)
 ```
 
-Each glyph represend a kernel density of the residuals, with colours indicating whether we have more (black) or less (red) that 50 obs in that bin. It clear that the residuals are much less variable for $x \approx 0$ than elsewhere. We can do the same using binned worm-plots: 
+Each glyph represend a kernel density of the residuals, with colours indicating whether we have more (black) or less (red) that 50 observations in that bin. It is clear that the residuals are much less variable for $x \approx 0$ than elsewhere. We can do the same using binned worm-plots: 
 ```R
 glyFun <- function(.d){
   n <- nrow(.d)
