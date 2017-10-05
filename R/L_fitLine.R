@@ -11,13 +11,13 @@ l_fitLine <- function(...){
   arg <- list(...)
   o <- structure(list("fun" = "l_fitLine",
                       "arg" = arg), 
-                 class = "gamLayer")
+                 class = c("gamLayer"))
   return(o)
 }
 
 ######## Internal method 
 #' @noRd
-l_fitLine.plotSmooth1D <- function(a){
+l_fitLine.plotSmooth1Dgg <- function(a){
   
   a$data <- a$data$fit
   if( is.null(a$na.rm) ){ a$na.rm <- TRUE}
@@ -29,7 +29,7 @@ l_fitLine.plotSmooth1D <- function(a){
 
 ######## Internal method 
 #' @noRd
-l_fitLine.plotSmoothfs1D <- function(a){
+l_fitLine.plotSmoothfs1Dgg <- function(a){
   
   a$data <- a$data$fit
   if( is.null(a$na.rm) ){ a$na.rm <- TRUE}

@@ -44,7 +44,7 @@
 plotRGL.mgcv.smooth.2D <- function(o, se = TRUE, n = 40, residuals = FALSE, type = "auto", 
                                    maxpo = 1e3, too.far = 0, xlab = NULL, ylab = NULL, 
                                    main = NULL, xlim = NULL, ylim = NULL,  se.mult = 1, 
-                                   shift = 0, trans = I, seWithMean = FALSE, 
+                                   shift = 0, trans = function(.x){.x}, seWithMean = FALSE, 
                                    unconditional = FALSE, ...){
   
   if (type == "auto") { type <- .getResTypeAndMethod(o$gObj$family$family)$type }
@@ -63,13 +63,13 @@ plotRGL.mgcv.smooth.2D <- function(o, se = TRUE, n = 40, residuals = FALSE, type
   }
 
   # Actual plotting
-  .plotRGL.mgcv.smooth.2D(P = P, res = R$res)
+  .plotRGL.mgcv.smooth.2D(P = P, trans = trans, res = R$res)
   
 }
 
 ##########
 # Internal function that gets the residuals and checks that they are within the boundaries
-.getResidualsPlotRGL <- function(gamObj, X, type, maxpo, xlimit, ylimit, exclude)
+.getResidualsPlotRGL <- function(gamObj, X, type, maxpo, xlimit, ylimit, exclude, trans)
 {
   res <- residuals(gamObj, type = type) 
 
@@ -101,7 +101,7 @@ plotRGL.mgcv.smooth.2D <- function(o, se = TRUE, n = 40, residuals = FALSE, type
 
 ##########
 # Internal function for plotting
-.plotRGL.mgcv.smooth.2D <- function(P, res = NULL) {
+.plotRGL.mgcv.smooth.2D <- function(P, trans, res = NULL) {
   
   # New window and setup env
   .check3d()

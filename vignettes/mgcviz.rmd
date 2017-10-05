@@ -14,7 +14,7 @@ opts_chunk$set(out.extra='style="display:block; margin: auto"', fig.align="cente
 This R package offers visual tools for Generalized Additive Models
 (GAMs). Most of the tools provided by `mgcViz` fall in one of the following categories: 
   
-  1. Layered smooth effect plots;  
+1. Layered smooth effect plots;  
 
 2. Traditional and layered model checks;
 
@@ -61,11 +61,10 @@ change the theme to `ggplot2::theme_classic`.
 o + l_ciLine(mul = 1) + 
 l_ciLine(mul = 5, colour = "blue", linetype = 2) + 
 l_points(shape = 19, size = 1, alpha = 0.1) + 
-wrapTheme(theme_classic())
+theme_classic()
 ```
 
-Notice that `ggplot2` themes need to be wrapped using `wrapTheme`, before being 
-added to the object. Functions such as `l_fitLine` or `l_rug` provide smooth-specific layers. To see all
+Functions such as `l_fitLine` or `l_rug` provide smooth-specific layers. To see all
 the layers available for each smooth effect plot we can do:
 
 ```{r 5}
@@ -128,7 +127,7 @@ to empty `plotGam` objects. This can be avoided by setting `addLay = FALSE` in t
 `gamLayer` to it, for instance:
 ```{r 13}
 pl <- plot(b) + l_points() + l_fitLine(linetype = 3) + l_fitContour() + 
-l_ciLine(colour = 2) + wrapTheme(theme_get()) + labs(title = NULL)
+l_ciLine(colour = 2) + theme_get() + labs(title = NULL)
 print(pl, pages = 1)
 pl$empty # FALSE: because we added gamLayers
 ```

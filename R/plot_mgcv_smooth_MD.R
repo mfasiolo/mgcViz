@@ -34,7 +34,8 @@
 #' @export plot.mgcv.smooth.MD
 #' 
 plot.mgcv.smooth.MD <- function(x, fix, n = 40, maxpo = 1e4,
-                                too.far = c(0.1, NA), trans = I, seWithMean = FALSE, 
+                                too.far = c(0.1, NA), trans = function(.x){.x}, 
+                                seWithMean = FALSE, 
                                 unconditional = FALSE, ...) {
 
   if ( length(too.far) == 1 ){ too.far <- c(too.far, NA)  }
@@ -48,7 +49,7 @@ plot.mgcv.smooth.MD <- function(x, fix, n = 40, maxpo = 1e4,
   # 2) Produce output object
   out <- .plot.mgcv.smooth.2D(x = P$smooth, P = P, trans = trans, maxpo = maxpo)
   
-  class(out) <- c("plotSmooth", "2D")
+  class(out) <- c("plotSmooth", "2D", "gg")
   
   return(out)
 }

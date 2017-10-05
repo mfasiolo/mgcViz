@@ -20,7 +20,7 @@ l_ciPoly <- function(mul = 2, ...){
 
 ######## Internal method 
 #' @noRd
-l_ciPoly.plotSmooth1D <- function(a){
+l_ciPoly.plotSmooth1Dgg <- function(a){
   
   xtra <- a$xtra
   a$xtra <- NULL

@@ -20,7 +20,7 @@ l_ciLine <- function(mul = 2, ...){
 
 ######## Internal method 
 #' @noRd
-l_ciLine.plotSmooth1D <- function(a){
+l_ciLine.plotSmooth1Dgg <- function(a){
   
   xtra <- a$xtra
   a$xtra <- NULL

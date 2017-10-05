@@ -46,7 +46,7 @@ l_densCheck <- function(n=c(80, 80), bw=NULL, tol=1e-6, dFun=NULL, ...){
 
 ######## Internal method 
 #' @noRd
-l_densCheck.plotSmoothCheck1D <- function(a){
+l_densCheck.plotSmoothCheck1Dgg <- function(a){
   
   ### 1. Preparation
   xtra <- a$xtra

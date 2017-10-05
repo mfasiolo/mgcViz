@@ -51,7 +51,7 @@ l_gridCheck1D <- function(gridFun = NULL, n = 20, level = 0.8, stand = "none", s
 
 ######## Internal method 
 #' @noRd
-l_gridCheck1D.plotSmoothCheck1D <- function(a){
+l_gridCheck1D.plotSmoothCheck1Dgg <- function(a){
   
   ### 1. Preparation
   xtra <- a$xtra

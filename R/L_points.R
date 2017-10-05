@@ -17,7 +17,7 @@ l_points <- function(...){
 
 ######## Internal method 
 #' @noRd
-l_points.plotSmooth1D <- l_points.plotSmoothCheck1D <- function(a){
+l_points.plotSmooth1Dgg <- l_points.plotSmoothCheck1Dgg <- function(a){
   
   a$data <- a$data$res[a$data$res$sub, ]
   a$mapping <- aes(x = x, y = y)
@@ -37,9 +37,9 @@ l_points.plotSmooth1D <- l_points.plotSmoothCheck1D <- function(a){
 
 ######## Internal method 
 #' @noRd
-l_points.plotSmooth2D <- l_points.plotSmoothCheck2D <- function(a){
+l_points.plotSmooth2Dgg <- l_points.plotSmoothCheck2Dgg <- function(a){
   
-  return( l_points.plotSmooth1D(a) )
+  return( l_points.plotSmooth1Dgg(a) )
   
 }
 

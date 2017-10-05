@@ -46,7 +46,7 @@ l_gridCheck2D <- function(gridFun = mean, bw = c(NA, NA), stand = TRUE, ...){
 
 ######## Internal method 
 #' @noRd
-l_gridCheck2D.plotSmoothCheck2D <- function(a){
+l_gridCheck2D.plotSmoothCheck2Dgg <- function(a){
   
   ### 1. Preparation
   xtra <- a$xtra

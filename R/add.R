@@ -3,29 +3,30 @@
 #'
 #' @param e1 an object of class \code{plotSmooth}.
 #' @param e2 a plot component, as described below.
-#' @export
+# #' @export
 #' @method + plotSmooth
-#' @rdname plotSmooth-add
+# #' @rdname plotSmooth-add
+#' @noRd
 #' @examples
 #'
-"+.plotSmooth" <- function(e1, e2) {
+addPlotSmooth <- function(e1, e2) {
   
-  if( "gamTheme" %in% class(e2) ){
-    class(e2) <- c("theme", "gg")
-  }
-  
+  # If e2 is a gamLayer, we need to call the corresponding layer internal.
+  # This returns either a ggplot or a list of ggplots (with class listOfLayers)
   if( "gamLayer" %in% class(e2) ){
     e2$arg$data <- e1$data 
     fun <- get( paste(e2$fun, ".", paste(class(e1), collapse = ''), sep = '') )
     e2 <- fun(a = e2$arg)
   }
   
+  # If e2 is a "listOfLayers" (list of ggplots) add them one by one.
+  # Calling directly ggplot %+% here.
   if( "listOfLayers" %in% class(e2) ){
     for(ii in 1:length(e2)){
-      e1$ggObj <- e1$ggObj + e2[[ii]]
+      e1$ggObj <- e1$ggObj %+% e2[[ii]]
     } 
   } else {
-    e1$ggObj <- e1$ggObj + e2
+    e1$ggObj <- e1$ggObj %+% e2
   }
   
   return( e1 )
@@ -37,12 +38,13 @@
 #'
 #' @param e1 an object of class \code{plotGam}.
 #' @param e2 a plot component, as described below.
-#' @export
+# #' @export
 #' @method + plotGam
-#' @rdname plotGam-add
+# #' @rdname plotGam-add
+#' @noRd
 #' @examples
 #'
-"+.plotGam" <- function(e1, e2) {
+addPlotGam <- function(e1, e2) {
   
   # Add layer `e2` to each plot is `e1`. If `+` given an error, don't add `e2` to that plot.
   e1$plots <- lapply(e1$plots, 
@@ -52,7 +54,7 @@
   
   # If we added a "gamLayer" or a "listOfLayers" we consider the object to be non-empty
   # so that print.plotGam() will not add any layer.
-  if( "gamLayer" %in% class(e2) || "listOfLayers" %in% class(e2) ){
+  if( inherits(e2, "gamLayer") || inherits(e2, "listOfLayers") ){
     
     e1$empty <- FALSE
     
@@ -61,6 +63,29 @@
   return( e1 )
 }
 
+
+#' @export
+"+.gg" <- function(e1, e2) {
+  
+  if( inherits(e1, "plotSmooth") ){
+    
+      return( addPlotSmooth(e1, e2) )
+      
+  } else { 
+    
+    if( inherits(e1, "plotGam") ){
+      
+      return( addPlotGam(e1, e2) )
+      
+    } else { # ggplot2 addition %+%
+      
+      return( e1 %+% e2 )
+      
+    }
+    
+  } 
+
+}
 
 #' #' @rdname plotSmooth-add
 #' #' @export

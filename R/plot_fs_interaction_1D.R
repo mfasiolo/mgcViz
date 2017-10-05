@@ -36,12 +36,12 @@
 #' 
 #' # Change line type and remove legend
 #' plot(sm(v, 2)) + l_fitLine(size = 1.3, linetype="dotted") + 
-#'   wrapTheme(theme(legend.position="none"))
+#'                  theme(legend.position="none")
 #' @importFrom mgcv PredictMat
 #' @rdname plot.fs.interaction.1D
 #' @export plot.fs.interaction.1D
 #' 
-plot.fs.interaction.1D <- function(x, n = 100, trans = I, 
+plot.fs.interaction.1D <- function(x, n = 100, trans = function(.x){.x}, 
                                    unconditional = FALSE, seWithMean = FALSE, ...) {
   
   # 1) Prepare data
@@ -53,7 +53,7 @@ plot.fs.interaction.1D <- function(x, n = 100, trans = I,
   # 2) Produce output object
   out <- .plot.fs.interaction.1D(x = P$smooth, P = P, trans = trans)
   
-  class(out) <- c("plotSmooth", "fs", "1D")
+  class(out) <- c("plotSmooth", "fs", "1D", "gg")
   
   return(out)
 }

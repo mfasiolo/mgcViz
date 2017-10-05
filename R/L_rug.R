@@ -19,27 +19,27 @@ l_rug <- function(jit = c(FALSE, FALSE), ...){
 
 ######## Internal method for 1D plots
 #' @noRd
-l_rug.plotSmooth1D <- l_rug.plotSmoothCheck1D <- function(a){
+l_rug.plotSmooth1Dgg <- l_rug.plotSmoothCheck1Dgg <- function(a){
   
   if( is.null(a$mapping) ) { a$mapping <- aes(x = x) }
   
-  .l_rug.plotSmooth( a )
+  .l_rug.plotSmoothgg( a )
   
 }
 
 ######## Internal method for 2D plots
 #' @noRd
-l_rug.plotSmooth2D <- l_rug.plotSmoothCheck2D <- function(a){
+l_rug.plotSmooth2Dgg <- l_rug.plotSmoothCheck2Dgg <- function(a){
   
   if( is.null(a$mapping) ) { a$mapping <- aes(x = x, y = y) }
   
-  .l_rug.plotSmooth( a )
+  .l_rug.plotSmoothgg( a )
   
 }
 
 ######## Internal method
 #' @noRd
-.l_rug.plotSmooth <- function(a){
+.l_rug.plotSmoothgg <- function(a){
   a$data <- a$data$res[a$data$res$sub, ]
   a$inherit.aes <- FALSE
   if( is.null(a$size) ){ a$size <- 0.2 }

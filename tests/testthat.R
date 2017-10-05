@@ -1,4 +1,4 @@
 library(testthat)
 library(mgcViz)
 
-test_check("mgcViz")
+test_package("mgcViz")

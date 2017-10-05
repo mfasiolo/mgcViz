@@ -34,7 +34,7 @@
 #' # So far we used default layers, added in the printing phase, but
 #' # we might want to specify our own layers. Here we is how to do it
 #' pl <- plot(b) + l_points() + l_fitLine(linetype = 3) + l_fitContour() + 
-#'   l_ciLine(colour = 2) + wrapTheme(theme_get()) + labs(title = NULL)
+#'   l_ciLine(colour = 2) + theme_get() + labs(title = NULL)
 #' print(pl, pages = 1)
 #' 
 #' # We might want to plot only the first smooth
@@ -107,7 +107,7 @@ plot.gam <- function(x, n = 100, n2 = 40, select = NULL, ...) {
   }
   
   out  <- structure(list("plots" = pls, "empty" = TRUE), 
-                    "class" = "plotGam")
+                    "class" = c("plotGam", "gg"))
   
   return( out )
   

@@ -23,7 +23,7 @@
 #' @rdname plot.mgcv.smooth.2D
 #' @export plot.mgcv.smooth.2D
 #' 
-plot.mgcv.smooth.2D <- function(x, n = 40, maxpo = 1e4, too.far = 0.1, trans = I, 
+plot.mgcv.smooth.2D <- function(x, n = 40, maxpo = 1e4, too.far = 0.1, trans = function(.x){.x}, 
                                 seWithMean = FALSE, unconditional = FALSE, ...) {
   
   # 1) Prepare data
@@ -35,7 +35,7 @@ plot.mgcv.smooth.2D <- function(x, n = 40, maxpo = 1e4, too.far = 0.1, trans = I
   # 2) Produce output object
   out <- .plot.mgcv.smooth.2D(x = P$smooth, P = P, trans = trans, maxpo = maxpo)
   
-  class(out) <- c("plotSmooth", "2D")
+  class(out) <- c("plotSmooth", "2D", "gg")
   
   return(out)
   
@@ -49,8 +49,8 @@ plot.mgcv.smooth.2D <- function(x, n = 40, maxpo = 1e4, too.far = 0.1, trans = I
   .dat <- list()
   # 1) Build dataset on fitted effect
   P$fit[P$exclude] <- NA
-  .dat$fit <- data.frame("z" = P$fit,
-                         "tz" = trans(P$fit),
+  .dat$fit <- data.frame("z" = drop( P$fit ),
+                         "tz" = drop( trans(P$fit) ),
                          "x" = rep(P$x, length(P$fit) / length(P$x)), 
                          "y" = rep(P$y, each = length(P$fit) / length(P$x)), 
                          "se" = P$se)

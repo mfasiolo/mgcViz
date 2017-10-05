@@ -17,7 +17,7 @@ l_fitContour <- function(...){
 
 ######## Internal method 
 #' @noRd
-l_fitContour.plotSmooth2D <- function(a){
+l_fitContour.plotSmooth2Dgg <- function(a){
   
   a$data <- a$data$fit
   if( is.null(a$na.rm) ){ a$na.rm <- TRUE}
@@ -30,7 +30,7 @@ l_fitContour.plotSmooth2D <- function(a){
 
 ######## Internal method 
 #' @noRd
-l_fitContour.plotSmoothfs1D <- function(a){
+l_fitContour.plotSmoothfs1Dgg <- function(a){
   
   a$data <- a$data$fit
   if( is.null(a$na.rm) ){ a$na.rm <- TRUE}

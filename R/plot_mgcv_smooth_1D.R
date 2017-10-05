@@ -41,8 +41,7 @@
 #' ( o <- o + l_ciLine(mul = 1) + l_ciLine(mul = 5, colour = "blue", linetype = 2) )
 #' 
 #' # Add partial residuals and change theme
-#' ( o + l_points(shape = 19, size = 1, alpha = 0.2) + 
-#'     wrapTheme(theme_classic()) )
+#' ( o + l_points(shape = 19, size = 1, alpha = 0.2) + theme_classic() )
 #' 
 #' # Get second effect plot
 #' o2 <- plot( sm(b, 2) )
@@ -56,7 +55,7 @@
 #'   l_fitLine(linetype = 2, colour = "red")
 #' @rdname plot.mgcv.smooth.1D
 #' @export plot.mgcv.smooth.1D
-plot.mgcv.smooth.1D <- function(x, n = 100, maxpo = 1e4, trans = I, 
+plot.mgcv.smooth.1D <- function(x, n = 100, maxpo = 1e4, trans = function(.x){.x}, 
                                 unconditional = FALSE, seWithMean = FALSE, ...) {
   
   # 1) Prepare data
@@ -68,7 +67,7 @@ plot.mgcv.smooth.1D <- function(x, n = 100, maxpo = 1e4, trans = I,
   # 2) Produce output object
   out <- .plot.mgcv.smooth.1D(x = P$smooth, P = P, trans = trans, maxpo = maxpo)
   
-  class(out) <- c("plotSmooth", "1D")
+  class(out) <- c("plotSmooth", "1D", "gg")
   
   return(out)
 }

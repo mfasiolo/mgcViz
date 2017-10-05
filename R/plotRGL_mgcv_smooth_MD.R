@@ -30,7 +30,7 @@
 plotRGL.mgcv.smooth.MD <- function(x, fix, se = TRUE, n = 40, residuals = FALSE, type = "auto", 
                                    maxpo = 1e3, too.far = c(0, NA), xlab = NULL, ylab = NULL, 
                                    main = NULL, xlim = NULL, ylim = NULL, se.mult = 1, 
-                                   shift = 0, trans = I, seWithMean = FALSE, 
+                                   shift = 0, trans = function(.x){.x}, seWithMean = FALSE, 
                                    unconditional = FALSE, ...){
   
   if (type == "auto") { type <- .getResTypeAndMethod(x$gObj$family$family)$type }
@@ -50,6 +50,6 @@ plotRGL.mgcv.smooth.MD <- function(x, fix, se = TRUE, n = 40, residuals = FALSE,
   }
   
   # Actual plotting
-  .plotRGL.mgcv.smooth.2D(P = P, res = R$res)
+  .plotRGL.mgcv.smooth.2D(P = P, res = R$res, trans = trans)
   
 }

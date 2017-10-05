@@ -109,7 +109,7 @@ check2D <- function(o, x1, x2, bw = NULL, type = "auto", maxpo = 1e4, na.rm = TR
                         "data" = list("res" = res, 
                                       "sim" = sim, 
                                       "misc" = misc)), 
-                   class = c("plotSmooth", "Check", "2D"))
+                   class = c("plotSmooth", "Check", "2D", "gg"))
   
   return( out )
 }

@@ -102,7 +102,7 @@ check1D <- function(o, x, type = "auto", maxpo = 1e4, na.rm = TRUE){
                         "data" = list("res" = res, 
                                       "sim" = sim, 
                                       "misc" = misc)), 
-                   class = c("plotSmooth", "Check", "1D"))
+                   class = c("plotSmooth", "Check", "1D", "gg"))
 
   return( out )
   
