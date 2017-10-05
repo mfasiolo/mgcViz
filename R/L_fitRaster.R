@@ -35,9 +35,6 @@ l_fitRaster.plotSmooth2Dgg <- function(a){
   }
   a$data <- .dat
   
-  # geom_raster() does not like stuff of class "AsIs"
-  if( class(a$data$tz) == "AsIs" ) { class(a$data$tz) <- NULL }
-
   out <- list()
   a$mapping  <- aes(fill = tz, alpha = p)
   out[[1]] <- do.call("geom_raster", a)
