@@ -52,8 +52,6 @@ check.gam <- function(o,
     assign(nam, .argSetup(a.all[[nam]], get(nam), nam, verbose = FALSE), envir = environment())
   }
   
-  print(a.respoi)
-  
   resid <- residuals(o, type = type)
  
   # Sample if too many points (> maxpo) 
