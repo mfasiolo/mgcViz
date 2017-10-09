@@ -105,7 +105,6 @@ plotRGL.mgcv.smooth.2D <- function(o, se = TRUE, n = 40, residuals = FALSE, type
   
   # New window and setup env
   .check3d()
-  light3d()
   
   # Draws non-parametric density
   n <- length(P$x)
@@ -120,14 +119,14 @@ plotRGL.mgcv.smooth.2D <- function(o, se = TRUE, n = 40, residuals = FALSE, type
     cent = min(P$fit-3*P$se)
     surface3d(P$x, P$y, matrix(cent, n, n), color="#CCCCFF",
               front = "lines", back = "lines")
-    axes3d(c('x', 'y')) 
+    axes3d(c('x', 'y', "z")) 
     title3d(xlab = P$xlab, ylab = P$ylab, main = P$main)
     res <- res / max(abs(res)) * max(P$se)
     spheres3d(P$raw$x, P$raw$y, cent + res, 
               radius=max(c(abs(P$fit), P$x, P$y))/100, 
               color= ifelse(res<0, "red", "blue"))
   } else {
-    axes3d(c('x', 'y')) 
+    axes3d(c('x', 'y', "z")) 
     title3d(xlab = P$xlab, ylab = P$ylab, main = P$main)
   }
   
