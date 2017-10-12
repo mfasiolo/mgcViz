@@ -35,7 +35,14 @@ getViz <- function(o, nsim = 10, ...){
     class(o) <- c("gamViz", class(o))
   }
   
-  if( nsim > 0 ){ o$store$sim <- simulate(o, nsim = nsim, ...) }
+  # We try to simulate responses. If an error occurs we report it but do no stop.
+  # Most likely error if that o$family does not have any simulation method available.
+  if( nsim > 0 ){ 
+    tryCatch(o$store$sim <- simulate(o, nsim = nsim, ...), 
+             error = function(e){ 
+               message( paste("simulate.gam() failed:", e$message) ) 
+             })
+  }
   
   return( o )
 }
