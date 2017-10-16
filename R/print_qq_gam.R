@@ -6,6 +6,6 @@
 #' @rdname print.qqGam
 #' @export 
 print.qqGam <- function(x, ...) {
-  print(x$ggPlot)
+  print(x$ggObj)
   return(invisible(NULL))
 } 
