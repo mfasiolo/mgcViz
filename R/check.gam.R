@@ -82,7 +82,7 @@ check.gam <- function(o,
   
   plots <- list()
   plots[[1]] <- 
-    do.call("qq.gam", c(list("o" = o), a.qq))$ggPlot
+    do.call("qq.gam", c(list("o" = o), a.qq))$ggObj
   plots[[2]] <- 
     ggplot(data = dfS, aes(x = linpred, y = resid)) +
     do.call("geom_point", a.respoi) +

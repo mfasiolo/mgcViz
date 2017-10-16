@@ -171,7 +171,7 @@ qq.gam <- function(o, rep = 10,
                            CI = (CI != "none"), show.reps = show.reps)
   pl <- .plot.qq.gam(P = P1, CI = (CI != "none"), worm = worm, show.reps = show.reps,
                      xlimit = xlim, ylimit = ylim, a.all = a.all)
-  out <- structure(list("ggPlot" = pl, "store" = P0),
+  out <- structure(list("ggObj" = pl, "store" = P0),
                    "class" = "qqGam", 
                    "call" = match.call())
   return(out)
