@@ -21,6 +21,7 @@ l_fitLine.plotSmooth1Dgg <- function(a){
   
   a$data <- a$data$fit
   if( is.null(a$na.rm) ){ a$na.rm <- TRUE}
+  a$mapping <- aes("x" = x, "y" = ty)
   fun <- "geom_line"
   out <- do.call(fun, a)
   return( out )
@@ -38,7 +39,7 @@ l_fitLine.plotSmoothfs1Dgg <- function(a){
     a$alpha <- c(1, 0.5, 0.3)[ findInterval(nf, c(0, 10, 100))  ]
   }
  
-  a$mapping <- aes("x" = x, "y" = y, "colour" = id)  
+  a$mapping <- aes("x" = x, "y" = ty, "colour" = id)  
   out <- do.call("geom_line", a)
   return( out )
   
