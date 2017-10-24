@@ -5,8 +5,8 @@
 \title{Plotting slice of higher-dimensional smooth effects}
 \usage{
 \method{plot}{mgcv.smooth.MD}(x, fix, n = 40, maxpo = 10000,
-  too.far = c(0.1, NA), trans = function(.x) {     .x },
-  seWithMean = FALSE, unconditional = FALSE, ...)
+  too.far = c(0.1, NA), trans = identity, seWithMean = FALSE,
+  unconditional = FALSE, ...)
 }
 \arguments{
 \item{...}{currently unused.}

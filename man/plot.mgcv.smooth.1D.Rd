@@ -4,9 +4,8 @@
 \alias{plot.mgcv.smooth.1D}
 \title{Plotting one dimensional smooth effects}
 \usage{
-\method{plot}{mgcv.smooth.1D}(x, n = 100, maxpo = 10000,
-  trans = function(.x) {     .x }, unconditional = FALSE,
-  seWithMean = FALSE, ...)
+\method{plot}{mgcv.smooth.1D}(x, n = 100, maxpo = 10000, trans = identity,
+  unconditional = FALSE, seWithMean = FALSE, ...)
 }
 \arguments{
 \item{x}{a smooth effect object.}

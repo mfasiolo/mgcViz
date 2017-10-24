@@ -4,8 +4,8 @@
 \alias{plot.fs.interaction.1D}
 \title{Plotting one dimensional smooth factor interactions}
 \usage{
-\method{plot}{fs.interaction.1D}(x, n = 100, trans = function(.x) {     .x
-  }, unconditional = FALSE, seWithMean = FALSE, ...)
+\method{plot}{fs.interaction.1D}(x, n = 100, trans = identity,
+  unconditional = FALSE, seWithMean = FALSE, ...)
 }
 \arguments{
 \item{...}{currently unused.}

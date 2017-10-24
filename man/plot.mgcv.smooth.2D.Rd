@@ -5,8 +5,7 @@
 \title{Plotting two dimensional smooth effects}
 \usage{
 \method{plot}{mgcv.smooth.2D}(x, n = 40, maxpo = 10000, too.far = 0.1,
-  trans = function(.x) {     .x }, seWithMean = FALSE,
-  unconditional = FALSE, ...)
+  trans = identity, seWithMean = FALSE, unconditional = FALSE, ...)
 }
 \arguments{
 \item{...}{currently unused.}
