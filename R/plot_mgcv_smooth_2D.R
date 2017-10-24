@@ -23,7 +23,7 @@
 #' @rdname plot.mgcv.smooth.2D
 #' @export plot.mgcv.smooth.2D
 #' 
-plot.mgcv.smooth.2D <- function(x, n = 40, maxpo = 1e4, too.far = 0.1, trans = function(.x){.x}, 
+plot.mgcv.smooth.2D <- function(x, n = 40, maxpo = 1e4, too.far = 0.1, trans = identity, 
                                 seWithMean = FALSE, unconditional = FALSE, ...) {
   
   # 1) Prepare data

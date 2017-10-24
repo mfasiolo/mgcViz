@@ -41,7 +41,7 @@
 #' @rdname plot.fs.interaction.1D
 #' @export plot.fs.interaction.1D
 #' 
-plot.fs.interaction.1D <- function(x, n = 100, trans = function(.x){.x}, 
+plot.fs.interaction.1D <- function(x, n = 100, trans = identity, 
                                    unconditional = FALSE, seWithMean = FALSE, ...) {
   
   # 1) Prepare data
@@ -65,7 +65,8 @@ plot.fs.interaction.1D <- function(x, n = 100, trans = function(.x){.x},
   .dat <- list()
   # 1) Build dataset on fitted effect
   .dat$fit <- data.frame("x"  = rep(P$x, P$nf),
-                         "y"  = trans(P$fit),
+                         "y"  = P$fit,
+                         "ty"  = trans(P$fit),
                          "id" = as.factor(rep(x$flev, each = P$n)))
   .dat$misc <- list("trans" = trans)
   

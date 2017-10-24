@@ -55,7 +55,7 @@
 #'   l_fitLine(linetype = 2, colour = "red")
 #' @rdname plot.mgcv.smooth.1D
 #' @export plot.mgcv.smooth.1D
-plot.mgcv.smooth.1D <- function(x, n = 100, maxpo = 1e4, trans = function(.x){.x}, 
+plot.mgcv.smooth.1D <- function(x, n = 100, maxpo = 1e4, trans = identity, 
                                 unconditional = FALSE, seWithMean = FALSE, ...) {
   
   # 1) Prepare data

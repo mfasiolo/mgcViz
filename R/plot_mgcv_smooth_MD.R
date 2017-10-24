@@ -34,7 +34,7 @@
 #' @export plot.mgcv.smooth.MD
 #' 
 plot.mgcv.smooth.MD <- function(x, fix, n = 40, maxpo = 1e4,
-                                too.far = c(0.1, NA), trans = function(.x){.x}, 
+                                too.far = c(0.1, NA), trans = identity, 
                                 seWithMean = FALSE, 
                                 unconditional = FALSE, ...) {
 
