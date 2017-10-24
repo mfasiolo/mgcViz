@@ -1,16 +1,17 @@
-.prepare.sos.smooth <- function(x, data=NULL, label="", se1.mult=1, se2.mult=2,
-                                partial.resids=FALSE, rug=TRUE, se=TRUE, scale=TRUE, n=100, n2=40,
-                                pers=FALSE, theta=30, phi=30, jit=FALSE, xlab=NULL, ylab=NULL, main=NULL,
-                                ylim=NULL, xlim=NULL, too.far=0.1, shade=FALSE, shade.col="gray80",
-                                shift=0, trans=I, by.resids=FALSE, scheme=0, hcolors=heat.colors(50),
-                                contour.col=3, ...) {
+.prepare.sos.smooth <- function(x, data, label, se1.mult, se2.mult,
+                                partial.resids, se, n, n2,
+                                xlab, ylab, main,
+                                ylim, xlim, too.far,
+                                trans, phi, theta, scheme) {
+  
   ## plot method function for sos.smooth terms
-  if (scheme>1) return(.prepare.mgcv.smooth(x,data=data,label=label,se1.mult=se1.mult,se2.mult=se2.mult,
-                                            partial.resids=partial.resids,rug=rug,se=se,scale=scale,n=n,n2=n2,
-                                            pers=pers,theta=theta,phi=phi,jit=jit,xlab=xlab,ylab=ylab,main=main,
-                                            ylim=ylim,xlim=xlim,too.far=too.far,shade=shade,shade.col=shade.col,
-                                            shift=shift,trans=trans,by.resids=by.resids,scheme=scheme-2,
-                                            hcolors=hcolors,contour.col=contour.col,...))
+  if (scheme == 1){ 
+    return(.prepare.mgcv.smooth(x = x, data = data, label = label, se1.mult = se1.mult, 
+                                se2.mult = se2.mult, n = n, n2 = n2,  xlab = xlab, ylab = ylab, 
+                                main = main, ylim = ylim, xlim = xlim, 
+                                too.far = too.far))
+  }
+  
   ## convert location of pole in plotting grid to radians
   phi <- phi*pi/180
   theta <- theta*pi/180
@@ -26,11 +27,9 @@
   
   if (!x$plot.me) return(NULL) ## shouldn't or can't plot
   ## get basic plot data 
-  raw <- data[x$term]
-  if (rug) { ## need to project data onto plotting grid...
-    raw <- .lolaxy(lo=raw[[2]]*pi/180,la=raw[[1]]*pi/180,theta,phi)
-  }
-  
+  raw <- data[ x$term ]
+  raw <- as.data.frame( .lolaxy(lo=raw[[2]]*pi/180, la=raw[[1]]*pi/180, theta, phi) )
+
   m <- round(n2*1.5)
   ym <- xm <- seq(-1,1,length=m)
   gr <- expand.grid(x=xm,y=ym)

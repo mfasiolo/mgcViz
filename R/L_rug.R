@@ -29,7 +29,8 @@ l_rug.plotSmooth1Dgg <- l_rug.plotSmoothCheck1Dgg <- function(a){
 
 ######## Internal method for 2D plots
 #' @noRd
-l_rug.plotSmooth2Dgg <- l_rug.plotSmoothCheck2Dgg <- function(a){
+l_rug.plotSmooth2Dgg <- l_rug.plotSmoothsos0gg <- 
+                        l_rug.plotSmoothsos1gg <- l_rug.plotSmoothCheck2Dgg <- function(a){
   
   if( is.null(a$mapping) ) { a$mapping <- aes(x = x, y = y) }
   

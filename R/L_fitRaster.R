@@ -20,7 +20,7 @@ l_fitRaster <- function(pFun = function(.p) 1, noiseup = FALSE, mul = 1, ...){
 
 ######## Internal method 
 #' @noRd
-l_fitRaster.plotSmooth2Dgg <- function(a){
+l_fitRaster.plotSmooth2Dgg <- l_fitRaster.plotSmoothsos1gg <- l_fitRaster.plotSmoothsos0gg <- function(a){
   
   xtra <- a$xtra
   a$xtra <- NULL
