@@ -20,27 +20,11 @@ l_fitContour <- function(...){
 l_fitContour.plotSmooth2Dgg <- function(a){
   
   a$data <- a$data$fit
+  a$mapping  <- aes(z = tz)
   if( is.null(a$na.rm) ){ a$na.rm <- TRUE}
   if( is.null(a$colour) ){ a$colour <- "black" }
   fun <- "geom_contour"
   out <- do.call(fun, a)
-  return( out )
-  
-}
-
-######## Internal method 
-#' @noRd
-l_fitContour.plotSmoothfs1Dgg <- function(a){
-  
-  a$data <- a$data$fit
-  if( is.null(a$na.rm) ){ a$na.rm <- TRUE}
-  if (is.null(a$alpha)){
-    nf <- length( levels(a$data$id) ) # number of curves
-    a$alpha <- c(1, 0.5, 0.3)[ findInterval(nf, c(0, 10, 100))  ]
-  }
-  
-  a$mapping <- aes("x" = x, "y" = y, "colour" = id)  
-  out <- do.call("geom_line", a)
   return( out )
   
 }

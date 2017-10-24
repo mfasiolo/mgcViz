@@ -29,8 +29,8 @@ l_ciPoly.plotSmooth1Dgg <- function(a){
   .dat <- a$data$fit[ c("x", "y", "se") ]
   .trans <- a$data$misc$trans
   a$data <- data.frame("x" = c(.dat$x, rev(.dat$x)), 
-                         "y" = c(.trans( .dat$y + xtra$mul * .dat$se ), 
-                                 rev(.trans( .dat$y - xtra$mul * .dat$se ))))
+                       "y" = c(.trans( .dat$y + xtra$mul * .dat$se ), 
+                               rev(.trans( .dat$y - xtra$mul * .dat$se ))))
   
   a$mapping  <- aes(x = x, y = y)
   a$inherit.aes <- FALSE
