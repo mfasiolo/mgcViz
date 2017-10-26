@@ -34,6 +34,21 @@ l_points.plotSmooth1Dgg <- l_points.plotSmoothsos1gg <- l_points.plotSmoothsos0g
     out <- NULL
   }
   return( out )
+  
+}
+
+######## Internal method 
+#' @noRd
+l_points.plotSmoothrandomEffectgg <- function(a){
+    
+    a$data <- a$data$fit
+    if( is.null(a$shape) ) { a$shape <- 19 } 
+
+    fun <- "geom_point"
+    out <- do.call(fun, a)
+
+    return( out )
+  
 }
 
 ######## Internal method 

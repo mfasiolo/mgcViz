@@ -2,7 +2,7 @@
 #' Plotting one dimensional smooth factor interactions
 #' 
 #' @description Plotting one dimensional smooth factor interactions.
-#' @param x
+#' @param x a smooth effect.
 #' @param ... currently unused.
 #' @name plot.fs.interaction.1D
 #' @examples 

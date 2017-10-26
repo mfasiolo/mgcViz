@@ -16,10 +16,28 @@
 #' 
 print.plotGam <- function(x, ask = TRUE, pages = NULL, addLay = TRUE, ...){
   
+  .addDefaultLayers <- function( .l ){
+    .cl <- paste(class(.l), collapse = '')
+    .l <- switch(.cl, 
+                 "plotSmoothfs1Dgg" = .l + l_fitLine(),
+                 "plotSmooth1Dgg" = .l + l_fitLine() + l_ciLine(),
+                 "plotSmooth2Dgg" = .l + l_fitRaster() + l_fitContour(), 
+                 "plotSmoothMDgg" = .l + l_fitRaster() + l_fitContour(), 
+                 "plotSmoothsos0gg" = .l + l_fitRaster() + l_fitContour(), 
+                 "plotSmoothsos1gg" = .l + l_fitRaster() + l_fitContour(),
+                 "plotSmoothrandomEffectgg" = .l + l_fitLine() + l_ciLine() + l_points() 
+                 )
+    
+    return( .l )
+  }
+  
   # If plots have no layers, we add some default ones
   if( addLay && x$empty ){
     
-    x <- x + l_fitLine() + l_fitRaster() + l_fitContour() + l_ciLine() + l_rug()
+    x$plots <- lapply(x$plots, 
+                       function(.l){
+                         .addDefaultLayers(.l)
+                       })
     
   }
   

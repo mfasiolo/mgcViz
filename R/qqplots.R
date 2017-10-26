@@ -118,7 +118,9 @@ qqplot <- function(x, y,
 #' @export
 qqline <- function(y, datax = FALSE, distribution = qnorm,
                    probs = c(0.25, 0.75), qtype = 7, ...) {
+  
   stopifnot(length(probs) == 2, is.function(distribution))
+
   y <- quantile(y, probs, names = FALSE, type = qtype, na.rm = TRUE)
   x <- distribution(probs)
   if (datax) {
@@ -129,5 +131,13 @@ qqline <- function(y, datax = FALSE, distribution = qnorm,
     slope <- diff(y)/diff(x)
     int <- y[1L] - slope * x[1L]
   }
-  geom_abline(intercept = int, slope = slope, ...)
+  
+  arg <- list(...)
+  arg$intercept <- int
+  arg$slope <- slope
+  
+  out <- do.call("geom_abline", arg)
+  
+  return( out )
+
 }

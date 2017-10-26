@@ -22,8 +22,19 @@ l_fitLine.plotSmooth1Dgg <- function(a){
   a$data <- a$data$fit
   if( is.null(a$na.rm) ){ a$na.rm <- TRUE}
   a$mapping <- aes("x" = x, "y" = ty)
-  fun <- "geom_line"
-  out <- do.call(fun, a)
+  out <- do.call("geom_line", a)
+  return( out )
+  
+}
+
+######## Internal method 
+#' @noRd
+l_fitLine.plotSmoothrandomEffectgg <- function(a){
+  
+  a$y <- a$data$fit$y
+  a$data <- NULL
+  
+  out <- do.call("qqline", a)
   return( out )
   
 }

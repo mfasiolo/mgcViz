@@ -1,4 +1,6 @@
 #' 
+#' Add boundaries to smooth plot
+#' 
 #' @description Add boundaries to smooth plot
 #'
 #' @param ... graphical arguments to be passed to \code{ggplot2::geom_path}.

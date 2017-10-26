@@ -3,19 +3,24 @@
 #' 
 #' @description XXX
 #'
+#' @param level coverage level, should be in (0, 1).
 #' @param mul number multiplied by the standard errors when calculating 
-#'            standard error curves or surfaces.
+#'            standard error curves. By default \code{NULL}, if
+#'            set to a positive number it will over-ride \code{level}.
 #' @param ... graphical arguments to be passed to \code{ggplot2::geom_line}.
 #' @return An object of class \code{gamLayer}.
 #' @export l_ciLine
 #'
-l_ciLine <- function(mul = 2, ...){
+l_ciLine <- function(level = 0.95, mul = NULL, ...){
+  
   arg <- list(...)
-  arg$xtra <- list("mul" = mul)
+  arg$xtra <- list("level" = level, "mul" = mul)
   o <- structure(list("fun" = "l_ciLine",
                       "arg" = arg), 
                  class = "gamLayer")
+  
   return(o)
+  
 }
 
 ######## Internal method 
@@ -25,6 +30,8 @@ l_ciLine.plotSmooth1Dgg <- function(a){
   xtra <- a$xtra
   a$xtra <- NULL
   
+  if( is.null(xtra$mul) ) { xtra$mul <- qnorm((xtra$level+1)/2)  }
+  
   # Add CI lines to data
   .dat <- a$data$fit[ c("x", "y", "se") ]
   .trans <- a$data$misc$trans
@@ -33,6 +40,49 @@ l_ciLine.plotSmooth1Dgg <- function(a){
   a$data <- .dat
   
   if( is.null(a$linetype) ){ a$linetype <- "dashed"}
+  if( is.null(a$na.rm) ){ a$na.rm <- TRUE}
+  a$inherit.aes <- FALSE
+  
+  # Call ggplot2::geom_line
+  out <- list()
+  a$mapping  <- aes(x = x, y = uci)
+  out[[1]] <- do.call("geom_line", a)
+  
+  a$mapping  <- aes(x = x, y = lci)
+  out[[2]] <- do.call("geom_line", a)
+  class(out) <- "listOfLayers"
+  
+  return( out )
+}
+
+######## Internal method 
+#' @noRd
+l_ciLine.plotSmoothrandomEffectgg <- function(a){
+  
+  xtra <- a$xtra
+  a$xtra <- NULL
+  
+  # Over-ride level
+  if( !is.null(xtra$mul) ) { xtra$level <- 2 * pnorm(xtra$mul) - 1  }
+  
+  # Add CI lines to data: the confidence intervals here are based on the
+  # formula in "Worm plot: a simple diagnostic device for modelling growth reference curves"
+  # page 6. We need to multiply them by sd(.dat$y) because we are not normalizing the
+  # random effects. Simulation results indicate that multiplying is the right thing to do.
+  .dat <- a$data$fit[ c("x", "y") ]
+  .trans <- a$data$misc$trans
+  
+  .n <- nrow( .dat )
+  .p <- ppoints( .n )
+  .alp <- (1 - xtra$level)/2
+  .con <- sd(.dat$y) * qnorm(.alp) * sqrt(.p * (1 - .p)/.n) / dnorm(.dat$x)
+  .lin <- as.numeric( qqline(y = .dat$y)$data ) # Use qqline to get intercept and slope
+  
+  .dat$uci <- .trans( .lin[1] + .lin[2] * .dat$x + .con )
+  .dat$lci <- .trans( .lin[1] + .lin[2] * .dat$x - .con )
+  a$data <- .dat
+  
+  if( is.null(a$linetype) ){ a$linetype <- 3}
   if( is.null(a$na.rm) ){ a$na.rm <- TRUE}
   a$inherit.aes <- FALSE
   
