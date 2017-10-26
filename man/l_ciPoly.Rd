@@ -4,11 +4,14 @@
 \alias{l_ciPoly}
 \title{Add confidence band to smooth effect plot}
 \usage{
-l_ciPoly(mul = 2, ...)
+l_ciPoly(level = 0.95, mul = NULL, ...)
 }
 \arguments{
+\item{level}{coverage level, should be in (0, 1).}
+
 \item{mul}{number multiplied by the standard errors when calculating
-standard error curves or surfaces.}
+standard error surfaces. By default \code{NULL}, if
+set to a positive number it will over-ride \code{level}.}
 
 \item{...}{graphical arguments to be passed to \code{ggplot2::geom_polygon}.}
 }

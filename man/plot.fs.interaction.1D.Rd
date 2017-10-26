@@ -8,6 +8,8 @@
   unconditional = FALSE, seWithMean = FALSE, ...)
 }
 \arguments{
+\item{x}{a smooth effect.}
+
 \item{...}{currently unused.}
 }
 \description{

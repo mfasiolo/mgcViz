@@ -8,6 +8,10 @@
   phi = 30, theta = 30, trans = identity, scheme = 0,
   seWithMean = FALSE, unconditional = FALSE, ...)
 }
+\arguments{
+\item{scheme}{if 0 the smooth effect is plot on the sphere. If 1 the smooth effect is plotted
+on the two hemispheres.}
+}
 \description{
 XXX
 }

@@ -4,8 +4,21 @@
 \alias{plot.random.effect}
 \title{Plotting random effects}
 \usage{
-\method{plot}{random.effect}(...)
+\method{plot}{random.effect}(x, trans = identity, ...)
 }
 \description{
-XXX Does not work yet.
+Plotting random effects.
+}
+\examples{
+library(mgcv)
+b <- gam(travel~s(Rail,bs="re"), data=Rail, method="REML")
+b <- getViz(b)
+plot(sm(b, 1)) + l_fitLine(colour = 2, linetype = 2) + l_points() + 
+  l_ciLine(colour = 4, linetype = 3)
+
+plot(sm(b, 1)) + l_ciPoly() + l_points()
+
+# Default
+plot(b)
+ 
 }
