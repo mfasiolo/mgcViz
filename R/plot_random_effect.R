@@ -55,6 +55,5 @@ plot.random.effect <- function(x, trans = identity, ...) {
   
   return( list("ggObj" = .pl, "data" = .dat) )
   
-  return(out)
 }
 

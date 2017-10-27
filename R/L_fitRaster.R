@@ -38,7 +38,8 @@ l_fitRaster.plotSmooth2Dgg <- l_fitRaster.plotSmoothsos1gg <- l_fitRaster.plotSm
   out <- list()
   a$mapping  <- aes(fill = tz, alpha = p)
   out[[1]] <- do.call("geom_raster", a)
-  out[[2]] <- scale_fill_gradientn(colours = viridis(50, begin = 0.2), na.value = "grey", name = "s(x)") 
+  out[[2]] <- scale_fill_gradientn(colours = viridis(50, begin = 0.2), 
+                                   na.value = "grey", name = "s(x)") 
   out[[3]] <- scale_alpha_identity() 
 
   class(out) <- "listOfLayers"

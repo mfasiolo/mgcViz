@@ -7,6 +7,8 @@
 l_bound(n = 200, ...)
 }
 \arguments{
+\item{n}{number of discrete intervals along the boundary.}
+
 \item{...}{graphical arguments to be passed to \code{ggplot2::geom_path}.}
 }
 \value{

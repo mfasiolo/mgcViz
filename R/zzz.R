@@ -7,7 +7,7 @@
       # sample file names from taxstats
       c("x", "x", "y", "z", "sx", "sy", 
         "resx", "resy", "id", "response", "uci", "lci", "d", 
-        "tz", "gx", "gy", "gid", "ll", "ul")
+        "tz", "ty", "gx", "gy", "gid", "ll", "ul", "lo", "la")
     )
   invisible()
 }

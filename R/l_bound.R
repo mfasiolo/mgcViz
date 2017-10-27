@@ -3,6 +3,7 @@
 #' 
 #' @description Add boundaries to smooth plot
 #'
+#' @param n number of discrete intervals along the boundary.
 #' @param ... graphical arguments to be passed to \code{ggplot2::geom_path}.
 #' @return An object of class \code{gamLayer}.
 #' @export l_bound
