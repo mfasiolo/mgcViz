@@ -7,6 +7,7 @@ Description: mgcViz.
 Depends: 
   R (>= 3.3.2),
   mgcv, 
+  qgam,
   ggplot2,
   rgl
 Imports:
