@@ -25,7 +25,8 @@ print.plotGam <- function(x, ask = TRUE, pages = NULL, addLay = TRUE, ...){
                  "plotSmoothMDgg" = .l + l_fitRaster() + l_fitContour(), 
                  "plotSmoothsos0gg" = .l + l_fitRaster() + l_fitContour(), 
                  "plotSmoothsos1gg" = .l + l_fitRaster() + l_fitContour(),
-                 "plotSmoothrandomEffectgg" = .l + l_fitLine() + l_ciLine() + l_points() 
+                 "plotSmoothrandomEffectgg" = .l + l_fitLine() + l_ciLine() + l_points(), 
+                 "plotSmoothmrfgg" = .l + l_poly() 
                  )
     
     return( .l )
