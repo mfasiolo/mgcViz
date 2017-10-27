@@ -47,4 +47,8 @@ plot(sm(v, 2)) + l_fitLine() + ylim(-0.5, 0.5) + xlim(0.25, 0.75)
 # Change line type and remove legend
 plot(sm(v, 2)) + l_fitLine(size = 1.3, linetype="dotted") + 
                  theme(legend.position="none")
+                 
+# Clustering smooth effects in 3 groups
+plot(sm(v, 2)) + l_fitLine(colour = "grey") + 
+                 l_clusterLine(centers = 3, a.clu = list(nstart = 100))
 }

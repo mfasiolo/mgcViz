@@ -50,7 +50,6 @@ l_fitLine.plotSmoothfs1Dgg <- function(a){
     a$alpha <- c(1, 0.5, 0.3)[ findInterval(nf, c(0, 10, 100))  ]
   }
  
-  a$mapping <- aes("x" = x, "y" = ty, "colour" = id)  
   out <- do.call("geom_line", a)
   return( out )
   

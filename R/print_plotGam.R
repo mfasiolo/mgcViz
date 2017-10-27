@@ -19,7 +19,7 @@ print.plotGam <- function(x, ask = TRUE, pages = NULL, addLay = TRUE, ...){
   .addDefaultLayers <- function( .l ){
     .cl <- paste(class(.l), collapse = '')
     .l <- switch(.cl, 
-                 "plotSmoothfs1Dgg" = .l + l_fitLine(),
+                 "plotSmoothfs1Dgg" = .l + l_fitLine() + theme(legend.position="none"),
                  "plotSmooth1Dgg" = .l + l_fitLine() + l_ciLine(),
                  "plotSmooth2Dgg" = .l + l_fitRaster() + l_fitContour(), 
                  "plotSmoothMDgg" = .l + l_fitRaster() + l_fitContour(), 

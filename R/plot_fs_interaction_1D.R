@@ -37,6 +37,10 @@
 #' # Change line type and remove legend
 #' plot(sm(v, 2)) + l_fitLine(size = 1.3, linetype="dotted") + 
 #'                  theme(legend.position="none")
+#'                  
+#' # Clustering smooth effects in 3 groups
+#' plot(sm(v, 2)) + l_fitLine(colour = "grey") + 
+#'                  l_clusterLine(centers = 3, a.clu = list(nstart = 100))
 #' @importFrom mgcv PredictMat
 #' @rdname plot.fs.interaction.1D
 #' @export plot.fs.interaction.1D
@@ -70,7 +74,7 @@ plot.fs.interaction.1D <- function(x, n = 100, trans = identity,
                          "id" = as.factor(rep(x$flev, each = P$n)))
   .dat$misc <- list("trans" = trans)
   
-  .pl <- ggplot(data = .dat$fit, aes("x" = x, "y" = y, "colour" = id)) +
+  .pl <- ggplot(data = .dat$fit, aes("x" = x, "y" = ty, "colour" = id, "group" = id)) +
     labs(title = P$main, x = P$xlab, y = P$ylab) + 
     theme_bw() +
     theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
