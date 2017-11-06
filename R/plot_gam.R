@@ -46,6 +46,7 @@
 #' b <- gam(y ~ fac+s(x2,by=fac)+s(x0),data=dat)
 #' # print() only needed because we want to plot on a single page
 #' print(plot(b), pages = 1) 
+#' print(plot(b), pages = 1) # Including also parametric effect
 #' 
 #' ######## Example with 3D smooth effect which cannot be plotted
 #' # Simulate data and fit model
@@ -63,29 +64,65 @@
 #' # For plotting effects with more than 2D, one we need specific method. 
 #' # See ?plot.mgcv.smooth.MD
 #' 
+#' ######## Examples about plotting parametric effects
+#' # 1 Gaussian GAM
+#' set.seed(3)
+#' dat <- gamSim(1,n=2500,dist="normal",scale=20)
+#' dat$fac <- as.factor( sample(c("A1", "A2", "A3"), nrow(dat), replace = T) ) 
+#' dat$logi <- as.logical( sample(c(TRUE, FALSE), nrow(dat), replace = T) ) 
+#' bs <- "cr"; k <- 12
+#' b <- bam(y ~ x0 + x1 + I(x1^2) + s(x2,bs=bs,k=k) + fac + x3:fac + I(x1*x2) + logi +
+#'             s(x3, bs=bs),data=dat, discrete = T)
+#' o <- getViz(b, nsim = 0)
+#' 
+#' # All effects in one page. Notably 'x3:fac' is missing: we have no methods
+#' # for plotting second order effects.
+#' print(plot(o, allTerms = TRUE), pages = 1)
+#' 
+#' # Plotting only parametric effects
+#' print(plot(o, select = 3:9), pages = 1)
+#' 
+#' # 2 GAMLSS Gaussian model
+#' library(mgcv);library(MASS)
+#' mcycle$fac <- as.factor( sample(c("z", "k", "a", "f"), nrow(mcycle), replace = T) ) 
+#' b <- gam(list(accel~times + I(times^2) + s(times,k=10), ~ times + fac + s(times)),
+#'           data=mcycle,family=gaulss())
+#' 
+#' o <- getViz(b, nsim = 0)
+#' 
+#' # All effects on one page: effect of second linear predictor end with '.1'
+#' print(plot(o, allTerms = TRUE), pages = 1)
+#' 
 #' @rdname plot.gam
 #' @export plot.gam
 #'
-plot.gam <- function(x, n = 100, n2 = 40, select = NULL, ...) {
+plot.gam <- function(x, n = 100, n2 = 40, select = NULL, allTerms = FALSE, ...) {
   
   if( !("gamViz" %in% class(x)) ) { x <- getViz(x)  }
   
   nsm <- length(x$smooth)
-  if( is.null(select) ) { select <- 1:nsm }
-  if( any(select > nsm) ) { 
-    stop(paste("No element of `select` can be greater than ", nsm, ", the number of smooths.", sep=''))
+  npr <- x$store$np      # number of parametric terms
+  
+  if( is.null(select) ) { 
+    select <- if( allTerms ) { 1:(nsm+npr) } else { 1:nsm } 
   }
+  selS <- select[ select <= nsm ]
+  selP <- select[ select > nsm & select <= (nsm+npr) ]
   
+  smo <- list()
   # Extract smooths
-  smo <- lapply(select, sm, o = x)
+  smo <- lapply(selS, sm, o = x)
   
+  # Add also parametric terms
+  smo <- c(smo, lapply(selP-nsm, pterm, o = x))
+
   # Wrapper function to plot each smooth
   wrap <- function(.smo, .n, .n2, ...){
     
     if( "mgcv.smooth.MD" %in% class(.smo) ) { return(NULL) }
     if( "mgcv.smooth.2D" %in% class(.smo) ) { .n <- .n2 }
     
-    return( plot(x = .smo, n = .n, ...) )
+    return( suppressMessages(plot(x = .smo, n = .n, ...)) )
   }
   
   # Plotting each smooth. If a plot is NULL we don't include it in the list `pls`.

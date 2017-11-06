@@ -25,7 +25,7 @@ l_ciLine <- function(level = 0.95, mul = NULL, ...){
 
 ######## Internal method 
 #' @noRd
-l_ciLine.plotSmooth1Dgg <- function(a){
+l_ciLine.plotSmooth1Dgg <- l_ciLine.plotSmoothPtermNumericgg <- function(a){
   
   xtra <- a$xtra
   a$xtra <- NULL

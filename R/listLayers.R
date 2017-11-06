@@ -23,6 +23,11 @@ listLayers <- function(o){
                 "plotSmoothCheck2Dgg" = c("l_gridCheck2D", "l_dens", "l_glyphs2D", "l_points", "l_rug"),
                 "plotSmoothmrfgg" = c("l_poly"),
                 
+                "plotSmoothPtermNumericgg" = c("l_ciLine", "l_ciPoly", "l_fitLine", "l_dens", 
+                                               "l_points", "l_rug"), 
+                "plotSmoothPtermFactorgg"  = c("l_fitPoints", "l_fitBar", "l_ciBar", "l_points", "l_rug"),
+                "plotSmoothPtermLogicalgg" = c("l_fitPoints", "l_fitBar", "l_ciBar", "l_points", "l_rug"),
+                
                 message(paste("No layers for obj of this class", paste(class(o), collapse = ' '))))
   
   return(out)

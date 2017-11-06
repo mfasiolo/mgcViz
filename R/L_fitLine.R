@@ -17,7 +17,7 @@ l_fitLine <- function(...){
 
 ######## Internal method 
 #' @noRd
-l_fitLine.plotSmooth1Dgg <- function(a){
+l_fitLine.plotSmooth1Dgg <- l_fitLine.plotSmoothPtermNumericgg <- function(a){
   
   a$data <- a$data$fit
   if( is.null(a$na.rm) ){ a$na.rm <- TRUE}

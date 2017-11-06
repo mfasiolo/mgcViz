@@ -17,9 +17,21 @@ l_rug <- function(jit = c(FALSE, FALSE), ...){
   return(o)
 }
 
+######## Internal method for factor plots
+#' @noRd
+l_rug.plotSmoothPtermFactorgg <- function(a){
+  
+  a$data$res$x <- as.numeric( a$data$res$x )
+  
+  if( is.null(a$data$res$y) ){ a$mapping <- aes(x = x) }
+  
+  l_rug.plotSmooth1Dgg( a )
+  
+}
+
 ######## Internal method for 1D plots
 #' @noRd
-l_rug.plotSmooth1Dgg <- l_rug.plotSmoothCheck1Dgg <- function(a){
+l_rug.plotSmooth1Dgg <- l_rug.plotSmoothCheck1Dgg <- l_rug.plotSmoothPtermNumericgg <- function(a){
   
   if( is.null(a$mapping) ) { a$mapping <- aes(x = x) }
   
@@ -49,8 +61,8 @@ l_rug.plotSmooth2Dgg <- l_rug.plotSmoothsos0gg <-
   # Jitter if necessary
   jit <- a$xtra$jit
   if( length(jit) == 1 ){ jit <- c(jit, jit) }
-  if(a$xtra$jit[1]){ a$data$x <- jitter(a$data$x) }
-  if(a$xtra$jit[2] || !is.null(a$data$y)){ a$data$y <- jitter(a$data$y) }
+  if(jit[1]){ a$data$x <- jitter(a$data$x) }
+  if(jit[2] && !is.null(a$data$y)){ a$data$y <- jitter(a$data$y) }
   a$xtra <- NULL
   
   fun <- "geom_rug"

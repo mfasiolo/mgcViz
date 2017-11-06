@@ -7,20 +7,53 @@
 #' @return an object of class \code{gamLayer}.
 #' @export l_points
 #'
-l_points <- function(...){
+l_points <- function(jit = c(FALSE, FALSE), ...){
   arg <- list(...)
+  arg$xtra <- list("jit" = jit)
   o <- structure(list("fun" = "l_points",
                       "arg" = arg), 
                  class = "gamLayer")
   return(o)
 }
 
+
+######## Internal method for factor plots
+#' @noRd
+l_points.plotSmoothPtermFactorgg <- function(a){
+  
+  a$data$res$x <- as.numeric( a$data$res$x )
+  
+  l_points.plotSmooth1Dgg( a )
+  
+}
+
+######## Internal method for numeric parametric (non-smooth) plots
+#' @noRd
+l_points.plotSmoothPtermNumericgg  <- function(a){
+  
+  if( is.null(a$data$res$y) ){ 
+    message("l_points(): Partial residuals are not available")  
+    return( NULL )
+  }
+ 
+  l_points.plotSmooth1Dgg( a )
+   
+}
+
 ######## Internal method 
 #' @noRd
 l_points.plotSmooth1Dgg <- l_points.plotSmoothsos1gg <- l_points.plotSmoothsos0gg <- 
-                           l_points.plotSmoothCheck1Dgg <- function(a){
+l_points.plotSmoothCheck1Dgg <- function(a){
   
   a$data <- a$data$res[a$data$res$sub, ]
+  
+  # Jitter if necessary
+  jit <- a$xtra$jit
+  if( length(jit) == 1 ){ jit <- c(jit, jit) }
+  if(jit[1]){ a$data$x <- jitter(a$data$x) }
+  if(jit[2] && !is.null(a$data$y)){ a$data$y <- jitter(a$data$y) }
+  a$xtra <- NULL
+  
   a$mapping <- aes(x = x, y = y)
   a$inherit.aes <- FALSE
   if( is.null(a$shape) ) { a$shape <- 46 } 

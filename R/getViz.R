@@ -29,9 +29,21 @@ getViz <- function(o, nsim = 10, ...){
     
     tmp <- o$pterms
     np <- if (is.list(tmp)){ length(unlist(lapply(tmp,attr,"order"))) } else { length(attr(tmp,"order")) }
-    o$store <- list("termsFit"=predict(o, type = "terms"), "np"=np)
-    rm(list=c("tmp"))
+    ns <- length( o$smooth )
+    terms <- predict(o, type = "terms")
     
+    # predict.bam with discrete = T does not predict parametric terms of order 2. Hence we need to add some empty columns.
+    nmis <- (np + ns) - ncol(terms) 
+    if( nmis ){
+      M1 <- if(np - nmis) { terms[ , 1:(np-nmis)] } else { c() }
+      M2 <- matrix(0, nrow(terms), nmis, 
+                   dimnames = list(c(), paste(".fakVar", 1:nmis, sep = '') ))
+      M3 <- if(ns) { terms[ , (ncol(terms)-ns+1):ncol(terms)] } else { c() }
+      terms <- cbind(M1, M2, M3)
+    }
+
+    o$store <- list("termsFit"=terms, "np"=np)
+
     class(o) <- c("gamViz", class(o))
   }
   

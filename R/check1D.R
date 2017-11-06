@@ -92,7 +92,7 @@ check1D <- function(o, x, type = "auto", maxpo = 1e4, na.rm = TRUE){
     
   ### 3. Build output object
   res <- data.frame("x" = x, "y" = y, "sub" = sub)
-  pl <- ggplot(data = res) + theme_bw() + 
+  pl <- ggplot(data = res, mapping = aes(x = x, y = y)) + theme_bw() + 
         theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + 
         labs(x = xnm, y = "r")
   
