@@ -35,24 +35,60 @@
 #' @export l_gridCheck2D
 #' 
 #' 
-l_gridCheck2D <- function(gridFun = mean, bw = c(NA, NA), stand = TRUE, ...){
+l_gridCheck2D <- function(gridFun = mean, bw = c(NA, NA), stand = TRUE, binFun = NULL, ...){
   arg <- list(...)
-  arg$xtra <- list("gridFun"=gridFun, "bw"=bw, "stand"=stand)
+  if( length(bw) == 1 ) { bw <- c(bw, bw) }
+  arg$xtra <- list("gridFun" = gridFun, "bw" = bw, "stand" = stand, "binFun" = binFun)
   o <- structure(list("fun" = "l_gridCheck2D",
                       "arg" = arg), 
                  class = "gamLayer")
   return(o)
 }
 
-######## Internal method 
+######## Internal method factor/numeric data
 #' @noRd
-l_gridCheck2D.plotSmoothCheck2Dgg <- function(a){
+l_gridCheck2D.plotSmoothCheck2DFactorNumericgg <- function(a){
+  
+  if( is.na(a$xtra$bw[1]) ) { a$xtra$bw[1] <- 1 }
+  
+  if( is.null(a$xtra$binFun) ){ a$xtra$binFun <- "stat_summary_2d" }
+  
+  .l_gridCheck2D( a )
+  
+}
+
+######## Internal method factor/factor data
+#' @noRd
+l_gridCheck2D.plotSmoothCheck2DFactorFactorgg <- function(a){
+  
+  if( is.na(a$xtra$bw[1]) ) { a$xtra$bw[1] <- 1 }
+  if( is.na(a$xtra$bw[2]) ) { a$xtra$bw[2] <- 1 }
+  
+  if( is.null(a$xtra$binFun) ){ a$xtra$binFun <- "stat_summary_2d" }
+  
+  .l_gridCheck2D( a )
+  
+}
+
+######## Internal method for numeric/numeric data
+#' @noRd
+l_gridCheck2D.plotSmoothCheck2DNumericNumericgg <- function(a){
+  
+  if( is.null(a$xtra$binFun) ){ a$xtra$binFun <- "stat_summary_hex" }
+  
+  .l_gridCheck2D( a )
+}
+
+######## General internal method 
+#' @noRd
+.l_gridCheck2D <- function(a){
   
   ### 1. Preparation
   xtra <- a$xtra
   a$xtra <- NULL
   
   gridFun <- xtra$gridFun
+  binFun <- xtra$binFun
   bw <- xtra$bw
   stand <- xtra$stand
   
@@ -108,7 +144,7 @@ l_gridCheck2D.plotSmoothCheck2Dgg <- function(a){
 
   # Build layers
   out <- list()
-  out[[1]] <- do.call("stat_summary_hex", a)
+  out[[1]] <- do.call(binFun, a)
   out[[2]] <- scale_fill_gradientn(colours = viridis(50, begin=0.2), na.value="white")
 
   class(out) <- "listOfLayers"

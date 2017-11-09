@@ -15,8 +15,8 @@
 #' @return An object of class \code{c("plotSmooth", "Check", "2D")}.
 #' @examples 
 #' library(mgcViz);
-#' 
-#' # Simulate data from Rosenbrock function
+#' #### Example 1: Rosenbrock function
+#' # Simulate data
 #' n <- 1e4
 #' X <- data.frame("x1"=rnorm(n, 0.5, 0.5), "x2"=rnorm(n, 1.5, 1))
 #' X$y <- (1-X$x1)^2 + 100*(X$x2 - X$x1^2)^2 + rnorm(n, 0, 2)
@@ -24,16 +24,38 @@
 #' b <- getViz(b, nsim = 50)
 #' 
 #' # Plot joint density of observed covariate x1 and x2
-#' check2D(b, x1 = "x1", x2 = "x2") + l_rug() + l_dens(type="joint", alpha=0.6) + l_points() 
+#' check2D(b, x1 = "x1", x2 = "x2") + l_rug() + l_dens(type="joint", alpha=0.6) + l_points()
 #' 
 #' # Look at how mean of residuals varies across x1 and x2
 #' check2D(b, x1 = "x1", x2 = "x2") + l_gridCheck2D() + l_points()
 #' 
 #' # Can't see much in previous plot, let's zoom in central area, where most
 #' # data is. Here we can clearly see that the mean model is mispecified
-#' check2D(b, x1 = "x1", x2 = "x2") + l_gridCheck2D(bw = c(0.05, 0.1)) + 
+#' check2D(b, x1 = "x1", x2 = "x2") + l_gridCheck2D(bw = c(0.05, 0.1)) +
 #'                                    xlim(-1, 1) + ylim(0, 3)
 #' # Fit can be improved by increasing k in the bam() call
+#' 
+#' #### Example 2: checking along factor variables
+#' # Simulate data where variance changes along factor variable "fac"
+#' n <- 1e4
+#' X <- data.frame("x1"=rnorm(n, 0.5, 0.5), "x2"=rnorm(n, 1.5, 1))
+#' X$fac <- as.factor( sample(letters, n, replace = TRUE) )
+#' X$fac2 <- as.factor( sample(c("F1", "F2", "F3", "F4", "F5"), n, replace = TRUE) )
+#' X$y <- (1-X$x1)^2 + 5*(X$x2 - X$x1^2)^2 + 0.1*as.numeric(X$fac) * rnorm(n, 0, 2)
+#' b <- bam(y ~ te(x1, x2, k = 5) + fac + fac2, data = X, discrete = TRUE)
+#' b <- getViz(b, nsim = 50)
+#' 
+#' # Check standard deviation of residuals along covariates "x1" and "fac"
+#' a <- check2D(b, x1 = "x2", x2 = "fac")
+#' a + l_gridCheck2D(gridFun = sd) + l_rug() + l_points() 
+#' 
+#' # Points and rug are jittered by default, but we can over-ride this
+#' a + l_rug(position = position_jitter(width = 0, height = 0)) + 
+#'   l_points(position = position_jitter(width = 0, height = 0)) 
+#' 
+#' # Check standard deviation of residuals along the two factor variables
+#' a <- check2D(b, x1 = "fac", x2 = "fac2")
+#' a + l_gridCheck2D(gridFun = sd, bw = c(1, 4)) + l_rug() + l_points() 
 #' 
 #' @rdname check2D
 #' @importFrom dplyr filter sample_n
@@ -97,19 +119,31 @@ check2D <- function(o, x1, x2, bw = NULL, type = "auto", maxpo = 1e4, na.rm = TR
                  }) 
   }
   
+  cls1 <- .mapVarClass( class(x1) )
+  cls2 <- .mapVarClass( class(x2) )
+  # If x2 is factor and x1 is not we swap them. So factor variable is always on x axis.
+  if( cls2 == "factor" && cls1 != "factor" ){
+    tmp <- x1; x1 <- x2; x2 <- tmp
+    tmp <- xnm1; xnm1 <- xnm2; xnm2 <- tmp
+    cls2 <- cls1; cls1 <- "factor"
+  }
+  
   ### 3. Build output object
   res <- data.frame("x" = x1, "y" = x2, "z" = y, "sub" = sub)
   pl <- ggplot(data = res, mapping = aes(x = x, y = y, z = z)) + theme_bw() + 
     theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + 
     labs(x = xnm1, y = xnm2)
-  
+
+  if( cls1 == "factor" ){ pl <- pl + scale_x_discrete()}
+  if( cls2 == "factor" ){ pl <- pl + scale_y_discrete()}
+
   misc <- list("type" = type, "vnam" = c(xnm1, xnm2))
   
   out <- structure(list("ggObj" = pl, 
                         "data" = list("res" = res, 
                                       "sim" = sim, 
                                       "misc" = misc)), 
-                   class = c("plotSmooth", "Check", "2D", "gg"))
+                   class = c("plotSmooth", "Check", "2D", .simpleCap(cls1), .simpleCap(cls2), "gg"))
   
   return( out )
 }

@@ -46,12 +46,12 @@
 #' 
 #' # Look along "fac"
 #' ck <- check1D(b, "fac") 
-#' ck + l_points(jit = c(TRUE, FALSE)) + l_rug(jit = TRUE) 
+#' ck + l_points() + l_rug() 
 #' ck + l_gridCheck1D(gridFun = sd)
 #' 
 #' # Look along "logi"
 #' ck <- check1D(b, "logi") 
-#' ck + l_points(jit = c(TRUE, FALSE)) + l_rug(jit = TRUE) 
+#' ck + l_points() + l_rug() 
 #' ck + l_gridCheck1D(gridFun = sd)
 #' 
 #' @importFrom matrixStats colSds

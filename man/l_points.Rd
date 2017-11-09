@@ -4,7 +4,7 @@
 \alias{l_points}
 \title{Add residuals to smooth effect plot}
 \usage{
-l_points(jit = c(FALSE, FALSE), ...)
+l_points(...)
 }
 \arguments{
 \item{...}{graphical arguments to be passed to \code{ggplot2::geom_point}.}

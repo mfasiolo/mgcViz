@@ -4,11 +4,9 @@
 \alias{l_rug}
 \title{Add rug to smooth effect plot}
 \usage{
-l_rug(jit = c(FALSE, FALSE), ...)
+l_rug(...)
 }
 \arguments{
-\item{jit}{should the x's and y's be jittered.}
-
 \item{...}{graphical arguments to be passed to \code{ggplot2::geom_rug}.}
 }
 \value{

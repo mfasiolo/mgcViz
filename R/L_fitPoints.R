@@ -5,11 +5,10 @@
 #'
 #' @param ... graphical arguments to be passed to \code{ggplot2::geom_point}.
 #' @return an object of class \code{gamLayer}.
-#' @export l_points
+#' @export l_fitPoints
 #'
 l_fitPoints <- function(...){
   arg <- list(...)
-  arg$xtra <- list("jit" = c(FALSE, FALSE))
   o <- structure(list("fun" = "l_fitPoints",
                       "arg" = arg), 
                  class = "gamLayer")
@@ -28,7 +27,7 @@ l_fitPoints.plotSmoothPtermFactorgg <- function(a){
   a$data$res <- a$data$fit
   a$data$res$y <- a$data$res$ty
   a$data$res$sub <- rep(TRUE, nrow(a$data$res))
-  
-  l_points.plotSmoothPtermFactorgg( a )
+
+  l_points.plotSmooth1Dgg( a )
   
 }

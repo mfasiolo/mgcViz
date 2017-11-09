@@ -4,7 +4,8 @@
 \alias{l_gridCheck2D}
 \title{Checking GAM residuals along one covariate}
 \usage{
-l_gridCheck2D(gridFun = mean, bw = c(NA, NA), stand = TRUE, ...)
+l_gridCheck2D(gridFun = mean, bw = c(NA, NA), stand = TRUE,
+  binFun = NULL, ...)
 }
 \arguments{
 \item{gridFun}{function used to summarize the residuals in each bin. By default it is \code{mean}.}

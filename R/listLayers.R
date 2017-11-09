@@ -31,7 +31,9 @@ listLayers <- function(o){
                 "plotSmoothCheck1DNumericgg" = c("l_densCheck", "l_gridCheck1D", "l_dens", "l_points", "l_rug"),
                 "plotSmoothCheck1DFactorgg" = c("l_gridCheck1D", "l_points", "l_rug"),
                 "plotSmoothCheck1DLogicalgg" = c("l_gridCheck1D", "l_points", "l_rug"),
-                "plotSmoothCheck2DNumericgg" = c("l_gridCheck2D", "l_dens", "l_glyphs2D", "l_points", "l_rug"),
+                "plotSmoothCheck2DNumericNumericgg" = c("l_gridCheck2D", "l_dens", "l_glyphs2D", "l_points", "l_rug"),
+                "plotSmoothCheck2DFactorNumericgg" = c("l_gridCheck2D", "l_points", "l_rug"),
+                "plotSmoothCheck2DFactorFactorgg" = c("l_gridCheck2D", "l_points", "l_rug"),
 
                 message(paste("No layers for obj of this class", paste(class(o), collapse = ' '))))
   

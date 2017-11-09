@@ -19,8 +19,8 @@ Extracting parametric effects from \code{gamObject}.
 library(mgcv)
 set.seed(3)
 dat <- gamSim(1,n=1500,dist="normal",scale=20)
-dat$fac <- as.factor( sample(c("A1", "A2", "A3"), nrow(dat), replace = T) ) 
-dat$logi <- as.logical( sample(c(TRUE, FALSE), nrow(dat), replace = T) ) 
+dat$fac <- as.factor( sample(c("A1", "A2", "A3"), nrow(dat), replace = TRUE) ) 
+dat$logi <- as.logical( sample(c(TRUE, FALSE), nrow(dat), replace = TRUE) ) 
 bs <- "cr"; k <- 12
 b <- gam(y ~ x0 + x1 + I(x1^2) + s(x2,bs=bs,k=k) + fac + x3:fac + I(x1*x2) + logi +
             s(x3, bs=bs),data=dat)
@@ -37,7 +37,7 @@ plot(pt, n = 60) + l_fitLine() + l_ciLine(colour = 2)
 # Plot effect of 'fac'
 pt <- pterm(o, 4)
 plot(pt) + l_ciBar(colour = "blue") + l_fitPoints(colour = "red") + 
-           l_rug(jit = TRUE, alpha = 0.3)
+           l_rug(alpha = 0.3)
 
 # Plot effect of 'logi'
 pt <- pterm(o, 6)
@@ -49,7 +49,7 @@ plot(pt)
 
 ####### 2. Gaussian GAMLSS model
 library(MASS)
-mcycle$fac <- as.factor( sample(c("z", "k", "a", "f"), nrow(mcycle), replace = T) ) 
+mcycle$fac <- as.factor( sample(c("z", "k", "a", "f"), nrow(mcycle), replace = TRUE) ) 
 b <- gam(list(accel~times + I(times^2) + s(times,k=10), ~ times + fac + s(times)),
           data=mcycle,family=gaulss(), optimizer = "efs")
 
@@ -68,6 +68,6 @@ plot(pt) + l_ciPoly() + l_fitLine() + l_ciLine(linetype = 3) + l_rug()
 # Plot effect of 'fac' in second linear predictor.
 pt <- pterm(o, 4)
 plot(pt) + l_ciBar(colour = "blue") + l_fitPoints(colour = "red") + 
-           l_rug(jit = TRUE) 
+           l_rug() 
 
 }

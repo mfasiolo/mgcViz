@@ -7,9 +7,8 @@
 #' @return an object of class \code{gamLayer}.
 #' @export l_points
 #'
-l_points <- function(jit = c(FALSE, FALSE), ...){
+l_points <- function(...){
   arg <- list(...)
-  arg$xtra <- list("jit" = jit)
   o <- structure(list("fun" = "l_points",
                       "arg" = arg), 
                  class = "gamLayer")
@@ -17,46 +16,63 @@ l_points <- function(jit = c(FALSE, FALSE), ...){
 }
 
 
-######## Internal method for factor plots
+######## Internal method for factor 1D plots
 #' @noRd
-l_points.plotSmoothPtermFactorgg <- l_points.plotSmoothCheck1DFactorgg <- 
+l_points.plotSmoothPtermFactorgg <- l_points.plotSmoothCheck1DFactorgg <- function(a){
+  
+  if( is.null(a$position) ) { a$position <- position_jitter(width = 0.25, height = 0) }
+  
+  l_points.plotSmooth1Dgg( a )
+  
+}
+
+######## Internal method for logical 1D plots
+#' @noRd
 l_points.plotSmoothCheck1DLogicalgg <- function(a){
-  
-  a$data$res$x <- as.numeric( a$data$res$x )
-  
-  l_points.plotSmooth1Dgg( a )
-  
+    
+    if( is.null(a$position) ) { a$position <- position_jitter(width = 0.45, height = 0) }
+    
+    l_points.plotSmooth1Dgg( a )
+    
 }
 
-######## Internal method for numeric parametric (non-smooth) plots
+######## Internal method for factor/numeric 2D checks
 #' @noRd
-l_points.plotSmoothPtermNumericgg  <- function(a){
+l_points.plotSmoothCheck2DFactorNumericgg <- function(a){
   
-  if( is.null(a$data$res$y) ){ 
-    message("l_points(): Partial residuals are not available")  
-    return( NULL )
-  }
- 
-  l_points.plotSmooth1Dgg( a )
-   
+  if( is.null(a$position) ) { a$position <- position_jitter(width = 0.25, height = 0) }
+  
+  l_points.plotSmooth1Dgg(a)
+  
 }
 
-######## Internal method 
+######## Internal method for factor/factor 2D checks
+#' @noRd
+l_points.plotSmoothCheck2DFactorFactorgg <- function(a){
+  
+  if( is.null(a$position) ) { a$position <- position_jitter(width = 0.25, height = 0.25) }
+  
+  l_points.plotSmooth1Dgg(a)
+  
+}
+
+######## Internal method for numeric/numeric 2D plots
+#' @noRd
+l_points.plotSmooth2Dgg <- l_points.plotSmoothCheck2DNumericNumericgg <- function(a){
+  
+  return( l_points.plotSmooth1Dgg(a) )
+  
+}
+
+######## General internal method 
 #' @noRd
 l_points.plotSmooth1Dgg <- l_points.plotSmoothsos1gg <- l_points.plotSmoothsos0gg <- 
-l_points.plotSmoothCheck1DNumericgg <- function(a){
+l_points.plotSmoothCheck1DNumericgg <- l_points.plotSmoothPtermNumericgg <- function(a){
   
   a$data <- a$data$res[a$data$res$sub, ]
   
-  # Jitter if necessary
-  jit <- a$xtra$jit
-  if( length(jit) == 1 ){ jit <- c(jit, jit) }
-  if(jit[1]){ a$data$x <- jitter(a$data$x) }
-  if(jit[2] && !is.null(a$data$y)){ a$data$y <- jitter(a$data$y) }
-  a$xtra <- NULL
-  
-  a$mapping <- aes(x = x, y = y)
   a$inherit.aes <- FALSE
+  if( is.null(a$mapping)){ a$mapping <- aes(x = x, y = y) }
   if( is.null(a$shape) ) { a$shape <- 46 } 
   if( is.null(a$na.rm) ) { a$na.rm <- TRUE } 
   
@@ -71,7 +87,7 @@ l_points.plotSmoothCheck1DNumericgg <- function(a){
   
 }
 
-######## Internal method 
+######## Internal method for random effects
 #' @noRd
 l_points.plotSmoothrandomEffectgg <- function(a){
     
@@ -85,11 +101,5 @@ l_points.plotSmoothrandomEffectgg <- function(a){
   
 }
 
-######## Internal method 
-#' @noRd
-l_points.plotSmooth2Dgg <- l_points.plotSmoothCheck2Dgg <- function(a){
-  
-  return( l_points.plotSmooth1Dgg(a) )
-  
-}
+
 

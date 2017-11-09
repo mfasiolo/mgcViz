@@ -71,7 +71,7 @@ l_dens.plotSmooth1Dgg <- l_dens.plotSmoothCheck1DNumericgg <- l_dens.plotSmoothP
 
 ######## Internal method 
 #' @noRd
-l_dens.plotSmooth2Dgg <- l_dens.plotSmoothCheck2Dgg <- function(a){
+l_dens.plotSmooth2Dgg <- l_dens.plotSmoothCheck2DNumericNumericgg <- function(a){
  
   return( l_dens.plotSmooth1Dgg(a) )
   

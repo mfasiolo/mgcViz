@@ -36,11 +36,11 @@ b <- gam(y ~  x0 + x1 + I(x1^2) + s(x2,bs=bs,k=k) + I(x1*x2) + s(x3, bs=bs), dat
 o <- getViz(b, nsim = 0)
 
 # Extract first terms and plot it
-pt <- pterm(ox, 1)
+pt <- pterm(o, 1)
 plot(pt, n = 60) + l_ciPoly() + l_fitLine() + l_ciLine()
 
 # Extract I(x1^2) terms and plot it with partial residuals
-pt <- pterm(ox, 3)
+pt <- pterm(o, 3)
 plot(pt, n = 60) + l_ciPoly() + l_fitLine() + l_ciLine() + l_points()
 
 }
