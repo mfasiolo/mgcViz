@@ -14,6 +14,7 @@
 #' @return An object of class \code{c("plotSmooth", "Check", "1D")}.
 #' @importFrom stats complete.cases
 #' @examples 
+#' ### Example 1: diagnosing heteroscedasticity
 #' library(mgcViz);
 #' set.seed(4124)
 #' n <- 1e4
@@ -24,18 +25,34 @@
 #' b <- bam(ob ~ s(x,k=30) + s(y, k=30), discrete = TRUE)
 #' 
 #' # Look at residuals along "x"
-#' ck <- check1D(b, "x") 
+#' ck <- check1D(b, "x")
 #' 
 #' # Can't see that much
 #' ck + l_dens(type = "cond", alpha = 0.8) + l_points() + l_rug(alpha = 0.2)
 #' 
 #' # Some evidence of heteroscedasticity
-#' ck + l_densCheck() 
+#' ck + l_densCheck()
 #' 
 #' # Compare observed residuals std dev with that of simulated data,
 #' # heteroscedasticity is clearly visible
 #' b <- getViz(b, nsim = 50)
 #' check1D(b, "x") + l_gridCheck1D(gridFun = sd, show.reps = TRUE)
+#' 
+#' # This also works with factor or logical data
+#' fac <- sample(letters, n, replace = TRUE)
+#' logi <- sample(c(TRUE, FALSE), n, replace = TRUE)
+#' b <- bam(ob ~ s(x,k=30) + s(y, k=30) + fac + logi, discrete = TRUE)
+#' b <- getViz(b, nsim = 50)
+#' 
+#' # Look along "fac"
+#' ck <- check1D(b, "fac") 
+#' ck + l_points(jit = c(TRUE, FALSE)) + l_rug(jit = TRUE) 
+#' ck + l_gridCheck1D(gridFun = sd)
+#' 
+#' # Look along "logi"
+#' ck <- check1D(b, "logi") 
+#' ck + l_points(jit = c(TRUE, FALSE)) + l_rug(jit = TRUE) 
+#' ck + l_gridCheck1D(gridFun = sd)
 #' 
 #' @importFrom matrixStats colSds
 #' @importFrom plyr aaply
@@ -96,13 +113,16 @@ check1D <- function(o, x, type = "auto", maxpo = 1e4, na.rm = TRUE){
         theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + 
         labs(x = xnm, y = "r")
   
+  cls <- .mapVarClass(class(res$x))
+  if( cls == "factor" ){ pl <- pl + scale_x_discrete()}
+  
   misc <- list("type" = type)
-
+  
   out <- structure(list("ggObj" = pl, 
                         "data" = list("res" = res, 
                                       "sim" = sim, 
                                       "misc" = misc)), 
-                   class = c("plotSmooth", "Check", "1D", "gg"))
+                   class = c("plotSmooth", "Check", "1D", .simpleCap(cls), "gg"))
 
   return( out )
   

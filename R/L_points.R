@@ -19,7 +19,8 @@ l_points <- function(jit = c(FALSE, FALSE), ...){
 
 ######## Internal method for factor plots
 #' @noRd
-l_points.plotSmoothPtermFactorgg <- function(a){
+l_points.plotSmoothPtermFactorgg <- l_points.plotSmoothCheck1DFactorgg <- 
+l_points.plotSmoothCheck1DLogicalgg <- function(a){
   
   a$data$res$x <- as.numeric( a$data$res$x )
   
@@ -43,7 +44,7 @@ l_points.plotSmoothPtermNumericgg  <- function(a){
 ######## Internal method 
 #' @noRd
 l_points.plotSmooth1Dgg <- l_points.plotSmoothsos1gg <- l_points.plotSmoothsos0gg <- 
-l_points.plotSmoothCheck1Dgg <- function(a){
+l_points.plotSmoothCheck1DNumericgg <- function(a){
   
   a$data <- a$data$res[a$data$res$sub, ]
   

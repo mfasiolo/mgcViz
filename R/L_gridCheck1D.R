@@ -49,9 +49,30 @@ l_gridCheck1D <- function(gridFun = NULL, n = 20, level = 0.8, stand = "none", s
   return(o)
 }
 
+######## Internal method for numeric covariates
+#' @noRd
+l_gridCheck1D.plotSmoothCheck1DNumericgg <- function(a){
+ 
+  a$xtra$class <- "numeric"
+  
+  .l_gridCheck1D( a )
+  
+}
+
+######## Internal method for factor covariates 
+#' @noRd
+l_gridCheck1D.plotSmoothCheck1DFactorgg <- l_gridCheck1D.plotSmoothCheck1DLogicalgg <- function(a){
+  
+  a$xtra$class <- "factor"
+  a$data$res$x <- as.factor( a$data$res$x )
+  
+  .l_gridCheck1D( a )
+  
+}
+
 ######## Internal method 
 #' @noRd
-l_gridCheck1D.plotSmoothCheck1Dgg <- function(a){
+.l_gridCheck1D <- function(a){
   
   ### 1. Preparation
   xtra <- a$xtra
@@ -68,13 +89,19 @@ l_gridCheck1D.plotSmoothCheck1Dgg <- function(a){
   y <- a$data$res$y
   n <- xtra$n
   level <- xtra$level
+  cls <- xtra$class 
   
   ### 2. Computation on grid
-  # Bin observed data
-  grid <- seq(min(x), max(x), length.out = n)
-  inX <- findInterval(x, grid, rightmost.closed = T)
-  grX <- tapply(x, inX, mean)     # Averaging x inside each bin
-  grY <- tapply(y, inX, xtra$gridFun)
+  if(cls == "numeric"){ # Bin observed data
+    grid <- seq(min(x), max(x), length.out = n)
+    inX <- findInterval(x, grid, rightmost.closed = T)
+    grX <- tapply(x, inX, mean)     # Averaging x inside each bin
+    grY <- tapply(y, inX, xtra$gridFun)
+  }
+  if(cls == "factor"){ # Bin observed data
+    grid <- grX <- levels( x )
+    grY <- tapply(y, x, xtra$gridFun)
+  }
   
   rep <- 0
   sim <- a$data$sim
@@ -90,9 +117,16 @@ l_gridCheck1D.plotSmoothCheck1Dgg <- function(a){
     rep <- nrow( sim )
     
     # Bin simulated data 
-    inS <- findInterval(x, grid, rightmost.closed = T)
-    lev <- sort( unique(inS) )                      
-    # lev <- lev[ (lev != 0) & (lev != n) ]   # Discard x's that fall outside grid      
+    if(cls == "numeric"){
+     inS <- findInterval(x, grid, rightmost.closed = T)
+     lev <- sort( unique(inS) ) 
+     # lev <- lev[ (lev != 0) & (lev != n) ]   # Discard x's that fall outside grid 
+    }
+    if(cls == "factor"){
+      inS <- x
+      lev <- grX 
+    }
+     
     
     # Calculate function for each bin and each repetition
     grS <- matrix(NA, rep, length(lev))
@@ -146,10 +180,9 @@ l_gridCheck1D.plotSmoothCheck1Dgg <- function(a){
       out[[2]] <- geom_point(data = datS, aes(x = x, y = y), na.rm = TRUE, shape = 46)
     }
     if(level > 0){
-      
       datCI <- data.frame("x" = goX, "ll" = conf[1, ], "ul" = conf[2, ])
-      out[[3]] <- geom_line(data = datCI, aes(x = x, y = ll), na.rm = TRUE, linetype = 2, colour = "red")
-      out[[4]] <- geom_line(data = datCI, aes(x = x, y = ul), na.rm = TRUE, linetype = 2, colour = "red")
+      out[[3]] <- geom_line(data = datCI, aes(x = as.numeric(x), y = ll), na.rm = TRUE, linetype = 2, colour = "red")
+      out[[4]] <- geom_line(data = datCI, aes(x = as.numeric(x), y = ul), na.rm = TRUE, linetype = 2, colour = "red")
     }
   }
 

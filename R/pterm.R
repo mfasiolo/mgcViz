@@ -79,7 +79,7 @@ pterm <- function(o, select){
   vNam <- as.vector(sapply(terms, function(.inp) attr(.inp, "term.labels")))[select]
   nam <- if(length(terms)>1){ attr(terms, "term.labels")[select] } else { attr(terms[[1]], "term.labels")[select] }
   cls <- as.vector(sapply(terms, function(.inp) unname(attr(.inp, "dataClasses"))[-1]))[select]
-  
+
   if(length(select)>1){ stop("select should be a scalar") }
   if(select > tot){ stop(paste("select should be smaller than", tot, "the number of parametric terms in gamObject")) }
   
@@ -89,15 +89,8 @@ pterm <- function(o, select){
               "class" = cls,  
               "order" = unlist(order)[[select]],
               "gObj" = o)
-  
-  # Simple function that capitalizes first letter of each word
-  simpleCap <- function(x) {
-    s <- strsplit(x, " ")[[1]]
-    paste(toupper(substring(s, 1,1)), substring(s, 2),
-          sep="", collapse=" ")
-  }
-  
-  cl <- paste("pterm", simpleCap(out$class), sep = '')
+
+  cl <- paste("pterm", .simpleCap(.mapVarClass(cls)), sep = '')
   
   class(out) <- cl
   

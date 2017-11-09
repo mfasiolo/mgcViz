@@ -68,11 +68,11 @@
 #' # 1 Gaussian GAM
 #' set.seed(3)
 #' dat <- gamSim(1,n=2500,dist="normal",scale=20)
-#' dat$fac <- as.factor( sample(c("A1", "A2", "A3"), nrow(dat), replace = T) ) 
-#' dat$logi <- as.logical( sample(c(TRUE, FALSE), nrow(dat), replace = T) ) 
+#' dat$fac <- as.factor( sample(c("A1", "A2", "A3"), nrow(dat), replace = TRUE) ) 
+#' dat$logi <- as.logical( sample(c(TRUE, FALSE), nrow(dat), replace = TRUE) ) 
 #' bs <- "cr"; k <- 12
 #' b <- bam(y ~ x0 + x1 + I(x1^2) + s(x2,bs=bs,k=k) + fac + x3:fac + I(x1*x2) + logi +
-#'             s(x3, bs=bs),data=dat, discrete = T)
+#'             s(x3, bs=bs),data=dat, discrete = TRUE)
 #' o <- getViz(b, nsim = 0)
 #' 
 #' # All effects in one page. Notably 'x3:fac' is missing: we have no methods
@@ -84,7 +84,7 @@
 #' 
 #' # 2 GAMLSS Gaussian model
 #' library(mgcv);library(MASS)
-#' mcycle$fac <- as.factor( sample(c("z", "k", "a", "f"), nrow(mcycle), replace = T) ) 
+#' mcycle$fac <- as.factor( sample(c("z", "k", "a", "f"), nrow(mcycle), replace = TRUE) ) 
 #' b <- gam(list(accel~times + I(times^2) + s(times,k=10), ~ times + fac + s(times)),
 #'           data=mcycle,family=gaulss())
 #' 

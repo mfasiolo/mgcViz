@@ -36,7 +36,7 @@ l_dens <- function(type, n = c(50, 50),
 
 ######## Internal method 
 #' @noRd
-l_dens.plotSmooth1Dgg <- l_dens.plotSmoothCheck1Dgg <- l_dens.plotSmoothPtermNumericgg <- function(a){
+l_dens.plotSmooth1Dgg <- l_dens.plotSmoothCheck1DNumericgg <- l_dens.plotSmoothPtermNumericgg <- function(a){
   
   xtra <- a$xtra
   a$xtra <- NULL

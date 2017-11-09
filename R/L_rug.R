@@ -19,7 +19,7 @@ l_rug <- function(jit = c(FALSE, FALSE), ...){
 
 ######## Internal method for factor plots
 #' @noRd
-l_rug.plotSmoothPtermFactorgg <- function(a){
+l_rug.plotSmoothPtermFactorgg <- l_rug.plotSmoothCheck1DFactorgg <- l_rug.plotSmoothCheck1DLogicalgg <- function(a){
   
   a$data$res$x <- as.numeric( a$data$res$x )
   
@@ -31,7 +31,7 @@ l_rug.plotSmoothPtermFactorgg <- function(a){
 
 ######## Internal method for 1D plots
 #' @noRd
-l_rug.plotSmooth1Dgg <- l_rug.plotSmoothCheck1Dgg <- l_rug.plotSmoothPtermNumericgg <- function(a){
+l_rug.plotSmooth1Dgg <- l_rug.plotSmoothCheck1DNumericgg <- l_rug.plotSmoothPtermNumericgg <- function(a){
   
   if( is.null(a$mapping) ) { a$mapping <- aes(x = x) }
   
