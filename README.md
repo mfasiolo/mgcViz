@@ -1,4 +1,6 @@
 
+[![Build Status](https://travis-ci.org/mfasiolo/mgcViz.svg?branch=master)](https://travis-ci.org/mfasiolo/mgcViz)
+
 # **mgcViz**: visual tools for Generalized Additive Models
 
 This R package offers visual tools for Generalized Additive Models
