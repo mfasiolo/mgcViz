@@ -5,7 +5,7 @@
 #' @param ... currently unused.
 #' @name plot.mrf.smooth
 #' @examples
-#' library(mgcv)
+#' library(mgcViz)
 #' ## Load Columbus Ohio crime data (see ?columbus for details and credits)
 #' data(columb)       ## data frame
 #' data(columb.polys) ## district shapes list
