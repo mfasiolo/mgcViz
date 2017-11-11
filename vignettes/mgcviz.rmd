@@ -87,7 +87,8 @@ plot(sm(b, 1)) + l_fitRaster() + l_fitContour() + l_points()
 This can be converted to an interactive `plotly` plot as follows:
 ```{r 8, message = F, warning = F}
 library(plotly)
-ggplotly( plot(sm(b, 1)) + l_fitRaster() + l_points() + l_fitContour()  )
+# Commented out to avoid error when building the vignette
+# ggplotly( plot(sm(b, 1)) + l_fitRaster() + l_points() + l_fitContour()  )
 ```
 
 If needed, we can convert a `gamViz` object back to its original form by doing:
