@@ -28,7 +28,7 @@ b <- getViz(b)
 plot(sm(b, 1)) + l_poly(colour = 2) + 
   scale_fill_gradientn(colours = heat.colors(50))
 
-# Default plot + coord_map() to resize
-plot(b) + coord_map()
+# Default plot 
+plot(b)
 
 }
