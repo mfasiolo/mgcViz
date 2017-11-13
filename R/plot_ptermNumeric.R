@@ -54,7 +54,7 @@ plot.ptermNumeric <- function(x, n = 100, maxpo = 1e4, trans = identity, ...){
   data[[x$varNam]] <- xx
   
   # Suppressing spurious warnings from predict.gam
-  .pred <- withCallingHandlers(predict.gam(gObj, type = "terms", se = TRUE, terms = x$nam, newdata = data), 
+  .pred <- withCallingHandlers(predict.gam(gObj, type = "terms", se.fit = TRUE, terms = x$nam, newdata = data), 
                                warning = function(w){ 
                                  if(is.list(gObj$formula) && any(grepl("is absent, its contrast will be ignored", w))){ 
                                    invokeRestart( "muffleWarning" )

@@ -15,7 +15,17 @@ addPlotSmooth <- function(e1, e2) {
   # This returns either a ggplot or a list of ggplots (with class listOfLayers)
   if( "gamLayer" %in% class(e2) ){
     e2$arg$data <- e1$data 
-    fun <- get( paste(e2$fun, ".", paste(class(e1), collapse = ''), sep = '') )
+    fun <- tryCatch(get( paste(e2$fun, ".", paste(class(e1), collapse = ''), sep = '') ), 
+                    error = function(e){
+                      e <- conditionMessage(e)
+                      if( grepl("not found", e) ){
+                        warning(paste("No ", e2$fun, "() layer available for class \"", 
+                                      paste(class(e1), collapse = ' '), "\"", sep = ''))
+                        return( function(...) NULL )
+                      } else {
+                        stop(e)
+                      }
+                    })
     e2 <- fun(a = e2$arg)
   }
   
@@ -49,7 +59,12 @@ addPlotGam <- function(e1, e2) {
   # Add layer `e2` to each plot is `e1`. If `+` given an error, don't add `e2` to that plot.
   e1$plots <- lapply(e1$plots, 
                      function(.l){
-                       return( tryCatch(.l + e2, error = function(.e) .l) )
+                       return( withCallingHandlers(.l + e2,
+                                                   warning = function(w){ 
+                                                     if(any(grepl("layer available for class", w))){ 
+                                                       invokeRestart( "muffleWarning" )
+                                                     }
+                                                   }) )
                      })
   
   # If we added a "gamLayer" or a "listOfLayers" we consider the object to be non-empty
@@ -69,8 +84,8 @@ addPlotGam <- function(e1, e2) {
   
   if( inherits(e1, "plotSmooth") ){
     
-      return( addPlotSmooth(e1, e2) )
-      
+    return( addPlotSmooth(e1, e2) )
+    
   } else { 
     
     if( inherits(e1, "plotGam") ){
@@ -84,7 +99,7 @@ addPlotGam <- function(e1, e2) {
     }
     
   } 
-
+  
 }
 
 #' #' @rdname plotSmooth-add
