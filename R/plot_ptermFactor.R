@@ -96,8 +96,8 @@ plot.ptermFactor <- function(x, maxpo = 1e4, trans = identity, ...){
     theme_bw() +
     theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) 
   
-  return( structure(list("ggObj" = .pl, "data" = .dat), 
-                    class = c("plotSmooth", "Pterm", "Factor", "gg")) )
+  return( structure(list("ggObj" = .pl, "data" = .dat, "type" = c("Pterm", "Factor")), 
+                    class = c("plotSmooth",  "gg")) )
   
 }
 

@@ -46,7 +46,7 @@ l_densCheck <- function(n=c(80, 80), bw=NULL, tol=1e-6, dFun=NULL, ...){
 
 ######## Internal method 
 #' @noRd    
-l_densCheck.plotSmoothCheck1DNumericgg <- function(a){
+l_densCheck.Check1DNumeric <- function(a){
   
   ### 1. Preparation
   xtra <- a$xtra
@@ -54,7 +54,7 @@ l_densCheck.plotSmoothCheck1DNumericgg <- function(a){
   
   if( is.null(xtra$dFun) ){
     xtra$dFun <- function(.ed, .gr, .y){
-      if( a$data$misc$type == "tunif" ){ # Comparing with uniform density
+      if( a$data$misc$resType == "tunif" ){ # Comparing with uniform density
         d <- sqrt(.ed) - 1
       } else { # Comparing with Gaussian
         d <- dnorm(.gr, 0, sd=sd(.y))

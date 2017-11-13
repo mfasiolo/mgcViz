@@ -1,11 +1,11 @@
 #' Printing output of check.gam
 #' 
 #' @description XXX
-#' @name print.check.gam
-#' @rdname print.check.gam
+#' @name print.checkGam
+#' @rdname print.checkGam
 #' @importFrom gridExtra grid.arrange
-#' @export 
-print.check.gam <- function(x, lay = NULL, ...)
+#' @export
+print.checkGam <- function(x, lay = NULL, ...)
 {
   if( is.null(lay) ){
     lay <- matrix(c(1, 2,  

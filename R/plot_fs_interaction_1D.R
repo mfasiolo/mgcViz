@@ -56,8 +56,8 @@ plot.fs.interaction.1D <- function(x, n = 100, trans = identity,
   
   # 2) Produce output object
   out <- .plot.fs.interaction.1D(x = P$smooth, P = P, trans = trans)
-  
-  class(out) <- c("plotSmooth", "fs", "1D", "gg")
+
+  class(out) <- c("plotSmooth", "gg")
   
   return(out)
 }
@@ -79,6 +79,6 @@ plot.fs.interaction.1D <- function(x, n = 100, trans = identity,
     theme_bw() +
     theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
   
-  return( list("ggObj" = .pl, "data" = .dat) ) 
+  return( list("ggObj" = .pl, "data" = .dat, "type" = c("fs", "1D")) ) 
   
 } ## end .plot.fs.interaction.1D

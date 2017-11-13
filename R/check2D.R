@@ -137,13 +137,14 @@ check2D <- function(o, x1, x2, bw = NULL, type = "auto", maxpo = 1e4, na.rm = TR
   if( cls1 == "factor" ){ pl <- pl + scale_x_discrete()}
   if( cls2 == "factor" ){ pl <- pl + scale_y_discrete()}
 
-  misc <- list("type" = type, "vnam" = c(xnm1, xnm2))
+  misc <- list("resType" = type, "vnam" = c(xnm1, xnm2))
   
   out <- structure(list("ggObj" = pl, 
                         "data" = list("res" = res, 
                                       "sim" = sim, 
-                                      "misc" = misc)), 
-                   class = c("plotSmooth", "Check", "2D", .simpleCap(cls1), .simpleCap(cls2), "gg"))
+                                      "misc" = misc), 
+                        "type" = c("Check", "2D", .simpleCap(cls1), .simpleCap(cls2))), 
+                   class = c("plotSmooth", "gg"))
   
   return( out )
 }

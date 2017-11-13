@@ -27,7 +27,7 @@ plot.random.effect <- function(x, trans = identity, ...) {
   # 2) Produce output object
   out <- .plot.random.effect(x = P$smooth, P = P, trans = trans)
   
-  class(out) <- c("plotSmooth", "randomEffect", "gg")
+  class(out) <- c("plotSmooth", "gg")
   
   return(out)
   
@@ -53,7 +53,7 @@ plot.random.effect <- function(x, trans = identity, ...) {
                 theme(panel.grid.major = element_blank(), 
                       panel.grid.minor = element_blank())
   
-  return( list("ggObj" = .pl, "data" = .dat) )
+  return( list("ggObj" = .pl, "data" = .dat, "type" = "randomEffect") )
   
 }
 

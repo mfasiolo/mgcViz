@@ -19,7 +19,7 @@ l_bound <- function(n = 200, ...){
 
 ######## Internal method 
 #' @noRd
-l_bound.plotSmoothsos0gg <- function(a){
+l_bound.sos0 <- function(a){
   
   n <- a$xtra$n
   a$xtra <- NULL

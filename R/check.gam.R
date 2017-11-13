@@ -156,7 +156,7 @@ check.gam <- function(o,
     }
   }
   
-  class(plots) <- "check.gam"
+  class(plots) <- "checkGam"
   
   return(plots)
 }

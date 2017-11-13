@@ -35,7 +35,7 @@ plot.mgcv.smooth.2D <- function(x, n = 40, maxpo = 1e4, too.far = 0.1, trans = i
   # 2) Produce output object
   out <- .plot.mgcv.smooth.2D(x = P$smooth, P = P, trans = trans, maxpo = maxpo)
   
-  class(out) <- c("plotSmooth", "2D", "gg")
+  class(out) <- c("plotSmooth", "gg")
   
   return(out)
   
@@ -77,6 +77,6 @@ plot.mgcv.smooth.2D <- function(x, n = 40, maxpo = 1e4, too.far = 0.1, trans = i
     theme_bw() +
     theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
   
-  return( list("ggObj" = .pl, "data" = .dat) )
+  return( list("ggObj" = .pl, "data" = .dat, "type" = "2D") )
   
 }

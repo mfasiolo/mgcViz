@@ -65,12 +65,14 @@ plot.sos.smooth <- function(x, n = 40, maxpo = 1e4, too.far = 0.1, phi = 30, the
   if(scheme == 0){ # plot on sphere
     
     out <- .plot.sos.smooth(x = P$smooth, P = P, trans = trans, maxpo = maxpo)
-    class(out) <- c("plotSmooth", "sos0", "gg")
+    out$type <- "sos0"
+    class(out) <- c("plotSmooth", "gg")
     
   } else { # standard 2D plot
     
     out <- .plot.mgcv.smooth.2D(x = P$smooth, P = P, trans = trans, maxpo = maxpo)
-    class(out) <- c("plotSmooth", "sos1", "gg")
+    out$type <- "sos1"
+    class(out) <- c("plotSmooth", "gg")
     
   }
   

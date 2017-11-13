@@ -23,7 +23,7 @@ l_clusterLine <- function(centers, cluFun = kmeans, a.clu = list(), ...){
 
 ######## Internal method 
 #' @noRd
-l_clusterLine.plotSmoothfs1Dgg <- function(a){
+l_clusterLine.fs1D <- function(a){
   
   .a.clu <- a$xtra$a.clu
   .cluFun <- a$xtra$cluFun

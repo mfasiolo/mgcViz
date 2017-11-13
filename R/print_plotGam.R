@@ -9,27 +9,27 @@
 #'               we add some default layers to the plots, before printing. Does not have
 #'               any affect if the \code{plotGam} object already contains some layers.
 #' @param ... currently unused.
-#' @name print.check.gam
-#' @rdname print.check.gam
+#' @name print.plotGam
+#' @rdname print.plotGam
 #' @importFrom gridExtra grid.arrange
 #' @export 
 #' 
 print.plotGam <- function(x, ask = TRUE, pages = NULL, addLay = TRUE, ...){
   
   .addDefaultLayers <- function( .l ){
-    .cl <- paste(class(.l), collapse = '')
+    .cl <- paste(.l$type, collapse = '')
     .l <- switch(.cl, 
-                 "plotSmoothfs1Dgg" = .l + l_fitLine() + theme(legend.position="none"),
-                 "plotSmooth1Dgg" = .l + l_fitLine() + l_ciLine(),
-                 "plotSmooth2Dgg" = .l + l_fitRaster() + l_fitContour(), 
-                 "plotSmoothMDgg" = .l + l_fitRaster() + l_fitContour(), 
-                 "plotSmoothsos0gg" = .l + l_fitRaster() + l_fitContour(), 
-                 "plotSmoothsos1gg" = .l + l_fitRaster() + l_fitContour(),
-                 "plotSmoothrandomEffectgg" = .l + l_fitLine() + l_ciLine() + l_points(), 
-                 "plotSmoothmrfgg" = .l + l_poly(), 
-                 "plotSmoothPtermNumericgg" = .l + l_fitLine() + l_ciLine(),
-                 "plotSmoothPtermFactorgg" = .l + l_fitPoints() + l_ciBar(),
-                 "plotSmoothPtermLogicalgg" = .l + l_fitPoints() + l_ciBar()
+                 "fs1D" = .l + l_fitLine() + theme(legend.position="none"),
+                 "1D" = .l + l_fitLine() + l_ciLine(),
+                 "2D" = .l + l_fitRaster() + l_fitContour(), 
+                 "MD" = .l + l_fitRaster() + l_fitContour(), 
+                 "sos0" = .l + l_fitRaster() + l_fitContour(), 
+                 "sos1" = .l + l_fitRaster() + l_fitContour(),
+                 "randomEffect" = .l + l_fitLine() + l_ciLine() + l_points(), 
+                 "mrf" = .l + l_poly(), 
+                 "PtermNumeric" = .l + l_fitLine() + l_ciLine(),
+                 "PtermFactor" = .l + l_fitPoints() + l_ciBar(),
+                 "PtermLogical" = .l + l_fitPoints() + l_ciBar()
                  )
     
     return( .l )

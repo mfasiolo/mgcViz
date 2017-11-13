@@ -15,7 +15,7 @@ addPlotSmooth <- function(e1, e2) {
   # This returns either a ggplot or a list of ggplots (with class listOfLayers)
   if( "gamLayer" %in% class(e2) ){
     e2$arg$data <- e1$data 
-    fun <- tryCatch(get( paste(e2$fun, ".", paste(class(e1), collapse = ''), sep = '') ), 
+    fun <- tryCatch(get( paste(e2$fun, ".", paste(e1$type, collapse = ''), sep = '') ), 
                     error = function(e){
                       e <- conditionMessage(e)
                       if( grepl("not found", e) ){

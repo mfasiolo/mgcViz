@@ -49,7 +49,7 @@ plot.mgcv.smooth.MD <- function(x, fix, n = 40, maxpo = 1e4,
   # 2) Produce output object
   out <- .plot.mgcv.smooth.2D(x = P$smooth, P = P, trans = trans, maxpo = maxpo)
   
-  class(out) <- c("plotSmooth", "2D", "gg")
+  class(out) <- c("plotSmooth", "gg")
   
   return(out)
 }

@@ -51,7 +51,7 @@ l_gridCheck1D <- function(gridFun = NULL, n = 20, level = 0.8, stand = "none", s
 
 ######## Internal method for numeric covariates
 #' @noRd
-l_gridCheck1D.plotSmoothCheck1DNumericgg <- function(a){
+l_gridCheck1D.Check1DNumeric <- function(a){
  
   a$xtra$class <- "numeric"
   
@@ -61,7 +61,7 @@ l_gridCheck1D.plotSmoothCheck1DNumericgg <- function(a){
 
 ######## Internal method for factor covariates 
 #' @noRd
-l_gridCheck1D.plotSmoothCheck1DFactorgg <- l_gridCheck1D.plotSmoothCheck1DLogicalgg <- function(a){
+l_gridCheck1D.Check1DFactor <- l_gridCheck1D.Check1DLogical <- function(a){
   
   a$xtra$class <- "factor"
   a$data$res$x <- as.factor( a$data$res$x )

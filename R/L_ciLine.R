@@ -25,7 +25,7 @@ l_ciLine <- function(level = 0.95, mul = NULL, ...){
 
 ######## Internal method 
 #' @noRd
-l_ciLine.plotSmooth1Dgg <- l_ciLine.plotSmoothPtermNumericgg <- function(a){
+l_ciLine.1D <- l_ciLine.PtermNumeric <- function(a){
   
   xtra <- a$xtra
   a$xtra <- NULL
@@ -57,7 +57,7 @@ l_ciLine.plotSmooth1Dgg <- l_ciLine.plotSmoothPtermNumericgg <- function(a){
 
 ######## Internal method 
 #' @noRd
-l_ciLine.plotSmoothrandomEffectgg <- function(a){
+l_ciLine.randomEffect <- function(a){
   
   xtra <- a$xtra
   a$xtra <- NULL

@@ -17,7 +17,7 @@ l_fitLine <- function(...){
 
 ######## Internal method 
 #' @noRd
-l_fitLine.plotSmooth1Dgg <- l_fitLine.plotSmoothPtermNumericgg <- function(a){
+l_fitLine.1D <- l_fitLine.PtermNumeric <- function(a){
   
   a$data <- a$data$fit
   if( is.null(a$na.rm) ){ a$na.rm <- TRUE}
@@ -29,7 +29,7 @@ l_fitLine.plotSmooth1Dgg <- l_fitLine.plotSmoothPtermNumericgg <- function(a){
 
 ######## Internal method 
 #' @noRd
-l_fitLine.plotSmoothrandomEffectgg <- function(a){
+l_fitLine.randomEffect <- function(a){
   
   a$y <- a$data$fit$y
   a$data <- NULL
@@ -41,7 +41,7 @@ l_fitLine.plotSmoothrandomEffectgg <- function(a){
 
 ######## Internal method 
 #' @noRd
-l_fitLine.plotSmoothfs1Dgg <- function(a){
+l_fitLine.fs1D <- function(a){
   
   a$data <- a$data$fit
   if( is.null(a$na.rm) ){ a$na.rm <- TRUE}

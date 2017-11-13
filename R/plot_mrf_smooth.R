@@ -37,7 +37,7 @@ plot.mrf.smooth <- function(x, trans = identity,
   # 2) Produce output object
   out <- .plot.mrf.smooth(x = P$smooth, P = P, trans = trans)
   
-  class(out) <- c("plotSmooth", "mrf", "gg")
+  class(out) <- c("plotSmooth", "gg")
   
   return(out)
   
@@ -66,6 +66,6 @@ plot.mrf.smooth <- function(x, trans = identity,
          theme(panel.grid.major = element_blank(), 
                panel.grid.minor = element_blank())
   
-  return( list("ggObj" = .pl, "data" = .dat) )
+  return( list("ggObj" = .pl, "data" = .dat, type = "mrf") )
   
 }

@@ -47,7 +47,7 @@ l_gridCheck2D <- function(gridFun = mean, bw = c(NA, NA), stand = TRUE, binFun =
 
 ######## Internal method factor/numeric data
 #' @noRd
-l_gridCheck2D.plotSmoothCheck2DFactorNumericgg <- function(a){
+l_gridCheck2D.Check2DFactorNumeric <- function(a){
   
   if( is.na(a$xtra$bw[1]) ) { a$xtra$bw[1] <- 1 }
   
@@ -59,7 +59,7 @@ l_gridCheck2D.plotSmoothCheck2DFactorNumericgg <- function(a){
 
 ######## Internal method factor/factor data
 #' @noRd
-l_gridCheck2D.plotSmoothCheck2DFactorFactorgg <- function(a){
+l_gridCheck2D.Check2DFactorFactor <- function(a){
   
   if( is.na(a$xtra$bw[1]) ) { a$xtra$bw[1] <- 1 }
   if( is.na(a$xtra$bw[2]) ) { a$xtra$bw[2] <- 1 }
@@ -72,7 +72,7 @@ l_gridCheck2D.plotSmoothCheck2DFactorFactorgg <- function(a){
 
 ######## Internal method for numeric/numeric data
 #' @noRd
-l_gridCheck2D.plotSmoothCheck2DNumericNumericgg <- function(a){
+l_gridCheck2D.Check2DNumericNumeric <- function(a){
   
   if( is.null(a$xtra$binFun) ){ a$xtra$binFun <- "stat_summary_hex" }
   

@@ -18,7 +18,7 @@ l_poly <- function(...){
 
 ######## Internal method 
 #' @noRd
-l_poly.plotSmoothmrfgg <- function(a){
+l_poly.mrf <- function(a){
   
   xtra <- a$xtra
   a$xtra <- NULL

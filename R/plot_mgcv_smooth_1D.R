@@ -67,7 +67,7 @@ plot.mgcv.smooth.1D <- function(x, n = 100, maxpo = 1e4, trans = identity,
   # 2) Produce output object
   out <- .plot.mgcv.smooth.1D(x = P$smooth, P = P, trans = trans, maxpo = maxpo)
   
-  class(out) <- c("plotSmooth", "1D", "gg")
+  class(out) <- c("plotSmooth", "gg")
   
   return(out)
 }
@@ -114,5 +114,5 @@ plot.mgcv.smooth.1D <- function(x, n = 100, maxpo = 1e4, trans = identity,
     theme_bw() +
     theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
   
-  return( list("ggObj" = .pl, "data" = .dat) )
+  return( list("ggObj" = .pl, "data" = .dat, "type" = "1D") )
 } 

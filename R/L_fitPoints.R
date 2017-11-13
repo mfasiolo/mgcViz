@@ -18,7 +18,7 @@ l_fitPoints <- function(...){
 ######## Internal method for factor plots
 #' @noRd
 #'
-l_fitPoints.plotSmoothPtermFactorgg <- function(a){
+l_fitPoints.PtermFactor <- function(a){
   
   if( is.null(a$shape) ){ a$shape <- 19}
   if( is.null(a$size) ){ a$size <- 2}
@@ -28,6 +28,6 @@ l_fitPoints.plotSmoothPtermFactorgg <- function(a){
   a$data$res$y <- a$data$res$ty
   a$data$res$sub <- rep(TRUE, nrow(a$data$res))
 
-  l_points.plotSmooth1Dgg( a )
+  l_points.1D( a )
   
 }

@@ -80,7 +80,7 @@ l_glyphs2D <- function(glyFun, ggLay = "geom_points", n = c(4, 4), mapping = NUL
 
 ######## Internal method
 #' @noRd
-l_glyphs2D.plotSmoothCheck2DNumericNumericgg <- function(a){
+l_glyphs2D.Check2DNumericNumeric <- function(a){
   
   xtra <- a$xtra
   a$xtra <- NULL

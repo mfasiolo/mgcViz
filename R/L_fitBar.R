@@ -20,7 +20,7 @@ l_fitBar <- function(a.aes = list(), ...){
 ######## Internal method for factor plots
 #' @noRd
 #'
-l_fitBar.plotSmoothPtermFactorgg <- function(a){
+l_fitBar.PtermFactor <- function(a){
   
   a$data <- a$data$fit
   if( is.null(a$na.rm) ){ a$na.rm <- TRUE}

@@ -116,13 +116,14 @@ check1D <- function(o, x, type = "auto", maxpo = 1e4, na.rm = TRUE){
   cls <- .mapVarClass(class(res$x))
   if( cls == "factor" ){ pl <- pl + scale_x_discrete()}
   
-  misc <- list("type" = type)
+  misc <- list("resType" = type)
   
   out <- structure(list("ggObj" = pl, 
                         "data" = list("res" = res, 
                                       "sim" = sim, 
-                                      "misc" = misc)), 
-                   class = c("plotSmooth", "Check", "1D", .simpleCap(cls), "gg"))
+                                      "misc" = misc), 
+                        "type" = c("Check", "1D", .simpleCap(cls))), 
+                   class = c("plotSmooth", "gg"))
 
   return( out )
   

@@ -24,7 +24,7 @@ l_ciPoly <- function(level = 0.95, mul = NULL, ...){
 
 ######## Internal method 
 #' @noRd
-l_ciPoly.plotSmooth1Dgg <- l_ciPoly.plotSmoothPtermNumericgg <- function(a){
+l_ciPoly.1D <- l_ciPoly.PtermNumeric <- function(a){
   
   xtra <- a$xtra
   a$xtra <- NULL
@@ -50,7 +50,7 @@ l_ciPoly.plotSmooth1Dgg <- l_ciPoly.plotSmoothPtermNumericgg <- function(a){
 
 ######## Internal method 
 #' @noRd
-l_ciPoly.plotSmoothrandomEffectgg <- function(a){
+l_ciPoly.randomEffect <- function(a){
   
   xtra <- a$xtra
   a$xtra <- NULL

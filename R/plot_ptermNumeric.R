@@ -97,7 +97,7 @@ plot.ptermNumeric <- function(x, n = 100, maxpo = 1e4, trans = identity, ...){
     theme_bw() +
     theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
   
-  return( structure(list("ggObj" = .pl, "data" = .dat), 
-                    class = c("plotSmooth", "Pterm", "Numeric", "gg")) )
+  return( structure(list("ggObj" = .pl, "data" = .dat, "type" = c("Pterm", "Numeric")), 
+                    class = c("plotSmooth", "gg")) )
   
 }

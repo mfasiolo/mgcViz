@@ -18,57 +18,56 @@ l_points <- function(...){
 
 ######## Internal method for factor 1D plots
 #' @noRd
-l_points.plotSmoothPtermFactorgg <- l_points.plotSmoothCheck1DFactorgg <- function(a){
+l_points.PtermFactor <- l_points.Check1DFactor <- function(a){
   
   if( is.null(a$position) ) { a$position <- position_jitter(width = 0.25, height = 0) }
   
-  l_points.plotSmooth1Dgg( a )
+  l_points.1D( a )
   
 }
 
 ######## Internal method for logical 1D plots
 #' @noRd
-l_points.plotSmoothCheck1DLogicalgg <- function(a){
+l_points.Check1DLogical <- function(a){
     
     if( is.null(a$position) ) { a$position <- position_jitter(width = 0.45, height = 0) }
     
-    l_points.plotSmooth1Dgg( a )
+    l_points.1D( a )
     
 }
 
 ######## Internal method for factor/numeric 2D checks
 #' @noRd
-l_points.plotSmoothCheck2DFactorNumericgg <- function(a){
+l_points.Check2DFactorNumeric <- function(a){
   
   if( is.null(a$position) ) { a$position <- position_jitter(width = 0.25, height = 0) }
   
-  l_points.plotSmooth1Dgg(a)
+  l_points.1D(a)
   
 }
 
 ######## Internal method for factor/factor 2D checks
 #' @noRd
-l_points.plotSmoothCheck2DFactorFactorgg <- function(a){
+l_points.Check2DFactorFactor <- function(a){
   
   if( is.null(a$position) ) { a$position <- position_jitter(width = 0.25, height = 0.25) }
   
-  l_points.plotSmooth1Dgg(a)
+  l_points.1D(a)
   
 }
 
 ######## Internal method for numeric/numeric 2D plots
 #' @noRd
-l_points.plotSmooth2Dgg <- l_points.plotSmoothCheck2DNumericNumericgg <- 
-l_points.plotSmoothMDslicegg <- function(a){
+l_points.2D <- l_points.Check2DNumericNumeric <- l_points.MDslice <- function(a){
   
-  return( l_points.plotSmooth1Dgg(a) )
+  return( l_points.1D(a) )
   
 }
 
 ######## General internal method 
 #' @noRd
-l_points.plotSmooth1Dgg <- l_points.plotSmoothsos1gg <- l_points.plotSmoothsos0gg <- 
-l_points.plotSmoothCheck1DNumericgg <- l_points.plotSmoothPtermNumericgg <- function(a){
+l_points.1D <- l_points.sos1 <- l_points.sos0 <- 
+l_points.Check1DNumeric <- l_points.PtermNumeric <- function(a){
   
   a$data <- a$data$res[a$data$res$sub, ]
   
@@ -90,7 +89,7 @@ l_points.plotSmoothCheck1DNumericgg <- l_points.plotSmoothPtermNumericgg <- func
 
 ######## Internal method for random effects
 #' @noRd
-l_points.plotSmoothrandomEffectgg <- function(a){
+l_points.randomEffect <- function(a){
     
     a$data <- a$data$fit
     if( is.null(a$shape) ) { a$shape <- 19 } 

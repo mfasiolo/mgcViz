@@ -18,7 +18,7 @@ l_coordContour <- function(brLO = c(-8:9*20), brLA = c(-8:8*10), ...){
 
 ######## Internal method 
 #' @noRd
-l_coordContour.plotSmoothsos0gg <- function(a){
+l_coordContour.sos0 <- function(a){
   
   xtra <- a$xtra
   a$xtra <- NULL

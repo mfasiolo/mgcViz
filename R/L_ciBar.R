@@ -22,7 +22,7 @@ l_ciBar <- function(level = 0.95, mul = NULL, ...){
 ######## Internal method for factor plots
 #' @noRd
 #'
-l_ciBar.plotSmoothPtermFactorgg <- function(a){
+l_ciBar.PtermFactor <- function(a){
   
   xtra <- a$xtra
   a$xtra <- NULL
