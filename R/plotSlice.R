@@ -42,6 +42,8 @@
 #'                 fix = list("z" = 0, "x" = seq(-3, 3, length.out = 9)))
 #' pl + l_fitRaster() + l_fitContour() + l_points() + l_rug()
 #' 
+#' @importFrom plyr alply
+#' @importFrom stats as.formula
 #' @rdname plotSlice
 #' @export plotSlice
 #' 
