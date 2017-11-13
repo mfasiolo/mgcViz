@@ -35,7 +35,7 @@ pl + l_fitRaster() + l_fitContour() + theme(panel.spacing = unit(0.5, "lines"))
 n <- 5e3
 x <- rnorm(n); y <- rnorm(n); z <- rnorm(n); z2 <- rnorm(n)
 ob <- (x-z)^2 + (y-z)^2 + z2^3 + rnorm(n)
-b <- bam(ob ~ s(x, y, z, z2), discrete = T)
+b <- bam(ob ~ s(x, y, z, z2), discrete = TRUE)
 v <- getViz(b)
 
 # Plot slices across "z" and "x"
