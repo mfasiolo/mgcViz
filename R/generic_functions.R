@@ -25,7 +25,4 @@ zoom <- function(o, ...) UseMethod("zoom")
 shine <- function(...) UseMethod("shine")
 
 #' @export
-slice <- function(...) UseMethod("slice")
-
-#' @export
 plotRGL <- function(...) UseMethod("plotRGL")

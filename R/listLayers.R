@@ -21,6 +21,9 @@ listLayers <- function(o){
                 "plotSmoothrandomEffectgg" = c("l_fitLine", "l_points", "l_ciLine", "l_ciPoly"),
                 "plotSmoothmrfgg" = c("l_poly"),
                 
+                # Slices of MD smooths
+                "plotSmoothMDslicegg" = c("l_fitContour", "l_fitRaster", "l_points", "l_rug"),
+                
                 # Parametric effects plots
                 "plotSmoothPtermNumericgg" = c("l_ciLine", "l_ciPoly", "l_fitLine", "l_dens", 
                                                "l_points", "l_rug"), 

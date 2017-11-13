@@ -17,7 +17,8 @@ l_fitContour <- function(...){
 
 ######## Internal method 
 #' @noRd
-l_fitContour.plotSmooth2Dgg <- l_fitContour.plotSmoothsos1gg <- l_fitContour.plotSmoothsos0gg <- function(a){
+l_fitContour.plotSmooth2Dgg <- l_fitContour.plotSmoothsos1gg <- 
+l_fitContour.plotSmoothsos0gg <- l_fitContour.plotSmoothMDslicegg <- function(a){
   
   a$data <- a$data$fit
   a$mapping  <- aes(z = tz)

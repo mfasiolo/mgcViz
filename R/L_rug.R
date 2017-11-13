@@ -76,7 +76,7 @@ l_rug.plotSmoothCheck2DFactorFactorgg <- function(a){
 ######## Internal method for numeric/numeric 2D plots
 #' @noRd
 l_rug.plotSmooth2Dgg <- l_rug.plotSmoothsos0gg <- l_rug.plotSmoothsos1gg <- 
-l_rug.plotSmoothCheck2DNumericNumericgg <- function(a){
+l_rug.plotSmoothCheck2DNumericNumericgg <- l_rug.plotSmoothMDslicegg <- function(a){
   
   if( is.null(a$mapping) ) { a$mapping <- aes(x = x, y = y) }
   

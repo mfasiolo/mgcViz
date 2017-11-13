@@ -58,7 +58,8 @@ l_points.plotSmoothCheck2DFactorFactorgg <- function(a){
 
 ######## Internal method for numeric/numeric 2D plots
 #' @noRd
-l_points.plotSmooth2Dgg <- l_points.plotSmoothCheck2DNumericNumericgg <- function(a){
+l_points.plotSmooth2Dgg <- l_points.plotSmoothCheck2DNumericNumericgg <- 
+l_points.plotSmoothMDslicegg <- function(a){
   
   return( l_points.plotSmooth1Dgg(a) )
   
