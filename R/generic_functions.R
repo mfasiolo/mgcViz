@@ -17,12 +17,16 @@ check <- function(o, ...) UseMethod("check")
 #' @export zoom
 zoom <- function(o, ...) UseMethod("zoom")
 
-.prepare <- function(...) UseMethod(".prepare")
-
-.plot <- function(...) UseMethod(".plot")
-
 #' @export
 shine <- function(...) UseMethod("shine")
 
 #' @export
 plotRGL <- function(...) UseMethod("plotRGL")
+
+#' @export
+plotDiff <- function(...) UseMethod("plotDiff")
+
+###### Internal generics
+.prepare <- function(...) UseMethod(".prepare")
+
+.plot <- function(...) UseMethod(".plot")

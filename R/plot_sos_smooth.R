@@ -66,15 +66,15 @@ plot.sos.smooth <- function(x, n = 40, maxpo = 1e4, too.far = 0.1, phi = 30, the
     
     out <- .plot.sos.smooth(x = P$smooth, P = P, trans = trans, maxpo = maxpo)
     out$type <- "sos0"
-    class(out) <- c("plotSmooth", "gg")
-    
+
   } else { # standard 2D plot
     
     out <- .plot.mgcv.smooth.2D(x = P$smooth, P = P, trans = trans, maxpo = maxpo)
     out$type <- "sos1"
-    class(out) <- c("plotSmooth", "gg")
     
   }
+  
+  class(out) <- c("plotSmooth", "gg")
   
   return(out)
   
@@ -88,9 +88,11 @@ plot.sos.smooth <- function(x, n = 40, maxpo = 1e4, too.far = 0.1, phi = 30, the
   .dat <- list()
   
   ### 1) Build dataset on fitted effect
+  # We set to NA the entries that fall outside the globe.
   m <- length(P$xm); 
-  zz <- lo <- la <- rep(NA, m*m)
-  
+  zz <- lo <- la <- se <- rep(NA, m*m)
+
+  se[ P$ind ] <- P$se
   zz[ P$ind ] <- P$fit
   lo[ P$ind ] <- P$lo
   la[ P$ind ] <- P$la
@@ -100,17 +102,20 @@ plot.sos.smooth <- function(x, n = 40, maxpo = 1e4, too.far = 0.1, phi = 30, the
                          "z" = zz, 
                          "tz" = trans( zz ),
                          "lo" = lo, 
-                         "la" = la)
+                         "la" = la, 
+                         "se" = se)
   
   ### 2) Build dataset on residuals
-  .dat$res <- P$raw
-
-  # Sample if too many points (> maxpo) 
-  nres <- nrow( .dat$res )
-  .dat$res$sub <- if(nres > maxpo) { 
-    sample( c(rep(T, maxpo), rep(F, nres-maxpo)) )
-  } else { 
-    rep(T, nres) 
+  if( !is.null(P$raw) ){
+    .dat$res <- P$raw
+    
+    # Sample if too many points (> maxpo) 
+    nres <- nrow( .dat$res )
+    .dat$res$sub <- if(nres > maxpo) { 
+      sample( c(rep(T, maxpo), rep(F, nres-maxpo)) )
+    } else { 
+      rep(T, nres) 
+    }
   }
   
   .dat$misc <- list("trans" = trans)
@@ -118,7 +123,9 @@ plot.sos.smooth <- function(x, n = 40, maxpo = 1e4, too.far = 0.1, phi = 30, the
   .pl <- ggplot(data = .dat$fit, aes(x = x, y = y, z = z)) +
          labs(title = P$main, x = P$xlab, y = P$ylab) + 
          theme_bw() +
-         theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+         theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
+               axis.line=element_blank(), panel.border=element_blank(), 
+               axis.text=element_blank(), axis.ticks=element_blank())
   
   return( list("ggObj" = .pl, "data" = .dat) )
   

@@ -1,7 +1,7 @@
-.prepare.sos.smooth <- function(x, data, label, se1.mult, se2.mult,
-                                partial.resids, se, n, n2,
-                                xlab, ylab, main,
-                                ylim, xlim, too.far,
+.prepare.sos.smooth <- function(x, data, label, se1.mult = 1, se2.mult = 1,
+                                partial.resids = NULL, se, n, n2,
+                                xlab = NULL, ylab = NULL, main = NULL,
+                                ylim = NULL, xlim = NULL, too.far,
                                 trans, phi, theta, scheme) {
   
   ## plot method function for sos.smooth terms
@@ -60,7 +60,7 @@
   ii <- ii | (abs(dat[[1]])>80) 
   lo[ii] <- NA
   
-  return(list(X=X,scale=FALSE,se=FALSE,raw=raw,xlab="",ylab="",main="",
-              ind=ind,xm=xm,ym=ym,lo=lo,la=dat[[1]]))
+  return(list(X=X,scale=FALSE,se=TRUE,raw=raw,xlab="",ylab="",main="",
+              ind=ind,xm=xm,ym=ym,lo=lo,la=dat[[1]],se.mult = se1.mult))
   
 } ## end prepare.sos.smooth

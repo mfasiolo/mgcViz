@@ -19,8 +19,8 @@ addPlotSmooth <- function(e1, e2) {
                     error = function(e){
                       e <- conditionMessage(e)
                       if( grepl("not found", e) ){
-                        warning(paste("No ", e2$fun, "() layer available for class \"", 
-                                      paste(class(e1), collapse = ' '), "\"", sep = ''))
+                        warning(paste("No ", e2$fun, "() layer available for type \"", 
+                                      paste(e1$type, collapse = ' '), "\"", sep = ''))
                         return( function(...) NULL )
                       } else {
                         stop(e)

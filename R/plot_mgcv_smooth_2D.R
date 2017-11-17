@@ -56,18 +56,20 @@ plot.mgcv.smooth.2D <- function(x, n = 40, maxpo = 1e4, too.far = 0.1, trans = i
                          "se" = P$se)
   
   # 2) Build dataset on residuals
-  # Exclude points too far from current slice (relevant only when called by plot.mgcv.smooth.MD)
-  if ( !is.null(P$exclude2) && any(P$exclude2) ){
-    P$raw <- P$raw[ !P$exclude2,  ]  
-  }
-  .dat$res <- P$raw
-  
-  # Sample if too many points (> maxpo) 
-  nres <- nrow( .dat$res )
-  .dat$res$sub <- if(nres > maxpo) { 
-    sample( c(rep(T, maxpo), rep(F, nres-maxpo)) )
-  } else { 
-    rep(T, nres) 
+  if( !is.null(P$raw) ){
+    # Exclude points too far from current slice (relevant only when called by plot.mgcv.smooth.MD)
+    if ( !is.null(P$exclude2) && any(P$exclude2) ){
+      P$raw <- P$raw[ !P$exclude2,  ]  
+    }
+    .dat$res <- P$raw
+    
+    # Sample if too many points (> maxpo) 
+    nres <- nrow( .dat$res )
+    .dat$res$sub <- if(nres > maxpo) { 
+      sample( c(rep(T, maxpo), rep(F, nres-maxpo)) )
+    } else { 
+      rep(T, nres) 
+    }
   }
   
   .dat$misc <- list("trans" = trans)
