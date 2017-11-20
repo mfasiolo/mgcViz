@@ -2,7 +2,7 @@
 % Please edit documentation in R/L_gridCheck2D.R
 \name{l_gridCheck2D}
 \alias{l_gridCheck2D}
-\title{Checking GAM residuals along one covariate}
+\title{Checking GAM residuals along two covariates}
 \usage{
 l_gridCheck2D(gridFun = mean, bw = c(NA, NA), stand = TRUE,
   binFun = NULL, ...)

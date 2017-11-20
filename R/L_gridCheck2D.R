@@ -1,5 +1,5 @@
 #'
-#' Checking GAM residuals along one covariate
+#' Checking GAM residuals along two covariates
 #' 
 #' @description XXX
 #' @name l_gridCheck2D
