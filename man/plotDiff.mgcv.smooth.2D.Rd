@@ -22,6 +22,10 @@ b <- gam(y ~ s(x2, x1, by = fac), data=dat)
 o <- getViz(b, nsim = 0)
 
 # Extract the smooths correspoding to "A1" and "A2" and plot their difference
-plotDiff(s1 = sm(o, 1), s2 = sm(o, 2)) + l_fitRaster() + l_fitContour()
+pl <- plotDiff(s1 = sm(o, 1), s2 = sm(o, 2))
+pl + l_fitRaster() + l_fitContour()
+
+# Plot p-values for differences between the two smooths
+pl + l_pvRaster() + l_pvContour()
 
 }

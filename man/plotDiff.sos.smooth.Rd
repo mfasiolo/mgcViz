@@ -10,3 +10,52 @@
 \description{
 Plotting differences between smooths of sphere.
 }
+\examples{
+#### 1) Simulate data and add factors uncorrelated to the response
+library(mgcViz)
+set.seed(0)
+n <- 500
+
+f <- function(la,lo) { ## a test function...
+  sin(lo)*cos(la-.3)
+}
+
+## generate with uniform density on sphere...  
+lo <- runif(n)*2*pi-pi ## longitude
+la <- runif(3*n)*pi-pi/2
+ind <- runif(3*n)<=cos(la)
+la <- la[ind];
+la <- la[1:n]
+
+ff <- f(la,lo)
+y <- ff + rnorm(n)*.2 ## test data
+
+## generate data for plotting truth...
+lam <- seq(-pi/2,pi/2,length=30)
+lom <- seq(-pi,pi,length=60)
+gr <- expand.grid(la=lam,lo=lom)
+fz <- f(gr$la,gr$lo)
+zm <- matrix(fz,30,60)
+
+dat <- data.frame(la = la *180/pi,lo = lo *180/pi,y=y)
+dat$fac <- as.factor( sample(c("A1", "A2", "A3"), nrow(dat), replace = TRUE) ) 
+
+#### 2) fit spline on sphere model...
+bp <- gam(y~s(la,lo,bs="sos",k=60, by = fac),data=dat)
+bp <- getViz(bp)
+
+# Extract the smooths correspoding to "A1" and "A3" and plot their difference
+# Using scheme = 0 
+pl0 <- plotDiff(s1 = sm(bp, 1), s2 = sm(bp, 3))
+pl0 + l_fitRaster() + l_fitContour() + l_coordContour() + l_bound()
+
+# Plot p-values for significance of differences
+pl0 + l_pvRaster() + l_pvContour(breaks=c(0.05, 0.1, 0.2, 0.3, 0.5))
+
+# Using scheme = 1
+pl1 <- plotDiff(s1 = sm(bp, 1), s2 = sm(bp, 2), scheme = 1) 
+pl1 + l_fitRaster() + l_fitContour()
+
+# Plot p-values for significance of differences
+pl1 + l_pvRaster() + l_pvContour(breaks=c(0.05, 0.1, 0.2, 0.3, 0.5))
+}
