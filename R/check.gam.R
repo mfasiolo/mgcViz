@@ -5,7 +5,7 @@
 #'  information about the fitting procedure and results. The default is to produce 4 residual plots,
 #'   some information about the convergence of the smoothness selection optimization, and
 #'    to run diagnostic tests of whether the basis dimension choises are adequate. 
-#' @param o, A fitted `gam` object as produced by [mgcv::gam()].
+#' @param obj, A fitted `gam` object as produced by [mgcv::gam()].
 #' @param type, Type of residuals, see [mgcv::residuals.gam()], used in all plots.
 #' @param k.sample, Above this k testing uses a random sub-sample of data.
 #' @param k.rep, How many re-shuffles to do to get p-value for k testing.
@@ -32,7 +32,7 @@
 #'       a.hist = list(bins = 10))
 #' @export check.gam
 #' 
-check.gam <- function(o,
+check.gam <- function(obj,
                       type = c("auto", "deviance", "pearson", "response", "tunif", "tnormal"),
                       k.sample = 5000,
                       k.rep = 200,
@@ -44,7 +44,7 @@ check.gam <- function(o,
                       ...){
   
   type <- match.arg(type)
-  if (type == "auto") { type <- .getResTypeAndMethod(o$family$family)$type }
+  if (type == "auto") { type <- .getResTypeAndMethod(obj$family$family)$type }
   
   # Overwriting user-provided argument lists
   a.all <- .argMaster("check.gam")
@@ -52,7 +52,7 @@ check.gam <- function(o,
     assign(nam, .argSetup(a.all[[nam]], get(nam), nam, verbose = FALSE), envir = environment())
   }
   
-  resid <- residuals(o, type = type)
+  resid <- residuals(obj, type = type)
  
   # Sample if too many points (> maxpo) 
   nres <- length( resid )
@@ -62,27 +62,27 @@ check.gam <- function(o,
     rep(T, nres) 
   }  
   
-  linpred <- if (is.matrix(o$linear.predictors) && !is.matrix(resid)) { 
-    napredict(o$na.action, o$linear.predictors[, 1])
+  linpred <- if (is.matrix(obj$linear.predictors) && !is.matrix(resid)) { 
+    napredict(obj$na.action, obj$linear.predictors[, 1])
   } else {
-    napredict(o$na.action, o$linear.predictors)
+    napredict(obj$na.action, obj$linear.predictors)
   } 
-  fv <- if (inherits(o$family, "extended.family")) {
-    predict(o, type = "response")
+  fv <- if (inherits(obj$family, "extended.family")) {
+    predict(obj, type = "response")
   } else {
-    fitted(o)
+    fitted(obj)
   }
-  if (is.matrix(fv) && !is.matrix(o$y)) {
+  if (is.matrix(fv) && !is.matrix(obj$y)) {
     fv <- fv[, 1]
   }
-  resp <- napredict(o$na.action, o$y)
+  resp <- napredict(obj$na.action, obj$y)
   df <- data.frame(linpred = linpred, resid = resid,
                    response = resp, fv = fv)
   dfS <- df[subS, ]
   
   plots <- list()
   plots[[1]] <- 
-    do.call("qq.gam", c(list("o" = o), a.qq))$ggObj
+    do.call("qq.gam", c(list("o" = obj), a.qq))$ggObj
   plots[[2]] <- 
     ggplot(data = dfS, aes(x = linpred, y = resid)) +
     do.call("geom_point", a.respoi) +
@@ -99,11 +99,11 @@ check.gam <- function(o,
     labs(title = "Response vs. Fitted Values",
                   x = "Fitted Values", y = "Response")
   
-  if ( (o$method %in% c("GCV", "GACV", "UBRE", "REML", "ML",  "P-ML", "P-REML", "fREML")) ) {
-    cat("\nMethod:", o$method, "  Optimizer:", o$optimizer)
-    if (!is.null(o$outer.info)) {
-      if (o$optimizer[2] %in% c("newton", "bfgs")) {
-        boi <- o$outer.info
+  if ( (obj$method %in% c("GCV", "GACV", "UBRE", "REML", "ML",  "P-ML", "P-REML", "fREML")) ) {
+    cat("\nMethod:", obj$method, "  Optimizer:", obj$optimizer)
+    if (!is.null(obj$outer.info)) {
+      if (obj$optimizer[2] %in% c("newton", "bfgs")) {
+        boi <- obj$outer.info
         cat("\n", boi$conv, " after ", boi$iter, " iteration", 
             sep = "")
         if (boi$iter == 1) 
@@ -111,7 +111,7 @@ check.gam <- function(o,
         else cat("s.")
         cat("\nGradient range [", min(boi$grad), ",", max(boi$grad), 
             "]", sep = "")
-        cat("\n(score ", o$gcv.ubre, " & scale ", o$sig2, 
+        cat("\n(score ", obj$gcv.ubre, " & scale ", obj$sig2, 
             ").", sep = "")
         ev <- eigen(boi$hess)$values
         if (min(ev) > 0) 
@@ -122,33 +122,33 @@ check.gam <- function(o,
       }
       else {
         cat("\n")
-        print(o$outer.info)
+        print(obj$outer.info)
       }
     }
     else {
-      if (length(o$sp) == 0) 
+      if (length(obj$sp) == 0) 
         cat("\nModel required no smoothing parameter selection")
       else {
         cat("\nSmoothing parameter selection converged after", 
-            o$mgcv.conv$iter, "iteration")
-        if (o$mgcv.conv$iter > 1) 
+            obj$mgcv.conv$iter, "iteration")
+        if (obj$mgcv.conv$iter > 1) 
           cat("s")
-        if (!o$mgcv.conv$fully.converged) 
+        if (!obj$mgcv.conv$fully.converged) 
           cat(" by steepest\ndescent step failure.\n")
         else cat(".\n")
-        cat("The RMS", o$method, "score gradient at convergence was", 
-            o$mgcv.conv$rms.grad, ".\n")
-        if (o$mgcv.conv$hess.pos.def) 
+        cat("The RMS", obj$method, "score gradient at convergence was", 
+            obj$mgcv.conv$rms.grad, ".\n")
+        if (obj$mgcv.conv$hess.pos.def) 
           cat("The Hessian was positive definite.\n")
         else cat("The Hessian was not positive definite.\n")
       }
     }
-    if (!is.null(o$rank)) {
-      cat("Model rank = ", o$rank, "/", length(o$coefficients), 
+    if (!is.null(obj$rank)) {
+      cat("Model rank = ", obj$rank, "/", length(obj$coefficients), 
           "\n")
     }
     cat("\n")
-    kchck <- mgcv:::k.check(o, subsample = k.sample, n.rep = k.rep)
+    kchck <- mgcv:::k.check(obj, subsample = k.sample, n.rep = k.rep)
     if (!is.null(kchck)) {
       cat("Basis dimension (k) checking results. Low p-value (k-index<1) may\n")
       cat("indicate that k is too low, especially if edf is close to k'.\n\n")

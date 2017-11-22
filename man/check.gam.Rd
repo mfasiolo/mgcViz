@@ -4,13 +4,13 @@
 \alias{check.gam}
 \title{Some diagnostics for a fitted gam model}
 \usage{
-\method{check}{gam}(o, type = c("auto", "deviance", "pearson", "response",
+\method{check}{gam}(obj, type = c("auto", "deviance", "pearson", "response",
   "tunif", "tnormal"), k.sample = 5000, k.rep = 200, maxpo = 10000,
   a.qq = list(), a.hist = list(), a.respoi = list(), a.reshex = list(),
   ...)
 }
 \arguments{
-\item{o, }{A fitted \code{gam} object as produced by \code{\link[mgcv:gam]{mgcv::gam()}}.}
+\item{obj, }{A fitted \code{gam} object as produced by \code{\link[mgcv:gam]{mgcv::gam()}}.}
 
 \item{type, }{Type of residuals, see \code{\link[mgcv:residuals.gam]{mgcv::residuals.gam()}}, used in all plots.}
 

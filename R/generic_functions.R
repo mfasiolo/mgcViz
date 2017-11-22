@@ -1,13 +1,4 @@
 
-#' Generic check function
-#'
-#' Generic check function
-#'
-#' @title check
-#' @rdname check
-#' @export check
-check <- function(o, ...) UseMethod("check")
-
 #' Generic zooming function
 #'
 #' Generic zooming function
