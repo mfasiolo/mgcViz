@@ -4,10 +4,15 @@
 \alias{plot.mgcv.smooth.2D}
 \title{Plotting two dimensional smooth effects}
 \usage{
-\method{plot}{mgcv.smooth.2D}(x, n = 40, maxpo = 10000, too.far = 0.1,
-  trans = identity, seWithMean = FALSE, unconditional = FALSE, ...)
+\method{plot}{mgcv.smooth.2D}(x, n = 40, xlim = NULL, ylim = NULL,
+  maxpo = 10000, too.far = 0.1, trans = identity, seWithMean = FALSE,
+  unconditional = FALSE, ...)
 }
 \arguments{
+\item{xlim}{if supplied then this pair of numbers are used as the x limits for the plot.}
+
+\item{ylim}{if supplied then this pair of numbers are used as the y limits for the plot.}
+
 \item{...}{currently unused.}
 }
 \description{

@@ -4,8 +4,8 @@
 \alias{plot.mgcv.smooth.1D}
 \title{Plotting one dimensional smooth effects}
 \usage{
-\method{plot}{mgcv.smooth.1D}(x, n = 100, maxpo = 10000, trans = identity,
-  unconditional = FALSE, seWithMean = FALSE, ...)
+\method{plot}{mgcv.smooth.1D}(x, n = 100, xlim = NULL, maxpo = 10000,
+  trans = identity, unconditional = FALSE, seWithMean = FALSE, ...)
 }
 \arguments{
 \item{x}{a smooth effect object.}
@@ -13,6 +13,8 @@
 \item{n}{number of grid points used to compute main effect and c.i. lines.
 For a nice smooth plot this needs to be several times the estimated degrees of
 freedom for the smooth.}
+
+\item{xlim}{if supplied then this pair of numbers are used as the x limits for the plot.}
 
 \item{maxpo}{maximum number of residuals points that will be used by layers such as
 \code{resRug()} and \code{resPoints()}. If number of datapoints > \code{maxpo},

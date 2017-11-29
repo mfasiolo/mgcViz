@@ -47,7 +47,7 @@
 #' @rdname plot.sos.smooth
 #' @export plot.sos.smooth
 #' 
-plot.sos.smooth <- function(x, n = 40, maxpo = 1e4, too.far = 0.1, phi = 30, theta = 30, 
+plot.sos.smooth <- function(x, n = 40, xlim = NULL, ylim = NULL, maxpo = 1e4, too.far = 0.1, phi = 30, theta = 30, 
                             trans = identity, scheme = 0, seWithMean = FALSE, unconditional = FALSE, ...)
 {
   if (length(scheme)>1){ 
@@ -55,10 +55,14 @@ plot.sos.smooth <- function(x, n = 40, maxpo = 1e4, too.far = 0.1, phi = 30, the
     warning( "scheme should be a single number" )
   }
   
+  if( (!is.null(xlim) || !is.null(ylim)) && scheme == 0 ){
+    stop("xlim and ylim must be left to NULL when scheme==0")
+  }
+   
   # 1) Prepare data
   P <- .prepareP(o = x, unconditional = unconditional, residuals = TRUE, 
                  resDen = "none", se = TRUE, se.mult = 1, n = NULL, n2 = n,  
-                 xlab = NULL, ylab = NULL, main = NULL, ylim = NULL, xlim = NULL,
+                 xlab = NULL, ylab = NULL, main = NULL, ylim = ylim, xlim = xlim,
                  too.far = too.far, seWithMean = seWithMean, scheme = scheme, phi = phi, theta = theta)
   
   # 2) Produce output object

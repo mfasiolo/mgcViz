@@ -4,11 +4,13 @@
 \alias{plot.fs.interaction.1D}
 \title{Plotting one dimensional smooth factor interactions}
 \usage{
-\method{plot}{fs.interaction.1D}(x, n = 100, trans = identity,
-  unconditional = FALSE, seWithMean = FALSE, ...)
+\method{plot}{fs.interaction.1D}(x, n = 100, xlim = NULL,
+  trans = identity, unconditional = FALSE, seWithMean = FALSE, ...)
 }
 \arguments{
 \item{x}{a smooth effect.}
+
+\item{xlim}{if supplied then this pair of numbers are used as the x limits for the plot.}
 
 \item{...}{currently unused.}
 }

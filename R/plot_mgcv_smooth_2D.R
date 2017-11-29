@@ -2,6 +2,8 @@
 #' Plotting two dimensional smooth effects
 #' 
 #' @description XXX
+#' @param xlim if supplied then this pair of numbers are used as the x limits for the plot.
+#' @param ylim if supplied then this pair of numbers are used as the y limits for the plot.
 #' @param ... currently unused.
 #' @name plot.mgcv.smooth.2D
 #' @examples 
@@ -23,13 +25,14 @@
 #' @rdname plot.mgcv.smooth.2D
 #' @export plot.mgcv.smooth.2D
 #' 
-plot.mgcv.smooth.2D <- function(x, n = 40, maxpo = 1e4, too.far = 0.1, trans = identity, 
-                                seWithMean = FALSE, unconditional = FALSE, ...) {
+plot.mgcv.smooth.2D <- function(x, n = 40, xlim = NULL, ylim = NULL, maxpo = 1e4, 
+                                too.far = 0.1, trans = identity, seWithMean = FALSE, 
+                                unconditional = FALSE, ...) {
   
   # 1) Prepare data
   P <- .prepareP(o = x, unconditional = unconditional, residuals = TRUE, 
                  resDen = "none", se = TRUE, se.mult = 1, n = NULL, n2 = n,  
-                 xlab = NULL, ylab = NULL, main = NULL, ylim = NULL, xlim = NULL,
+                 xlab = NULL, ylab = NULL, main = NULL, ylim = ylim, xlim = xlim,
                  too.far = too.far, seWithMean = seWithMean)
   
   # 2) Produce output object
@@ -61,8 +64,11 @@ plot.mgcv.smooth.2D <- function(x, n = 40, maxpo = 1e4, too.far = 0.1, trans = i
     if ( !is.null(P$exclude2) && any(P$exclude2) ){
       P$raw <- P$raw[ !P$exclude2,  ]  
     }
-    .dat$res <- P$raw
     
+    # Exclude residuals falling outside boundaries
+    .dat$res <- filter(P$raw, x >= P$xlim[1] & x <= P$xlim[2] & 
+                              y >= P$ylim[1] & y <= P$ylim[2] )
+  
     # Sample if too many points (> maxpo) 
     nres <- nrow( .dat$res )
     .dat$res$sub <- if(nres > maxpo) { 

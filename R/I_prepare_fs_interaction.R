@@ -6,7 +6,11 @@
     stop("no method for base smooth dim > 1")
   }
   raw <- data[x$base$term][[1]]
-  xx <- seq(min(raw), max(raw), length = n) # generate x sequence for prediction
+
+  # Generate x sequence for prediction
+  if (is.null(xlim)){ xlim <- range(raw) }
+  xx <- seq(xlim[1], xlim[2], length = n) 
+
   nf <- length(x$flev)
   fac <- rep(x$flev, rep(n, nf))
   dat <- data.frame(fac, xx)

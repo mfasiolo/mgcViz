@@ -4,13 +4,15 @@
 \alias{plot.ptermNumeric}
 \title{Plotting numeric parametric effects}
 \usage{
-\method{plot}{ptermNumeric}(x, n = 100, maxpo = 10000, trans = identity,
-  ...)
+\method{plot}{ptermNumeric}(x, n = 100, xlim = NULL, maxpo = 10000,
+  trans = identity, ...)
 }
 \arguments{
 \item{x}{a parametric effect object.}
 
 \item{n}{number of grid points used to compute main effect and c.i. lines.}
+
+\item{xlim}{if supplied then this pair of numbers are used as the x limits for the plot.}
 
 \item{maxpo}{maximum number of residuals points that will be used by layers such as
 \code{resRug()} and \code{resPoints()}. If number of datapoints > \code{maxpo},

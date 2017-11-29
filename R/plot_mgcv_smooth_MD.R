@@ -1,6 +1,8 @@
 #' Plotting slice of higher-dimensional smooth effects
 #' 
 #' @description XXX
+#' @param xlim if supplied then this pair of numbers are used as the x limits for the plot.
+#' @param ylim if supplied then this pair of numbers are used as the y limits for the plot.
 #' @param ... currently unused.
 #' @name plot.mgcv.smooth.MD
 #' @examples 
@@ -33,7 +35,7 @@
 #' @importFrom stats cov quantile
 #' @export plot.mgcv.smooth.MD
 #' 
-plot.mgcv.smooth.MD <- function(x, fix, n = 40, maxpo = 1e4,
+plot.mgcv.smooth.MD <- function(x, fix, n = 40, xlim = NULL, ylim = NULL, maxpo = 1e4,
                                 too.far = c(0.1, NA), trans = identity, 
                                 seWithMean = FALSE, 
                                 unconditional = FALSE, ...) {
@@ -43,7 +45,7 @@ plot.mgcv.smooth.MD <- function(x, fix, n = 40, maxpo = 1e4,
   # 1) Prepare data
   P <- .prepareP(o = x, unconditional = unconditional, residuals = TRUE, 
                  resDen = "none", se = TRUE, se.mult = 1, n = NULL, n2 = n,  
-                 xlab = NULL, ylab = NULL, main = NULL, ylim = NULL, xlim = NULL,
+                 xlab = NULL, ylab = NULL, main = NULL, ylim = ylim, xlim = xlim,
                  too.far = too.far, seWithMean = seWithMean, fix = fix)
 
   # 2) Produce output object

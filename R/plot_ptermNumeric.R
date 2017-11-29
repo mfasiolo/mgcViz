@@ -5,6 +5,7 @@
 #' @name plot.ptermNumeric
 #' @param x a parametric effect object.
 #' @param n number of grid points used to compute main effect and c.i. lines. 
+#' @param xlim if supplied then this pair of numbers are used as the x limits for the plot.
 #' @param maxpo maximum number of residuals points that will be used by layers such as
 #'              \code{resRug()} and \code{resPoints()}. If number of datapoints > \code{maxpo},
 #'              then a subsample of \code{maxpo} points will be taken.
@@ -32,7 +33,7 @@
 #' @rdname plot.ptermNumeric
 #' @export plot.ptermNumeric
 #' 
-plot.ptermNumeric <- function(x, n = 100, maxpo = 1e4, trans = identity, ...){
+plot.ptermNumeric <- function(x, n = 100, xlim = NULL, maxpo = 1e4, trans = identity, ...){
   
   if(x$order > 1){ 
     message("mgcViz does not know how to plot this effect. Returning NULL.")
@@ -48,8 +49,9 @@ plot.ptermNumeric <- function(x, n = 100, maxpo = 1e4, trans = identity, ...){
     X <- X[rep(1:nrow(X), ceiling(n/nrow(X))), ]
   }
   
-  vr <- X[[ x$varNam ]]
-  xx <- seq(min(vr), max(vr), length = n)
+  if( is.null(xlim) ){ xlim <- range(X[[x$varNam]]) }
+  
+  xx <- seq(xlim[1], xlim[2], length = n)
   data <- X[1:n, ]
   data[[x$varNam]] <- xx
   
@@ -77,9 +79,11 @@ plot.ptermNumeric <- function(x, n = 100, maxpo = 1e4, trans = identity, ...){
   } else {
     .wr <- sqrt(gObj$weights)
     .wr <- gObj$residuals * .wr / mean(.wr)  # weighted working residuals
-    .dat$res$y <- trans( .wr + 
-                           gObj$store$termsFit[ , which(colnames(gObj$store$termsFit) == x$nam)] )
+    .dat$res$y <- trans( .wr + gObj$store$termsFit[ , which(colnames(gObj$store$termsFit) == x$nam)] )
   }
+  
+  # Exclude residuals falling outside boundaries
+  .dat$res <- filter(.dat$res, x >= xlim[1] & x <= xlim[2])
   
   # Sample if too many points (> maxpo)  
   nres <- nrow( .dat$res )

@@ -6,6 +6,7 @@
 #' @param n number of grid points used to compute main effect and c.i. lines. 
 #'          For a nice smooth plot this needs to be several times the estimated degrees of 
 #'          freedom for the smooth.
+#' @param xlim if supplied then this pair of numbers are used as the x limits for the plot.
 #' @param maxpo maximum number of residuals points that will be used by layers such as
 #'              \code{resRug()} and \code{resPoints()}. If number of datapoints > \code{maxpo},
 #'              then a subsample of \code{maxpo} points will be taken.
@@ -55,13 +56,13 @@
 #'   l_fitLine(linetype = 2, colour = "red")
 #' @rdname plot.mgcv.smooth.1D
 #' @export plot.mgcv.smooth.1D
-plot.mgcv.smooth.1D <- function(x, n = 100, maxpo = 1e4, trans = identity, 
+plot.mgcv.smooth.1D <- function(x, n = 100, xlim = NULL, maxpo = 1e4, trans = identity, 
                                 unconditional = FALSE, seWithMean = FALSE, ...) {
   
   # 1) Prepare data
   P <- .prepareP(o = x, unconditional = unconditional, residuals = TRUE, 
                  resDen = "none", se = TRUE, se.mult = 1, n = n, n2 = NULL,  
-                 xlab = NULL, ylab = NULL, main = NULL, ylim = NULL, xlim = NULL,
+                 xlab = NULL, ylab = NULL, main = NULL, ylim = NULL, xlim = xlim,
                  too.far = NULL, seWithMean = seWithMean)
   
   # 2) Produce output object
@@ -86,12 +87,8 @@ plot.mgcv.smooth.1D <- function(x, n = 100, maxpo = 1e4, trans = identity,
     }
     
     # Exclude residuals falling outside boundaries
-    # if( is.null(xlim) ){ xlim <- c(-Inf, Inf) }
-    # if( is.null(ylim) ){ ylim <- c(-Inf, Inf) }
-    # tmp <- findInterval(res$x, xlim)==1 & findInterval(res$y, ylim)==1
-    # .dat$res <- filter(res, tmp)
-    .dat$res <- res
-    
+    .dat$res <- filter(res, x >= P$xlim[1] & x <= P$xlim[2])
+
     # Sample if too many points (> maxpo)  
     nres <- nrow( .dat$res )
     .dat$res$sub <- if(nres > maxpo) { 

@@ -3,6 +3,7 @@
 #' 
 #' @description Plotting one dimensional smooth factor interactions.
 #' @param x a smooth effect.
+#' @param xlim if supplied then this pair of numbers are used as the x limits for the plot.
 #' @param ... currently unused.
 #' @name plot.fs.interaction.1D
 #' @examples 
@@ -45,13 +46,13 @@
 #' @rdname plot.fs.interaction.1D
 #' @export plot.fs.interaction.1D
 #' 
-plot.fs.interaction.1D <- function(x, n = 100, trans = identity, 
+plot.fs.interaction.1D <- function(x, n = 100, xlim = NULL, trans = identity, 
                                    unconditional = FALSE, seWithMean = FALSE, ...) {
   
   # 1) Prepare data
   P <- .prepareP(o = x, unconditional = FALSE, residuals = FALSE, 
                  resDen = "none", se = TRUE, se.mult = 1, n = n, n2 = NULL,  
-                 xlab = NULL, ylab = NULL, main = NULL, ylim = NULL, xlim = NULL,
+                 xlab = NULL, ylab = NULL, main = NULL, ylim = NULL, xlim = xlim,
                  too.far = NULL, seWithMean = FALSE)
   
   # 2) Produce output object
