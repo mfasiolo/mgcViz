@@ -6,10 +6,14 @@
 #' @export listLayers
 #' 
 listLayers <- function(o){
+
+  if( !("plotSmooth" %in% class(o)) ){
+    stop("listLayers works only with object of class \"plotSmooth\"")
+  }
   
-  cl <- paste(o$type, collapse = '')
+  ty <- paste(o$type, collapse = '')
   
-  out <- switch(cl, 
+  out <- switch(ty, 
                 # Smooth effects plots
                 "fs1D" = c("l_fitLine"),
                 "1D" = c("l_ciLine", "l_ciPoly", "l_fitLine", "l_dens", "l_points", "l_rug"),
@@ -38,7 +42,7 @@ listLayers <- function(o){
                 "Check2DFactorNumeric" = c("l_gridCheck2D", "l_points", "l_rug"),
                 "Check2DFactorFactor" = c("l_gridCheck2D", "l_points", "l_rug"),
 
-                message(paste("No layers for obj of this class", paste(class(o), collapse = ' '))))
+                message(paste("No layers available for objects of type", paste(ty, collapse = ' '))))
   
   return(out)
 

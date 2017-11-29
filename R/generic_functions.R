@@ -1,5 +1,4 @@
 
-#' Generic zooming function
 #'
 #' Generic zooming function
 #'

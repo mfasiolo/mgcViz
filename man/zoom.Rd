@@ -9,6 +9,3 @@ zoom(o, ...)
 \description{
 Generic zooming function
 }
-\details{
-Generic zooming function
-}
