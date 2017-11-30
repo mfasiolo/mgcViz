@@ -2,12 +2,12 @@
 % Please edit documentation in R/L_ciLine.R
 \name{l_ciLine}
 \alias{l_ciLine}
-\title{Add confidence curves to plot}
+\title{Adding confidence intervals to effect plot}
 \usage{
 l_ciLine(level = 0.95, mul = NULL, ...)
 }
 \arguments{
-\item{level}{coverage level, should be in (0, 1).}
+\item{level}{coverage level (e.g. 0.9 means 90\% intervals). Should be in (0, 1).}
 
 \item{mul}{number multiplied by the standard errors when calculating
 standard error curves. By default \code{NULL}, if
@@ -19,5 +19,8 @@ set to a positive number it will over-ride \code{level}.}
 An object of class \code{gamLayer}.
 }
 \description{
-XXX
+This layer adds confidence interval lines to smooth, random or parametric effect plots.
+}
+\seealso{
+See \link{plot.mgcv.smooth.1D}, \link{plot.ptermNumeric} or \link{plot.random.effect}  for examples.
 }

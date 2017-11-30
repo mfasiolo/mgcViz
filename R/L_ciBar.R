@@ -1,10 +1,15 @@
 #'
 #' Adding confidence intervals to barplots
 #' 
-#' @description Adding confidence intervals to barplot.
+#' @description This layer adds confidence intervals to barplots, such as those produced by factor effects GAM.
 #'
+#' @param level the level of the confidence intervals (e.g. 0.9 means 90\% intervals).
+#' @param mul number multiplied by the standard errors when calculating 
+#'            standard error curves. By default \code{NULL}, if
+#'            set to a positive number it will over-ride \code{level}.
 #' @param ... graphical arguments to be passed to \code{ggplot2::geom_errorbar}.
-#' @return an object of class \code{gamLayer}.
+#' @return An object of class \code{gamLayer}.
+#' @seealso See [plot.ptermFactor] for examples.
 #' @export l_ciBar
 #'
 l_ciBar <- function(level = 0.95, mul = NULL, ...){

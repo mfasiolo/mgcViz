@@ -1,13 +1,17 @@
 #'
-#' Add coordinate lines
+#' Adding coordinate lines
 #' 
-#' @description XXX
+#' @description This layers adds coordinate contours to smooth effect plots. It is mainly 
+#'              useful for smooth-on-the-sphere plots.
 #'
+#' @param brLO a vector of meridians to be plotted.
+#' @param brLA a vector of parallels to be plotted. 
 #' @param ... graphical arguments to be passed to  \code{ggplot2::geom_contour}.
 #' @return An object of class \code{gamLayer}.
+#' @seealso See [plot.sos.smooth] for examples.
 #' @export l_coordContour
 #'
-l_coordContour <- function(brLO = c(-8:9*20), brLA = c(-8:8*10), ...){
+l_coordContour <- function(brLO = c(-9:9*20), brLA = c(-8:8*10), ...){
   arg <- list(...)
   arg$xtra <- list("brLO" = brLO, "brLA" = brLA)
   o <- structure(list("fun" = "l_coordContour",

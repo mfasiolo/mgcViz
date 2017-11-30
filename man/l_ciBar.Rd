@@ -7,11 +7,20 @@
 l_ciBar(level = 0.95, mul = NULL, ...)
 }
 \arguments{
+\item{level}{the level of the confidence intervals (e.g. 0.9 means 90\% intervals).}
+
+\item{mul}{number multiplied by the standard errors when calculating
+standard error curves. By default \code{NULL}, if
+set to a positive number it will over-ride \code{level}.}
+
 \item{...}{graphical arguments to be passed to \code{ggplot2::geom_errorbar}.}
 }
 \value{
-an object of class \code{gamLayer}.
+An object of class \code{gamLayer}.
 }
 \description{
-Adding confidence intervals to barplot.
+This layer adds confidence intervals to barplots, such as those produced by factor effects GAM.
+}
+\seealso{
+See \link{plot.ptermFactor} for examples.
 }

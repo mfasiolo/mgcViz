@@ -2,7 +2,7 @@
 % Please edit documentation in R/L_bound.R
 \name{l_bound}
 \alias{l_bound}
-\title{Add boundaries to smooth plot}
+\title{Add boundaries to smooth effect plot}
 \usage{
 l_bound(n = 200, ...)
 }
@@ -15,5 +15,8 @@ l_bound(n = 200, ...)
 An object of class \code{gamLayer}.
 }
 \description{
-Add boundaries to smooth plot
+This layer adds boundaries to a smooth effect plot.
+}
+\seealso{
+\link{plot.sos.smooth}
 }

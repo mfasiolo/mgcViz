@@ -2,16 +2,28 @@
 % Please edit documentation in R/L_clusterLine.R
 \name{l_clusterLine}
 \alias{l_clusterLine}
-\title{Clustered smooth effect plots}
+\title{Cluster and plot smooth effects}
 \usage{
 l_clusterLine(centers, cluFun = kmeans, a.clu = list(), ...)
 }
 \arguments{
+\item{centers}{the number of clusters. This is the same a the \code{centers}
+argument in \link[stats:kmeans]{stats::kmeans}.}
+
+\item{cluFun}{the function used for clustering. I must take (at least) arguments \code{x},
+\code{centers} and \code{data}, which have the same interpretation as in
+\link[stats:kmeans]{stats::kmeans} (which is the default).}
+
+\item{a.clu}{list of further argument to be passed to \code{cluFun}.}
+
 \item{...}{graphical arguments to be passed to \code{ggplot2::geom_line}.}
 }
 \value{
 An object of class \code{gamLayer}.
 }
 \description{
-Plotting clustered smooth effects.
+This layers clusters several smooth effects and plots the cluster centers.
+}
+\seealso{
+See \link{plot.fs.interaction.1D} for examples.
 }

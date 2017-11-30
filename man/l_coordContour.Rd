@@ -2,16 +2,24 @@
 % Please edit documentation in R/L_coordContour.R
 \name{l_coordContour}
 \alias{l_coordContour}
-\title{Add coordinate lines}
+\title{Adding coordinate lines}
 \usage{
-l_coordContour(brLO = c(-8:9 * 20), brLA = c(-8:8 * 10), ...)
+l_coordContour(brLO = c(-9:9 * 20), brLA = c(-8:8 * 10), ...)
 }
 \arguments{
+\item{brLO}{a vector of meridians to be plotted.}
+
+\item{brLA}{a vector of parallels to be plotted.}
+
 \item{...}{graphical arguments to be passed to  \code{ggplot2::geom_contour}.}
 }
 \value{
 An object of class \code{gamLayer}.
 }
 \description{
-XXX
+This layers adds coordinate contours to smooth effect plots. It is mainly
+useful for smooth-on-the-sphere plots.
+}
+\seealso{
+See \link{plot.sos.smooth} for examples.
 }

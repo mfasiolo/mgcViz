@@ -1,10 +1,17 @@
 #'
-#' Clustered smooth effect plots
+#' Cluster and plot smooth effects
 #' 
-#' @description Plotting clustered smooth effects.
+#' @description This layers clusters several smooth effects and plots the cluster centers.
 #'
+#' @param centers the number of clusters. This is the same a the \code{centers} 
+#'                argument in [stats::kmeans].
+#' @param cluFun the function used for clustering. I must take (at least) arguments \code{x}, 
+#'               \code{centers} and \code{data}, which have the same interpretation as in
+#'               [stats::kmeans] (which is the default).
+#' @param a.clu list of further argument to be passed to \code{cluFun}.
 #' @param ... graphical arguments to be passed to \code{ggplot2::geom_line}.
 #' @return An object of class \code{gamLayer}.
+#' @seealso See [plot.fs.interaction.1D] for examples.
 #' @importFrom stats kmeans
 #' @export l_clusterLine
 #'

@@ -1,11 +1,12 @@
 #' 
-#' Add boundaries to smooth plot
+#' Add boundaries to smooth effect plot
 #' 
-#' @description Add boundaries to smooth plot
+#' @description This layer adds boundaries to a smooth effect plot.
 #'
 #' @param n number of discrete intervals along the boundary.
 #' @param ... graphical arguments to be passed to \code{ggplot2::geom_path}.
 #' @return An object of class \code{gamLayer}.
+#' @seealso [plot.sos.smooth]
 #' @export l_bound
 #'
 l_bound <- function(n = 200, ...){

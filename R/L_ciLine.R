@@ -1,14 +1,15 @@
 #'
-#' Add confidence curves to plot
+#' Adding confidence intervals to effect plot
 #' 
-#' @description XXX
+#' @description This layer adds confidence interval lines to smooth, random or parametric effect plots.
 #'
-#' @param level coverage level, should be in (0, 1).
+#' @param level coverage level (e.g. 0.9 means 90\% intervals). Should be in (0, 1).
 #' @param mul number multiplied by the standard errors when calculating 
 #'            standard error curves. By default \code{NULL}, if
 #'            set to a positive number it will over-ride \code{level}.
 #' @param ... graphical arguments to be passed to \code{ggplot2::geom_line}.
 #' @return An object of class \code{gamLayer}.
+#' @seealso See [plot.mgcv.smooth.1D], [plot.ptermNumeric] or [plot.random.effect]  for examples.
 #' @export l_ciLine
 #'
 l_ciLine <- function(level = 0.95, mul = NULL, ...){
