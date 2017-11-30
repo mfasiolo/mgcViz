@@ -1,5 +1,12 @@
-#' Shiny Gadget for qq_gam
-#' @description ...
+#'
+#' Shiny QQ-plots for GAMs
+#' 
+#' @description This function takes the output of \code{mgcViz::qq.gam} and transforms it
+#'              into an interactive shiny app.
+#' @param o the output of \code{mgcViz::qq.gam}.
+#' @param ... currently not used.
+#' @detail In RStudio, this function returns a call to \code{qq.gam} that reproduces the last plot
+#'         rendered in the interactive shiny window.
 #' @import shiny
 #' @import miniUI
 #' @importFrom rstudioapi isAvailable insertText

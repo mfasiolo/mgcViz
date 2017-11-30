@@ -1,7 +1,8 @@
 ################################################################
 #' Converting gam objects to gamViz objects
 #' 
-#' @description This function converts \code{gam} objects into \code{gamViz} objects.
+#' @description This function converts \code{gam} objects into \code{gamViz} objects, 
+#'              for which \code{mgcViz} provides several plotting methods.
 #' @param o an object of class \code{gam}.
 #' @param nsim the number of simulated vectors of responses. A positive integer.
 #' @param ... extra arguments to be passed to \code{simulate.gam}

@@ -2,10 +2,18 @@
 % Please edit documentation in R/generic_functions.R
 \name{zoom}
 \alias{zoom}
-\title{zooming}
+\title{Generic zooming function}
 \usage{
 zoom(o, ...)
 }
+\arguments{
+\item{o}{the object we want to zoom into.}
+
+\item{...}{arguments to be passed to methods.}
+}
 \description{
-Generic zooming function
+Generic function for zooming, mainly meant to work with graphical objects.
+}
+\seealso{
+zoom.qqGam
 }

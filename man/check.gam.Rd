@@ -6,34 +6,40 @@
 \usage{
 \method{check}{gam}(obj, type = c("auto", "deviance", "pearson", "response",
   "tunif", "tnormal"), k.sample = 5000, k.rep = 200, maxpo = 10000,
-  a.qq = list(), a.hist = list(), a.respoi = list(), a.reshex = list(),
-  ...)
+  a.qq = list(), a.hist = list(), a.respoi = list(), ...)
 }
 \arguments{
-\item{obj, }{A fitted \code{gam} object as produced by \code{\link[mgcv:gam]{mgcv::gam()}}.}
+\item{obj}{a fitted 'gam' object as produced by \code{gam()}.}
 
-\item{type, }{Type of residuals, see \code{\link[mgcv:residuals.gam]{mgcv::residuals.gam()}}, used in all plots.}
+\item{type}{type of residuals, see \code{?mgcViz::residuals.gam()}, used in all plots.}
 
-\item{k.sample, }{Above this k testing uses a random sub-sample of data.}
+\item{k.sample}{above this k testing uses a random sub-sample of data.}
 
-\item{k.rep, }{How many re-shuffles to do to get p-value for k testing.}
+\item{k.rep}{how many re-shuffles to do to get p-value for k testing.}
 
-\item{...}{Extra parameters.}
+\item{maxpo}{maximum number of residuals points that will be plotted in the scatter-plots.
+If number of datapoints > \code{maxpo}, then a subsample of \code{maxpo} points will be plotted.}
 
-\item{rep, level, method, rl.col, rep.col, }{Arguments passed to \code{\link[=qq.gam]{qq.gam()}}.}
+\item{a.qq}{list of arguments to be passed to \code{qq.gam}. See \code{mgcViz::qq.gam}.}
+
+\item{a.hist}{list of arguments to be passed to \code{ggplot2::geom_histogram}.}
+
+\item{a.respoi}{list of arguments to be passed to \code{ggplot2::geom_point}.}
+
+\item{...}{currently not used.}
 }
 \value{
-An object of class \code{check.gam}, which is simply a list of \code{ggplot} objects.
+An object of class \code{checkGam}, which is simply a list of \code{ggplot} objects.
 }
 \description{
-Takes a fitted gam object produced by \code{\link[mgcv:gam]{mgcv::gam()}} and produces some diagnostic
+Takes a fitted gam object produced by \code{gam()} and produces some diagnostic
 information about the fitting procedure and results. The default is to produce 4 residual plots,
 some information about the convergence of the smoothness selection optimization, and
 to run diagnostic tests of whether the basis dimension choises are adequate.
 }
-\note{
-Help file is mainly from \link[mgcv:gam.check]{mgcv::gam.check} since this is a rewrite of \code{mgcv::gam.check}
-function with ggplot2 library.
+\details{
+This is a essentially a re-write of \code{mgcv::gam.check} using \code{ggplot2}. See
+\code{?mgcv::gam.check} for details.
 }
 \examples{
 library(ggplot2)
@@ -48,6 +54,6 @@ check(b)
 check(b,
       a.qq = list(method = "tnorm", 
                   a.cipoly = list(fill = "light blue")), 
-      a.respoi = list(size = 0.5), 
+      a.respoi = list(size = 0.2), 
       a.hist = list(bins = 10))
 }

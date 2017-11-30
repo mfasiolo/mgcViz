@@ -11,7 +11,8 @@ check2D(o, x1, x2, bw = NULL, type = "auto", maxpo = 10000,
 \item{o}{an object of class \code{gamObject} or \code{gamViz}.}
 
 \item{x1}{should be either a single character or a numeric vector.
-In the first case it should be the name of one of the variables in the dataframe used to fit \code{o}.}
+In the first case it should be the name of one of the variables in the dataframe used to fit \code{o}.
+In the second case the length of \code{x1} should be equal to the length of \code{residuals(o)}.}
 
 \item{x2}{same as \code{x2}, but this will appear on the y-axis.}
 
@@ -24,10 +25,12 @@ then a subsample of \code{maxpo} points will be taken.}
 \item{na.rm}{if \code{TRUE} missing cases in \code{x} or \code{y} will be dropped out}
 }
 \value{
-An object of class \code{c("plotSmooth", "Check", "2D")}.
+An object of class \code{c("plotSmooth", "gg")}.
 }
 \description{
-XXX
+This function extracts the residuals of a model fitted using \code{gam()}, and plots them
+according to the values of two covariates. Then several visual residuals diagnostics
+can be plotted by adding layers.
 }
 \examples{
 library(mgcViz);

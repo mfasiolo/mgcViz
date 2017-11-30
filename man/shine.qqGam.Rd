@@ -2,12 +2,18 @@
 % Please edit documentation in R/shine.qqGam.R
 \name{shine.qqGam}
 \alias{shine.qqGam}
-\title{Shiny Gadget for qq_gam}
+\title{Shiny QQ-plots for GAMs}
 \usage{
 \method{shine}{qqGam}(o, ...)
 }
+\arguments{
+\item{o}{the output of \code{mgcViz::qq.gam}.}
+
+\item{...}{currently not used.}
+}
 \description{
-...
+This function takes the output of \code{mgcViz::qq.gam} and transforms it
+into an interactive shiny app.
 }
 \examples{
 \dontrun{

@@ -17,7 +17,8 @@ getViz(o, nsim = 10, ...)
 An object of class \code{gamViz}.
 }
 \description{
-This function converts \code{gam} objects into \code{gamViz} objects.
+This function converts \code{gam} objects into \code{gamViz} objects,
+for which \code{mgcViz} provides several plotting methods.
 }
 \examples{
 library(mgcViz)

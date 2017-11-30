@@ -14,7 +14,7 @@ This is a wrapper for \code{gridExtra::grid.arrange}, which allows to
 plot several \code{plotSmooth} objects on a grid.
 }
 \details{
-This function simply extract the \code{ggplot} objects contained in any
+This function simply extracts the \code{ggplot} objects contained in any
 object of class \code{plotSmooth} and passes them to \code{gridExtra::grid.arrange}.
 }
 \examples{

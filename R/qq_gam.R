@@ -1,31 +1,53 @@
 #'
 #' QQ plots for gam model residuals
 #' 
-#' @description Takes a fitted gam object produced by [mgcv::gam()] and produces QQ plots of its residuals
-#' (conditional on the fitted model coefficients and scale parameter). If the model 
-#' distributional assumptions are met then usually these plots should be close to a straight
-#' line (although discrete data can yield marked random departures from this line).
+#' @description Takes a fitted gam object produced by \code{mgcv::gam()} and produces QQ plots of its residuals
+#'              (conditional on the fitted model coefficients and scale parameter). If the model distributional 
+#'              assumptions are met then usually these plots should be close to a straight line (although 
+#'              discrete data can yield marked random departures from this line).
 #'
-#' @param o, A fitted `gam` object as produced by [mgcv::gam()] (or a `glm` object).
-#' @param rep, How many replicate datasets to generate to simulate quantiles of the residual
-#'  distribution. 0 results in an efficient simulation free method for direct calculation,
-#'   if this is possible for the object family.
-#' @param level, If simulation is used for the quantiles, then reference intervals can be provided
-#'  for the QQ-plot, this specifies the level. 0 or less for no intervals, 1 or more to simply plot
-#'   the QQ plot for each replicate generated.
-#' @param s.rep, How many times to randomize uniform quantiles to data under direct computation.
-#' @param type, What sort of residuals should be plotted? See [mgcv::residuals.gam()].
-#' @param rl.col, Color for the reference line on the plot.
-#' @param rep.col, Color for reference bands or replicate reference plots.
-#' @param ..., Extra parameters. 
-#' @note Help file is mainly from [mgcv::qq.gam] since this is a rewrite of `mgcv::qq.gam` 
-#' function with ggplot2 library.
+#' @param o a fitted `gam` object as produced by \code{mgcv::gam()}.
+#' @param rep how many replicate datasets to generate to simulate quantiles of the residual distribution. 
+#'            Relevant only if \code{method} is set to \code{"simul1"} or \code{"simul2"}.
+#' @param level the level of the confidence intervals (e.g. 0.9 means 90\% intervals). 
+#' @param method the method used to calculate the QQ-plot and, possibly, the confidence intervals. If set
+#'               to (\code{"tunif"}) \code{"tnormal"} the residuals are transformed to (uniform) normal, for which
+#'               analytic expression for the confidence intervals are available. If set to \code{"simul1"} or 
+#'               \code{"simul2"} the theoretical QQ-line is constructed by simulating residuals from the model.
+#'               Method \code{"simul2"} does not produce confidence intervals. If set to \code{"normal"} no simulation
+#'               or transformation is performed, and a simple normal QQ-plot is produced. If set to \code{"auto"} the
+#'               method used to produce the QQ-plot is determined automatically.
+#' @param type the type of residuals to be used. See [mgcViz::residuals.gam]. 
+#' @param CI the type of confidence intervals to be plotted. If set to \code{"none"} they are not added, if 
+#'           set to \code{"normal"} they will be based on the assumption that the theoretical quantile 
+#'           distribution is Gaussian and if set to \code{"quantile"} they will be sample quantiles of simulated
+#'           responses from the model.
+#' @param worm if \code{TRUE} a worm-plot (a de-trended QQ-plot) is plotted.
+#' @param show.reps if \code{TRUE} all the QQ-lines corresponding to the simulated (model-based) QQ-plots.
+#' @param sortFun the function to be used for sorting the residuals. If left to \code{NULL} it will be set to
+#'                \code{function(.x) sort(.x, method = "quick")} internally.
+#' @param discrete if \code{TRUE} the QQ-plot is discretized into \code{ngr} bins before plotting,
+#'                 in order to save plotting time (when the number of observations is large). If left
+#'                 to \code{NULL}, the discretization is used if there are more than 10^4 observations.
+#' @param ngr number of bins to be used in the discretization.
+#' @param xlim if supplied then this pair of numbers are used as the x limits for the plot.
+#' @param ylim if supplied then this pair of numbers are used as the y limits for the plot.
+#' @param a.qqpoi list of arguments to be passed to \code{ggplot2::geom_point}, which plots the main QQ-plot.
+#' @param a.ablin list of arguments to be passed to \code{ggplot2::geom_abline}, which adds the reference line.
+#' @param a.cipoly list of arguments to be passed to \code{ggplot2::geom_polygon}, which add the confidence intervals.
+#' @param a.replin list of arguments to be passed to \code{ggplot2::geom_line}, which adds a line for each simulated
+#'                 QQ-plot.
+#' @param ... currently unused.
+#' @details Here \code{method = "simul1"} corresponds to the algorithm described in section 2.1 of Augustin et al. (2012), which
+#'          involves direct simulations of residuals from the models. This requires \code{o$family$rd} to be defined. 
+#'          Setting \code{method = "simul2"} results in a cheaper method, described in section 2.2 of Augustin et al. (2012), 
+#'          which requires \code{o$family$qf} to be defined.
 #' @import ggplot2
 #' @importFrom stats residuals sd qnorm dnorm qbeta approx var predict
 #' @importFrom mgcv fix.family.qf fix.family.rd
 #' @importFrom data.table frankv
 #' @importFrom matrixStats rowSds rowOrderStats
-#' @return An object of class \code{qqGam}.
+#' @return An object of class \code{c("qqGam", "plotSmooth", "gg")}.
 #' @export
 #' @examples
 #'  
@@ -61,14 +83,11 @@
 #' pif <- gam(y ~ s(x0) + s(x1) + s(x2) + s(x3)
 #'            , family = poisson, data = dat, method = "REML")
 #' 
-#' #
 #' qq.gam(pif, method = "simul2")
 #' 
-#' #
 #' qq.gam(pif, rep = 100, level = .9, CI = "quantile")
 #' 
-#' #
-#' mgcViz::qq.gam(pif, rep = 100, type = "pearson", CI = "none", show.reps = TRUE, 
+#' qq.gam(pif, rep = 100, type = "pearson", CI = "none", show.reps = TRUE, 
 #'                a.qqpoi = list(shape=19, size = 0.5))
 #' 
 #' ######## Example: binary data model violation so gross that you see a problem 
@@ -85,8 +104,8 @@
 #' ### alternative model
 #' b <- gam(y ~ s(x, k = 5), family = binomial, method = "ML")
 #' 
-#' mgcViz::qq.gam(b, method = "simul2")
-#' mgcViz::qq.gam(b, rep = 50, show.reps = TRUE, CI = "none", shape = 19)
+#' qq.gam(b, method = "simul2")
+#' qq.gam(b, rep = 50, show.reps = TRUE, CI = "none", shape = 19)
 #' 
 #' \dontrun{
 #' ########  "Big Data" example: 
@@ -125,9 +144,9 @@
 #' 
 qq.gam <- function(o, rep = 10,
                    level = 0.8, 
-                   method = c("auto", "simul1", "simul2", "tnormal", "tunif", "normal"),
-                   type = c("auto", "deviance", "pearson", "response", "tunif", "tnormal"),
-                   CI = c("normal", "quantile", "none"),
+                   method = "auto",
+                   type = "auto",
+                   CI = "none",
                    worm = FALSE,
                    show.reps = FALSE,
                    sortFun = NULL,

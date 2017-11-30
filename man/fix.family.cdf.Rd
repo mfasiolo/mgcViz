@@ -6,6 +6,11 @@
 \usage{
 fix.family.cdf(fam)
 }
+\arguments{
+\item{family}{an object of class \code{family}.}
+}
 \description{
-XXX
+Some methods implemented in \code{mgcViz} require the c.d.f. of the response distribution.
+This function takes a family object as input and returns the same object, but with the cdf
+function added to the \code{$cdf} slot. Mainly for internal use.
 }

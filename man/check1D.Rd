@@ -10,7 +10,8 @@ check1D(o, x, type = "auto", maxpo = 10000, na.rm = TRUE)
 \item{o}{an object of class \code{gamObject} or \code{gamViz}.}
 
 \item{x}{should be either a single character or a numeric vector.
-In the first case it should be the name of one of the variables in the dataframe used to fit \code{o}.}
+In the first case it should be the name of one of the variables in the dataframe used to fit \code{o}.
+In the second case the length of \code{x} should be equal to the length of \code{residuals(o)}.}
 
 \item{type}{the type of residuals to be used. See \code{?residuals.gam}.}
 
@@ -18,13 +19,15 @@ In the first case it should be the name of one of the variables in the dataframe
 \code{resRug()} and \code{resPoints()}. If number of datapoints > \code{maxpo},
 then a subsample of \code{maxpo} points will be taken.}
 
-\item{na.rm}{if \code{TRUE} missing cases in \code{x} or \code{y} will be dropped out}
+\item{na.rm}{if \code{TRUE} missing cases in \code{x} or \code{y} will be dropped out.}
 }
 \value{
-An object of class \code{c("plotSmooth", "Check", "1D")}.
+An object of class \code{c("plotSmooth", "gg")}.
 }
 \description{
-XXX
+This function extracts the residuals of a model fitted using \code{gam()}, and orders
+them according to the value of a single covariate. Then several visual residuals diagnostics
+can be plotted by adding layers.
 }
 \examples{
 ### Example 1: diagnosing heteroscedasticity

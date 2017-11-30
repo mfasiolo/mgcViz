@@ -7,7 +7,8 @@
 getGam(o)
 }
 \description{
-XXX
+Function for converting a \code{gamViz} object to a \code{gamObject}.
+It is essentially the inverse of the \link{getViz} function.
 }
 \examples{
 library(mgcViz)
@@ -15,5 +16,5 @@ set.seed(2) ## simulate some data...
 dat <- gamSim(1,n=1000,dist="normal",scale=2)
 b <- gam(y~s(x0)+s(x1, x2)+s(x3), data=dat, method="REML")
 a <- getViz(b)
-identical(b, getGam(a))
+identical(b, getGam(a)) # Must be TRUE
 }

@@ -1,18 +1,21 @@
 #'
 #' Checking GAM residuals along two covariates
 #' 
-#' @description XXX
+#' @description This function extracts the residuals of a model fitted using \code{gam()}, and plots them
+#'              according to the values of two covariates. Then several visual residuals diagnostics 
+#'              can be plotted by adding layers. 
 #' @name check2D
 #' @param o an object of class \code{gamObject} or \code{gamViz}.
 #' @param x1 should be either a single character or a numeric vector. 
 #'          In the first case it should be the name of one of the variables in the dataframe used to fit \code{o}.
+#'          In the second case the length of \code{x1} should be equal to the length of \code{residuals(o)}.
 #' @param x2 same as \code{x2}, but this will appear on the y-axis.
 #' @param type the type of residuals to be used. See \code{?residuals.gam}
 #' @param maxpo maximum number of residuals points that will be used by layers such as
 #'              \code{resRug()} and \code{resPoints()}. If number of datapoints > \code{maxpo},
 #'              then a subsample of \code{maxpo} points will be taken.
 #' @param na.rm if \code{TRUE} missing cases in \code{x} or \code{y} will be dropped out 
-#' @return An object of class \code{c("plotSmooth", "Check", "2D")}.
+#' @return An object of class \code{c("plotSmooth", "gg")}.
 #' @examples 
 #' library(mgcViz);
 #' #### Example 1: Rosenbrock function

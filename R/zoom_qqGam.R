@@ -1,6 +1,26 @@
-#' Allow to efficiently zoom on a qqGam object
+#' Efficiently zooming on GAM QQ-plots
 #' 
-#' @description XXX
+#' @description This function allows to zoom into a QQ-plot produced by [mgcViz::qq.gam],
+#'              in a computationally efficient manner.
+#' @param o the output of \code{mgcViz::qq.gam}.
+#' @param xlim if supplied then this pair of numbers are used as the x limits for the plot.
+#' @param ylim if supplied then this pair of numbers are used as the y limits for the plot.
+#' @param discrete if \code{TRUE} the QQ-plot is discretized into \code{ngr} bins before plotting,
+#'                 in order to save plotting time (when the number of observations is large). If left
+#'                 to \code{NULL}, the discretization is used if there are more than 10^4 observations.
+#' @param ngr number of bins to be used in the discretization.
+#' @param adGrid if \code{TRUE} the discretization grid is recomputed when \code{zoom.qqGam} is called, and
+#'               it is based on the \code{xlim} range. If \code{FALSE}, \code{zoom.qqGam} will use the same grid 
+#'               used in the original \code{qq.gam} call.
+#' @param CI if \code{TRUE} confidence intervals are plotted.
+#' @param worm if \code{TRUE} a worm-plot (a de-trended QQ-plot) is plotted, rather than a QQ-plot.
+#' @param show.reps if \code{TRUE} all the QQ-lines corresponding to the simulated (model-based) QQ-plots.
+#' @param a.qqpoi list of arguments to be passed to \code{ggplot2::geom_point}, which plots the main QQ-plot.
+#' @param a.ablin list of arguments to be passed to \code{ggplot2::geom_abline}, which adds the reference line.
+#' @param a.cipoly list of arguments to be passed to \code{ggplot2::geom_polygon}, which add the confidence intervals.
+#' @param a.replin list of arguments to be passed to \code{ggplot2::geom_line}, which adds a line for each simulated
+#'                 QQ-plot.
+#' @param ... currently unused.
 #' @name zoom.qqGam
 #' @examples 
 #' library(mgcViz);
@@ -25,7 +45,8 @@
 #' @rdname zoom.qqGam
 #' @export zoom.qqGam
 zoom.qqGam <- function(o, xlim = NULL, ylim = NULL, discrete = NULL, ngr = 1e3,
-                       adGrid = TRUE, CI = FALSE, worm = FALSE, show.reps = FALSE, 
+                       adGrid = TRUE, CI = FALSE, 
+                       worm = FALSE, show.reps = FALSE, 
                        a.qqpoi = list(), a.ablin = list(), a.cipoly = list(), 
                        a.replin = list(), ...) {
   

@@ -5,7 +5,7 @@
 #'              plot several \code{plotSmooth} objects on a grid.
 #' 
 #' @param ... arguments to be passed to \code{gridExtra::grid.arrange}.
-#' @details This function simply extract the \code{ggplot} objects contained in any 
+#' @details This function simply extracts the \code{ggplot} objects contained in any 
 #'          object of class \code{plotSmooth} and passes them to \code{gridExtra::grid.arrange}.
 #' @name gridPrint
 #' @importFrom gridExtra grid.arrange

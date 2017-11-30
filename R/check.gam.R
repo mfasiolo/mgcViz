@@ -1,19 +1,23 @@
 #'
 #' Some diagnostics for a fitted gam model
 #' 
-#' @description Takes a fitted gam object produced by [mgcv::gam()] and produces some diagnostic
+#' @description Takes a fitted gam object produced by \code{gam()} and produces some diagnostic
 #'  information about the fitting procedure and results. The default is to produce 4 residual plots,
 #'   some information about the convergence of the smoothness selection optimization, and
 #'    to run diagnostic tests of whether the basis dimension choises are adequate. 
-#' @param obj, A fitted `gam` object as produced by [mgcv::gam()].
-#' @param type, Type of residuals, see [mgcv::residuals.gam()], used in all plots.
-#' @param k.sample, Above this k testing uses a random sub-sample of data.
-#' @param k.rep, How many re-shuffles to do to get p-value for k testing.
-#' @param rep,level,method,rl.col,rep.col, Arguments passed to [qq.gam()].
-#' @param ... Extra parameters. 
-#' @return An object of class \code{check.gam}, which is simply a list of \code{ggplot} objects.
-#' @note Help file is mainly from [mgcv::gam.check] since this is a rewrite of `mgcv::gam.check` 
-#' function with ggplot2 library.
+#' @param obj a fitted 'gam' object as produced by \code{gam()}.
+#' @param type type of residuals, see \code{?mgcViz::residuals.gam()}, used in all plots.
+#' @param k.sample above this k testing uses a random sub-sample of data.
+#' @param k.rep how many re-shuffles to do to get p-value for k testing.
+#' @param maxpo maximum number of residuals points that will be plotted in the scatter-plots.
+#'              If number of datapoints > \code{maxpo}, then a subsample of \code{maxpo} points will be plotted.
+#' @param a.qq list of arguments to be passed to \code{qq.gam}. See \code{mgcViz::qq.gam}. 
+#' @param a.hist list of arguments to be passed to \code{ggplot2::geom_histogram}. 
+#' @param a.respoi list of arguments to be passed to \code{ggplot2::geom_point}. 
+#' @param ... currently not used. 
+#' @details This is a essentially a re-write of \code{mgcv::gam.check} using \code{ggplot2}. See 
+#'          \code{?mgcv::gam.check} for details. 
+#' @return An object of class \code{checkGam}, which is simply a list of \code{ggplot} objects.
 #' @importFrom stats napredict fitted printCoefmat 
 #' @examples
 #' library(ggplot2)
@@ -28,7 +32,7 @@
 #' check(b,
 #'       a.qq = list(method = "tnorm", 
 #'                   a.cipoly = list(fill = "light blue")), 
-#'       a.respoi = list(size = 0.5), 
+#'       a.respoi = list(size = 0.2), 
 #'       a.hist = list(bins = 10))
 #' @export check.gam
 #' 
@@ -40,7 +44,6 @@ check.gam <- function(obj,
                       a.qq = list(),
                       a.hist = list(),
                       a.respoi = list(),
-                      a.reshex = list(),
                       ...){
   
   type <- match.arg(type)

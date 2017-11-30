@@ -41,15 +41,15 @@
 #' @rdname plotRGL.mgcv.smooth.2D
 #' @export plotRGL.mgcv.smooth.2D
 #' 
-plotRGL.mgcv.smooth.2D <- function(o, se = TRUE, n = 40, residuals = FALSE, type = "auto", 
+plotRGL.mgcv.smooth.2D <- function(x, se = TRUE, n = 40, residuals = FALSE, type = "auto", 
                                    maxpo = 1e3, too.far = 0, xlab = NULL, ylab = NULL, 
                                    main = NULL, xlim = NULL, ylim = NULL,  se.mult = 1, 
                                    shift = 0, trans = identity, seWithMean = FALSE, 
                                    unconditional = FALSE, ...){
   
-  if (type == "auto") { type <- .getResTypeAndMethod(o$gObj$family$family)$type }
+  if (type == "auto") { type <- .getResTypeAndMethod(x$gObj$family$family)$type }
   
-  P <- .prepareP(o = o, unconditional = unconditional, residuals = residuals, 
+  P <- .prepareP(o = x, unconditional = unconditional, residuals = residuals, 
                  resDen = "none", se = se, se.mult = se.mult, n = NULL, n2 = n,  
                  xlab = xlab, ylab = ylab, main = main, ylim = ylim, xlim = xlim,
                  too.far = too.far, seWithMean = seWithMean)
@@ -57,7 +57,7 @@ plotRGL.mgcv.smooth.2D <- function(o, se = TRUE, n = 40, residuals = FALSE, type
   R <- list()
   if( residuals ) {
     # NB we are not passing P$xlim or P$ylim here
-    R <- .getResidualsPlotRGL(gamObj = o$gObj, X = P$raw, type = type, maxpo = maxpo,
+    R <- .getResidualsPlotRGL(gamObj = x$gObj, X = P$raw, type = type, maxpo = maxpo,
                               xlimit = xlim, ylimit = ylim, exclude = P$exclude2)
     P$raw <- R$raw
   }

@@ -1,7 +1,10 @@
 #'
 #' Getting the CDF of a gam family
 #' 
-#' @description XXX
+#' @description Some methods implemented in \code{mgcViz} require the c.d.f. of the response distribution.
+#'              This function takes a family object as input and returns the same object, but with the cdf
+#'              function added to the \code{$cdf} slot. Mainly for internal use.
+#' @param family an object of class \code{family}. 
 #' @name fix.family.cdf
 #' @importFrom stats ppois pbinom pgamma pnorm
 #' @rdname fix.family.cdf

@@ -2,15 +2,50 @@
 % Please edit documentation in R/zoom_qqGam.R
 \name{zoom.qqGam}
 \alias{zoom.qqGam}
-\title{Allow to efficiently zoom on a qqGam object}
+\title{Efficiently zooming on GAM QQ-plots}
 \usage{
 \method{zoom}{qqGam}(o, xlim = NULL, ylim = NULL, discrete = NULL,
   ngr = 1000, adGrid = TRUE, CI = FALSE, worm = FALSE,
   show.reps = FALSE, a.qqpoi = list(), a.ablin = list(),
   a.cipoly = list(), a.replin = list(), ...)
 }
+\arguments{
+\item{o}{the output of \code{mgcViz::qq.gam}.}
+
+\item{xlim}{if supplied then this pair of numbers are used as the x limits for the plot.}
+
+\item{ylim}{if supplied then this pair of numbers are used as the y limits for the plot.}
+
+\item{discrete}{if \code{TRUE} the QQ-plot is discretized into \code{ngr} bins before plotting,
+in order to save plotting time (when the number of observations is large). If left
+to \code{NULL}, the discretization is used if there are more than 10^4 observations.}
+
+\item{ngr}{number of bins to be used in the discretization.}
+
+\item{adGrid}{if \code{TRUE} the discretization grid is recomputed when \code{zoom.qqGam} is called, and
+it is based on the \code{xlim} range. If \code{FALSE}, \code{zoom.qqGam} will use the same grid
+used in the original \code{qq.gam} call.}
+
+\item{CI}{if \code{TRUE} confidence intervals are plotted.}
+
+\item{worm}{if \code{TRUE} a worm-plot (a de-trended QQ-plot) is plotted, rather than a QQ-plot.}
+
+\item{show.reps}{if \code{TRUE} all the QQ-lines corresponding to the simulated (model-based) QQ-plots.}
+
+\item{a.qqpoi}{list of arguments to be passed to \code{ggplot2::geom_point}, which plots the main QQ-plot.}
+
+\item{a.ablin}{list of arguments to be passed to \code{ggplot2::geom_abline}, which adds the reference line.}
+
+\item{a.cipoly}{list of arguments to be passed to \code{ggplot2::geom_polygon}, which add the confidence intervals.}
+
+\item{a.replin}{list of arguments to be passed to \code{ggplot2::geom_line}, which adds a line for each simulated
+QQ-plot.}
+
+\item{...}{currently unused.}
+}
 \description{
-XXX
+This function allows to zoom into a QQ-plot produced by \link[mgcViz:qq.gam]{mgcViz::qq.gam},
+in a computationally efficient manner.
 }
 \examples{
 library(mgcViz);

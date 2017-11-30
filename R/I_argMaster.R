@@ -20,8 +20,7 @@
                 "check.gam" = list(
                   "a.qq" = list(),
                   "a.respoi" = list(size = 0.5), 
-                  "a.hist" = list(),
-                  "a.reshex" = list()
+                  "a.hist" = list()
                 ))
   
   return(out)
