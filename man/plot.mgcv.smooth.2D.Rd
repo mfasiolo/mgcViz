@@ -27,7 +27,7 @@ b <- getViz(b)
 
 # Plot 2D effect with noised-up raster, contour and rug for design points 
 # Opacity is proportional to the significance of the effect
-plot(sm(b, 2)) + l_fitRaster(pFun = zto1(0.05, 2, 0.1), noiseup = TRUE) + 
+plot(sm(b, 2)) + l_fitRaster(pTrans = zto1(0.05, 2, 0.1), noiseup = TRUE) + 
   l_rug() + l_fitContour()  
 
 # Plot contour of effect joint density of design points

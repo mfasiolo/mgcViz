@@ -7,9 +7,9 @@
 #' @return An object of class \code{gamLayer}.
 #' @export l_pvContour
 #'
-l_pvContour <- function(pFun = identity, ...){
+l_pvContour <- function(pTrans = identity, ...){
   arg <- list(...)
-  arg$xtra <- list("pFun" = pFun)
+  arg$xtra <- list("pTrans" = pTrans)
   o <- structure(list("fun" = "l_pvContour",
                       "arg" = arg), 
                  class = "gamLayer")
@@ -24,7 +24,7 @@ l_pvContour.2D <- l_pvContour.sos1 <- l_pvContour.sos0 <- l_pvContour.MDslice <-
   a$xtra <- NULL
   
   .dat <- a$data$fit
-  .dat$p <- xtra$pFun( 1 - pnorm(abs(.dat$z)/.dat$se) )
+  .dat$p <- xtra$pTrans( 1 - pnorm(abs(.dat$z)/.dat$se) )
   a$data <- .dat
   
   a$mapping  <- aes(z = p)

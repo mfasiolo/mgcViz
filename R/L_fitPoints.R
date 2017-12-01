@@ -1,10 +1,12 @@
 #'
-#' Adding fitted points to effect plots
+#' Adding points representing the fitted effect
 #' 
-#' @description Adding fitted points to smooth or parametric effect plots.
+#' @description This function adds points representing the fitted effect. Mainly
+#'              useful for plotting factor effects.
 #'
 #' @param ... graphical arguments to be passed to \code{ggplot2::geom_point}.
 #' @return an object of class \code{gamLayer}.
+#' @seealso See [plot.ptermFactor] for examples.
 #' @export l_fitPoints
 #'
 l_fitPoints <- function(...){

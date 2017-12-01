@@ -13,5 +13,15 @@ l_fitLine(...)
 An object of class \code{gamLayer}.
 }
 \description{
-XXX
+This layes add lines representing a single or a group of
+parametric or smooth 1D effects.
+}
+\details{
+When used in conjuction with \link{plot.fs.interaction.1D}, which plots smooth effects
+of type \code{bs="fs"}, this function uses transparency to avoid over-plotting.
+This can be avoided by setting \code{alpha = 1} in the call to \code{l_fitLine}.
+}
+\seealso{
+See \link{plot.mgcv.smooth.1D}, \link{plot.ptermNumeric}, or
+\link{plot.fs.interaction.1D} for examples.
 }

@@ -7,11 +7,19 @@
 l_fitBar(a.aes = list(), ...)
 }
 \arguments{
-\item{...}{graphical arguments to be passed to \code{ggplot2::geom_bar}.}
+\item{a.aes}{list of aesthetic mapping arguments that will be passed to
+\code{ggplot2::geom_bar}. For instance we could set \code{a.aes=list("fill"="red")}
+to change the colour of the barplot.}
+
+\item{...}{graphical arguments to be passed to \link[ggplot2:geom_bar]{ggplot2::geom_bar}.}
 }
 \value{
 an object of class \code{gamLayer}.
 }
 \description{
-Adding barplot to effect plots.
+This layer adds a barplot to an effect plots. Mainly useful for factor or
+binary effect plots.
+}
+\seealso{
+See \link{plot.ptermFactor} for examples.
 }

@@ -170,3 +170,7 @@ zoom(o, xlim = c(-0.25, 0.25), show.reps = TRUE, discrete = TRUE, a.replin = lis
 }
 
 }
+\references{
+Augustin, N.H., Sauleau, E.A. and Wood, S.N., 2012. On quantile quantile plots for generalized linear models.
+Computational Statistics & Data Analysis, 56(8), pp.2404-2409.
+}

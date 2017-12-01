@@ -42,6 +42,8 @@
 #'          involves direct simulations of residuals from the models. This requires \code{o$family$rd} to be defined. 
 #'          Setting \code{method = "simul2"} results in a cheaper method, described in section 2.2 of Augustin et al. (2012), 
 #'          which requires \code{o$family$qf} to be defined.
+#' @references Augustin, N.H., Sauleau, E.A. and Wood, S.N., 2012. On quantile quantile plots for generalized linear models.
+#'             Computational Statistics & Data Analysis, 56(8), pp.2404-2409.
 #' @import ggplot2
 #' @importFrom stats residuals sd qnorm dnorm qbeta approx var predict
 #' @importFrom mgcv fix.family.qf fix.family.rd

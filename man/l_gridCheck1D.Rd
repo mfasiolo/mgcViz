@@ -2,24 +2,26 @@
 % Please edit documentation in R/L_gridCheck1D.R
 \name{l_gridCheck1D}
 \alias{l_gridCheck1D}
-\title{Checking GAM residuals along one covariate}
+\title{Binning and checking GAM residuals}
 \usage{
 l_gridCheck1D(gridFun = NULL, n = 20, level = 0.8, stand = "none",
   show.reps = TRUE, ...)
 }
 \arguments{
-\item{gridFun}{function used to summarize the residuals in each bin.
-By default it is \code{mean(r)*sqrt(length(r)}, where \code{r} is
-the vector of residuals in that bin.}
+\item{gridFun}{scalar-valued function used to summarize the residuals in each bin.
+It takes a vector as input. By default it is
+\code{mean(r)*sqrt(length(r))}, where \code{r} is the vector of
+residuals in that bin.}
 
-\item{n}{number of grid intervals.}
+\item{n}{number of grid intervals along the relevant covariate.}
 
-\item{level}{the level of the confidence intervals plotted.}
+\item{level}{the level of the confidence intervals (e.g. 0.9 means 90\% intervals).}
 
-\item{stand}{if \code{none} the residuals in each bin are transformed by \code{gridFun} and
-plotted as they are. If \code{sc} the statistics in each bin are scaled and
-centered using the simulated stats in that bin. If \code{s} we do only scaling,
-if \code{c} only centering.}
+\item{stand}{if "none" the residuals in each bin are transformed by \code{gridFun} and
+the result statistics are plotted directly. If "sc" the statistics
+in each bin are scaled and centered using the mean and standard
+deviation of the simulated stats in that bin.
+If "s" we do only scaling, if "c" only centering.}
 
 \item{show.reps}{if \code{TRUE} the individuals simulated statistics are also plotted.}
 
@@ -29,7 +31,11 @@ if \code{c} only centering.}
 An object of class \code{gamLayer}
 }
 \description{
-XXX
+This layer bins the residuals, r, according to the value of the corresponding
+covariate, x. Then the residuals in each bin are summarized using a
+scalar-valued statistic. Confidence intervals for the statistic corresponding
+to each bin can be obtained by simulating residuals from the fitted GAM
+model, binning and summarizing them. Mainly useful in conjuction with \link{check1D}.
 }
 \examples{
 library(mgcViz);

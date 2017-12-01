@@ -1,10 +1,12 @@
 #'
-#' Add fitted smooth effect contour
+#' Adding fitted effect contour lines
 #' 
-#' @description XXX
+#' @description This layer adds the contour lines corresponding to a fitted multidimensional effect.
 #'
 #' @param ... graphical arguments to be passed to  \code{ggplot2::geom_contour}.
 #' @return An object of class \code{gamLayer}.
+#' @seealso See [plot.mgcv.smooth.2D], [plot.mgcv.smooth.MD], [plot.sos.smooth] and
+#'          [plotSlice] for examples.
 #' @export l_fitContour
 #'
 l_fitContour <- function(...){

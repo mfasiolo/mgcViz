@@ -4,10 +4,10 @@
 \alias{l_pvRaster}
 \title{Adding heatmap of p-values to 2D smooth effect plot}
 \usage{
-l_pvRaster(pFun = identity, ...)
+l_pvRaster(pTrans = identity, ...)
 }
 \arguments{
-\item{pFun}{the transformations to be applied to the p-values before plotting.}
+\item{pTrans}{the transformations to be applied to the p-values before plotting.}
 
 \item{...}{graphical arguments to be passed to \code{ggplot2::geom_raster}.}
 }

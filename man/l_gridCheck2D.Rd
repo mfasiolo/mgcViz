@@ -2,21 +2,25 @@
 % Please edit documentation in R/L_gridCheck2D.R
 \name{l_gridCheck2D}
 \alias{l_gridCheck2D}
-\title{Checking GAM residuals along two covariates}
+\title{Binning and checking GAM residuals}
 \usage{
 l_gridCheck2D(gridFun = mean, bw = c(NA, NA), stand = TRUE,
   binFun = NULL, ...)
 }
 \arguments{
-\item{gridFun}{function used to summarize the residuals in each bin. By default it is \code{mean}.}
+\item{gridFun}{scalar-valued function used to summarize the residuals in each bin.}
 
-\item{bw}{numeric vector giving bin width in both vertical and horizontal directions. See the \code{binwidth}
-arguments in \code{?ggplot2::stat_summary_hex}. If left to \code{NA} is will set to one 20th
-of the ranges of x and y.}
+\item{bw}{numeric vector giving bin width in the vertical and horizontal directions. See the \code{binwidth}
+arguments in \code{?ggplot2::stat_summary_hex}. If left to \code{NA}, it will be set to 1/20
+of the ranges of x1 and x2.}
 
 \item{stand}{if left to \code{TRUE} then the observed statistic in the i-th cell is normalized using
-the simulated statistics in that same cell. That is we are actually plotting
+the simulated statistics in that same cell. That is, we will actually plot
 \code{std_stat = (obs_stat-mean(sim_stat))/sd(sim_stat)}.}
+
+\item{binFun}{the \code{ggplot2} function used to perform the binning. By default it
+is either \link[ggplot2:stat_summary_2d]{ggplot2::stat_summary_2d} or \link[ggplot2:stat_summary_hex]{ggplot2::stat_summary_hex}, depending
+on which the class of the covariates x1 and x2.}
 
 \item{...}{graphical arguments to be passed to \code{ggplot2::stat_summary_hex}.}
 }
@@ -24,7 +28,11 @@ the simulated statistics in that same cell. That is we are actually plotting
 An object of class \code{gamLayer}
 }
 \description{
-XXX
+This layer bins the residuals, r, according to the value of the corresponding
+covariates, x1 and x2. Then the residuals in each bin are summarized using a
+scalar-valued statistic. Confidence intervals for the statistic corresponding
+to each bin can be obtained by simulating residuals from the fitted GAM
+model, which are then binned and summarized. Mainly useful in conjuction with \link{check2D}.
 }
 \examples{
 library(mgcViz);

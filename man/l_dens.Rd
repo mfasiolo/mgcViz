@@ -2,20 +2,22 @@
 % Please edit documentation in R/L_dens.R
 \name{l_dens}
 \alias{l_dens}
-\title{Add density of partial residuals to plot}
+\title{Adding density estimate heatmap}
 \usage{
 l_dens(type, n = c(50, 50), bw = NULL, tol = 1e-06, trans = sqrt, ...)
 }
 \arguments{
-\item{type}{if set to "cond" then the conditional residual density is plotted.
-If set to "joint" the joint density of residuals and corresponding
-covariate is plotted.}
+\item{type}{for 1D effect plots, if set to "cond" then the conditional residual
+density \code{p(r|x)} is plotted. If set to "joint" the
+joint density of residuals, \code{p(r, x)}, is plotted.
+The behaviour is similar for 2D effect plots, but \code{r} indicates
+the second covariate, not the residuals.}
 
 \item{n}{vector of two positive integers, indicating the number of grid points
 at which the density is evaluated on the x and y axes.}
 
-\item{bw}{vector with two positive entried, indicating the bandwidth to be used
-by the kernel density estimator along x and y.}
+\item{bw}{vector with two positive entries, indicating the bandwidth to be used
+by the kernel density estimator of \code{p(x1, x2)} along x1 and x2.}
 
 \item{tol}{small positive numerical tolerance. The estimated density at a certain
 location is set to \code{NA} (hence it will appear white) when it falls
@@ -31,5 +33,17 @@ the whole x-y plane, no matter how low it is.}
 An object of class \code{gamLayer}.
 }
 \description{
-XXX
+This layer adds a 2D density estimate heat-map to a plot.
+For 1D effect plots, it adds either the conditional density of the partial
+residuals, \code{p(r|x)}, or the joint density \code{p(r, x)}. For 2D
+effect plots it adds either \code{p(x1|x2)} or \code{p(x1, x2)}, where
+\code{x1} and \code{x2} are the relevant covariates.
+}
+\details{
+The density function is estimated using the fast binned kernel density estimation
+methods provided by the \code{KernSmooth} package, hence this function should be
+able to handle relatively large datasets (~ 10^6 observations).
+}
+\seealso{
+See \link{plot.mgcv.smooth.1D}, \link{plot.mgcv.smooth.2D} and \link{check1D} for examples.
 }

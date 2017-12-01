@@ -1,10 +1,15 @@
 #'
 #' Adding barplot to effect plots
 #' 
-#' @description Adding barplot to effect plots.
+#' @description This layer adds a barplot to an effect plots. Mainly useful for factor or
+#'              binary effect plots.
 #'
-#' @param ... graphical arguments to be passed to \code{ggplot2::geom_bar}.
+#' @param a.aes list of aesthetic mapping arguments that will be passed to
+#'              \code{ggplot2::geom_bar}. For instance we could set \code{a.aes=list("fill"="red")} 
+#'              to change the colour of the barplot.
+#' @param ... graphical arguments to be passed to [ggplot2::geom_bar].
 #' @return an object of class \code{gamLayer}.
+#' @seealso See [plot.ptermFactor] for examples.
 #' @export l_fitBar
 #'
 l_fitBar <- function(a.aes = list(), ...){

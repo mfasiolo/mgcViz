@@ -4,7 +4,7 @@
 \alias{l_pvContour}
 \title{Adding contour of p-values to 2D smooth effect plot}
 \usage{
-l_pvContour(pFun = identity, ...)
+l_pvContour(pTrans = identity, ...)
 }
 \arguments{
 \item{...}{graphical arguments to be passed to  \code{ggplot2::geom_contour}.}

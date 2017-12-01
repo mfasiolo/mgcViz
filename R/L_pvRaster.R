@@ -3,16 +3,16 @@
 #' 
 #' @description Adding heatmap of p-values to 2D smooth effect plot.
 #'
-#' @param pFun the transformations to be applied to the p-values before plotting.
+#' @param pTrans the transformations to be applied to the p-values before plotting.
 #' @param ... graphical arguments to be passed to \code{ggplot2::geom_raster}.
 #' @return An object of class \code{gamLayer}.
 #' @export l_pvRaster
 #'
-l_pvRaster <- function(pFun = identity, ...){
+l_pvRaster <- function(pTrans = identity, ...){
   arg <- list(...)
   # NB: it doesn't make sense to let users change "na.value" here, because they can do it 
   # using scale_fill_gradientn() anyway.
-  arg$xtra <- list("pFun" = pFun, "na.value" = "grey")
+  arg$xtra <- list("pTrans" = pTrans, "na.value" = "grey")
   o <- structure(list("fun" = "l_pvRaster",
                       "arg" = arg), 
                  class = "gamLayer")
@@ -37,7 +37,7 @@ l_pvRaster.2D <- l_pvRaster.sos1 <- l_pvRaster.MDslice <- function(a){
   a$xtra <- NULL
   
   .dat <- a$data$fit
-  .dat$p <- xtra$pFun( 1 - pnorm(abs(.dat$z)/.dat$se) )
+  .dat$p <- xtra$pTrans( 1 - pnorm(abs(.dat$z)/.dat$se) )
   a$data <- .dat
   
   out <- list()

@@ -1,17 +1,23 @@
 #'
-#' Checking GAM residuals along one covariate
+#' Binning and checking GAM residuals
 #' 
-#' @description XXX
+#' @description This layer bins the residuals, r, according to the value of the corresponding
+#'              covariate, x. Then the residuals in each bin are summarized using a 
+#'              scalar-valued statistic. Confidence intervals for the statistic corresponding
+#'              to each bin can be obtained by simulating residuals from the fitted GAM
+#'              model, binning and summarizing them. Mainly useful in conjuction with [check1D]. 
 #' @name l_gridCheck1D
-#' @param gridFun function used to summarize the residuals in each bin. 
-#'                By default it is \code{mean(r)*sqrt(length(r)}, where \code{r} is
-#'                the vector of residuals in that bin.
-#' @param n number of grid intervals.
-#' @param level the level of the confidence intervals plotted.
-#' @param stand if `none` the residuals in each bin are transformed by \code{gridFun} and
-#'              plotted as they are. If `sc` the statistics in each bin are scaled and 
-#'              centered using the simulated stats in that bin. If `s` we do only scaling, 
-#'              if `c` only centering.
+#' @param gridFun scalar-valued function used to summarize the residuals in each bin. 
+#'                It takes a vector as input. By default it is 
+#'                \code{mean(r)*sqrt(length(r))}, where \code{r} is the vector of 
+#'                residuals in that bin.
+#' @param n number of grid intervals along the relevant covariate.
+#' @param level the level of the confidence intervals (e.g. 0.9 means 90\% intervals).
+#' @param stand if "none" the residuals in each bin are transformed by \code{gridFun} and
+#'              the result statistics are plotted directly. If "sc" the statistics 
+#'              in each bin are scaled and centered using the mean and standard
+#'              deviation of the simulated stats in that bin. 
+#'              If "s" we do only scaling, if "c" only centering.
 #' @param show.reps if \code{TRUE} the individuals simulated statistics are also plotted.
 #' @param ... graphical arguments to be passed to \code{ggplot2::geom_point}.
 #' @return An object of class \code{gamLayer}
@@ -127,7 +133,6 @@ l_gridCheck1D.Check1DFactor <- l_gridCheck1D.Check1DLogical <- function(a){
       lev <- grX 
     }
      
-    
     # Calculate function for each bin and each repetition
     grS <- matrix(NA, rep, length(lev))
     for( ir in 1:rep ){ 

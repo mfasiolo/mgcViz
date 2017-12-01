@@ -1,24 +1,34 @@
 #'
-#' Add glyphs to 2D plot
+#' Adding glyphs to 2D plots
 #' 
-#' @description XXX
+#' @description This layer adds glyphs or subplots to 2D plots. It is mainly meant to 
+#'              be used with [check2D] and to produce residuals checks.
 #'
-#' @param glyFun the function used to obtain the data needed to construct the glyphs.
-#' @param ggLay the ggplot2 layer function used to plot the glyphs.
-#' @param n vector of two positive integers, indicating the number of 2D grid cell in which
-#'          the data is divided.
+#' @param glyFun the function that produces the data needed to construct the glyphs.
+#'               It will take a single argument (\code{.d}), which is a \code{data.frame}
+#'               with columns \code{"x"}, \code{"y"} and \code{"z"}. When \code{l_glyphs2D}
+#'               is used with \code{check2D}, then \code{"x"} and \code{"y"} will be the 
+#'               locations of the residual \code{"z"} in the relevant covariates. 
+#'               \code{glyFun} needs to output a \code{data.frame} that will be passed to
+#'               the \code{ggLay} function, which does the plotting.
+#' @param ggLay the \code{ggplot2} layer function (such as \code{"geom_point"}) used to 
+#'              plot the glyphs. Its mapping needs to take at least argument "x", "y" and
+#'              "group". See the \code{mapping} argument below.
+#' @param n vector of two positive integers, indicating the number of 2D grid cell 
+#'          along x and y in which the data is divided.
 #' @param mapping list of aesthetic mappings to be used by \code{ggLay}. By default it is
-#'                \code{aes(x=gx, y=gy, group = gid)}.
-#' @param data a data.frame to be used for computing the glyphs. It must have two variables
-#'             called `x` and `y`.
-#' @param polar see \code{?GGally::glyphs}.
-#' @param height see \code{?GGally::glyphs}.
-#' @param width see \code{?GGally::glyphs}.
-#' @param y_scale see \code{?GGally::glyphs}.
-#' @param x_scale see \code{?GGally::glyphs}.
-#' @param ... graphical arguments to be passed to \code{ggLay}.
+#'                \code{aes(x=gx, y=gy, group = gid)}. Here gx and gy specify the x-y 
+#'                location of each data-point used to plot the glyphs, while gid specifies
+#'                to which glyph each data-point belongs (there are \code{n[1]*n[2]} glyphs).
+#' @param data an optional data.frame to be used for computing the glyphs. 
+#'             It must have two variables called `x` and `y`. If left to \code{NULL} then 
+#'             the glyphs will be computed using the data in the \code{plotSmooth} object
+#'             to which this layer is being added.
+#' @param polar,height,width,y_scale,x_scale see [GGally::glyphs].
+#' @param ... graphical arguments to be passed to \code{ggLay} function.
 #' @importFrom GGally glyphs
 #' @return An object of class \code{gamLayer}.
+#' @seealso [check2D].
 #' @examples 
 #' library(mgcViz);
 #' set.seed(4124)

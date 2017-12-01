@@ -8,10 +8,10 @@ l_densCheck(n = c(80, 80), bw = NULL, tol = 1e-06, dFun = NULL, ...)
 }
 \arguments{
 \item{n}{vector of two positive integers, indicating the number of grid points
-at which the density is evaluated on the x and y axes.}
+at which the density is evaluated on the x and r axes.}
 
-\item{bw}{vector with two positive entried, indicating the bandwidth to be used
-by the kernel density estimator along x and y.}
+\item{bw}{vector with two positive entries, indicating the bandwidth to be used
+by the kernel density estimator of \code{p(r|x)} along x and r.}
 
 \item{tol}{small positive numerical tolerance. The estimated density at a certain
 location is set to \code{NA} (hence it will appear white) when it falls
@@ -19,10 +19,12 @@ below \code{tol/sqrt(2*pi*sig)}, where \code{sig} is the standard
 deviation of the residuals. Set \code{tol} to -1 plot the density on
 the whole x-y plane, no matter how low it is.}
 
-\item{dFun}{function used to compute the different between the empirical (em) and theoretical (th)
+\item{dFun}{function used to compute the difference between the empirical (em) and theoretical (th)
 conditional density of the residuals. By default it is \code{abs(sqrt(em)-sqrt(th))^(1/3)},
 where \code{th} is computed using either a uniform or a normal density, depending on the
-type of residuals used.}
+type of residuals used in the \link{check1D} call. It should as arguments three vectors: \code{.ed} (the empirical
+conditional density), \code{.gr} (the points along y where the density is evaluated) and
+\code{.y} (the partial residuals).}
 
 \item{...}{graphical arguments to be passed to \code{ggplot2::geom_raster}.}
 }
@@ -30,20 +32,31 @@ type of residuals used.}
 An object of class \code{gamLayer}.
 }
 \description{
-XXX
+This layer calculates and plots how the empirical conditional density of
+the residuals, r, differs from its theoretical or model-based counterpart,
+along a covariate, x.
+}
+\details{
+This layer is mainly meant to work together with the \link{check1D} function. The default \code{dFun}
+if compare the conditional distribution of the residuals with N(0, 1) or Unif(0, 1) densities,
+depending on the residual type used in the \link{check1D} call.
 }
 \examples{
-
 library(mgcViz);
 
 # Dataset where variance increases linearly with x2, for x2 > 0.2
 n <- 1e3
 x1 <- rnorm(1e3)
 x2 <- rnorm(1e3)
-dat <- data.frame("x1"=x1, "x2"=x2, "y"=sin(x1) + 0.5*x2^2 + pmax(x2, 0.2)*rnorm(n))
+dat <- data.frame("x1"=x1, 
+                  "x2"=x2, "y"=sin(x1) + 0.5*x2^2 + pmax(x2, 0.2)*rnorm(n))
 b <- gam(y ~ s(x1)+s(x2), data=dat)
 
-# Heteroschedasticity clearly visible
-check1D(b, "x2") + l_densCheck()
+# (Blue) Yellow indicates area where the empirical density 
+# of the residuals is (lower) higher than it should be under 
+# the model (residuals should be N(0, sigma) here).
+# Here there are clear signs of heteroscedasticity: 
+# the conditional variance is is increasing for x2 > 0.2. 
+check1D(b, "x2") + l_densCheck() + l_rug()
 
 }

@@ -1,15 +1,21 @@
 #'
-#' Add density of partial residuals to plot
+#' Adding density estimate heatmap
 #' 
-#' @description XXX
+#' @description This layer adds a 2D density estimate heat-map to a plot.
+#'              For 1D effect plots, it adds either the conditional density of the partial
+#'              residuals, \code{p(r|x)}, or the joint density \code{p(r, x)}. For 2D
+#'              effect plots it adds either \code{p(x1|x2)} or \code{p(x1, x2)}, where 
+#'              \code{x1} and \code{x2} are the relevant covariates.  
 #'
-#' @param type if set to "cond" then the conditional residual density is plotted.
-#'             If set to "joint" the joint density of residuals and corresponding 
-#'             covariate is plotted.
+#' @param type for 1D effect plots, if set to "cond" then the conditional residual 
+#'             density \code{p(r|x)} is plotted. If set to "joint" the 
+#'             joint density of residuals, \code{p(r, x)}, is plotted. 
+#'             The behaviour is similar for 2D effect plots, but \code{r} indicates 
+#'             the second covariate, not the residuals.
 #' @param n vector of two positive integers, indicating the number of grid points
-#'            at which the density is evaluated on the x and y axes.
-#' @param bw vector with two positive entried, indicating the bandwidth to be used
-#'           by the kernel density estimator along x and y.
+#'          at which the density is evaluated on the x and y axes.
+#' @param bw vector with two positive entries, indicating the bandwidth to be used
+#'           by the kernel density estimator of \code{p(x1, x2)} along x1 and x2.
 #' @param tol small positive numerical tolerance. The estimated density at a certain 
 #'            location is set to \code{NA} (hence it will appear white) when it falls 
 #'            below \code{tol/sqrt(2*pi*sig)}, where \code{sig} is the standard 
@@ -17,9 +23,13 @@
 #'            the whole x-y plane, no matter how low it is.
 #' @param trans the density on x-y is transformed using this function before being plotted.
 #' @param ... graphical arguments to be passed to \code{ggplot2::geom_raster}.
+#' @details The density function is estimated using the fast binned kernel density estimation
+#'          methods provided by the \code{KernSmooth} package, hence this function should be
+#'          able to handle relatively large datasets (~ 10^6 observations).
 #' @importFrom viridis viridis
 #' @importFrom KernSmooth dpik bkde bkde2D
 #' @return An object of class \code{gamLayer}.
+#' @seealso See [plot.mgcv.smooth.1D], [plot.mgcv.smooth.2D] and [check1D] for examples.
 #' @export l_dens
 #'
 l_dens <- function(type, n = c(50, 50), 

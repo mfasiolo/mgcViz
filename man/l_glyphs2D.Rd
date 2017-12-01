@@ -2,43 +2,48 @@
 % Please edit documentation in R/L_glyphs2D.R
 \name{l_glyphs2D}
 \alias{l_glyphs2D}
-\title{Add glyphs to 2D plot}
+\title{Adding glyphs to 2D plots}
 \usage{
 l_glyphs2D(glyFun, ggLay = "geom_points", n = c(4, 4), mapping = NULL,
   data = NULL, polar = FALSE, height = ggplot2::rel(0.95),
   width = ggplot2::rel(0.95), y_scale = I, x_scale = I, ...)
 }
 \arguments{
-\item{glyFun}{the function used to obtain the data needed to construct the glyphs.}
+\item{glyFun}{the function that produces the data needed to construct the glyphs.
+It will take a single argument (\code{.d}), which is a \code{data.frame}
+with columns \code{"x"}, \code{"y"} and \code{"z"}. When \code{l_glyphs2D}
+is used with \code{check2D}, then \code{"x"} and \code{"y"} will be the
+locations of the residual \code{"z"} in the relevant covariates.
+\code{glyFun} needs to output a \code{data.frame} that will be passed to
+the \code{ggLay} function, which does the plotting.}
 
-\item{ggLay}{the ggplot2 layer function used to plot the glyphs.}
+\item{ggLay}{the \code{ggplot2} layer function (such as \code{"geom_point"}) used to
+plot the glyphs. Its mapping needs to take at least argument "x", "y" and
+"group". See the \code{mapping} argument below.}
 
-\item{n}{vector of two positive integers, indicating the number of 2D grid cell in which
-the data is divided.}
+\item{n}{vector of two positive integers, indicating the number of 2D grid cell
+along x and y in which the data is divided.}
 
 \item{mapping}{list of aesthetic mappings to be used by \code{ggLay}. By default it is
-\code{aes(x=gx, y=gy, group = gid)}.}
+\code{aes(x=gx, y=gy, group = gid)}. Here gx and gy specify the x-y
+location of each data-point used to plot the glyphs, while gid specifies
+to which glyph each data-point belongs (there are \code{n[1]*n[2]} glyphs).}
 
-\item{data}{a data.frame to be used for computing the glyphs. It must have two variables
-called \code{x} and \code{y}.}
+\item{data}{an optional data.frame to be used for computing the glyphs.
+It must have two variables called \code{x} and \code{y}. If left to \code{NULL} then
+the glyphs will be computed using the data in the \code{plotSmooth} object
+to which this layer is being added.}
 
-\item{polar}{see \code{?GGally::glyphs}.}
+\item{polar, height, width, y_scale, x_scale}{see \link[GGally:glyphs]{GGally::glyphs}.}
 
-\item{height}{see \code{?GGally::glyphs}.}
-
-\item{width}{see \code{?GGally::glyphs}.}
-
-\item{y_scale}{see \code{?GGally::glyphs}.}
-
-\item{x_scale}{see \code{?GGally::glyphs}.}
-
-\item{...}{graphical arguments to be passed to \code{ggLay}.}
+\item{...}{graphical arguments to be passed to \code{ggLay} function.}
 }
 \value{
 An object of class \code{gamLayer}.
 }
 \description{
-XXX
+This layer adds glyphs or subplots to 2D plots. It is mainly meant to
+be used with \link{check2D} and to produce residuals checks.
 }
 \examples{
 library(mgcViz);
@@ -83,4 +88,7 @@ pl + l_glyphs2D(glyFun = glyFun, ggLay = "geom_point", n = c(10, 10),
                 mapping = aes(x=gx, y=gy, group = gid, colour = I(colour)),
                 height=2, width = 1, size = 0.2) 
 
+}
+\seealso{
+\link{check2D}.
 }

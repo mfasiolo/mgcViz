@@ -2,7 +2,7 @@
 % Please edit documentation in R/L_fitPoints.R
 \name{l_fitPoints}
 \alias{l_fitPoints}
-\title{Adding fitted points to effect plots}
+\title{Adding points representing the fitted effect}
 \usage{
 l_fitPoints(...)
 }
@@ -13,5 +13,9 @@ l_fitPoints(...)
 an object of class \code{gamLayer}.
 }
 \description{
-Adding fitted points to smooth or parametric effect plots.
+This function adds points representing the fitted effect. Mainly
+useful for plotting factor effects.
+}
+\seealso{
+See \link{plot.ptermFactor} for examples.
 }

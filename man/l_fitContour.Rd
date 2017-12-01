@@ -2,7 +2,7 @@
 % Please edit documentation in R/L_fitContour.R
 \name{l_fitContour}
 \alias{l_fitContour}
-\title{Add fitted smooth effect contour}
+\title{Adding fitted effect contour lines}
 \usage{
 l_fitContour(...)
 }
@@ -13,5 +13,9 @@ l_fitContour(...)
 An object of class \code{gamLayer}.
 }
 \description{
-XXX
+This layer adds the contour lines corresponding to a fitted multidimensional effect.
+}
+\seealso{
+See \link{plot.mgcv.smooth.2D}, \link{plot.mgcv.smooth.MD}, \link{plot.sos.smooth} and
+\link{plotSlice} for examples.
 }

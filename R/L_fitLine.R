@@ -1,10 +1,16 @@
 #'
 #' Add fitted smooth effect curve
 #' 
-#' @description XXX
+#' @description This layes add lines representing a single or a group of 
+#'              parametric or smooth 1D effects.
 #'
 #' @param ... graphical arguments to be passed to \code{ggplot2::geom_line}.
 #' @return An object of class \code{gamLayer}.
+#' @seealso See [plot.mgcv.smooth.1D], [plot.ptermNumeric], or
+#'          [plot.fs.interaction.1D] for examples.
+#' @details When used in conjuction with [plot.fs.interaction.1D], which plots smooth effects
+#'          of type \code{bs="fs"}, this function uses transparency to avoid over-plotting.
+#'          This can be avoided by setting \code{alpha = 1} in the call to \code{l_fitLine}.
 #' @export l_fitLine
 #'
 l_fitLine <- function(...){

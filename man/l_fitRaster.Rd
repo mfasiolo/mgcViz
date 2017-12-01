@@ -2,16 +2,37 @@
 % Please edit documentation in R/L_fitRaster.R
 \name{l_fitRaster}
 \alias{l_fitRaster}
-\title{Add raster to smooth effect plot}
+\title{Adding raster representing the fitted effect}
 \usage{
-l_fitRaster(pFun = function(.p) 1, noiseup = FALSE, mul = 1, ...)
+l_fitRaster(pTrans = function(.p) 1, noiseup = FALSE, mul = 1, ...)
 }
 \arguments{
+\item{pTrans}{a function from (0, 1) to (0, 1) which takes as input a p-value and returns a value,
+\code{alpha}, which will be passed on to \link[ggplot2:geom_raster]{ggplot2::geom_raster}, and will determine
+the opacity of the heat-map. The p-value quantifies the significance of the smooth
+effect at each location (x1, x2). By default \code{pTrans} returns 1, but if we
+set it to, say, \code{pTrans = function(.p) .p<0.05} then the regions with p-values
+higher than 0.05 will disappear. The \link{zto1} function can be used to specify \code{pTrans}
+in a flexible way.}
+
+\item{noiseup}{if \code{TRUE} the fitted effect, mu(x1, x2), will be perturbed with random
+noise before being plotted. That is, at each location (x1, x2) a random
+variable z(x1, x2) ~ N(0, mul * V(x1, x2)) will be added to mu(x1, x2). Here
+V(x1, x2) is the estimated variance of mu(x1, x2) and \code{mul}
+is a scalar multiplier (see next argument). This is useful for understanding in
+which areas the smooth is more uncertain, as these areas will appear more noisy.}
+
+\item{mul}{positive multiplier that scales the variance of the fitted effect. See the \code{noiseup}
+argument.}
+
 \item{...}{graphical arguments to be passed to \code{ggplot2::geom_raster}.}
 }
 \value{
 An object of class \code{gamLayer}.
 }
 \description{
-XXX
+This layer adds a raster or heat-map representing a fitted multidimensional effect.
+}
+\seealso{
+See \link{plot.mgcv.smooth.2D}, \link{plot.sos.smooth} or \link{plotSlice} for examples.
 }
