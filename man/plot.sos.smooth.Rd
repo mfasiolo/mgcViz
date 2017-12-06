@@ -10,11 +10,52 @@
   unconditional = FALSE, ...)
 }
 \arguments{
-\item{scheme}{if 0 the smooth effect is plot on the sphere. If 1 the smooth effect is plotted
+\item{x}{a smooth effect object, extracted using \link[mgcViz:sm]{mgcViz::sm}.}
+
+\item{n}{sqrt of the number of grid points used to compute the effect plot.}
+
+\item{xlim}{if supplied then this pair of numbers are used as the x limits for the plot.}
+
+\item{ylim}{if supplied then this pair of numbers are used as the y limits for the plot.}
+
+\item{maxpo}{maximum number of residuals points that will be used by layers such as
+\code{resRug()} and \code{resPoints()}. If number of datapoints > \code{maxpo},
+then a subsample of \code{maxpo} points will be taken.}
+
+\item{too.far}{if greater than 0 then this is used to determine when a location is too far
+from data to be plotted. This is useful since smooths tend to go wild
+away from data. The data are scaled into the unit square before deciding
+what to exclude, and too.far is a distance within the unit square.
+Setting to zero can make plotting faster for large datasets, but care
+then needed with interpretation of plots.}
+
+\item{phi}{one of the plotting angles, relevant only if \code{scheme = 0}.}
+
+\item{theta}{the other plotting angle, relevant only if \code{scheme = 0}.}
+
+\item{trans}{monotonic function to apply to the smooth and residuals, before plotting.
+Monotonicity is not checked.}
+
+\item{scheme}{if 0 the smooth effect is plotted on the sphere. If 1 the smooth effect is plotted
 on the two hemispheres.}
+
+\item{seWithMean}{if TRUE the component smooths are shown with confidence intervals that
+include the uncertainty about the overall mean. If FALSE then the uncertainty
+relates purely to the centred smooth itself. Marra and Wood (2012) suggests
+that TRUE results in better coverage performance, and this is also suggested
+by simulation.}
+
+\item{unconditional}{if \code{TRUE} then the smoothing parameter uncertainty corrected covariance
+matrix is used to compute uncertainty bands, if available.
+Otherwise the bands treat the smoothing parameters as fixed.}
+
+\item{...}{currently unused.}
+}
+\value{
+An objects of class \code{plotSmooth}.
 }
 \description{
-XXX
+This is the plotting method for smooth effects on the sphere.
 }
 \examples{
 library(mgcViz)
@@ -56,4 +97,8 @@ plot(sm(bp, 1), scheme=0) + l_fitRaster() + l_fitContour() +
 # Plotting as in standard 2D plots
 plot(sm(bp, 1), scheme=1) + l_fitRaster() + l_fitContour() + 
            l_points(shape = 19) + l_rug()
+}
+\references{
+Marra, G and S.N. Wood (2012) Coverage Properties of Confidence Intervals for
+Generalized Additive Model Components. Scandinavian Journal of Statistics.
 }

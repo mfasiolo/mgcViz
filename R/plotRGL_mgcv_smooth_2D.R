@@ -1,6 +1,42 @@
-#' Visualizing 2D smooth effects in 3D (interactively)
+#' Visualizing 2D smooth effects in 3D 
 #' 
-#' @description XXX
+#' @description This method plots an interactive 3D representation of a 2D smooth effect, using
+#'              the [rgl] package.
+#' @param x a smooth effect object, extracted using [mgcViz::sm].
+#' @param se when TRUE (default) upper and lower surfaces are added to the plot at \code{se.mult} 
+#'           (see below) standard deviations for the fitted surface.
+#' @param n sqrt of the number of grid points used to compute the effect plot.
+#' @param residuals if TRUE, then the partial residuals will be added.
+#' @param type the type of residuals that should be plotted. See [mgcViz::residuals.gam].
+#' @param maxpo maximum number of residuals points that will be plotted. 
+#'              If number of datapoints > \code{maxpo}, then a subsample of \code{maxpo} points will be taken.
+#' @param too.far if greater than 0 then this is used to determine when a location is too far 
+#'               from data to be plotted. This is useful since smooths tend to go wild 
+#'               away from data. The data are scaled into the unit square before deciding
+#'               what to exclude, and too.far is a distance within the unit square.
+#'               Setting to zero can make plotting faster for large datasets, but care 
+#'               then needed with interpretation of plots.
+#' @param xlab if supplied then this will be used as the x label of the plot.
+#' @param ylab if supplied then this will be used as the y label of the plot.
+#' @param main used as title for the plot if supplied.
+#' @param xlim if supplied then this pair of numbers are used as the x limits for the plot.
+#' @param ylim if supplied then this pair of numbers are used as the y limits for the plot.
+#' @param se.mult a positive number which will be the multiplier of the standard errors 
+#'                when calculating standard error surfaces. 
+#' @param trans monotonic function to apply to the smooth and residuals, before plotting.
+#'              Monotonicity is not checked. 
+#' @param seWithMean if TRUE the component smooths are shown with confidence intervals that 
+#'                   include the uncertainty about the overall mean. If FALSE then the uncertainty
+#'                   relates purely to the centred smooth itself. Marra and Wood (2012) suggests 
+#'                   that TRUE results in better coverage performance, and this is also suggested 
+#'                   by simulation.
+#' @param unconditional if \code{TRUE} then the smoothing parameter uncertainty corrected covariance 
+#'                      matrix is used to compute uncertainty bands, if available.
+#'                      Otherwise the bands treat the smoothing parameters as fixed.
+#' @param ... currently unused.
+#' @return Returns \code{NULL} invisibly.
+#' @references Marra, G and S.N. Wood (2012) Coverage Properties of Confidence Intervals for 
+#'             Generalized Additive Model Components. Scandinavian Journal of Statistics.
 #' @name plotRGL.mgcv.smooth.2D
 #' @examples 
 #' # Example 1: taken from ?mgcv::te, shows how tensor pruduct deals nicely with 
@@ -44,13 +80,13 @@
 plotRGL.mgcv.smooth.2D <- function(x, se = TRUE, n = 40, residuals = FALSE, type = "auto", 
                                    maxpo = 1e3, too.far = 0, xlab = NULL, ylab = NULL, 
                                    main = NULL, xlim = NULL, ylim = NULL,  se.mult = 1, 
-                                   shift = 0, trans = identity, seWithMean = FALSE, 
+                                   trans = identity, seWithMean = FALSE, 
                                    unconditional = FALSE, ...){
   
   if (type == "auto") { type <- .getResTypeAndMethod(x$gObj$family$family)$type }
   
   P <- .prepareP(o = x, unconditional = unconditional, residuals = residuals, 
-                 resDen = "none", se = se, se.mult = se.mult, n = NULL, n2 = n,  
+                 resDen = "none", se = TRUE, se.mult = se.mult, n = NULL, n2 = n,  
                  xlab = xlab, ylab = ylab, main = main, ylim = ylim, xlim = xlim,
                  too.far = too.far, seWithMean = seWithMean)
   
@@ -63,6 +99,7 @@ plotRGL.mgcv.smooth.2D <- function(x, se = TRUE, n = 40, residuals = FALSE, type
   }
 
   # Actual plotting
+  P$plotCI <- se
   .plotRGL.mgcv.smooth.2D(P = P, trans = trans, res = R$res)
   
 }
@@ -109,10 +146,12 @@ plotRGL.mgcv.smooth.2D <- function(x, se = TRUE, n = 40, residuals = FALSE, type
   # Draws non-parametric density
   n <- length(P$x)
   surface3d(P$x, P$y, matrix(P$fit, n, n), color="#FF2222", alpha=0.5)
-  surface3d(P$x, P$y, matrix(P$fit + 2*P$se, n, n), 
-            alpha=0.5, color="#CCCCFF",front="lines")
-  surface3d(P$x, P$y, matrix(P$fit - 2*P$se, n, n), 
-            alpha=0.5, color= "#CCCCFF", front="lines")
+  if( P$plotCI ){
+    surface3d(P$x, P$y, matrix(P$fit + P$se, n, n), 
+              alpha=0.5, color="#CCCCFF",front="lines")
+    surface3d(P$x, P$y, matrix(P$fit - P$se, n, n), 
+              alpha=0.5, color= "#CCCCFF", front="lines")
+  }
   
   # Draws the simulated data as spheres on the baseline
   if( !is.null(res) ){

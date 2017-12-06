@@ -8,10 +8,28 @@
   unconditional = FALSE, ...)
 }
 \arguments{
+\item{x}{a smooth effect object, extracted using \link[mgcViz:sm]{mgcViz::sm}.}
+
+\item{trans}{monotonic function to apply to the smooth and residuals, before plotting.
+Monotonicity is not checked.}
+
+\item{seWithMean}{if TRUE the component smooths are shown with confidence intervals that
+include the uncertainty about the overall mean. If FALSE then the uncertainty
+relates purely to the centred smooth itself. Marra and Wood (2012) suggests
+that TRUE results in better coverage performance, and this is also suggested
+by simulation.}
+
+\item{unconditional}{if \code{TRUE} then the smoothing parameter uncertainty corrected covariance
+matrix is used to compute uncertainty bands, if available.
+Otherwise the bands treat the smoothing parameters as fixed.}
+
 \item{...}{currently unused.}
 }
+\value{
+An objects of class \code{plotSmooth}.
+}
 \description{
-Plotting markov random field smooths.
+This is the plotting method for Markov random field smooths.
 }
 \examples{
 library(mgcViz)
@@ -31,4 +49,8 @@ plot(sm(b, 1)) + l_poly(colour = 2) +
 # Default plot 
 plot(b)
 
+}
+\references{
+Marra, G and S.N. Wood (2012) Coverage Properties of Confidence Intervals for
+Generalized Additive Model Components. Scandinavian Journal of Statistics.
 }

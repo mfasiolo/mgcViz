@@ -5,17 +5,29 @@
 \title{Plotting one dimensional smooth factor interactions}
 \usage{
 \method{plot}{fs.interaction.1D}(x, n = 100, xlim = NULL,
-  trans = identity, unconditional = FALSE, seWithMean = FALSE, ...)
+  trans = identity, ...)
 }
 \arguments{
-\item{x}{a smooth effect.}
+\item{x}{a smooth effect object.}
+
+\item{n}{number of grid points used to compute main effect and c.i. lines.
+For a nice smooth plot this needs to be several times the estimated degrees of
+freedom for the smooth.}
 
 \item{xlim}{if supplied then this pair of numbers are used as the x limits for the plot.}
 
+\item{trans}{monotonic function to apply to the smooth and residuals, before plotting.
+Monotonicity is not checked.}
+
 \item{...}{currently unused.}
 }
+\value{
+An object of class \code{c("plotSmooth", "gg")}.
+}
 \description{
-Plotting one dimensional smooth factor interactions.
+This method should be used to plot smooth effects
+of class \code{"fs.interaction.1D"}, that is smooth constructed
+using the basis \code{bs="tp"}. See \link[mgcv:s]{mgcv::s}.
 }
 \examples{
 library(mgcViz)

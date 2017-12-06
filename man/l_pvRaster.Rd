@@ -2,18 +2,24 @@
 % Please edit documentation in R/L_pvRaster.R
 \name{l_pvRaster}
 \alias{l_pvRaster}
-\title{Adding heatmap of p-values to 2D smooth effect plot}
+\title{Adding raster or heat-map of p-values}
 \usage{
 l_pvRaster(pTrans = identity, ...)
 }
 \arguments{
-\item{pTrans}{the transformations to be applied to the p-values before plotting.}
+\item{pTrans}{a transformation to be applied to the p-values before plotting.}
 
-\item{...}{graphical arguments to be passed to \code{ggplot2::geom_raster}.}
+\item{...}{graphical arguments to be passed to  \code{ggplot2::geom_raster}.}
 }
 \value{
 An object of class \code{gamLayer}.
 }
 \description{
-Adding heatmap of p-values to 2D smooth effect plot.
+This function adds a raster or heat-map proportional to the p-value
+of a multidimensional smooth effects. It is useful for checking
+where (across covariates x1 and x2) the fitted smooth is significantly
+different from zero.
+}
+\seealso{
+See \link{plotDiff.mgcv.smooth.2D} and \link{plotDiff.sos.smooth} for examples.
 }

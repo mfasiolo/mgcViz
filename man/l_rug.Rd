@@ -2,7 +2,7 @@
 % Please edit documentation in R/L_rug.R
 \name{l_rug}
 \alias{l_rug}
-\title{Add rug to smooth effect plot}
+\title{Adding rug to margins of a plot}
 \usage{
 l_rug(...)
 }
@@ -10,8 +10,13 @@ l_rug(...)
 \item{...}{graphical arguments to be passed to \code{ggplot2::geom_rug}.}
 }
 \value{
-an object of class \code{gamLayer}.
+An object of class \code{gamLayer}.
 }
 \description{
-XXX
+This layer adds a rug plot to the margins of a plot. It is mainly a
+wrapper around \link[ggplot2:geom_rug]{ggplot2::geom_rug}. Notice that for factor effects
+plots the rug is jittered by default.
+}
+\seealso{
+See \link{plot.mgcv.smooth.1D}, \link{plot.mgcv.smooth.2D} or \link{check1D} for examples.
 }

@@ -2,13 +2,47 @@
 % Please edit documentation in R/plotDiff_mgcv_smooth_2D.R
 \name{plotDiff.mgcv.smooth.2D}
 \alias{plotDiff.mgcv.smooth.2D}
-\title{Plotting differences between 2D smooths}
+\title{Plotting differences between two 2D smooth effects}
 \usage{
 \method{plotDiff}{mgcv.smooth.2D}(s1, s2, n = 40, too.far = 0.1,
   trans = identity, unconditional = FALSE)
 }
+\arguments{
+\item{s1}{a smooth effect object, extracted using \link[mgcViz:sm]{mgcViz::sm}.}
+
+\item{s2}{another smooth effect object.}
+
+\item{n}{sqrt of the number of grid points used to compute the effect plot.}
+
+\item{too.far}{if greater than 0 then this is used to determine when a location is too far
+from data to be plotted. This is useful since smooths tend to go wild
+away from data. The data are scaled into the unit square before deciding
+what to exclude, and too.far is a distance within the unit square.
+Setting to zero can make plotting faster for large datasets, but care
+then needed with interpretation of plots.}
+
+\item{trans}{monotonic function to apply to the smooth and residuals, before plotting.
+Monotonicity is not checked.}
+
+\item{unconditional}{if \code{TRUE} then the smoothing parameter uncertainty corrected covariance
+matrix is used to compute uncertainty bands, if available.
+Otherwise the bands treat the smoothing parameters as fixed.}
+}
+\value{
+An objects of class \code{plotSmooth}.
+}
 \description{
-Plotting differences between 2D smooths.
+This method can be used to plot the difference between two 2D
+smooth effects. Mainly meant to be used with by-factor smooths.
+}
+\details{
+Let sd be the difference between the fitted smooths, that is: sd = s1 - s2.
+sd is a vector of length n, and its covariance matrix is
+Cov(sd) = X1\%\emph{\%Sig11\%}\%t(X1) + X2\%\emph{\%Sig22\%}\%t(X2) - X1\%\emph{\%Sig12\%}\%t(X2) - X2\%\emph{\%Sig12\%}\%t(X1),
+where: X1 (X2) and Sig11 (Sig22) are the design matrix and the covariance matrix
+of the coefficients of s1 (s2), while Sig12 is the cross-covariance matrix between
+the coefficients of s1 and s2. To get the confidence intervals we need only diag(Cov(sd)),
+which here is calculated efficiently (without computing the whole of Cov(sd)).
 }
 \examples{
 # Simulate data and add factors uncorrelated to the response
@@ -28,4 +62,8 @@ pl + l_fitRaster() + l_fitContour()
 # Plot p-values for differences between the two smooths
 pl + l_pvRaster() + l_pvContour()
 
+}
+\references{
+Marra, G and S.N. Wood (2012) Coverage Properties of Confidence Intervals for
+Generalized Additive Model Components. Scandinavian Journal of Statistics.
 }

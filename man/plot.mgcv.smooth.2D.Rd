@@ -9,14 +9,45 @@
   unconditional = FALSE, ...)
 }
 \arguments{
+\item{x}{a smooth effect object, extracted using \link[mgcViz:sm]{mgcViz::sm}.}
+
+\item{n}{sqrt of the number of grid points used to compute the effect plot.}
+
 \item{xlim}{if supplied then this pair of numbers are used as the x limits for the plot.}
 
 \item{ylim}{if supplied then this pair of numbers are used as the y limits for the plot.}
 
+\item{maxpo}{maximum number of residuals points that will be used by layers such as
+\code{resRug()} and \code{resPoints()}. If number of datapoints > \code{maxpo},
+then a subsample of \code{maxpo} points will be taken.}
+
+\item{too.far}{if greater than 0 then this is used to determine when a location is too far
+from data to be plotted. This is useful since smooths tend to go wild
+away from data. The data are scaled into the unit square before deciding
+what to exclude, and too.far is a distance within the unit square.
+Setting to zero can make plotting faster for large datasets, but care
+then needed with interpretation of plots.}
+
+\item{trans}{monotonic function to apply to the smooth and residuals, before plotting.
+Monotonicity is not checked.}
+
+\item{seWithMean}{if TRUE the component smooths are shown with confidence intervals that
+include the uncertainty about the overall mean. If FALSE then the uncertainty
+relates purely to the centred smooth itself. Marra and Wood (2012) suggests
+that TRUE results in better coverage performance, and this is also suggested
+by simulation.}
+
+\item{unconditional}{if \code{TRUE} then the smoothing parameter uncertainty corrected covariance
+matrix is used to compute uncertainty bands, if available.
+Otherwise the bands treat the smoothing parameters as fixed.}
+
 \item{...}{currently unused.}
 }
+\value{
+An objects of class \code{plotSmooth}.
+}
 \description{
-XXX
+Plotting method for two dimensional smooth effects.
 }
 \examples{
 library(mgcViz)
@@ -33,4 +64,8 @@ plot(sm(b, 2)) + l_fitRaster(pTrans = zto1(0.05, 2, 0.1), noiseup = TRUE) +
 # Plot contour of effect joint density of design points
 plot(sm(b, 2)) + l_dens(type = "joint") + l_points() + l_fitContour() + 
   coord_cartesian(expand = FALSE) # Fill the plot
+}
+\references{
+Marra, G and S.N. Wood (2012) Coverage Properties of Confidence Intervals for
+Generalized Additive Model Components. Scandinavian Journal of Statistics.
 }

@@ -9,14 +9,51 @@
   seWithMean = FALSE, unconditional = FALSE, ...)
 }
 \arguments{
+\item{x}{a smooth effect object, extracted using \link[mgcViz:sm]{mgcViz::sm}.}
+
+\item{fix}{a named vector indicating which variables must be kept fixed and to what values.
+When plotting a smooth in (d+2) dimensions, then d variables must be fixed.}
+
+\item{n}{sqrt of the number of grid points used to compute the effect plot.}
+
 \item{xlim}{if supplied then this pair of numbers are used as the x limits for the plot.}
 
 \item{ylim}{if supplied then this pair of numbers are used as the y limits for the plot.}
 
+\item{maxpo}{maximum number of residuals points that will be used by layers such as
+\code{resRug()} and \code{resPoints()}. If number of datapoints > \code{maxpo},
+then a subsample of \code{maxpo} points will be taken.}
+
+\item{too.far}{a numeric vector with two entries. The first has the same interpretation
+as in \link{plot.mgcv.smooth.2D} and it avoids plotting the smooth effect
+in areas that are too far form any observation. The distance will be calculated only
+using the variables which are not in \code{fix} (see above). Hence in two dimensions,
+not in the full d+2 dimensions. Set it to -1 to plot the whole
+smooth. The second entry determines which residuals and covariates pairs are closed
+enough to the selected slice. If left to \code{NA} on the 10\% of points which are
+closest (in terms of scaled Euclidean distance) to the current slice will be plotted.
+Set it to -1 to plot all the residuals.}
+
+\item{trans}{monotonic function to apply to the smooth and residuals, before plotting.
+Monotonicity is not checked.}
+
+\item{seWithMean}{if TRUE the component smooths are shown with confidence intervals that
+include the uncertainty about the overall mean. If FALSE then the uncertainty
+relates purely to the centred smooth itself. Marra and Wood (2012) suggests
+that TRUE results in better coverage performance, and this is also suggested
+by simulation.}
+
+\item{unconditional}{if \code{TRUE} then the smoothing parameter uncertainty corrected covariance
+matrix is used to compute uncertainty bands, if available.
+Otherwise the bands treat the smoothing parameters as fixed.}
+
 \item{...}{currently unused.}
 }
+\value{
+An objects of class \code{plotSmooth}.
+}
 \description{
-XXX
+This function plots a 2D slice of a higher-dimensional smooth effects.
 }
 \examples{
 ## 3D example
@@ -43,4 +80,8 @@ b1 <- getViz(b1)
 # Plot one 2D slice
 plot(sm(b1, 1), fix = c("z"=0, "z2"=1)) + l_fitRaster() + l_fitContour()
 
+}
+\references{
+Marra, G and S.N. Wood (2012) Coverage Properties of Confidence Intervals for
+Generalized Additive Model Components. Scandinavian Journal of Statistics.
 }

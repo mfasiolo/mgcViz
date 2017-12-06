@@ -1,7 +1,28 @@
 #'
-#' Plotting differences between 1D smooths
+#' Plotting differences between two 1D smooth effects
 #' 
-#' @description Plotting differences between 1D smooths.
+#' @description This method can be used to plot the difference between two 1D
+#'              smooth effects. Mainly meant to be used with by-factor smooths.
+#' @param s1 a smooth effect object, extracted using [mgcViz::sm].
+#' @param s2 another smooth effect object.
+#' @param n number of grid points used to compute main effects and c.i. lines. 
+#'          For a nice smooth plot this needs to be several times the estimated degrees of 
+#'          freedom for the smooth.
+#' @param trans monotonic function to apply to the smooth and residuals, before plotting.
+#'              Monotonicity is not checked. 
+#' @param unconditional if \code{TRUE} then the smoothing parameter uncertainty corrected covariance 
+#'                      matrix is used to compute uncertainty bands, if available.
+#'                      Otherwise the bands treat the smoothing parameters as fixed.
+#' @return An objects of class \code{plotSmooth}.
+#' @details Let sd be the difference between the fitted smooths, that is: sd = s1 - s2.
+#'          sd is a vector of length n, and its covariance matrix is 
+#'          Cov(sd) = X1\%*\%Sig11\%*\%t(X1) + X2\%*\%Sig22\%*\%t(X2) - X1\%*\%Sig12\%*\%t(X2) - X2\%*\%Sig12\%*\%t(X1), 
+#'          where: X1 (X2) and Sig11 (Sig22) are the design matrix and the covariance matrix 
+#'          of the coefficients of s1 (s2), while Sig12 is the cross-covariance matrix between
+#'          the coefficients of s1 and s2. To get the confidence intervals we need only diag(Cov(sd)), 
+#'          which here is calculated efficiently (without computing the whole of Cov(sd)).        
+#' @references Marra, G and S.N. Wood (2012) Coverage Properties of Confidence Intervals for 
+#'             Generalized Additive Model Components. Scandinavian Journal of Statistics.
 #' @name plotDiff.mgcv.smooth.1D
 #' @examples 
 #' # Simulate data and add factors uncorrelated to the response

@@ -8,26 +8,35 @@
   ...)
 }
 \arguments{
-\item{x}{A fitted gam object as produced by \code{mgcv::gam()} or a \code{gamViz} object,
+\item{x}{a fitted gam object as produced by \code{mgcv::gam()} or a \code{gamViz} object,
 produced by \code{mgcViz::getViz()}.}
 
 \item{n}{number of points used for each 1-d plot. For a nice smooth plot
 this needs to be several times the estimated degrees of freedom for the smooth.}
 
-\item{n2}{square root of number of points used to grid estimates of 2D functions
-for plotting contours or heatmaps.}
+\item{n2}{square root of number of grid points used for plotting 2D functions effects
+using contours or heatmaps.}
 
-\item{select}{allows plotting a subset of model term. For instance, if you just want the plot
-for the second smooth term set \code{select = 2}.}
+\item{select}{allows plotting a subset of model terms. For instance, if you just want the plot
+for the second smooth term, set \code{select = 2}. Parametric effects always come
+after smooth or random effects.}
 
-\item{...}{other parameters, such as \code{maxpo} or \code{trans} to be passed to the specific
-plotting methods for each effect (e.g. to \code{plot.mgcv.smooth.1D}).}
+\item{allTerms}{if \code{TRUE} also the parametric effects will be plotted.}
+
+\item{...}{other parameters, such as \code{maxpo} or \code{trans}, to be passed to the specific
+plotting methods for each effect (e.g. to \link{plot.mgcv.smooth.1D}).}
+}
+\value{
+An object of class \code{c("plotGam", "gg")}.
 }
 \description{
-This function overwrites \code{mgcv::plot.gam()}.
+This function overwrites \code{mgcv::plot.gam()}. It is the workhorse of the
+\code{mgcViz} package, and allows plotting (almost) any type of smooth,
+parametric or random effects. It is basically a wrapper around plotting
+methods that are specific to individual smooth effect classes (such as
+\link{plot.mgcv.smooth.1D} and \link{plot.random.effect}).
 }
 \examples{
-
 library(mgcViz)
 
 ######## Basic example

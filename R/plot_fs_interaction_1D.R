@@ -1,10 +1,18 @@
 #'
 #' Plotting one dimensional smooth factor interactions
 #' 
-#' @description Plotting one dimensional smooth factor interactions.
-#' @param x a smooth effect.
+#' @description This method should be used to plot smooth effects 
+#'              of class \code{"fs.interaction.1D"}, that is smooth constructed 
+#'              using the basis \code{bs="tp"}. See [mgcv::s].
+#' @param x a smooth effect object.
+#' @param n number of grid points used to compute main effect and c.i. lines. 
+#'          For a nice smooth plot this needs to be several times the estimated degrees of 
+#'          freedom for the smooth.
 #' @param xlim if supplied then this pair of numbers are used as the x limits for the plot.
+#' @param trans monotonic function to apply to the smooth and residuals, before plotting.
+#'              Monotonicity is not checked. 
 #' @param ... currently unused.
+#' @return An object of class \code{c("plotSmooth", "gg")}.
 #' @name plot.fs.interaction.1D
 #' @examples 
 #' library(mgcViz)
@@ -46,8 +54,7 @@
 #' @rdname plot.fs.interaction.1D
 #' @export plot.fs.interaction.1D
 #' 
-plot.fs.interaction.1D <- function(x, n = 100, xlim = NULL, trans = identity, 
-                                   unconditional = FALSE, seWithMean = FALSE, ...) {
+plot.fs.interaction.1D <- function(x, n = 100, xlim = NULL, trans = identity, ...) {
   
   # 1) Prepare data
   P <- .prepareP(o = x, unconditional = FALSE, residuals = FALSE, 

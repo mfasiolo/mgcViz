@@ -1,10 +1,13 @@
 #'
-#' Add rug to smooth effect plot
+#' Adding rug to margins of a plot
 #' 
-#' @description XXX
+#' @description This layer adds a rug plot to the margins of a plot. It is mainly a 
+#'              wrapper around [ggplot2::geom_rug]. Notice that for factor effects
+#'              plots the rug is jittered by default.
 #'
 #' @param ... graphical arguments to be passed to \code{ggplot2::geom_rug}.
-#' @return an object of class \code{gamLayer}.
+#' @return An object of class \code{gamLayer}.
+#' @seealso See [plot.mgcv.smooth.1D], [plot.mgcv.smooth.2D] or [check1D] for examples.
 #' @export l_rug
 #'
 l_rug <- function(...){

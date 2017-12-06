@@ -1,7 +1,12 @@
 #'
-#' Checking GAM sign of residuals along one covariate
+#' Checking sign of residuals along one covariate
 #' 
-#' @description Checking GAM proportion of negative residuals along one covariate.
+#' @description This layer is mainly useful when checking quantile GAMs fitted using the \code{qgam}
+#'              package. The residuals, r, are binned according to the corresponding value of a 
+#'              covariate, x. Then the proportions of negative residuals within each bin are calculated, and
+#'              compared with the theoretical value, \code{qu}. Confidence intervals for the proportion
+#'              of negative residuals can be derived using binomial quantiles (under an independence
+#'              assumption). To be used in conjuction with [check1D].
 #' @name l_gridQCheck1D
 #' @param qu the quantile of interest. Should be in (0, 1).
 #' @param n number of grid intervals.

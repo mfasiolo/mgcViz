@@ -1,9 +1,38 @@
 #' Plotting smooths on the sphere
 #' 
-#' @description XXX
+#' @description This is the plotting method for smooth effects on the sphere.
 #' @name plot.sos.smooth
-#' @param scheme if 0 the smooth effect is plot on the sphere. If 1 the smooth effect is plotted
+#' @param x a smooth effect object, extracted using [mgcViz::sm].
+#' @param scheme if 0 the smooth effect is plotted on the sphere. If 1 the smooth effect is plotted
 #'               on the two hemispheres.
+#' @param n sqrt of the number of grid points used to compute the effect plot.
+#' @param xlim if supplied then this pair of numbers are used as the x limits for the plot.
+#' @param ylim if supplied then this pair of numbers are used as the y limits for the plot.
+#' @param maxpo maximum number of residuals points that will be used by layers such as
+#'              \code{resRug()} and \code{resPoints()}. If number of datapoints > \code{maxpo},
+#'              then a subsample of \code{maxpo} points will be taken.
+#' @param too.far if greater than 0 then this is used to determine when a location is too far 
+#'               from data to be plotted. This is useful since smooths tend to go wild 
+#'               away from data. The data are scaled into the unit square before deciding
+#'               what to exclude, and too.far is a distance within the unit square.
+#'               Setting to zero can make plotting faster for large datasets, but care 
+#'               then needed with interpretation of plots.
+#' @param phi one of the plotting angles, relevant only if \code{scheme = 0}.
+#' @param theta the other plotting angle, relevant only if \code{scheme = 0}.
+#' @param trans monotonic function to apply to the smooth and residuals, before plotting.
+#'              Monotonicity is not checked. 
+#' @param unconditional if \code{TRUE} then the smoothing parameter uncertainty corrected covariance 
+#'                      matrix is used to compute uncertainty bands, if available.
+#'                      Otherwise the bands treat the smoothing parameters as fixed.
+#' @param seWithMean if TRUE the component smooths are shown with confidence intervals that 
+#'                   include the uncertainty about the overall mean. If FALSE then the uncertainty
+#'                   relates purely to the centred smooth itself. Marra and Wood (2012) suggests 
+#'                   that TRUE results in better coverage performance, and this is also suggested 
+#'                   by simulation.
+#' @param ... currently unused.
+#' @return An objects of class \code{plotSmooth}.
+#' @references Marra, G and S.N. Wood (2012) Coverage Properties of Confidence Intervals for 
+#'             Generalized Additive Model Components. Scandinavian Journal of Statistics.
 #' @examples 
 #' library(mgcViz)
 #' set.seed(0)
@@ -47,8 +76,10 @@
 #' @rdname plot.sos.smooth
 #' @export plot.sos.smooth
 #' 
-plot.sos.smooth <- function(x, n = 40, xlim = NULL, ylim = NULL, maxpo = 1e4, too.far = 0.1, phi = 30, theta = 30, 
-                            trans = identity, scheme = 0, seWithMean = FALSE, unconditional = FALSE, ...)
+plot.sos.smooth <- function(x, n = 40, xlim = NULL, ylim = NULL, maxpo = 1e4, 
+                            too.far = 0.1, phi = 30, theta = 30, 
+                            trans = identity, scheme = 0, 
+                            seWithMean = FALSE, unconditional = FALSE, ...)
 {
   if (length(scheme)>1){ 
     scheme <- scheme[1]

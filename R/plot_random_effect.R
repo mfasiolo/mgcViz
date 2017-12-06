@@ -1,6 +1,12 @@
+#'
 #' Plotting random effects
 #' 
-#' @description Plotting random effects.
+#' @description This is the plotting method for random effects (simple random intercepts).
+#' @param x a random effect object, extracted using [mgcViz::sm].
+#' @param trans monotonic function to apply to the fit, confidence intervals and residuals, 
+#'              before plotting. Monotonicity is not checked. 
+#' @param ... currently unused.
+#' @return An object of class \code{plotSmooth}.
 #' @name plot.random.effect
 #' @rdname plot.random.effect
 #' @export plot.random.effect

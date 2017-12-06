@@ -1,10 +1,13 @@
 #'
 #' Extracting parametric effects from gamObject
 #' 
-#' @description Extracting parametric effects from \code{gamObject}.
+#' @description This function can be used to extract a parametric effect from a \code{gamObject}.
 #' 
 #' @param o an object of class \code{gamViz}.
-#' @param select index of the selected parametric effect effect.
+#' @param select index of the selected parametric effect.
+#' @return A object of class "pTermSomething" where "Something" is substituted with
+#'         the class of the variable of interest. For instance if this "numeric", the \code{pterm}
+#'         will return an object of class "ptermNumeric". 
 #' @name pterm
 #' @examples 
 #' ####### 1. Gaussian GAM 

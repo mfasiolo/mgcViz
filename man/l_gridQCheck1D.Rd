@@ -2,7 +2,7 @@
 % Please edit documentation in R/L_gridQCheck1D.R
 \name{l_gridQCheck1D}
 \alias{l_gridQCheck1D}
-\title{Checking GAM sign of residuals along one covariate}
+\title{Checking sign of residuals along one covariate}
 \usage{
 l_gridQCheck1D(qu, n = 20, level = 0.8, ...)
 }
@@ -19,7 +19,12 @@ l_gridQCheck1D(qu, n = 20, level = 0.8, ...)
 An object of class \code{gamLayer}
 }
 \description{
-Checking GAM proportion of negative residuals along one covariate.
+This layer is mainly useful when checking quantile GAMs fitted using the \code{qgam}
+package. The residuals, r, are binned according to the corresponding value of a
+covariate, x. Then the proportions of negative residuals within each bin are calculated, and
+compared with the theoretical value, \code{qu}. Confidence intervals for the proportion
+of negative residuals can be derived using binomial quantiles (under an independence
+assumption). To be used in conjuction with \link{check1D}.
 }
 \examples{
 # Simulate some data

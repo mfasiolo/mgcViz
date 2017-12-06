@@ -1,8 +1,22 @@
 #'
 #' Plotting Markov random field smooths
 #' 
-#' @description Plotting markov random field smooths.
+#' @description This is the plotting method for Markov random field smooths.
+#' @param x a smooth effect object, extracted using [mgcViz::sm].
+#' @param trans monotonic function to apply to the smooth and residuals, before plotting.
+#'              Monotonicity is not checked. 
+#' @param unconditional if \code{TRUE} then the smoothing parameter uncertainty corrected covariance 
+#'                      matrix is used to compute uncertainty bands, if available.
+#'                      Otherwise the bands treat the smoothing parameters as fixed.
+#' @param seWithMean if TRUE the component smooths are shown with confidence intervals that 
+#'                   include the uncertainty about the overall mean. If FALSE then the uncertainty
+#'                   relates purely to the centred smooth itself. Marra and Wood (2012) suggests 
+#'                   that TRUE results in better coverage performance, and this is also suggested 
+#'                   by simulation.
 #' @param ... currently unused.
+#' @return An objects of class \code{plotSmooth}.
+#' @references Marra, G and S.N. Wood (2012) Coverage Properties of Confidence Intervals for 
+#'             Generalized Additive Model Components. Scandinavian Journal of Statistics.
 #' @name plot.mrf.smooth
 #' @examples
 #' library(mgcViz)

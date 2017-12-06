@@ -2,7 +2,7 @@
 % Please edit documentation in R/print_plotGam.R
 \name{print.plotGam}
 \alias{print.plotGam}
-\title{Printing output of mgcViz::plot.gam}
+\title{Printing the output of mgcViz::plot.gam}
 \usage{
 \method{print}{plotGam}(x, ask = TRUE, pages = NULL, addLay = TRUE, ...)
 }
@@ -17,8 +17,11 @@
 we add some default layers to the plots, before printing. Does not have
 any affect if the \code{plotGam} object already contains some layers.}
 
-\item{...}{currently unused.}
+\item{...}{further arguments to be passed to \code{grid.arrange}.}
+}
+\value{
+Returns the output of \link[gridExtra:grid.arrange]{gridExtra::grid.arrange}, invisibly.
 }
 \description{
-XXX
+This method prints the output of \link[mgcViz:plot.gam]{mgcViz::plot.gam}.
 }

@@ -1,14 +1,15 @@
 #############
-#' Printing output of mgcViz::plot.gam
+#' Printing the output of mgcViz::plot.gam
 #' 
-#' @description XXX
+#' @description This method prints the output of [mgcViz::plot.gam].
 #' @param x an object of class \code{plotGam}.
 #' @param ask should we ask before moving from one page to the next?
 #' @param pages the number of pages over which to spread the output.
 #' @param addLay if TRUE, and if the \code{$empty} slot of the \code{plotGam} object is TRUE,  
 #'               we add some default layers to the plots, before printing. Does not have
 #'               any affect if the \code{plotGam} object already contains some layers.
-#' @param ... currently unused.
+#' @param ... further arguments to be passed to \code{grid.arrange}.
+#' @return Returns the output of [gridExtra::grid.arrange], invisibly.
 #' @name print.plotGam
 #' @rdname print.plotGam
 #' @importFrom gridExtra grid.arrange

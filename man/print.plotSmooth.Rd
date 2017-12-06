@@ -11,6 +11,9 @@
 
 \item{...}{currently unused.}
 }
+\value{
+Returns \code{NULL}, invisibly.
+}
 \description{
-Printing plots of smooth effects
+This method prints objects of class \code{plotSmooth}.
 }

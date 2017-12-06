@@ -2,7 +2,7 @@
 % Please edit documentation in R/L_poly.R
 \name{l_poly}
 \alias{l_poly}
-\title{Add polygons to Markov random field plot}
+\title{Add polygons to effect plots}
 \usage{
 l_poly(...)
 }
@@ -13,5 +13,9 @@ l_poly(...)
 An object of class \code{gamLayer}.
 }
 \description{
-Add polygons to Markov random field plot.
+This layers adds polygons to plots and it is mainly usefuls for
+plotting Markov random field smooths.
+}
+\seealso{
+See \link{plot.mrf.smooth} for examples.
 }

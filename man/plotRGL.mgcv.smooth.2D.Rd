@@ -2,15 +2,69 @@
 % Please edit documentation in R/plotRGL_mgcv_smooth_2D.R
 \name{plotRGL.mgcv.smooth.2D}
 \alias{plotRGL.mgcv.smooth.2D}
-\title{Visualizing 2D smooth effects in 3D (interactively)}
+\title{Visualizing 2D smooth effects in 3D}
 \usage{
 \method{plotRGL}{mgcv.smooth.2D}(x, se = TRUE, n = 40, residuals = FALSE,
   type = "auto", maxpo = 1000, too.far = 0, xlab = NULL, ylab = NULL,
-  main = NULL, xlim = NULL, ylim = NULL, se.mult = 1, shift = 0,
+  main = NULL, xlim = NULL, ylim = NULL, se.mult = 1,
   trans = identity, seWithMean = FALSE, unconditional = FALSE, ...)
 }
+\arguments{
+\item{x}{a smooth effect object, extracted using \link[mgcViz:sm]{mgcViz::sm}.}
+
+\item{se}{when TRUE (default) upper and lower surfaces are added to the plot at \code{se.mult}
+(see below) standard deviations for the fitted surface.}
+
+\item{n}{sqrt of the number of grid points used to compute the effect plot.}
+
+\item{residuals}{if TRUE, then the partial residuals will be added.}
+
+\item{type}{the type of residuals that should be plotted. See \link[mgcViz:residuals.gam]{mgcViz::residuals.gam}.}
+
+\item{maxpo}{maximum number of residuals points that will be plotted.
+If number of datapoints > \code{maxpo}, then a subsample of \code{maxpo} points will be taken.}
+
+\item{too.far}{if greater than 0 then this is used to determine when a location is too far
+from data to be plotted. This is useful since smooths tend to go wild
+away from data. The data are scaled into the unit square before deciding
+what to exclude, and too.far is a distance within the unit square.
+Setting to zero can make plotting faster for large datasets, but care
+then needed with interpretation of plots.}
+
+\item{xlab}{if supplied then this will be used as the x label of the plot.}
+
+\item{ylab}{if supplied then this will be used as the y label of the plot.}
+
+\item{main}{used as title for the plot if supplied.}
+
+\item{xlim}{if supplied then this pair of numbers are used as the x limits for the plot.}
+
+\item{ylim}{if supplied then this pair of numbers are used as the y limits for the plot.}
+
+\item{se.mult}{a positive number which will be the multiplier of the standard errors
+when calculating standard error surfaces.}
+
+\item{trans}{monotonic function to apply to the smooth and residuals, before plotting.
+Monotonicity is not checked.}
+
+\item{seWithMean}{if TRUE the component smooths are shown with confidence intervals that
+include the uncertainty about the overall mean. If FALSE then the uncertainty
+relates purely to the centred smooth itself. Marra and Wood (2012) suggests
+that TRUE results in better coverage performance, and this is also suggested
+by simulation.}
+
+\item{unconditional}{if \code{TRUE} then the smoothing parameter uncertainty corrected covariance
+matrix is used to compute uncertainty bands, if available.
+Otherwise the bands treat the smoothing parameters as fixed.}
+
+\item{...}{currently unused.}
+}
+\value{
+Returns \code{NULL} invisibly.
+}
 \description{
-XXX
+This method plots an interactive 3D representation of a 2D smooth effect, using
+the \link{rgl} package.
 }
 \examples{
 # Example 1: taken from ?mgcv::te, shows how tensor pruduct deals nicely with 
@@ -47,4 +101,8 @@ library(rgl)
 aspect3d(1, 2, 1)
 
 rgl.close() # Close
+}
+\references{
+Marra, G and S.N. Wood (2012) Coverage Properties of Confidence Intervals for
+Generalized Additive Model Components. Scandinavian Journal of Statistics.
 }

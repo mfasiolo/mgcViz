@@ -2,13 +2,42 @@
 % Please edit documentation in R/plotDiff_mgcv_smooth_1D.R
 \name{plotDiff.mgcv.smooth.1D}
 \alias{plotDiff.mgcv.smooth.1D}
-\title{Plotting differences between 1D smooths}
+\title{Plotting differences between two 1D smooth effects}
 \usage{
 \method{plotDiff}{mgcv.smooth.1D}(s1, s2, n = 100, trans = identity,
   unconditional = FALSE)
 }
+\arguments{
+\item{s1}{a smooth effect object, extracted using \link[mgcViz:sm]{mgcViz::sm}.}
+
+\item{s2}{another smooth effect object.}
+
+\item{n}{number of grid points used to compute main effects and c.i. lines.
+For a nice smooth plot this needs to be several times the estimated degrees of
+freedom for the smooth.}
+
+\item{trans}{monotonic function to apply to the smooth and residuals, before plotting.
+Monotonicity is not checked.}
+
+\item{unconditional}{if \code{TRUE} then the smoothing parameter uncertainty corrected covariance
+matrix is used to compute uncertainty bands, if available.
+Otherwise the bands treat the smoothing parameters as fixed.}
+}
+\value{
+An objects of class \code{plotSmooth}.
+}
 \description{
-Plotting differences between 1D smooths.
+This method can be used to plot the difference between two 1D
+smooth effects. Mainly meant to be used with by-factor smooths.
+}
+\details{
+Let sd be the difference between the fitted smooths, that is: sd = s1 - s2.
+sd is a vector of length n, and its covariance matrix is
+Cov(sd) = X1\%\emph{\%Sig11\%}\%t(X1) + X2\%\emph{\%Sig22\%}\%t(X2) - X1\%\emph{\%Sig12\%}\%t(X2) - X2\%\emph{\%Sig12\%}\%t(X1),
+where: X1 (X2) and Sig11 (Sig22) are the design matrix and the covariance matrix
+of the coefficients of s1 (s2), while Sig12 is the cross-covariance matrix between
+the coefficients of s1 and s2. To get the confidence intervals we need only diag(Cov(sd)),
+which here is calculated efficiently (without computing the whole of Cov(sd)).
 }
 \examples{
 # Simulate data and add factors uncorrelated to the response
@@ -26,4 +55,8 @@ o <- getViz(b, nsim = 0)
 plotDiff(s1 = sm(o, 1), s2 = sm(o, 2)) + l_ciPoly() + 
   l_fitLine() + geom_hline(yintercept = 0, linetype = 2)
   
+}
+\references{
+Marra, G and S.N. Wood (2012) Coverage Properties of Confidence Intervals for
+Generalized Additive Model Components. Scandinavian Journal of Statistics.
 }

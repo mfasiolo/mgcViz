@@ -1,10 +1,14 @@
 #'
-#' Add residuals to smooth effect plot
+#' Add points to plot
 #' 
-#' @description XXX
+#' @description This layers add points to smooth, parametric or random effect plots.
+#'              It can also be used to add points to the output of \code{check1D}
+#'              and \code{check2D}. The meaning of the added points, which could represent
+#'              residuals or covariate values, should be clear from context.
 #'
 #' @param ... graphical arguments to be passed to \code{ggplot2::geom_point}.
-#' @return an object of class \code{gamLayer}.
+#' @return An object of class \code{gamLayer}.
+#' @seealso See [plot.mgcv.smooth.1D], [plot.mgcv.smooth.2D], [check1D] or [check2D] for examples.
 #' @export l_points
 #'
 l_points <- function(...){

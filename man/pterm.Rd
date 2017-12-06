@@ -11,8 +11,13 @@ pterm(o, select)
 
 \item{select}{index of the selected parametric effect effect.}
 }
+\value{
+A object of class "pTermSomething" where "Something" is substituted with
+the class of the variable of interest. For instance if this numeric, the \code{pterm}
+will return an object of class "ptermNumeric".
+}
 \description{
-Extracting parametric effects from \code{gamObject}.
+This function can be used to extract a parametric effect from a \code{gamObject}.
 }
 \examples{
 ####### 1. Gaussian GAM 

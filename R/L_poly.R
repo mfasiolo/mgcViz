@@ -1,10 +1,12 @@
 #'
-#' Add polygons to Markov random field plot
+#' Add polygons to effect plots
 #' 
-#' @description Add polygons to Markov random field plot.
+#' @description This layers adds polygons to plots and it is mainly usefuls for
+#'              plotting Markov random field smooths.
 #'
 #' @param ... graphical arguments to be passed to \code{ggplot2::geom_polygon}.
 #' @return An object of class \code{gamLayer}.
+#' @seealso See [plot.mrf.smooth] for examples.
 #' @export l_poly
 #'
 l_poly <- function(...){

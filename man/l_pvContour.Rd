@@ -2,16 +2,24 @@
 % Please edit documentation in R/L_pvContour.R
 \name{l_pvContour}
 \alias{l_pvContour}
-\title{Adding contour of p-values to 2D smooth effect plot}
+\title{Adding contour of p-values}
 \usage{
 l_pvContour(pTrans = identity, ...)
 }
 \arguments{
+\item{pTrans}{a transformation to be applied to the p-values before plotting.}
+
 \item{...}{graphical arguments to be passed to  \code{ggplot2::geom_contour}.}
 }
 \value{
 An object of class \code{gamLayer}.
 }
 \description{
-Adding contour of p-values to 2D smooth effect plot
+This function adds contour lines proportional to the p-value
+of a multidimensional smooth effects. It is useful for checking
+where (across covariates x1 and x2) the fitted smooth is significantly
+different from zero.
+}
+\seealso{
+See \link{plotDiff.mgcv.smooth.2D} and \link{plotDiff.sos.smooth} for examples.
 }

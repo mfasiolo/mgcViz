@@ -2,12 +2,30 @@
 % Please edit documentation in R/plotSlice.R
 \name{plotSlice}
 \alias{plotSlice}
-\title{Plotting two dimensional slices of a smooth effect}
+\title{Plotting sequence of slices of 2D smooth effect}
 \usage{
 plotSlice(x, fix, a.facet = list(), ...)
 }
+\arguments{
+\item{x}{a smooth effect object, extracted using \link[mgcViz:sm]{mgcViz::sm}.}
+
+\item{fix}{a named list of vectors, where the i-th entry of each vector indicates the value we want to
+use for the covariate for i-th slice. When plotting a smooth in (d+2) dimensions,
+we need d vectors, because d variables must be fixed. All vectors must have either the same length
+(the number of slices) or length 1. \code{fix} can contain at most 2 vectors, so if d>=5, we need to set
+at least one covariate to a scalar.}
+
+\item{a.facet}{arguments to be passed to \link[ggplot2:facet_wrap]{ggplot2::facet_wrap} or \link[ggplot2:facet_grid]{ggplot2::facet_grid}. The former gets
+called when \code{fix} contains one vector, the latter when \code{fix} contains two vectors.}
+
+\item{...}{further arguments to be passed to \link{plot.mgcv.smooth.MD}.}
+}
+\value{
+An objects of class \code{plotSmooth}.
+}
 \description{
-Plotting two dimensional slices of a smooth effect.
+This function allows to slice a multi-dimensional (D > 2) smooth effect,
+and to plot the resulting sequence of 2D slices in an array of plots.
 }
 \examples{
 ### Example 1: plotting slices of 3D smooth

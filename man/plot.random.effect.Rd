@@ -6,8 +6,19 @@
 \usage{
 \method{plot}{random.effect}(x, trans = identity, ...)
 }
+\arguments{
+\item{x}{a random effect object, extracted using \link[mgcViz:sm]{mgcViz::sm}.}
+
+\item{trans}{monotonic function to apply to the fit, confidence intervals and residuals,
+before plotting. Monotonicity is not checked.}
+
+\item{...}{currently unused.}
+}
+\value{
+An object of class \code{plotSmooth}.
+}
 \description{
-Plotting random effects.
+This is the plotting method for random effects (simple random intercepts).
 }
 \examples{
 library(mgcv)

@@ -2,7 +2,7 @@
 % Please edit documentation in R/L_points.R
 \name{l_points}
 \alias{l_points}
-\title{Add residuals to smooth effect plot}
+\title{Add points to plot}
 \usage{
 l_points(...)
 }
@@ -10,8 +10,14 @@ l_points(...)
 \item{...}{graphical arguments to be passed to \code{ggplot2::geom_point}.}
 }
 \value{
-an object of class \code{gamLayer}.
+An object of class \code{gamLayer}.
 }
 \description{
-XXX
+This layers add points to smooth, parametric or random effect plots.
+It can also be used to add points to the output of \code{check1D}
+and \code{check2D}. The meaning of the added points, which could represent
+residuals or covariate values, should be clear from context.
+}
+\seealso{
+See \link{plot.mgcv.smooth.1D}, \link{plot.mgcv.smooth.2D}, \link{check1D} or \link{check2D} for examples.
 }

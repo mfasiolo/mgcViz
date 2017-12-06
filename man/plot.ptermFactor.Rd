@@ -3,21 +3,21 @@
 \name{plot.ptermFactor}
 \alias{plot.ptermFactor}
 \alias{plot.ptermLogical}
-\title{Plotting factor parametric effects}
+\title{Plotting factor or logical parametric effects}
 \usage{
 \method{plot}{ptermFactor}(x, maxpo = 10000, trans = identity, ...)
 
 \method{plot}{ptermLogical}(x, maxpo = 10000, trans = identity, ...)
 }
 \arguments{
-\item{x}{a factor parametric effect object.}
+\item{x}{a factor or logical parametric effect object, extracted using \link[mgcViz:pterm]{mgcViz::pterm}.}
 
 \item{maxpo}{maximum number of residuals points that will be used by layers such as
 \code{resRug()} and \code{resPoints()}. If number of datapoints > \code{maxpo},
 then a subsample of \code{maxpo} points will be taken.}
 
 \item{trans}{monotonic function to apply to the fit, confidence intervals and residuals,
-before plotting. Monotonicity is not checked, but default plot limits assume it.}
+before plotting. Monotonicity is not checked.}
 
 \item{...}{currently unused.}
 }
@@ -25,7 +25,7 @@ before plotting. Monotonicity is not checked, but default plot limits assume it.
 An object of class \code{plotSmooth}.
 }
 \description{
-Plotting factor parametric effects.
+These are the plotting methods for parametric factor or logical effects.
 }
 \examples{
 # Simulate data and fit GAM

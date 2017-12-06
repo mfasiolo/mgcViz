@@ -8,7 +8,7 @@
   trans = identity, unconditional = FALSE, seWithMean = FALSE, ...)
 }
 \arguments{
-\item{x}{a smooth effect object.}
+\item{x}{a smooth effect object, extracted using \link[mgcViz:sm]{mgcViz::sm}.}
 
 \item{n}{number of grid points used to compute main effect and c.i. lines.
 For a nice smooth plot this needs to be several times the estimated degrees of
@@ -21,7 +21,7 @@ freedom for the smooth.}
 then a subsample of \code{maxpo} points will be taken.}
 
 \item{trans}{monotonic function to apply to the smooth and residuals, before plotting.
-Monotonicity is not checked, but default plot limits assume it.}
+Monotonicity is not checked.}
 
 \item{unconditional}{if \code{TRUE} then the smoothing parameter uncertainty corrected covariance
 matrix is used to compute uncertainty bands, if available.
@@ -39,7 +39,7 @@ by simulation.}
 An objects of class \code{plotSmooth}.
 }
 \description{
-Plotting one dimensional smooth effects.
+Plotting method for one dimensional smooth effects.
 }
 \examples{
 library(mgcViz)
@@ -73,4 +73,8 @@ o2 + l_ciPoly(mul = 5, fill = "light blue") +
 # Plot is with conditional density of partial residuals
 o2 + l_dens(type = "cond", alpha = 0.9)  + 
   l_fitLine(linetype = 2, colour = "red")
+}
+\references{
+Marra, G and S.N. Wood (2012) Coverage Properties of Confidence Intervals for
+Generalized Additive Model Components. Scandinavian Journal of Statistics.
 }

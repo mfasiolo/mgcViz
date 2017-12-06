@@ -1,8 +1,8 @@
 #' Plotting one dimensional smooth effects
 #' 
-#' @description Plotting one dimensional smooth effects.
+#' @description Plotting method for one dimensional smooth effects.
 #' @name plot.mgcv.smooth.1D
-#' @param x a smooth effect object.
+#' @param x a smooth effect object, extracted using [mgcViz::sm].
 #' @param n number of grid points used to compute main effect and c.i. lines. 
 #'          For a nice smooth plot this needs to be several times the estimated degrees of 
 #'          freedom for the smooth.
@@ -11,7 +11,7 @@
 #'              \code{resRug()} and \code{resPoints()}. If number of datapoints > \code{maxpo},
 #'              then a subsample of \code{maxpo} points will be taken.
 #' @param trans monotonic function to apply to the smooth and residuals, before plotting.
-#'              Monotonicity is not checked, but default plot limits assume it. 
+#'              Monotonicity is not checked. 
 #' @param unconditional if \code{TRUE} then the smoothing parameter uncertainty corrected covariance 
 #'                      matrix is used to compute uncertainty bands, if available.
 #'                      Otherwise the bands treat the smoothing parameters as fixed.
@@ -22,6 +22,8 @@
 #'                   by simulation.
 #' @param ... currently unused.
 #' @return An objects of class \code{plotSmooth}.
+#' @references Marra, G and S.N. Wood (2012) Coverage Properties of Confidence Intervals for 
+#'             Generalized Additive Model Components. Scandinavian Journal of Statistics.
 #' @examples 
 #' library(mgcViz)
 #' n  <- 1e3

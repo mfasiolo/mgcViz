@@ -8,7 +8,7 @@
   trans = identity, ...)
 }
 \arguments{
-\item{x}{a parametric effect object.}
+\item{x}{a numerical parametric effect object, extracted using \link[mgcViz:pterm]{mgcViz::pterm}.}
 
 \item{n}{number of grid points used to compute main effect and c.i. lines.}
 
@@ -19,7 +19,7 @@
 then a subsample of \code{maxpo} points will be taken.}
 
 \item{trans}{monotonic function to apply to the fit, confidence intervals and residuals,
-before plotting. Monotonicity is not checked, but default plot limits assume it.}
+before plotting. Monotonicity is not checked.}
 
 \item{...}{currently unused.}
 }
@@ -27,14 +27,15 @@ before plotting. Monotonicity is not checked, but default plot limits assume it.
 An object of class \code{plotSmooth}.
 }
 \description{
-Plotting numeric parametric effects.
+This is the plotting method for parametric numerical effects.
 }
 \examples{
 # Simulate data and fit GAM
 set.seed(3)
 dat <- gamSim(1,n=2000,dist="normal",scale=20)
 bs <- "cr"; k <- 12
-b <- gam(y ~  x0 + x1 + I(x1^2) + s(x2,bs=bs,k=k) + I(x1*x2) + s(x3, bs=bs), data=dat)
+b <- gam(y ~  x0 + x1 + I(x1^2) + s(x2,bs=bs,k=k) + 
+              I(x1*x2) + s(x3, bs=bs), data=dat)
 o <- getViz(b, nsim = 0)
 
 # Extract first terms and plot it

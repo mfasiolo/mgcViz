@@ -1,14 +1,14 @@
 #'
-#' Plotting factor parametric effects
+#' Plotting factor or logical parametric effects
 #' 
-#' @description Plotting factor parametric effects.
+#' @description These are the plotting methods for parametric factor or logical effects.
 #' @name plot.ptermFactor
-#' @param x a factor parametric effect object.
+#' @param x a factor or logical parametric effect object, extracted using [mgcViz::pterm].
 #' @param maxpo maximum number of residuals points that will be used by layers such as
 #'              \code{resRug()} and \code{resPoints()}. If number of datapoints > \code{maxpo},
 #'              then a subsample of \code{maxpo} points will be taken.
 #' @param trans monotonic function to apply to the fit, confidence intervals and residuals, 
-#'              before plotting. Monotonicity is not checked, but default plot limits assume it. 
+#'              before plotting. Monotonicity is not checked. 
 #' @param ... currently unused.
 #' @return An object of class \code{plotSmooth}.
 #' @examples 
