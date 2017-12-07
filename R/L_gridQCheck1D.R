@@ -32,6 +32,7 @@
 #' check1D(b, "fac") + l_gridQCheck1D(qu = 0.4)
 #' @importFrom matrixStats colSds
 #' @importFrom plyr aaply
+#' @importFrom stats qbinom
 #' @rdname l_gridQCheck1D
 #' @export l_gridQCheck1D
 l_gridQCheck1D <- function(qu, n = 20, level = 0.8, ...){

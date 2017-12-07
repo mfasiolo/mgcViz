@@ -64,7 +64,7 @@
 #' @importFrom dplyr filter sample_n
 #' @export check2D
 #' 
-check2D <- function(o, x1, x2, bw = NULL, type = "auto", maxpo = 1e4, na.rm = TRUE)
+check2D <- function(o, x1, x2, type = "auto", maxpo = 1e4, na.rm = TRUE)
 {
   ### 1. Preparation
   type <- match.arg(type, c("auto", "deviance", "pearson", "scaled.pearson", 

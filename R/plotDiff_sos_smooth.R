@@ -21,6 +21,7 @@
 #' @param unconditional if \code{TRUE} then the smoothing parameter uncertainty corrected covariance 
 #'                      matrix is used to compute uncertainty bands, if available.
 #'                      Otherwise the bands treat the smoothing parameters as fixed.
+#' @param ... currently unused.
 #' @return An objects of class \code{plotSmooth}.
 #' @details Let sd be the difference between the fitted smooths, that is: sd = s1 - s2.
 #'          sd is a vector of length n, and its covariance matrix is 
@@ -84,7 +85,7 @@
 #' @export plotDiff.sos.smooth
 #' 
 plotDiff.sos.smooth <- function(s1, s2, n = 40, too.far = 0.1, phi = 30, theta = 30, 
-                                scheme = 0, trans = identity, unconditional = FALSE){
+                                scheme = 0, trans = identity, unconditional = FALSE, ...){
   
   gObj <- s1$gObj
   smo1 <- gObj$smooth[[ s1$ism ]]

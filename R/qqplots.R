@@ -1,4 +1,4 @@
-
+#'
 #' Quantile-Quantile Plots
 #' 
 #' @description This is a re-write of the QQ-plotting functions provided by \code{stats}, using the
@@ -12,6 +12,10 @@
 #' @param main,xlab,ylab, Plot labels. The xlab and ylab refer to the y and x axes 
 #'                        respectively if datax = TRUE.
 #' @param datax, Logical. Should data values be on the x-axis ?
+#' @param distribution quantile function for reference theoretical distribution.
+#' @param probs numeric vector of length two, representing probabilities. 
+#'              Corresponding quantile pairs define the line drawn.
+#' @param qtype the type of quantile computation used in [quantile].
 #' @param ylim,..., Graphical parameters.
 #' @import ggplot2
 #' @note Help file is mainly from `stats::qqnorm` since this is a rewrite of `stats::qqplot`, 
@@ -109,6 +113,7 @@ qqplot <- function(x, y,
     ggplot2::labs(title = main, x = xlab, y = ylab)
   return(p + theme_bw())
 }
+
 
 #' @rdname qqplots
 #' @export

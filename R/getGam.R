@@ -2,6 +2,8 @@
 #' 
 #' @description Function for converting a \code{gamViz} object to a \code{gamObject}.
 #'              It is essentially the inverse of the [getViz] function.
+#'              
+#' @param o a \code{gamViz} object, the output of [mgcViz::getViz].
 #' @name getGam
 #' @examples 
 #' library(mgcViz)

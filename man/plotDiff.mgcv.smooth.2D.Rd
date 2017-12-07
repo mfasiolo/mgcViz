@@ -5,7 +5,7 @@
 \title{Plotting differences between two 2D smooth effects}
 \usage{
 \method{plotDiff}{mgcv.smooth.2D}(s1, s2, n = 40, too.far = 0.1,
-  trans = identity, unconditional = FALSE)
+  trans = identity, unconditional = FALSE, ...)
 }
 \arguments{
 \item{s1}{a smooth effect object, extracted using \link[mgcViz:sm]{mgcViz::sm}.}
@@ -27,6 +27,8 @@ Monotonicity is not checked.}
 \item{unconditional}{if \code{TRUE} then the smoothing parameter uncertainty corrected covariance
 matrix is used to compute uncertainty bands, if available.
 Otherwise the bands treat the smoothing parameters as fixed.}
+
+\item{...}{currently unused.}
 }
 \value{
 An objects of class \code{plotSmooth}.

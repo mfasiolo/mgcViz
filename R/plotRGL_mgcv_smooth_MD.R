@@ -72,14 +72,14 @@
 plotRGL.mgcv.smooth.MD <- function(x, fix, se = TRUE, n = 40, residuals = FALSE, type = "auto", 
                                    maxpo = 1e3, too.far = c(0, NA), xlab = NULL, ylab = NULL, 
                                    main = NULL, xlim = NULL, ylim = NULL, se.mult = 1, 
-                                   shift = 0, trans = identity, seWithMean = FALSE, 
+                                   trans = identity, seWithMean = FALSE, 
                                    unconditional = FALSE, ...){
   
   if (type == "auto") { type <- .getResTypeAndMethod(x$gObj$family$family)$type }
   if ( length(too.far) == 1 ){ too.far <- c(too.far, NA)  }
   
   P <- .prepareP(o = x, unconditional = unconditional, residuals = residuals, 
-                 resDen = "none", se = se, se.mult = se.mult, n = NULL, n2 = n,  
+                 resDen = "none", se = TRUE, se.mult = se.mult, n = NULL, n2 = n,  
                  xlab = xlab, ylab = ylab, main = main, ylim = ylim, xlim = xlim,
                  too.far = too.far, seWithMean = seWithMean, fix = fix)
   
@@ -92,6 +92,7 @@ plotRGL.mgcv.smooth.MD <- function(x, fix, se = TRUE, n = 40, residuals = FALSE,
   }
   
   # Actual plotting
+  P$plotCI <- se
   .plotRGL.mgcv.smooth.2D(P = P, res = R$res, trans = trans)
   
 }

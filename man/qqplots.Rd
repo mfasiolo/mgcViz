@@ -27,6 +27,13 @@ respectively if datax = TRUE.}
 \item{datax, }{Logical. Should data values be on the x-axis ?}
 
 \item{x, }{The first sample for \code{qqplot}.}
+
+\item{distribution}{quantile function for reference theoretical distribution.}
+
+\item{probs}{numeric vector of length two, representing probabilities.
+Corresponding quantile pairs define the line drawn.}
+
+\item{qtype}{the type of quantile computation used in \link{quantile}.}
 }
 \description{
 This is a re-write of the QQ-plotting functions provided by \code{stats}, using the

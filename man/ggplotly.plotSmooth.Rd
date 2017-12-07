@@ -7,9 +7,9 @@
 ggplotly.plotSmooth(p, ...)
 }
 \arguments{
-\item{...}{extra arguments passed to \link[plotly:ggplotly]{plotly::ggplotly}.}
+\item{p}{an object of class \code{plotSmooth}.}
 
-\item{x}{An object of class \code{plotSmooth}.}
+\item{...}{extra arguments passed to \link[plotly:ggplotly]{plotly::ggplotly}.}
 }
 \description{
 Given an object of class \code{plotSmooth}, this function

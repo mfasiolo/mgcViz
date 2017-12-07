@@ -4,7 +4,7 @@
 #' @description Given an object of class \code{plotSmooth}, this function
 #'              extract a \code{ggplot} object and use it a
 #' 
-#' @param x An object of class \code{plotSmooth}.
+#' @param p an object of class \code{plotSmooth}.
 #' @param ... extra arguments passed to [plotly::ggplotly].
 #' @name ggplotly.plotSmooth
 #' @importFrom plotly ggplotly

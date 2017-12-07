@@ -9,6 +9,7 @@
 #' @param object the output of a \code{gam()} or \code{bam()} call.
 #' @param type the type of residuals wanted. If should be one of "deviance", "pearson", "scaled.pearson",
 #'             "working", "response", "tunif" or "tnormal". Not all are available for each family.
+#' @param ... further arguments passed to [mgcv::residuals.gam].
 #' @name residuals.gam
 #' @seealso See also [mgcv::residuals.gam] for details.
 #' @rdname residuals.gam 

@@ -6,6 +6,9 @@
 \usage{
 getGam(o)
 }
+\arguments{
+\item{o}{a \code{gamViz} object, the output of \link[mgcViz:getViz]{mgcViz::getViz}.}
+}
 \description{
 Function for converting a \code{gamViz} object to a \code{gamObject}.
 It is essentially the inverse of the \link{getViz} function.

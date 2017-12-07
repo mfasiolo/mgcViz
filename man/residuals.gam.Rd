@@ -11,6 +11,8 @@
 
 \item{type}{the type of residuals wanted. If should be one of "deviance", "pearson", "scaled.pearson",
 "working", "response", "tunif" or "tnormal". Not all are available for each family.}
+
+\item{...}{further arguments passed to \link[mgcv:residuals.gam]{mgcv::residuals.gam}.}
 }
 \description{
 Extension of \code{mgcv::residuals.gam}. Returns residuals for a fitted gam model object.
