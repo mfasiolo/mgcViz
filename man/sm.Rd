@@ -2,15 +2,21 @@
 % Please edit documentation in R/sm.R
 \name{sm}
 \alias{sm}
-\title{Extract smooth effect}
+\title{Extracting a smooth effect from a GAM model}
 \usage{
 sm(o, select)
 }
 \arguments{
 \item{o}{an object of class \code{gamViz}.}
 
-\item{select}{index of the selected smooth effect.}
+\item{select}{index of the selected smooth or random effect.}
+}
+\value{
+An object representing a smooth effect.
 }
 \description{
-XXX
+This function can be used to extract a smooth or random effect from a \code{gamObject}.
+}
+\seealso{
+See \link[mgcViz:getViz]{mgcViz::getViz} for examples.
 }

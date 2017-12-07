@@ -2,12 +2,21 @@
 % Please edit documentation in R/utilities.R
 \name{zto1}
 \alias{zto1}
-\title{Function going from one to zero}
+\title{Constructing a decreasing function from (0,1) to (0,1)}
 \usage{
 zto1(o, a, m)
 }
+\arguments{
+\item{o, a, m}{the output function's parameters, as described above.}
+}
+\value{
+A function whose parameters o, a and m have been fixed.
+}
 \description{
-XXX
+This function returns a monotonically decreasing function from (0, 1) to (0, 1).
+It takes inputs o, a and m, and it returns the function
+\code{f(p)={z=max(0, p-o); return(max((1-z)^a, m))}}. The function f(p) can be used,
+for instance, for transforming p-values before plotting them.
 }
 \examples{
 library(mgcViz)

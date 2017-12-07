@@ -8,15 +8,28 @@
   u = NULL, ...)
 }
 \arguments{
-\item{nsim}{the number of simulated datasets. A positive integer.}
+\item{object}{the output of a \code{gam()} or \code{bam()} call.}
 
-\item{u}{a matrix where each row is a vector of uniform random variables in (0, 1).}
+\item{nsim}{the number of simulated vectors of responses. A positive integer.}
+
+\item{seed}{currently not used.}
+
+\item{method}{the method used for the simulation. If set to "rd" then \code{o$family$rd()}
+will be used, if available. If set to "qf" then \code{o$family$qf()} (which is
+the inverse cdf of the response distribution) will be used to transform some
+uniform variates.}
+
+\item{u}{a matrix where each row is a vector of uniform random variables in (0, 1).
+This will be used to simulate responses only if \code{method = "qf"}.}
+
+\item{...}{currently not used.}
 }
 \value{
-a matrix where each row is a vector of simulated responses.
+A matrix where each row is a vector of simulated responses. The number of columns
+is equal to the number of responses in the fitted object.
 }
 \description{
-...
+This method can be used to simulate vectors of responses from a gamObject.
 }
 \examples{
 library(mgcViz)

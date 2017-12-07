@@ -9,11 +9,11 @@ pterm(o, select)
 \arguments{
 \item{o}{an object of class \code{gamViz}.}
 
-\item{select}{index of the selected parametric effect effect.}
+\item{select}{index of the selected parametric effect.}
 }
 \value{
-A object of class "pTermSomething" where "Something" is substituted with
-the class of the variable of interest. For instance if this numeric, the \code{pterm}
+An object of class "pTermSomething" where "Something" is substituted with
+the class of the variable of interest. For instance if this "numeric", the \code{pterm}
 will return an object of class "ptermNumeric".
 }
 \description{

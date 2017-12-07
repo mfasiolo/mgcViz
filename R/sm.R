@@ -1,9 +1,12 @@
-#' Extract smooth effect
+#'
+#' Extracting a smooth effect from a GAM model
 #' 
-#' @description XXX
+#' @description This function can be used to extract a smooth or random effect from a \code{gamObject}.
 #' 
 #' @param o an object of class \code{gamViz}.
-#' @param select index of the selected smooth effect.
+#' @param select index of the selected smooth or random effect.
+#' @return An object representing a smooth effect.  
+#' @seealso See [mgcViz::getViz] for examples.
 #' @name sm
 #' @rdname sm
 #' @export sm

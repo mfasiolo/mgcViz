@@ -1,37 +1,35 @@
 
 #' Quantile-Quantile Plots
 #' 
-#' @description `qqnorm` is a generic function the default method of which produces a
-#' normal QQ plot of the values in y. `qqline` adds a line to a “theoretical”, by default normal,
-#' quantile-quantile plot which passes through the `probs` quantiles, by default the first and third quartiles.
-#' `qqplot` produces a QQ plot of two datasets.
+#' @description This is a re-write of the QQ-plotting functions provided by \code{stats}, using the
+#'              \code{ggplot2} library.
+#'              `qqnorm` is a generic function the default method of which produces a normal 
+#'              QQ plot of the values in y. `qqline` adds a line to a “theoretical”, by default normal,
+#'              quantile-quantile plot which passes through the `probs` quantiles, by default the 
+#'              first and third quartiles. `qqplot` produces a QQ plot of two datasets.
 #' @param x, The first sample for `qqplot`.
 #' @param y, The second or only data sample.
-#' @param main,xlab,ylab, Plot labels. 
-#' The xlab and ylab refer to the y and x axes respectively if datax = TRUE.
+#' @param main,xlab,ylab, Plot labels. The xlab and ylab refer to the y and x axes 
+#'                        respectively if datax = TRUE.
 #' @param datax, Logical. Should data values be on the x-axis ?
 #' @param ylim,..., Graphical parameters.
 #' @import ggplot2
-#' @note Help file is mainly from `stats::qqnorm` since this is a rewrite of `stats::qqplot`, `stats::qqline` and
-#' `stats::qqnorm` with ggplot2 library.
+#' @note Help file is mainly from `stats::qqnorm` since this is a rewrite of `stats::qqplot`, 
+#'       `stats::qqline` and `stats::qqnorm` using the ggplot2 library.
 #' @name qqplots
 #' @importFrom stats ppoints runif
 #' @examples 
 #' library(mgcViz)
-#' library(ggplot2)
 #' y <- rt(500, df = 5)
 #' 
 #' # Compare new and old version of qqnorm
 #' stats::qqnorm(y)
 #' qqnorm(y)
 #' 
-#' # You can also play with graphical style using themes from ggplot2
-#' qqnorm(precip, ylim = c(0, 50),
-#'  ylab = "Precipitation [in/yr] for 70 US cities") + theme_minimal()
-#' 
 #' # You can also convert ggplot2 graphs to interactive plots with
-#' # plotly::ggplotly() function. Use with caution.
-#' # plotly::ggplotly(mgcViz::qqnorm(y) + theme_minimal())
+#' # library(plotly)
+#' # ggplotly() function. Use with caution.
+#' # ggplotly(qqnorm(y) + theme_minimal())
 #' 
 #' # Compare new and old version of qqplot
 #' x <- rt(200, df = 5)
@@ -49,8 +47,6 @@
 #'       main = expression("Q-Q plot for" ~~ {chi^2}[nu == 3]))
 #' qqplot(qchisq(ppoints(500), df = 3), rchisq(500, df = 3),
 #'       main = expression("Q-Q plot for" ~~ {chi^2}[nu == 3])) + theme_bw()
-NULL
-
 #' @rdname qqplots
 #' @export
 qqnorm <- function(y, ylim,

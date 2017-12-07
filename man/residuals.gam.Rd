@@ -6,6 +6,20 @@
 \usage{
 \method{residuals}{gam}(object, type = "deviance", ...)
 }
+\arguments{
+\item{object}{the output of a \code{gam()} or \code{bam()} call.}
+
+\item{type}{the type of residuals wanted. If should be one of "deviance", "pearson", "scaled.pearson",
+"working", "response", "tunif" or "tnormal". Not all are available for each family.}
+}
 \description{
-Wrapper around \code{mgcv::residuals.gam}.
+Extension of \code{mgcv::residuals.gam}. Returns residuals for a fitted gam model object.
+Pearson, deviance, working and response residuals are available as in the method from
+\code{mgcv}, but this version also provides residual types "tunif" and "tnormal". The former are
+obtained using the cdf of the response distribution (if available). The latter are obtained
+by further transforming the uniform residuals using the quantile function (i.e. the inverse
+cdf) of a standard normal variable.
+}
+\seealso{
+See also \link[mgcv:residuals.gam]{mgcv::residuals.gam} for details.
 }

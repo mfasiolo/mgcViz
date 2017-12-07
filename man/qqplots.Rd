@@ -21,39 +21,37 @@ qqline(y, datax = FALSE, distribution = qnorm, probs = c(0.25, 0.75),
 
 \item{ylim, ..., }{Graphical parameters.}
 
-\item{main, xlab, ylab, }{Plot labels.
-The xlab and ylab refer to the y and x axes respectively if datax = TRUE.}
+\item{main, xlab, ylab, }{Plot labels. The xlab and ylab refer to the y and x axes
+respectively if datax = TRUE.}
 
 \item{datax, }{Logical. Should data values be on the x-axis ?}
 
 \item{x, }{The first sample for \code{qqplot}.}
 }
 \description{
-\code{qqnorm} is a generic function the default method of which produces a
-normal QQ plot of the values in y. \code{qqline} adds a line to a “theoretical”, by default normal,
-quantile-quantile plot which passes through the \code{probs} quantiles, by default the first and third quartiles.
-\code{qqplot} produces a QQ plot of two datasets.
+This is a re-write of the QQ-plotting functions provided by \code{stats}, using the
+\code{ggplot2} library.
+\code{qqnorm} is a generic function the default method of which produces a normal
+QQ plot of the values in y. \code{qqline} adds a line to a “theoretical”, by default normal,
+quantile-quantile plot which passes through the \code{probs} quantiles, by default the
+first and third quartiles. \code{qqplot} produces a QQ plot of two datasets.
 }
 \note{
-Help file is mainly from \code{stats::qqnorm} since this is a rewrite of \code{stats::qqplot}, \code{stats::qqline} and
-\code{stats::qqnorm} with ggplot2 library.
+Help file is mainly from \code{stats::qqnorm} since this is a rewrite of \code{stats::qqplot},
+\code{stats::qqline} and \code{stats::qqnorm} using the ggplot2 library.
 }
 \examples{
 library(mgcViz)
-library(ggplot2)
 y <- rt(500, df = 5)
 
 # Compare new and old version of qqnorm
 stats::qqnorm(y)
 qqnorm(y)
 
-# You can also play with graphical style using themes from ggplot2
-qqnorm(precip, ylim = c(0, 50),
- ylab = "Precipitation [in/yr] for 70 US cities") + theme_minimal()
-
 # You can also convert ggplot2 graphs to interactive plots with
-# plotly::ggplotly() function. Use with caution.
-# plotly::ggplotly(mgcViz::qqnorm(y) + theme_minimal())
+# library(plotly)
+# ggplotly() function. Use with caution.
+# ggplotly(qqnorm(y) + theme_minimal())
 
 # Compare new and old version of qqplot
 x <- rt(200, df = 5)

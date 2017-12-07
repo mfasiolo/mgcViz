@@ -5,7 +5,7 @@
 #' 
 #' @param o an object of class \code{gamViz}.
 #' @param select index of the selected parametric effect.
-#' @return A object of class "pTermSomething" where "Something" is substituted with
+#' @return An object of class "pTermSomething" where "Something" is substituted with
 #'         the class of the variable of interest. For instance if this "numeric", the \code{pterm}
 #'         will return an object of class "ptermNumeric". 
 #' @name pterm

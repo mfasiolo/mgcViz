@@ -1,6 +1,11 @@
-#' Function going from one to zero
+#' Constructing a decreasing function from (0,1) to (0,1)
 #' 
-#' @description XXX
+#' @description This function returns a monotonically decreasing function from (0, 1) to (0, 1).
+#'              It takes inputs o, a and m, and it returns the function 
+#'              \code{f(p)={z=max(0, p-o); return(max((1-z)^a, m))}}. The function f(p) can be used,
+#'              for instance, for transforming p-values before plotting them. 
+#' @param o,a,m the output function's parameters, as described above.
+#' @return A function whose parameters o, a and m have been fixed.             
 #' @name zto1
 #' @examples 
 #' library(mgcViz)
