@@ -35,6 +35,7 @@
 #' 
 #' @rdname plot.ptermFactor
 #' @export plot.ptermFactor
+#' @export
 #' 
 plot.ptermFactor <- function(x, maxpo = 1e4, trans = identity, ...){
   

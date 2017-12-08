@@ -75,7 +75,8 @@
 #'            l_points(shape = 19) + l_rug()
 #' @rdname plot.sos.smooth
 #' @export plot.sos.smooth
-#' 
+#' @export 
+#'  
 plot.sos.smooth <- function(x, n = 40, xlim = NULL, ylim = NULL, maxpo = 1e4, 
                             too.far = 0.1, phi = 30, theta = 30, 
                             trans = identity, scheme = 0, 

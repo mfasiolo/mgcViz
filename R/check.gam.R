@@ -19,6 +19,7 @@
 #'          \code{?mgcv::gam.check} for details. 
 #' @return An object of class \code{checkGam}, which is simply a list of \code{ggplot} objects.
 #' @importFrom stats napredict fitted printCoefmat 
+#' @importFrom qgam check
 #' @examples
 #' library(ggplot2)
 #' set.seed(0)
@@ -35,6 +36,7 @@
 #'       a.respoi = list(size = 0.2), 
 #'       a.hist = list(bins = 10))
 #' @export check.gam
+#' @export
 #' 
 check.gam <- function(obj,
                       type = c("auto", "deviance", "pearson", "response", "tunif", "tnormal"),

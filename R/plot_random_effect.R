@@ -10,6 +10,7 @@
 #' @name plot.random.effect
 #' @rdname plot.random.effect
 #' @export plot.random.effect
+#' @export
 #' @examples 
 #' library(mgcv)
 #' b <- gam(travel~s(Rail,bs="re"), data=Rail, method="REML")

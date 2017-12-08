@@ -86,8 +86,8 @@ plot(sm(b, 1)) + l_fitRaster() + l_fitContour() + l_points()
 
 This can be converted to an interactive `plotly` plot as follows:
 ```{r 8, message = F, warning = F}
-library(plotly)
 # Commented out to avoid error when building the vignette
+# library(plotly)
 # ggplotly( plot(sm(b, 1)) + l_fitRaster() + l_points() + l_fitContour()  )
 ```
 

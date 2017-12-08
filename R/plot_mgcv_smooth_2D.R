@@ -49,6 +49,7 @@
 #' @importFrom mgcv exclude.too.far
 #' @rdname plot.mgcv.smooth.2D
 #' @export plot.mgcv.smooth.2D
+#' @export
 #' 
 plot.mgcv.smooth.2D <- function(x, n = 40, xlim = NULL, ylim = NULL, maxpo = 1e4, 
                                 too.far = 0.1, trans = identity, seWithMean = FALSE, 

@@ -8,7 +8,9 @@
 #' @return Returns \code{NULL}, invisibly.
 #' @name print.qqGam
 #' @rdname print.qqGam
-#' @export 
+#' @export print.qqGam
+#' @export
+#' 
 print.qqGam <- function(x, ...) {
   print(x$ggObj)
   return(invisible(NULL))

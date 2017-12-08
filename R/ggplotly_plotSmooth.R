@@ -26,6 +26,7 @@
 #' }
 #' @rdname ggplotly.plotSmooth
 #' @export ggplotly.plotSmooth
+#' @export
 #'
 ggplotly.plotSmooth <- function(p, ...){
   

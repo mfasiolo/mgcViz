@@ -44,6 +44,8 @@
 #'      a.replin = list(alpha = 0.1), a.qqpoi =  list(shape = 19))
 #' @rdname zoom.qqGam
 #' @export zoom.qqGam
+#' @export
+#' 
 zoom.qqGam <- function(o, xlim = NULL, ylim = NULL, discrete = NULL, ngr = 1e3,
                        adGrid = TRUE, CI = FALSE, 
                        worm = FALSE, show.reps = FALSE, 

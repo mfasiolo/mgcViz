@@ -38,6 +38,7 @@
 #' 
 #' @rdname plot.mrf.smooth
 #' @export plot.mrf.smooth
+#' @export
 #' 
 plot.mrf.smooth <- function(x, trans = identity, 
                             seWithMean = FALSE, unconditional = FALSE, ...) {

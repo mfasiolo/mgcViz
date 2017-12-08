@@ -50,7 +50,7 @@
 #' @importFrom data.table frankv
 #' @importFrom matrixStats rowSds rowOrderStats
 #' @return An object of class \code{c("qqGam", "plotSmooth", "gg")}.
-#' @export
+#' @export qq.gam
 #' @examples
 #'  
 #' ######## Example: simulate binomial data

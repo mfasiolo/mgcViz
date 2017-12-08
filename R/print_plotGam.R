@@ -13,7 +13,8 @@
 #' @name print.plotGam
 #' @rdname print.plotGam
 #' @importFrom gridExtra grid.arrange
-#' @export 
+#' @export print.plotGam
+#' @export
 #' 
 print.plotGam <- function(x, ask = TRUE, pages = NULL, addLay = TRUE, ...){
   

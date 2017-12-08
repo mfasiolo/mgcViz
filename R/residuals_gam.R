@@ -13,7 +13,9 @@
 #' @name residuals.gam
 #' @seealso See also [mgcv::residuals.gam] for details.
 #' @rdname residuals.gam 
-#' @export residuals.gam
+#' @export residuals.gam 
+#' @export
+#' 
 residuals.gam <- function(object, type = "deviance", ...)
 {
   

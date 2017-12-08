@@ -15,6 +15,10 @@
 This function takes the output of \code{mgcViz::qq.gam} and transforms it
 into an interactive shiny app.
 }
+\details{
+In RStudio, this function returns a call to \code{qq.gam} that reproduces the last plot
+rendered in the interactive shiny window.
+}
 \examples{
 \dontrun{
 

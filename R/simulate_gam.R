@@ -27,6 +27,7 @@
 #'
 #' @importFrom plyr raply aaply
 #' @export simulate.gam
+#' @export
 #' 
 simulate.gam <- function(object, nsim = 1, seed = NULL, method = "auto", u = NULL,  ...)
 {

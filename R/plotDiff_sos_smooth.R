@@ -83,6 +83,7 @@
 #' pl1 + l_pvRaster() + l_pvContour(breaks=c(0.05, 0.1, 0.2, 0.3, 0.5))
 #' @rdname plotDiff.sos.smooth
 #' @export plotDiff.sos.smooth
+#' @export
 #' 
 plotDiff.sos.smooth <- function(s1, s2, n = 40, too.far = 0.1, phi = 30, theta = 30, 
                                 scheme = 0, trans = identity, unconditional = FALSE, ...){

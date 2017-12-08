@@ -76,6 +76,7 @@
 #' @importFrom rgl .check3d light3d surface3d axes3d title3d spheres3d aspect3d
 #' @rdname plotRGL.mgcv.smooth.2D
 #' @export plotRGL.mgcv.smooth.2D
+#' @export
 #' 
 plotRGL.mgcv.smooth.2D <- function(x, se = TRUE, n = 40, residuals = FALSE, type = "auto", 
                                    maxpo = 1e3, too.far = 0, xlab = NULL, ylab = NULL, 

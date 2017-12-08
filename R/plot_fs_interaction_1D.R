@@ -53,6 +53,7 @@
 #' @importFrom mgcv PredictMat
 #' @rdname plot.fs.interaction.1D
 #' @export plot.fs.interaction.1D
+#' @export
 #' 
 plot.fs.interaction.1D <- function(x, n = 100, xlim = NULL, trans = identity, ...) {
   

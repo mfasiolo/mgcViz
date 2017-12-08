@@ -35,7 +35,7 @@
 listLayers <- function(o){
 
   if( !("plotSmooth" %in% class(o)) ){
-    stop("listLayers works only with object of class \"plotSmooth\"")
+    stop("listLayers works only with objects of class \"plotSmooth\"")
   }
   
   ty <- paste(o$type, collapse = '')

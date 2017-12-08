@@ -101,6 +101,7 @@
 #' 
 #' @rdname plot.gam
 #' @export plot.gam
+#' @export
 #'
 plot.gam <- function(x, n = 100, n2 = 40, select = NULL, allTerms = FALSE, ...) {
   

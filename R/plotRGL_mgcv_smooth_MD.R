@@ -69,6 +69,8 @@
 #' 
 #' @rdname plotRGL.mgcv.smooth.MD
 #' @export plotRGL.mgcv.smooth.MD
+#' @export
+#' 
 plotRGL.mgcv.smooth.MD <- function(x, fix, se = TRUE, n = 40, residuals = FALSE, type = "auto", 
                                    maxpo = 1e3, too.far = c(0, NA), xlab = NULL, ylab = NULL, 
                                    main = NULL, xlim = NULL, ylim = NULL, se.mult = 1, 

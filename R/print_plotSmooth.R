@@ -7,7 +7,9 @@
 #' @return Returns \code{NULL}, invisibly.
 #' @name print.plotSmooth
 #' @rdname print.plotSmooth
-#' @export 
+#' @export print.plotSmooth
+#' @export
+#' 
 print.plotSmooth <- function(x, ...) {
   print(x$ggObj)
   return( invisible(NULL) )

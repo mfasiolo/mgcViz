@@ -49,6 +49,7 @@
 #' 
 #' @rdname plotDiff.mgcv.smooth.2D
 #' @export plotDiff.mgcv.smooth.2D
+#' @export
 #' 
 plotDiff.mgcv.smooth.2D <- function(s1, s2, n = 40, too.far = 0.1, 
                                     trans = identity, unconditional = FALSE, ...){

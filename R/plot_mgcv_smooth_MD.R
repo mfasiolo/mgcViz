@@ -63,6 +63,7 @@
 #' @importFrom mvnfast maha
 #' @importFrom stats cov quantile
 #' @export plot.mgcv.smooth.MD
+#' @export
 #' 
 plot.mgcv.smooth.MD <- function(x, fix, n = 40, xlim = NULL, ylim = NULL, maxpo = 1e4,
                                 too.far = c(0.1, NA), trans = identity, 

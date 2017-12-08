@@ -33,6 +33,7 @@
 #' @importFrom mgcv predict.gam
 #' @rdname plot.ptermNumeric
 #' @export plot.ptermNumeric
+#' @export
 #' 
 plot.ptermNumeric <- function(x, n = 100, xlim = NULL, maxpo = 1e4, trans = identity, ...){
   

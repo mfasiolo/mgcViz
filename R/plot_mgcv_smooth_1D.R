@@ -58,6 +58,8 @@
 #'   l_fitLine(linetype = 2, colour = "red")
 #' @rdname plot.mgcv.smooth.1D
 #' @export plot.mgcv.smooth.1D
+#' @export
+#' 
 plot.mgcv.smooth.1D <- function(x, n = 100, xlim = NULL, maxpo = 1e4, trans = identity, 
                                 unconditional = FALSE, seWithMean = FALSE, ...) {
   

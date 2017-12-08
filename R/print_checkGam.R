@@ -9,7 +9,9 @@
 #' @name print.checkGam
 #' @rdname print.checkGam
 #' @importFrom gridExtra grid.arrange
+#' @export print.checkGam
 #' @export
+#' 
 print.checkGam <- function(x, lay = NULL, ...)
 {
   if( is.null(lay) ){
