@@ -2,7 +2,7 @@
 % Please edit documentation in R/print_qq_gam.R
 \name{print.qqGam}
 \alias{print.qqGam}
-\title{Printing the output of qq.gam}
+\title{Printing the output of qq.gamViz}
 \usage{
 \method{print}{qqGam}(x, ...)
 }
@@ -15,5 +15,5 @@
 Returns \code{NULL}, invisibly.
 }
 \description{
-This method prints the output of \link[mgcViz:qq.gam]{mgcViz::qq.gam}.
+This method prints the output of \link{qq.gamViz}.
 }

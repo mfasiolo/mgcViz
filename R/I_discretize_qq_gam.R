@@ -15,7 +15,7 @@
   if(discrete && ngr >= n){ discrete <- FALSE }
   
   if( CI && is.null(P$conf) ){
-    message("CI==TRUE but intervals have not been already computed by qq.gam. Setting CI to FALSE.")
+    message("CI==TRUE but intervals have not been already computed by qq.gamViz. Setting CI to FALSE.")
     CI <- FALSE
   }
   

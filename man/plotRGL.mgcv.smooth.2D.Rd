@@ -19,7 +19,7 @@
 
 \item{residuals}{if TRUE, then the partial residuals will be added.}
 
-\item{type}{the type of residuals that should be plotted. See \link[mgcViz:residuals.gam]{mgcViz::residuals.gam}.}
+\item{type}{the type of residuals that should be plotted. See \link{residuals.gamViz}.}
 
 \item{maxpo}{maximum number of residuals points that will be plotted.
 If number of datapoints > \code{maxpo}, then a subsample of \code{maxpo} points will be taken.}

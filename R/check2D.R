@@ -1,16 +1,16 @@
 #'
 #' Checking GAM residuals along two covariates
 #' 
-#' @description This function extracts the residuals of a model fitted using \code{gam()}, and plots them
+#' @description This function extracts the residuals of a fitted GAM model, and plots them
 #'              according to the values of two covariates. Then several visual residuals diagnostics 
 #'              can be plotted by adding layers. 
 #' @name check2D
-#' @param o an object of class \code{gamObject} or \code{gamViz}.
+#' @param o an object of class \code{gamViz}.
 #' @param x1 should be either a single character or a numeric vector. 
 #'          In the first case it should be the name of one of the variables in the dataframe used to fit \code{o}.
 #'          In the second case the length of \code{x1} should be equal to the length of \code{residuals(o)}.
 #' @param x2 same as \code{x2}, but this will appear on the y-axis.
-#' @param type the type of residuals to be used. See \code{?residuals.gam}
+#' @param type the type of residuals to be used. See [residuals.gamViz].
 #' @param maxpo maximum number of residuals points that will be used by layers such as
 #'              \code{resRug()} and \code{resPoints()}. If number of datapoints > \code{maxpo},
 #'              then a subsample of \code{maxpo} points will be taken.
@@ -66,6 +66,8 @@
 #' 
 check2D <- function(o, x1, x2, type = "auto", maxpo = 1e4, na.rm = TRUE)
 {
+  if( !inherits(o, "gamViz") ){ stop("Argument 'o' should be of class 'gamViz'. See ?getViz") }
+  
   ### 1. Preparation
   type <- match.arg(type, c("auto", "deviance", "pearson", "scaled.pearson", 
                             "working", "response", "tunif", "tnormal"))

@@ -1,23 +1,27 @@
+#'
 #' Generalized Additive Model residuals
 #' 
-#' @description Extension of \code{mgcv::residuals.gam}. Returns residuals for a fitted gam model object. 
+#' @description Extension of \code{mgcv::residuals.gam}. Returns residuals for a fitted GAM model object. 
 #'              Pearson, deviance, working and response residuals are available as in the method from 
 #'              \code{mgcv}, but this version also provides residual types "tunif" and "tnormal". The former are
 #'              obtained using the cdf of the response distribution (if available). The latter are obtained
 #'              by further transforming the uniform residuals using the quantile function (i.e. the inverse
 #'              cdf) of a standard normal variable. 
-#' @param object the output of a \code{gam()} or \code{bam()} call.
+#' @param object an object of class \code{gamViz}, the output of a \code{getViz()} call.
 #' @param type the type of residuals wanted. If should be one of "deviance", "pearson", "scaled.pearson",
 #'             "working", "response", "tunif" or "tnormal". Not all are available for each family.
 #' @param ... further arguments passed to [mgcv::residuals.gam].
-#' @name residuals.gam
+#' @name residuals.gamViz
 #' @seealso See also [mgcv::residuals.gam] for details.
-#' @rdname residuals.gam 
-#' @export residuals.gam 
+#' @rdname residuals.gamViz 
+#' @importFrom mgcv residuals.gam
+#' @export residuals.gamViz 
 #' @export
 #' 
-residuals.gam <- function(object, type = "deviance", ...)
+residuals.gamViz <- function(object, type = "deviance", ...)
 {
+  
+  if( !inherits(object, "gamViz") ){ stop("Argument 'object' should be of class 'gamViz'. See ?getViz") }
   
   type <- match.arg(type, c("deviance", "pearson", "scaled.pearson", "working", "response", "tunif", "tnormal"))
   
@@ -35,8 +39,7 @@ residuals.gam <- function(object, type = "deviance", ...)
     
   } else {
     
-    # NB `mgcv::` important to avoid an infinite recursion
-    y <- mgcv::residuals.gam(o, type = type, ...) 
+    y <- residuals.gam(o, type = type, ...) 
     
   }
   

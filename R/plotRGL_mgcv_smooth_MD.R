@@ -10,7 +10,7 @@
 #'           (see below) standard deviations for the fitted surface.
 #' @param n sqrt of the number of grid points used to compute the effect plot.
 #' @param residuals if TRUE, then the partial residuals will be added.
-#' @param type the type of residuals that should be plotted. See [mgcViz::residuals.gam].
+#' @param type the type of residuals that should be plotted. See [residuals.gamViz].
 #' @param maxpo maximum number of residuals points that will be plotted. 
 #'              If number of datapoints > \code{maxpo}, then a subsample of \code{maxpo} points will be taken.
 #' @param too.far a numeric vector with two entries. The first has the same interpretation 

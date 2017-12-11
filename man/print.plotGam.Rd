@@ -2,7 +2,7 @@
 % Please edit documentation in R/print_plotGam.R
 \name{print.plotGam}
 \alias{print.plotGam}
-\title{Printing the output of mgcViz::plot.gam}
+\title{Printing the output of plot.gamViz}
 \usage{
 \method{print}{plotGam}(x, ask = TRUE, pages = NULL, addLay = TRUE, ...)
 }
@@ -23,5 +23,5 @@ any affect if the \code{plotGam} object already contains some layers.}
 Returns the output of \link[gridExtra:grid.arrange]{gridExtra::grid.arrange}, invisibly.
 }
 \description{
-This method prints the output of \link[mgcViz:plot.gam]{mgcViz::plot.gam}.
+This method prints the output of \link{plot.gamViz}.
 }

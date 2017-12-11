@@ -44,7 +44,7 @@ addPlotSmooth <- function(e1, e2) {
 
 
 #'
-#' Add layers to output of plot.gam
+#' Add layers to output of plot.gamViz
 #'
 #' @param e1 an object of class \code{plotGam}.
 #' @param e2 a plot component, as described below.
@@ -61,7 +61,7 @@ addPlotGam <- function(e1, e2) {
                      function(.l){
                        return( withCallingHandlers(.l + e2,
                                                    warning = function(w){ 
-                                                     if(any(grepl("layer available for class", w))){ 
+                                                     if(any(grepl("layer available for type", w))){ 
                                                        invokeRestart( "muffleWarning" )
                                                      }
                                                    }) )

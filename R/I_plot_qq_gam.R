@@ -1,9 +1,9 @@
 #' @description Internal function that does the actually plotting
-#' inside [qq.gam] or [zoo.qqGam]
+#' inside [qq.gamViz] or [zoom.qqGam]
 #' @param P A list, the output of `.discretize.qq.gam()`.
 #' @param CI If TRUE, we want to compute also confidence intervals.
 #' @param xlimit,ylimit X & Y axes ranges.
-#' @param show.reps,rl.col,rep.col,rep.alpha,ci.col See [qq.gam()] documentation.
+#' @param show.reps,rl.col,rep.col,rep.alpha,ci.col See [qq.gamViz] documentation.
 #' @return A ggplot object.
 #' @noRd
 .plot.qq.gam <- function(P, CI, worm, show.reps, xlimit, ylimit, a.all, ...) {

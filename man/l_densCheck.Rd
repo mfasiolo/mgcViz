@@ -51,6 +51,7 @@ x2 <- rnorm(1e3)
 dat <- data.frame("x1"=x1, 
                   "x2"=x2, "y"=sin(x1) + 0.5*x2^2 + pmax(x2, 0.2)*rnorm(n))
 b <- gam(y ~ s(x1)+s(x2), data=dat)
+b <- getViz(b)
 
 # (Blue) Yellow indicates area where the empirical density 
 # of the residuals is (lower) higher than it should be under 

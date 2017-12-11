@@ -21,7 +21,7 @@
 #' @importFrom stats simulate
 #' @rdname getViz
 #' @export getViz
-getViz <- function(o, nsim = 10, ...){
+getViz <- function(o, nsim = 0, ...){
   
   if( !("gam" %in% class(o)) ){ stop("\"o\" should be of class \"gam\"") }
   

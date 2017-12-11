@@ -7,7 +7,7 @@
 #
 .detNumPages <- function(.npl, .npag){
   
-  if (.npl==0) stop("No terms to plot - nothing for plot.gam() to do.")
+  if (.npl==0) stop("No terms to plot - nothing for plot.gamViz() to do.")
   if ( .npag < 0 ) stop("Number of pages < 0")
   
   if ( .npag > .npl ) { .npag <- .npl }

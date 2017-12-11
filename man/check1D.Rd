@@ -7,13 +7,13 @@
 check1D(o, x, type = "auto", maxpo = 10000, na.rm = TRUE)
 }
 \arguments{
-\item{o}{an object of class \code{gamObject} or \code{gamViz}.}
+\item{o}{an object of class \code{gamViz}.}
 
 \item{x}{should be either a single character or a numeric vector.
 In the first case it should be the name of one of the variables in the dataframe used to fit \code{o}.
 In the second case the length of \code{x} should be equal to the length of \code{residuals(o)}.}
 
-\item{type}{the type of residuals to be used. See \code{?residuals.gam}.}
+\item{type}{the type of residuals to be used. See \link{residuals.gamViz}.}
 
 \item{maxpo}{maximum number of residuals points that will be used by layers such as
 \code{resRug()} and \code{resPoints()}. If number of datapoints > \code{maxpo},
@@ -25,7 +25,7 @@ then a subsample of \code{maxpo} points will be taken.}
 An object of class \code{c("plotSmooth", "gg")}.
 }
 \description{
-This function extracts the residuals of a model fitted using \code{gam()}, and orders
+This function extracts the residuals of a fitted GAM model, and orders
 them according to the value of a single covariate. Then several visual residuals diagnostics
 can be plotted by adding layers.
 }
@@ -39,6 +39,7 @@ x <- rnorm(n); y <- rnorm(n);
 # Residuals are heteroscedastic w.r.t. x
 ob <- (x)^2 + (y)^2 + (0.2*abs(x) + 1)  * rnorm(n)
 b <- bam(ob ~ s(x,k=30) + s(y, k=30), discrete = TRUE)
+b <- getViz(b)
 
 # Look at residuals along "x"
 ck <- check1D(b, "x")

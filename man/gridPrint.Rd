@@ -29,7 +29,7 @@ b <- getViz(b)
 
 o1 <- plot( sm(b, 1) ) + l_fitLine() + l_ciLine() 
 o2 <- plot( sm(b, 2) ) + l_fitLine() + l_ciLine() 
-qpl <- qq.gam(b)
+qpl <- qq(b)
 
 # All on one page, method 1:
 gridPrint(o1, o2, qpl, ncol = 2)

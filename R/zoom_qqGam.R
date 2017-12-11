@@ -1,8 +1,8 @@
 #' Efficiently zooming on GAM QQ-plots
 #' 
-#' @description This function allows to zoom into a QQ-plot produced by [mgcViz::qq.gam],
+#' @description This function allows to zoom into a QQ-plot produced by [qq.gamViz],
 #'              in a computationally efficient manner.
-#' @param o the output of \code{mgcViz::qq.gam}.
+#' @param o the output of \code{mgcViz::qq.gamViz}.
 #' @param xlim if supplied then this pair of numbers are used as the x limits for the plot.
 #' @param ylim if supplied then this pair of numbers are used as the y limits for the plot.
 #' @param discrete if \code{TRUE} the QQ-plot is discretized into \code{ngr} bins before plotting,
@@ -11,7 +11,7 @@
 #' @param ngr number of bins to be used in the discretization.
 #' @param adGrid if \code{TRUE} the discretization grid is recomputed when \code{zoom.qqGam} is called, and
 #'               it is based on the \code{xlim} range. If \code{FALSE}, \code{zoom.qqGam} will use the same grid 
-#'               used in the original \code{qq.gam} call.
+#'               used in the original \code{qq.gamViz} call.
 #' @param CI if \code{TRUE} confidence intervals are plotted.
 #' @param worm if \code{TRUE} a worm-plot (a de-trended QQ-plot) is plotted, rather than a QQ-plot.
 #' @param show.reps if \code{TRUE} all the QQ-lines corresponding to the simulated (model-based) QQ-plots.
@@ -34,12 +34,13 @@
 #' lr.fit <- bam(y/n ~ s(x0) + s(x1) + s(x2) + s(x3)
 #'               , family = binomial, data = dat,
 #'               weights = n, method = "REML")
+#' lr.fit <- getViz(lr.fit)
 #' 
 #' set.seed(414)
-#' o <- qq.gam(lr.fit, rep = 50, method = "simul1", CI = "normal")
+#' o <- qq(lr.fit, rep = 50, method = "simul1", CI = "normal")
 #' o # This is the whole qqplot
 #' 
-#' # We can zoom in along x at little extra costs (most computation already done by qq.gam)
+#' # We can zoom in along x at little extra costs (most computation already done by qq.gamViz)
 #' zoom(o, xlim = c(0, 1), show.reps = TRUE, 
 #'      a.replin = list(alpha = 0.1), a.qqpoi =  list(shape = 19))
 #' @rdname zoom.qqGam
@@ -52,7 +53,7 @@ zoom.qqGam <- function(o, xlim = NULL, ylim = NULL, discrete = NULL, ngr = 1e3,
                        a.qqpoi = list(), a.ablin = list(), a.cipoly = list(), 
                        a.replin = list(), ...) {
   
-  a.all <- .argMaster("qq.gam")
+  a.all <- .argMaster("zoom.qqGam")
   for(nam in names(a.all)){
     a.all[[nam]] <- .argSetup(a.all[[nam]], get(nam), nam, verbose = FALSE)
   }

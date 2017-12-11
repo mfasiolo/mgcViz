@@ -10,7 +10,7 @@
   a.cipoly = list(), a.replin = list(), ...)
 }
 \arguments{
-\item{o}{the output of \code{mgcViz::qq.gam}.}
+\item{o}{the output of \code{mgcViz::qq.gamViz}.}
 
 \item{xlim}{if supplied then this pair of numbers are used as the x limits for the plot.}
 
@@ -24,7 +24,7 @@ to \code{NULL}, the discretization is used if there are more than 10^4 observati
 
 \item{adGrid}{if \code{TRUE} the discretization grid is recomputed when \code{zoom.qqGam} is called, and
 it is based on the \code{xlim} range. If \code{FALSE}, \code{zoom.qqGam} will use the same grid
-used in the original \code{qq.gam} call.}
+used in the original \code{qq.gamViz} call.}
 
 \item{CI}{if \code{TRUE} confidence intervals are plotted.}
 
@@ -44,7 +44,7 @@ QQ-plot.}
 \item{...}{currently unused.}
 }
 \description{
-This function allows to zoom into a QQ-plot produced by \link[mgcViz:qq.gam]{mgcViz::qq.gam},
+This function allows to zoom into a QQ-plot produced by \link{qq.gamViz},
 in a computationally efficient manner.
 }
 \examples{
@@ -59,12 +59,13 @@ dat$n <- n
 lr.fit <- bam(y/n ~ s(x0) + s(x1) + s(x2) + s(x3)
               , family = binomial, data = dat,
               weights = n, method = "REML")
+lr.fit <- getViz(lr.fit)
 
 set.seed(414)
-o <- qq.gam(lr.fit, rep = 50, method = "simul1", CI = "normal")
+o <- qq(lr.fit, rep = 50, method = "simul1", CI = "normal")
 o # This is the whole qqplot
 
-# We can zoom in along x at little extra costs (most computation already done by qq.gam)
+# We can zoom in along x at little extra costs (most computation already done by qq.gamViz)
 zoom(o, xlim = c(0, 1), show.reps = TRUE, 
      a.replin = list(alpha = 0.1), a.qqpoi =  list(shape = 19))
 }

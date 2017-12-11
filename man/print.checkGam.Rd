@@ -2,12 +2,12 @@
 % Please edit documentation in R/print_checkGam.R
 \name{print.checkGam}
 \alias{print.checkGam}
-\title{Printing the output of check.gam}
+\title{Printing the output of check.gamViz}
 \usage{
 \method{print}{checkGam}(x, lay = NULL, ...)
 }
 \arguments{
-\item{x}{the output of \code{check.gam}.}
+\item{x}{the output of \code{check.gamViz}.}
 
 \item{lay}{the \code{layout_matrix} passed to \link[gridExtra:grid.arrange]{gridExtra::grid.arrange}.}
 
@@ -17,5 +17,5 @@
 Returns the output of \code{grid.arrange}, invisibly.
 }
 \description{
-This method prints the output of \link[mgcViz:check.gam]{mgcViz::check.gam}.
+This method prints the output of \link{check.gamViz}.
 }

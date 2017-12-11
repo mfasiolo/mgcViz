@@ -7,7 +7,7 @@
 #'           (see below) standard deviations for the fitted surface.
 #' @param n sqrt of the number of grid points used to compute the effect plot.
 #' @param residuals if TRUE, then the partial residuals will be added.
-#' @param type the type of residuals that should be plotted. See [mgcViz::residuals.gam].
+#' @param type the type of residuals that should be plotted. See [residuals.gamViz].
 #' @param maxpo maximum number of residuals points that will be plotted. 
 #'              If number of datapoints > \code{maxpo}, then a subsample of \code{maxpo} points will be taken.
 #' @param too.far if greater than 0 then this is used to determine when a location is too far 
@@ -109,7 +109,7 @@ plotRGL.mgcv.smooth.2D <- function(x, se = TRUE, n = 40, residuals = FALSE, type
 # Internal function that gets the residuals and checks that they are within the boundaries
 .getResidualsPlotRGL <- function(gamObj, X, type, maxpo, xlimit, ylimit, exclude, trans)
 {
-  res <- residuals(gamObj, type = type) 
+  res <- residuals.gamViz(gamObj, type = type) 
 
   # Checking if we are too far from current slice: relevant only for plotRGL.mgcv.smooth.MD
   if( any(exclude) ){

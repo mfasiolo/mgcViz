@@ -1,8 +1,8 @@
 #'
-#' Printing the output of check.gam
+#' Printing the output of check.gamViz
 #' 
-#' @description This method prints the output of [mgcViz::check.gam].
-#' @param x the output of \code{check.gam}.
+#' @description This method prints the output of [check.gamViz].
+#' @param x the output of \code{check.gamViz}.
 #' @param lay the \code{layout_matrix} passed to [gridExtra::grid.arrange].
 #' @param ... further arguments to be passed to \code{grid.arrange}.
 #' @return Returns the output of \code{grid.arrange}, invisibly.

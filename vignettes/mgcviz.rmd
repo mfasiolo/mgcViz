@@ -11,19 +11,20 @@ opts_chunk$set(out.extra='style="display:block; margin: auto"', fig.align="cente
 
 # **mgcViz**: visual tools for Generalized Additive Models
 
-This R package offers visual tools for Generalized Additive Models
-(GAMs). Most of the tools provided by `mgcViz` fall in one of the following categories: 
-  
-1. Layered smooth effect plots;  
+The `mgcViz` R package offers visual tools for Generalized Additive Models (GAMs). The visualizations provided by `mgcViz` differs from those implemented in `mgcv`, in that most of the plots are based on a powerful layering system. This has been implemented by wrapping several `ggplot2` layers and integrating them with computations specific to GAM models. Further, `mgcViz` uses binning and/or sub-sampling to produce plots that can scale to large datasets ($n \approx 10^7$), and offers a variety of new methods for visual residuals checking.
 
-2. Traditional and layered model checks;
+This document introduces the following categories of visualizations: 
 
-The layering system has been implemented by wrapping several `ggplot2` layers and integrating
-them with computations specific to GAM models. All methods are meant to work with large datasets ($n \approx 10^7$), by adopting discretization and/or sub-sampling.
+1. smooth and parametric effect plots: layered plots based on `ggplot2` and interactive 3d visualizations based on the `rgl` library;   
+
+2. model checks: interactive QQ-plots and layered residuals checks along one or two covariates;
+
+3. special plots: differences-between-smooths plots in 1 or 2D.
+
 
 ## 1 Layered smooth effect plots
 
-Here we start by describing smooth-specific plotting methods and then we move to the new `plot.gam` function, which wraps several plots together.
+Here we start by describing effect-specific plotting methods and then we move to the new `plot.gam` function, which wraps several plots together.
 
 #### 1.1 Smooth-specific plots
 
@@ -194,14 +195,15 @@ p <- binomial()$linkinv(dat$f) ## binomial p
 n <- sample(c(1, 3), n.samp, replace = TRUE) ## binomial n
 dat$y <- rbinom(n, n, p)
 dat$n <- n
-lr.fit <- gam(y/n ~ s(x0) + s(x1) + s(x2) + s(x3)
-, family = binomial, data = dat,
-weights = n, method = "REML")
+lr.fit <- gam(y/n ~ s(x0) + s(x1) + s(x2) + s(x3), 
+              family = binomial, data = dat,
+              weights = n, method = "REML")
+lr.fit <- getViz(lr.fit)
 ```
 
 We can get a QQ-plot of the residuals as follows:
 ```{r 20}
-qq.gam(lr.fit, method = "simul1", 
+qq(lr.fit, method = "simul1", 
                a.qqpoi = list("shape" = 1), 
                a.ablin = list("linetype" = 2))
 ```
@@ -210,9 +212,9 @@ starting with `a.` are lists that will be passed directly to the corresponding `
 layer (`geom_point` and `geom_abline` here). We can remove the confidence intervals and 
 show all simulated (model-based) QQ-curves as follows:
 ```{r 21}
-qq.gam(lr.fit, rep = 20, show.reps = T, CI = "none",
-               a.qqpoi = list("shape" = 19),
-               a.replin = list("alpha" = 0.2))
+qq(lr.fit, rep = 20, show.reps = T, CI = "none",
+   a.qqpoi = list("shape" = 19),
+   a.replin = list("alpha" = 0.2))
 ```
 
 Importantly, `mgcViz::qq.gam` can handle large datasets by discretizing the QQ-plot before
@@ -228,20 +230,21 @@ dat$n <- n
 lr.fit <- bam(y/n ~ s(x0) + s(x1) + s(x2) + s(x3)
               , family = binomial, data = dat,
               weights = n, method = "fREML", discrete = TRUE)
+lr.fit <- getViz(lr.fit)
 ```
 
 Here the `discrete` argument determines whether the QQ-plot is discretized or not.
 Notice that we can compute the QQ-plot, store it in `o` and then plot it (via `print.qqGam`).
 ```{r 23}
-o <- qq.gam(lr.fit, rep = 10, method = "simul1", CI = "normal", show.reps = TRUE, 
-            a.replin = list(alpha = 0.1), discrete = TRUE)
+o <- qq(lr.fit, rep = 10, method = "simul1", CI = "normal", show.reps = TRUE, 
+        a.replin = list(alpha = 0.1), discrete = TRUE)
 o 
 ```
 
 The coarseness of the discretization grid is determined by the `ngr` argument:
 ```{r 24}
-o <- qq.gam(lr.fit, rep = 10, method = "simul1", CI = "normal", show.reps = TRUE,
-            ngr = 1e2, a.replin = list(alpha = 0.1), a.qqpoi = list(shape = 19))
+o <- qq(lr.fit, rep = 10, method = "simul1", CI = "normal", show.reps = TRUE,
+        ngr = 1e2, a.replin = list(alpha = 0.1), a.qqpoi = list(shape = 19))
 o 
 ```
 
@@ -255,6 +258,7 @@ Here is an example:
 set.seed(0)
 dat <- gamSim(1, n = 200)
 b <- gam(y ~ s(x0) + s(x1) + s(x2) + s(x3), data = dat)
+b <- getViz(b)
 
 check(b,
       a.qq = list(method = "tnorm", 
@@ -283,6 +287,7 @@ x <- rnorm(n); y <- rnorm(n);
 
 ob <- (x)^2 + (y)^2 + (0.2*abs(x) + 1)  * rnorm(n)
 b <- bam(ob ~ s(x,k=30) + s(y, k=30), discrete = TRUE)
+b <- getViz(b)
 ```
 
 Here the responses variance varies a lot along $x$. Assume that we didn't know this, but
@@ -359,6 +364,7 @@ n <- 1e4
 dat <- data.frame("x1" = rnorm(n), "x2" = rnorm(n))
 dat$y <- (dat$x1)^2 + (dat$x2)^2 + (1*abs(dat$x1) + 1)  * rnorm(n)
 b <- bam(y ~ s(x1,k=30) + s(x2, k=30), data = dat, discrete = TRUE)
+b <- getViz(b)
 
 ck <- check2D(b, x1 = "x1", x2 = "x2", type = "tnormal")
 ```

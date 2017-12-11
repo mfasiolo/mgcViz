@@ -1,9 +1,10 @@
 #'
-#' Extracting parametric effects from gamObject
+#' Extracting parametric effects from a GAM model
 #' 
-#' @description This function can be used to extract a parametric effect from a \code{gamObject}.
+#' @description This function can be used to extract a parametric effect from an object of 
+#'              class \code{gamViz}.
 #' 
-#' @param o an object of class \code{gamViz}.
+#' @param o an object of class \code{gamViz}, the output of a \code{getViz()} call.
 #' @param select index of the selected parametric effect.
 #' @return An object of class "pTermSomething" where "Something" is substituted with
 #'         the class of the variable of interest. For instance if this "numeric", the \code{pterm}
@@ -19,7 +20,7 @@
 #' bs <- "cr"; k <- 12
 #' b <- gam(y ~ x0 + x1 + I(x1^2) + s(x2,bs=bs,k=k) + fac + x3:fac + I(x1*x2) + logi +
 #'             s(x3, bs=bs),data=dat)
-#' o <- getViz(b, nsim = 0)
+#' o <- getViz(b)
 #' 
 #' # Plot effect of 'x0'
 #' pt <- pterm(o, 1)
@@ -47,8 +48,7 @@
 #' mcycle$fac <- as.factor( sample(c("z", "k", "a", "f"), nrow(mcycle), replace = TRUE) ) 
 #' b <- gam(list(accel~times + I(times^2) + s(times,k=10), ~ times + fac + s(times)),
 #'           data=mcycle,family=gaulss(), optimizer = "efs")
-#' 
-#' o <- getViz(b, nsim = 0)
+#' o <- getViz(b)
 #' 
 #' # Plot effect of 'I(times^2)' on mean: notice that partial residuals
 #' # are unavailable for GAMLSS models, hence l_point does not do anything here.
@@ -70,8 +70,8 @@
 #' 
 pterm <- function(o, select){
   
-  if( !("gamViz" %in% class(o)) ){ stop("`o` should be of class `gamViz`") }
-  
+  if( !inherits(o, "gamViz") ){ stop("Argument 'o' should be of class 'gamViz'. See ?getViz") }
+
   terms <- o$pterms
   if( !is.list(terms) ) { terms <- list(terms) }
 

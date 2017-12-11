@@ -7,7 +7,7 @@
 check2D(o, x1, x2, type = "auto", maxpo = 10000, na.rm = TRUE)
 }
 \arguments{
-\item{o}{an object of class \code{gamObject} or \code{gamViz}.}
+\item{o}{an object of class \code{gamViz}.}
 
 \item{x1}{should be either a single character or a numeric vector.
 In the first case it should be the name of one of the variables in the dataframe used to fit \code{o}.
@@ -15,7 +15,7 @@ In the second case the length of \code{x1} should be equal to the length of \cod
 
 \item{x2}{same as \code{x2}, but this will appear on the y-axis.}
 
-\item{type}{the type of residuals to be used. See \code{?residuals.gam}}
+\item{type}{the type of residuals to be used. See \link{residuals.gamViz}.}
 
 \item{maxpo}{maximum number of residuals points that will be used by layers such as
 \code{resRug()} and \code{resPoints()}. If number of datapoints > \code{maxpo},
@@ -27,7 +27,7 @@ then a subsample of \code{maxpo} points will be taken.}
 An object of class \code{c("plotSmooth", "gg")}.
 }
 \description{
-This function extracts the residuals of a model fitted using \code{gam()}, and plots them
+This function extracts the residuals of a fitted GAM model, and plots them
 according to the values of two covariates. Then several visual residuals diagnostics
 can be plotted by adding layers.
 }

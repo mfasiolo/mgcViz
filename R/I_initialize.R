@@ -27,7 +27,7 @@
     if (length(residuals) == length(o$gObj$residuals)) { 
       w.resid <- residuals 
     } else { 
-      warning("residuals argument to plot.gam is wrong length: ignored") 
+      warning("residuals argument to plot.gamViz is wrong length: ignored") 
     }
     partial.resids <- TRUE
   } else {

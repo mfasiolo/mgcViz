@@ -7,16 +7,16 @@
 \method{shine}{qqGam}(o, ...)
 }
 \arguments{
-\item{o}{the output of \code{mgcViz::qq.gam}.}
+\item{o}{the output of \link{qq.gamViz}.}
 
 \item{...}{currently not used.}
 }
 \description{
-This function takes the output of \code{mgcViz::qq.gam} and transforms it
+This function takes the output of \link{qq.gamViz} and transforms it
 into an interactive shiny app.
 }
 \details{
-In RStudio, this function returns a call to \code{qq.gam} that reproduces the last plot
+In RStudio, this function returns a call to \code{qq.gamViz} that reproduces the last plot
 rendered in the interactive shiny window.
 }
 \examples{
@@ -35,8 +35,10 @@ dat$n <- n
 lr.fit <- gam(y/n ~ s(x0) + s(x1) + s(x2) + s(x3)
               , family = binomial, data = dat,
               weights = n, method = "REML")
+lr.fit <- getViz(lr.fit)
 # launch shiny gagdet
-shine(qq.gam(lr.fit))
+shine(qq(lr.fit))
  
 }
+
 }

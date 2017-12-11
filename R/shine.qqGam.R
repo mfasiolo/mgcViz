@@ -1,11 +1,11 @@
 #'
 #' Shiny QQ-plots for GAMs
 #' 
-#' @description This function takes the output of \code{mgcViz::qq.gam} and transforms it
+#' @description This function takes the output of [qq.gamViz] and transforms it
 #'              into an interactive shiny app.
-#' @param o the output of \code{mgcViz::qq.gam}.
+#' @param o the output of [qq.gamViz].
 #' @param ... currently not used.
-#' @details In RStudio, this function returns a call to \code{qq.gam} that reproduces the last plot
+#' @details In RStudio, this function returns a call to \code{qq.gamViz} that reproduces the last plot
 #'         rendered in the interactive shiny window.
 #' @import shiny
 #' @import miniUI
@@ -28,10 +28,12 @@
 #' lr.fit <- gam(y/n ~ s(x0) + s(x1) + s(x2) + s(x3)
 #'               , family = binomial, data = dat,
 #'               weights = n, method = "REML")
+#' lr.fit <- getViz(lr.fit)
 #' # launch shiny gagdet
-#' shine(qq.gam(lr.fit))
+#' shine(qq(lr.fit))
 #'  
 #' }
+#' 
 shine.qqGam <- function(o, ...){
   name_obj <- deparse(substitute(o))
   ui <- miniPage(

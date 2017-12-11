@@ -1,7 +1,7 @@
 #'
-#' Printing the output of qq.gam
+#' Printing the output of qq.gamViz
 #' 
-#' @description This method prints the output of [mgcViz::qq.gam].
+#' @description This method prints the output of [qq.gamViz].
 #' 
 #' @param x an object of class \code{qqGam}.
 #' @param ... currently unused.

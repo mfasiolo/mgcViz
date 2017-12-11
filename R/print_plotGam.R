@@ -1,7 +1,7 @@
 #############
-#' Printing the output of mgcViz::plot.gam
+#' Printing the output of plot.gamViz
 #' 
-#' @description This method prints the output of [mgcViz::plot.gam].
+#' @description This method prints the output of [plot.gamViz].
 #' @param x an object of class \code{plotGam}.
 #' @param ask should we ask before moving from one page to the next?
 #' @param pages the number of pages over which to spread the output.

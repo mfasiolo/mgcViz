@@ -54,6 +54,7 @@ dat <- data.frame("x1" = rnorm(n), "x2" = rnorm(n))
 # Residuals are heteroscedastic w.r.t. x1
 dat$y <- (dat$x1)^2 + (dat$x2)^2 + (1*abs(dat$x1) + 1)  * rnorm(n)
 b <- bam(y ~ s(x1,k=30) + s(x2, k=30), data = dat, discrete = TRUE)
+b <- getViz(b)
 
 pl <- check2D(b, x1 = "x1", x2 = "x2", type = "tnormal") + 
   l_points(colour = "blue", alpha = 0.5)

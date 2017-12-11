@@ -2,12 +2,12 @@
 % Please edit documentation in R/pterm.R
 \name{pterm}
 \alias{pterm}
-\title{Extracting parametric effects from gamObject}
+\title{Extracting parametric effects from a GAM model}
 \usage{
 pterm(o, select)
 }
 \arguments{
-\item{o}{an object of class \code{gamViz}.}
+\item{o}{an object of class \code{gamViz}, the output of a \code{getViz()} call.}
 
 \item{select}{index of the selected parametric effect.}
 }
@@ -17,7 +17,8 @@ the class of the variable of interest. For instance if this "numeric", the \code
 will return an object of class "ptermNumeric".
 }
 \description{
-This function can be used to extract a parametric effect from a \code{gamObject}.
+This function can be used to extract a parametric effect from an object of
+class \code{gamViz}.
 }
 \examples{
 ####### 1. Gaussian GAM 
@@ -29,7 +30,7 @@ dat$logi <- as.logical( sample(c(TRUE, FALSE), nrow(dat), replace = TRUE) )
 bs <- "cr"; k <- 12
 b <- gam(y ~ x0 + x1 + I(x1^2) + s(x2,bs=bs,k=k) + fac + x3:fac + I(x1*x2) + logi +
             s(x3, bs=bs),data=dat)
-o <- getViz(b, nsim = 0)
+o <- getViz(b)
 
 # Plot effect of 'x0'
 pt <- pterm(o, 1)
@@ -57,8 +58,7 @@ library(MASS)
 mcycle$fac <- as.factor( sample(c("z", "k", "a", "f"), nrow(mcycle), replace = TRUE) ) 
 b <- gam(list(accel~times + I(times^2) + s(times,k=10), ~ times + fac + s(times)),
           data=mcycle,family=gaulss(), optimizer = "efs")
-
-o <- getViz(b, nsim = 0)
+o <- getViz(b)
 
 # Plot effect of 'I(times^2)' on mean: notice that partial residuals
 # are unavailable for GAMLSS models, hence l_point does not do anything here.

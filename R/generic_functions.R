@@ -44,6 +44,17 @@ plotRGL <- function(x, ...) UseMethod("plotRGL")
 #' @export plotDiff
 plotDiff <- function(...) UseMethod("plotDiff")
 
+#'
+#' Generic QQ plots 
+#'
+#' @description Generic function for producing QQ-plots.
+#' @param ... arguments to be passed to methods. This first one will determine which
+#'            method will be called.
+#' @seealso [qq.gamViz]
+#' @rdname qq
+#' @export qq
+qq <- function(...) UseMethod("qq")
+
 ###### Internal generics
 .prepare <- function(...) UseMethod(".prepare")
 

@@ -4,7 +4,7 @@
 \alias{getViz}
 \title{Converting gam objects to gamViz objects}
 \usage{
-getViz(o, nsim = 10, ...)
+getViz(o, nsim = 0, ...)
 }
 \arguments{
 \item{o}{an object of class \code{gam}.}

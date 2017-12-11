@@ -33,14 +33,14 @@ set.seed(3841)
 dat <- gamSim(1,n=400,dist="normal",scale=2)
 dat$fac <- as.factor( sample(letters[1:8], nrow(dat), replace = TRUE) ) 
 fit <- qgam(y~s(x1)+s(x2)+s(x3)+fac, data=dat, err = 0.05, qu = 0.4)
+fit <- getViz(fit)
 
 # "x0" effect is missing, but should be there. l_gridQCheck1D shows
 # that fraction of negative residuals is quite different from the theoretical 0.4
 # in several places along "x0".
-b <- getViz(fit)
-check1D(b, dat$x0) + l_gridQCheck1D(qu = 0.4, n = 20)
+check1D(fit, dat$x0) + l_gridQCheck1D(qu = 0.4, n = 20)
 # The problem gets better if s(x0) is added to the model.
 
 # Works also with factor variables
-check1D(b, "fac") + l_gridQCheck1D(qu = 0.4)
+check1D(fit, "fac") + l_gridQCheck1D(qu = 0.4)
 }
