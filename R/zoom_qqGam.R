@@ -9,9 +9,10 @@
 #'                 in order to save plotting time (when the number of observations is large). If left
 #'                 to \code{NULL}, the discretization is used if there are more than 10^4 observations.
 #' @param ngr number of bins to be used in the discretization.
-#' @param adGrid if \code{TRUE} the discretization grid is recomputed when \code{zoom.qqGam} is called, and
-#'               it is based on the \code{xlim} range. If \code{FALSE}, \code{zoom.qqGam} will use the same grid 
-#'               used in the original \code{qq.gamViz} call.
+#' @param adGrid if \code{TRUE} the discretization grid is computed using the QQ-points falling within
+#'               \code{xlim}. If \code{FALSE}, \code{zoom.qqGam} will compute \code{ngr} values using all
+#'               the QQ-points used in the original \code{qq.gamViz} call (but only those falling within
+#'               \code{xlim} and \code{ylim} will be plotted).
 #' @param CI if \code{TRUE} confidence intervals are plotted.
 #' @param worm if \code{TRUE} a worm-plot (a de-trended QQ-plot) is plotted, rather than a QQ-plot.
 #' @param show.reps if \code{TRUE} all the QQ-lines corresponding to the simulated (model-based) QQ-plots.
