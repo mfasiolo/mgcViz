@@ -1,11 +1,13 @@
 ---
 title: "mgcViz: visual tools for GAMs"
+author: "Matteo Fasiolo and Raphael Nedellec"
+date: "`r Sys.Date()`"
 vignette: >
-  %\VignetteEngine{knitr::docco_linear}
+  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteIndexEntry{mgcViz_vignette}
   %\VignetteEncoding{UTF-8}
 ---
-  
+
 ```{r setup, include=FALSE}
 library(knitr)
 opts_chunk$set(out.extra='style="display:block; margin: auto"', fig.align="center", tidy=FALSE)

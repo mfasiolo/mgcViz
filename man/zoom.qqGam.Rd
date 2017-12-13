@@ -25,7 +25,7 @@ to \code{NULL}, the discretization is used if there are more than 10^4 observati
 \item{adGrid}{if \code{TRUE} the discretization grid is computed using the QQ-points falling within
 \code{xlim}. If \code{FALSE}, \code{zoom.qqGam} will compute \code{ngr} values using all
 the QQ-points used in the original \code{qq.gamViz} call (but only those falling within
-\code{xlim} and \code{ylim} will be plotted.).}
+\code{xlim} and \code{ylim} will be plotted).}
 
 \item{CI}{if \code{TRUE} confidence intervals are plotted.}
 

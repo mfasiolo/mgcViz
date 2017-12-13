@@ -27,6 +27,7 @@ Imports:
   plyr
 Suggests: 
   knitr,
+  rmarkdown,
   testthat,
   MASS
 License: GPL-3
