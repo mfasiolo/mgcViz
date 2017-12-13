@@ -1,15 +1,15 @@
-<!--
-%\VignetteEngine{knitr::docco_linear}
-%\VignetteIndexEntry{mgcViz_vignette}
--->
+---
+title: "mgcViz: visual tools for GAMs"
+vignette: >
+  %\VignetteEngine{knitr::docco_linear}
+  %\VignetteIndexEntry{mgcViz_vignette}
+  %\VignetteEncoding{UTF-8}
+---
   
 ```{r setup, include=FALSE}
 library(knitr)
 opts_chunk$set(out.extra='style="display:block; margin: auto"', fig.align="center", tidy=FALSE)
 ```
-
-
-# **mgcViz**: visual tools for Generalized Additive Models
 
 The `mgcViz` R package offers visual tools for Generalized Additive Models (GAMs). The visualizations provided by `mgcViz` differs from those implemented in `mgcv`, in that most of the plots are based on `ggplot2`'s powerful layering system. This has been implemented by wrapping several `ggplot2` layers and integrating them with computations specific to GAM models. Further, `mgcViz` uses binning and/or sub-sampling to produce plots that can scale to large datasets ($n \approx 10^7$), and offers a variety of new methods for visual model checking/selection.
 
