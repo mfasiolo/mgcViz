@@ -93,11 +93,11 @@ l_rug.2D <- l_rug.sos0 <- l_rug.sos1 <- l_rug.Check2DNumericNumeric <- l_rug.MDs
   if( is.null(a$size) ){ a$size <- 0.2 }
   
   if( is.null(a$mapping$y) ){
-    a$mapping <-  aes(x = x, y = y)
+    a$mapping <-  aes(x = x)
     a$sides <- "b"
   }
   if( is.null(a$mapping$x) ){
-    a$mapping <-  aes(x = x, y = y)
+    a$mapping <-  aes(y = y)
     a$sides <- "l"
   }
   if( is.null(a$data$y) ){
