@@ -92,12 +92,12 @@ l_rug.2D <- l_rug.sos0 <- l_rug.sos1 <- l_rug.Check2DNumericNumeric <- l_rug.MDs
   a$inherit.aes <- FALSE
   if( is.null(a$size) ){ a$size <- 0.2 }
   
-  if( is.null(a$mapping$y) ){
-    a$mapping <-  aes(x = x)
+  if( is.null(a$mapping$y) && ("PositionJitter" %in% class(a$position)) ){
+    a$mapping <-  aes(x = x, y = y)
     a$sides <- "b"
   }
-  if( is.null(a$mapping$x) ){
-    a$mapping <-  aes(y = y)
+  if( is.null(a$mapping$x) && ("PositionJitter" %in% class(a$position)) ){
+    a$mapping <-  aes(x = x, y = y)
     a$sides <- "l"
   }
   if( is.null(a$data$y) ){
