@@ -41,7 +41,7 @@
         partial.resids <- FALSE
       } else {
         wr <- sqrt(o$gObj$weights)
-        w.resid <- o$gObj$residuals * wr / mean(wr) # weighted working residuals
+        w.resid <- o$gObj$residuals * wr
       }
     }
     

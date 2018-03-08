@@ -62,9 +62,9 @@ listLayers <- function(o){
                 "PtermLogical" = c("l_fitPoints", "l_fitBar", "l_ciBar", "l_points", "l_rug"),
                 
                 # Checking plots
-                "Check1DNumeric" = c("l_densCheck", "l_gridCheck1D", "l_dens", "l_points", "l_rug"),
-                "Check1DFactor" = c("l_gridCheck1D", "l_points", "l_rug"),
-                "Check1DLogical" = c("l_gridCheck1D", "l_points", "l_rug"),
+                "Check1DNumeric" = c("l_densCheck", "l_gridCheck1D", "l_gridQCheck1D", "l_dens", "l_points", "l_rug"),
+                "Check1DFactor" = c("l_gridCheck1D", "l_gridQCheck1D", "l_points", "l_rug"),
+                "Check1DLogical" = c("l_gridCheck1D", "l_gridQCheck1D", "l_points", "l_rug"),
                 "Check2DNumericNumeric" = c("l_gridCheck2D", "l_dens", "l_glyphs2D", "l_points", "l_rug"),
                 "Check2DFactorNumeric" = c("l_gridCheck2D", "l_points", "l_rug"),
                 "Check2DFactorFactor" = c("l_gridCheck2D", "l_points", "l_rug"),

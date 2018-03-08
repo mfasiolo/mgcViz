@@ -69,6 +69,8 @@ simulate.gam <- function(object, nsim = 1, seed = NULL, method = "auto", u = NUL
     }
   }
   
+  if( is.vector(sim) ) { sim <- matrix(sim, 1, length(sim)) }
+  
   return( sim )
   
 }
