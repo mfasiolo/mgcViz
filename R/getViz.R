@@ -23,6 +23,14 @@
 #' @export getViz
 getViz <- function(o, nsim = 0, ...){
   
+  if( "mqgam" %in% class(o) ){
+    qus <- as.numeric( names(o$fit) )
+    o <- lapply(qus, function(.q) qdo(o, .q, getViz, nsim = 0))
+    names(o) <- qus
+    class(o) <- "mgamViz"
+    return( o )
+  }
+  
   if( !("gam" %in% class(o)) ){ stop("\"o\" should be of class \"gam\"") }
   
   # If `o` is already a `gamViz` object we don't recompute the `termsFit`

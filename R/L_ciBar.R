@@ -27,7 +27,7 @@ l_ciBar <- function(level = 0.95, mul = NULL, ...){
 ######## Internal method for factor plots
 #' @noRd
 #'
-l_ciBar.PtermFactor <- function(a){
+l_ciBar.PtermFactor <- l_ciBar.MultiPtermNumeric <- l_ciBar.MultiPtermFactor <- function(a){
   
   xtra <- a$xtra
   a$xtra <- NULL

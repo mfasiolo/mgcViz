@@ -20,7 +20,7 @@ l_fitPoints <- function(...){
 ######## Internal method for factor plots
 #' @noRd
 #'
-l_fitPoints.PtermFactor <- function(a){
+l_fitPoints.PtermFactor <- l_fitPoints.MultiPtermNumeric <- function(a){
   
   if( is.null(a$shape) ){ a$shape <- 19}
   if( is.null(a$size) ){ a$size <- 2}
@@ -31,5 +31,16 @@ l_fitPoints.PtermFactor <- function(a){
   a$data$res$sub <- rep(TRUE, nrow(a$data$res))
 
   l_points.1D( a )
+  
+}
+
+######## Method for mqgam fits
+#' @noRd
+#'
+l_fitPoints.MultiPtermFactor <- function(a){
+  
+  if( is.null(a$mapping) ){ a$mapping <- aes("x" = qu, "y" = ty, "colour" = qu) }
+  
+  l_fitPoints.PtermFactor( a )
   
 }

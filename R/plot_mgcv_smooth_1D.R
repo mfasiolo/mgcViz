@@ -1,3 +1,4 @@
+#'
 #' Plotting one dimensional smooth effects
 #' 
 #' @description Plotting method for one dimensional smooth effects.
@@ -56,6 +57,15 @@
 #' # Plot is with conditional density of partial residuals
 #' o2 + l_dens(type = "cond", alpha = 0.9)  + 
 #'   l_fitLine(linetype = 2, colour = "red")
+#'   
+#' ########
+#' # Quantile GAM example
+#' ########
+#' # Fit model
+#' b <- mqgamV(y ~ s(x1) + s(x2), qu = c(0.2, 0.5, 0.8), data = dat)
+#' 
+#' plot(sm(b, 1)) + l_fitLine(linetype = 2) + l_rug(colour = "blue")
+#'
 #' @rdname plot.mgcv.smooth.1D
 #' @export plot.mgcv.smooth.1D
 #' @export

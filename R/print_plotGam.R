@@ -25,13 +25,18 @@ print.plotGam <- function(x, ask = TRUE, pages = NULL, addLay = TRUE, ...){
                  "1D" = .l + l_fitLine() + l_ciLine(),
                  "2D" = .l + l_fitRaster() + l_fitContour(), 
                  "MD" = .l + l_fitRaster() + l_fitContour(), 
+                 "MDslice" = .l + l_fitRaster() + l_fitContour(), 
                  "sos0" = .l + l_fitRaster() + l_fitContour(), 
                  "sos1" = .l + l_fitRaster() + l_fitContour(),
                  "randomEffect" = .l + l_fitLine() + l_ciLine() + l_points(), 
                  "mrf" = .l + l_poly(), 
                  "PtermNumeric" = .l + l_fitLine() + l_ciLine(),
-                 "PtermFactor" = .l + l_fitPoints() + l_ciBar(),
-                 "PtermLogical" = .l + l_fitPoints() + l_ciBar()
+                 "PtermFactor" = .l + l_ciBar() + l_fitPoints(),
+                 "PtermLogical" = .l + l_ciBar() + l_fitPoints(), 
+                 "Multi1D" = .l + l_fitLine(),
+                 "Multi2D" = .l + l_fitRaster() + l_fitContour(),
+                 "MultiPtermNumeric" = .l + l_ciBar() + l_fitPoints(),
+                 "MultiPtermFactor" = .l + l_ciBar() + l_fitPoints()
                  )
     
     return( .l )

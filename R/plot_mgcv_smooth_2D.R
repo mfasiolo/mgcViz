@@ -26,6 +26,8 @@
 #'                   relates purely to the centred smooth itself. Marra and Wood (2012) suggests 
 #'                   that TRUE results in better coverage performance, and this is also suggested 
 #'                   by simulation.
+#' @param a.facet arguments to be passed to [ggplot2::facet_wrap] or [ggplot2::facet_grid]. The former gets
+#'                called when \code{fix} contains one vector, the latter when \code{fix} contains two vectors.
 #' @param ... currently unused.
 #' @return An objects of class \code{plotSmooth}.
 #' @references Marra, G and S.N. Wood (2012) Coverage Properties of Confidence Intervals for 
@@ -46,6 +48,14 @@
 #' # Plot contour of effect joint density of design points
 #' plot(sm(b, 2)) + l_dens(type = "joint") + l_points() + l_fitContour() + 
 #'   coord_cartesian(expand = FALSE) # Fill the plot
+#'   
+#' ###
+#' # Quantile GAM example
+#' ###
+#' b <- mqgamV(y ~ s(x0) + s(x1, x2) + s(x3), qu = c(0.3, 0.7), data = dat)
+#' 
+#' plot(sm(b, 2)) + l_fitRaster(noiseup = TRUE) + l_fitContour(colour = 2)
+#' 
 #' @importFrom mgcv exclude.too.far
 #' @rdname plot.mgcv.smooth.2D
 #' @export plot.mgcv.smooth.2D

@@ -13,6 +13,12 @@
 #' @export sm
 sm <- function(o, select){
   
+  if( inherits(o, "mgamViz") ){
+    out <- lapply(o, sm, select = select)
+    class(out) <- paste0("multi.", class(out[[1]]))
+    return( out )
+  }
+  
   if( !inherits(o, "gamViz") ){ stop("Argument 'o' should be of class 'gamViz'. See ?getViz") }
   
   m <- length(o$smooth) # number of smooth effects

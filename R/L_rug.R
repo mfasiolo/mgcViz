@@ -43,7 +43,7 @@ l_rug.Check1DLogical <- function(a){
 
 ######## Internal method for numeric 1D plots
 #' @noRd
-l_rug.1D <- l_rug.Check1DNumeric <- l_rug.PtermNumeric <- function(a){
+l_rug.1D <- l_rug.Multi1D <- l_rug.Check1DNumeric <- l_rug.PtermNumeric <- function(a){
   
   if( is.null(a$mapping) ) { a$mapping <- aes(x = x) }
   

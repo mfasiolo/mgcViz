@@ -44,6 +44,7 @@ listLayers <- function(o){
                 # Smooth effects plots
                 "fs1D" = c("l_fitLine"),
                 "1D" = c("l_ciLine", "l_ciPoly", "l_fitLine", "l_dens", "l_points", "l_rug"),
+                "Multi1D" = c("l_fitLine", "l_rug"),
                 "2D" = c("l_fitContour", "l_fitRaster", "l_dens", "l_points", "l_rug"), 
                 "MD" = c("l_fitContour", "l_fitRaster", "l_dens", "l_points", "l_rug"), 
                 "sos0" = c("l_fitContour", "l_fitRaster", "l_points", "l_rug", 
@@ -58,7 +59,9 @@ listLayers <- function(o){
                 # Parametric effects plots
                 "PtermNumeric" = c("l_ciLine", "l_ciPoly", "l_fitLine", "l_dens", 
                                                "l_points", "l_rug"), 
-                "PtermFactor"  = c("l_fitPoints", "l_fitBar", "l_ciBar", "l_points", "l_rug"),
+                "MultiPtermNumeric" = c("l_fitPoints", "l_fitBar", "l_ciBar"), 
+                "PtermFactor"  =  c("l_fitPoints", "l_fitBar", "l_ciBar", "l_points", "l_rug"),
+                "MultiPtermFactor"  =  c("l_fitPoints", "l_ciBar"),
                 "PtermLogical" = c("l_fitPoints", "l_fitBar", "l_ciBar", "l_points", "l_rug"),
                 
                 # Checking plots

@@ -107,21 +107,7 @@ plot.gamViz <- function(x, n = 100, n2 = 40, select = NULL, allTerms = FALSE, ..
   
   if( !inherits(x, "gamViz") ){ stop("Argument 'x' should be of class 'gamViz'. See ?getViz") }
   
-  nsm <- length(x$smooth)
-  npr <- x$store$np      # number of parametric terms
-  
-  if( is.null(select) ) { 
-    select <- if( allTerms ) { 1:(nsm+npr) } else { 1:nsm } 
-  }
-  selS <- select[ select <= nsm ]
-  selP <- select[ select > nsm & select <= (nsm+npr) ]
-  
-  smo <- list()
-  # Extract smooths
-  smo <- lapply(selS, sm, o = x)
-  
-  # Add also parametric terms
-  smo <- c(smo, lapply(selP-nsm, pterm, o = x))
+  smo <- .extractSeveralEffects(.x = x, .sel = select, .allT = allTerms)
 
   # Wrapper function to plot each smooth
   wrap <- function(.smo, .n, .n2, ...){

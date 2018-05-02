@@ -22,14 +22,13 @@ class \code{gamViz}.
 }
 \examples{
 ####### 1. Gaussian GAM 
-library(mgcv)
+library(mgcViz)
 set.seed(3)
 dat <- gamSim(1,n=1500,dist="normal",scale=20)
 dat$fac <- as.factor( sample(c("A1", "A2", "A3"), nrow(dat), replace = TRUE) ) 
 dat$logi <- as.logical( sample(c(TRUE, FALSE), nrow(dat), replace = TRUE) ) 
 bs <- "cr"; k <- 12
-b <- gam(y ~ x0 + x1 + I(x1^2) + s(x2,bs=bs,k=k) + fac + x3:fac + I(x1*x2) + logi +
-            s(x3, bs=bs),data=dat)
+b <- gam(y ~ x0 + x1 + I(x1^2) + s(x2,bs=bs,k=k) + fac + x3:fac + I(x1*x2) + logi,data=dat)
 o <- getViz(b)
 
 # Plot effect of 'x0'
@@ -53,7 +52,18 @@ plot(pt) + l_fitBar(a.aes = list(fill = I("light blue"))) + l_ciBar(colour = "bl
 pt <- pterm(o, 7)
 plot(pt)
 
-####### 2. Gaussian GAMLSS model
+####### 1. Continued: Quantile GAMs
+b <- mqgamV(y ~ x0 + x1 + I(x1^2) + s(x2,bs=bs,k=k) + x3:fac + 
+              I(x1*x2) + logi, data=dat, qu = c(0.3, 0.5, 0.8))
+
+plot(pterm(b, 3)) + l_ciBar(colour = 2) + l_fitPoints()
+
+plot(pterm(b, 4)) + l_fitBar(colour = "blue", fill = 3) + l_ciBar(colour = 2) 
+
+# Don't know how to plot this interaction
+plot(pterm(b, 6))
+ 
+####### 3. Gaussian GAMLSS model
 library(MASS)
 mcycle$fac <- as.factor( sample(c("z", "k", "a", "f"), nrow(mcycle), replace = TRUE) ) 
 b <- gam(list(accel~times + I(times^2) + s(times,k=10), ~ times + fac + s(times)),

@@ -9,6 +9,11 @@
 #'              then a subsample of \code{maxpo} points will be taken.
 #' @param trans monotonic function to apply to the fit, confidence intervals and residuals, 
 #'              before plotting. Monotonicity is not checked. 
+#' @param a.facet arguments to be passed to [ggplot2::facet_wrap] or [ggplot2::facet_grid]. The former gets
+#'                called when \code{fix} contains one vector, the latter when \code{fix} contains two vectors.
+#' @param asFact useful when plotting multiple factor effects, one for each quantile regression model. If
+#'               \code{FALSE} quantile of interest (qu) is treated as a continuous variable, otherwise as 
+#'               a factor.
 #' @param ... currently unused.
 #' @return An object of class \code{plotSmooth}.
 #' @examples 
