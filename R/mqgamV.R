@@ -21,12 +21,13 @@
 #' 
 #' # This is equivalent to doing
 #' # 1. Fit QGAM
-#' # b <- mqgam(y~s(x) + s(z) + I(x*z), data=dat, qu = c(0.2, 0.4, 0.6, 0.8), argGam = list(select = TRUE))
+#' # b <- mqgam(y~s(x) + s(z) + I(x*z), data=dat, 
+#'              qu = c(0.2, 0.4, 0.6, 0.8), argGam = list(select = TRUE))
 #' # 2. Convert to gamViz object
 #' # b <- getViz(b, nsim = 0)
 #' 
 #' # Either way, we all effects by doing
-#' print(plot(b, allTerms = T), pages = 1)
+#' print(plot(b, allTerms = TRUE), pages = 1)
 #'
 #' @rdname mqgamV
 #' @export mqgamV

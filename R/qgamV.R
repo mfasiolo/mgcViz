@@ -26,7 +26,7 @@
 #' # b <- getViz(b, nsim = 0)
 #' 
 #' # Either way, we all effects by doing
-#' print(plot(b, allTerms = T), pages = 1)
+#' print(plot(b, allTerms = TRUE), pages = 1)
 #'
 #' @rdname qgamV
 #' @export qgamV

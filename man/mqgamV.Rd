@@ -38,6 +38,6 @@ b <- mqgamV(y~s(x) + s(z) + I(x*z), data = dat, qu = c(0.2, 0.4, 0.6, 0.8),
 # b <- getViz(b, nsim = 0)
 
 # Either way, we all effects by doing
-print(plot(b, allTerms = T), pages = 1)
+print(plot(b, allTerms = TRUE), pages = 1)
 
 }

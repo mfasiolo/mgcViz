@@ -63,7 +63,7 @@ plot(pterm(b, 4)) + l_fitBar(colour = "blue", fill = 3) + l_ciBar(colour = 2)
 # Don't know how to plot this interaction
 plot(pterm(b, 6))
  
-####### 3. Gaussian GAMLSS model
+####### 2. Gaussian GAMLSS model
 library(MASS)
 mcycle$fac <- as.factor( sample(c("z", "k", "a", "f"), nrow(mcycle), replace = TRUE) ) 
 b <- gam(list(accel~times + I(times^2) + s(times,k=10), ~ times + fac + s(times)),

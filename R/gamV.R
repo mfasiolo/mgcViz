@@ -42,6 +42,7 @@
 #'           
 #' # Either way, we plot first and third effects by doing
 #' print(plot(b, select = c(2)), pages = 1)
+#' @importFrom stats gaussian
 #' @rdname gamV
 #' @export gamV
 #

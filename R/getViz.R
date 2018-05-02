@@ -19,6 +19,7 @@
 #' plot(sm(b,1)) + l_fitLine() + l_ciLine() + l_rug() + l_points()
 #' plot(sm(b,2)) + l_rug() + l_fitRaster() + l_fitContour()
 #' @importFrom stats simulate
+#' @importFrom qgam qdo
 #' @rdname getViz
 #' @export getViz
 getViz <- function(o, nsim = 0, ...){
