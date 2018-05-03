@@ -47,11 +47,13 @@ plot.multi.ptermFactor <- function(x, a.facet = list(), asFact = TRUE, ...) {
   
   .dat$misc <- list("trans" = trans)
   
-  .pl <- ggplot(data = .dat$fit, aes("x" = qu, "y" = ty)) +
-    labs(title = NULL, x = P$xlab, y = P$ylab) + 
-    scale_x_discrete() +
-    theme_bw() +
-    theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) 
+  .pl <- ggplot(data = .dat$fit, aes("x" = qu, "y" = ty)) + labs(title = NULL, x = P$xlab, y = P$ylab) + 
+         theme_bw() + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) 
+  
+  if( asFact ){ 
+    tmpLevs <- round(as.numeric(levels(.dat$fit$qu)), 3)
+    .pl <- .pl + scale_x_discrete(labels = tmpLevs) + scale_colour_discrete(labels = tmpLevs)
+  }
   
   if( is.null(a.facet$facets) ){ a.facet$facets <- as.formula("~ x") }
   .pl <- .pl + do.call("facet_wrap", a.facet)

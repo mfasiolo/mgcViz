@@ -19,7 +19,7 @@
 #'          [mgcv::gam.check] for details. 
 #' @return An object of class \code{checkGam}, which is simply a list of \code{ggplot} objects.
 #' @importFrom stats napredict fitted printCoefmat 
-#' @importFrom qgam check
+#' @importFrom qgam check check.qgam
 #' @examples
 #' library(mgcViz)
 #' set.seed(0)
@@ -50,6 +50,8 @@ check.gamViz <- function(obj,
                          ...){
   
   if( !inherits(obj, "gamViz") ){ stop("Argument 'obj' should be of class 'gamViz'. See ?getViz") }
+  
+  if( inherits(obj, "qgam") ){ return( check.qgam(obj) ) }
   
   type <- match.arg(type)
   if (type == "auto") { type <- .getResTypeAndMethod(obj$family$family)$type }

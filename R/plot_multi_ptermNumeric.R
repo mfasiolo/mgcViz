@@ -42,7 +42,7 @@ plot.multi.ptermNumeric <- function(x, ...) {
   
   .pl <- ggplot(data = P$data$fit, aes("x" = x, "y" = ty)) +
     labs(title = NULL, x = P$xlab, y = P$ylab) + 
-    scale_x_discrete() +
+    scale_x_discrete(labels = round(as.numeric(levels(P$data$fit$x)), 3)) +
     theme_bw() +
     theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) 
   
