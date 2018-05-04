@@ -98,3 +98,15 @@ l_ciLine.randomEffect <- function(a){
   
   return( out )
 }
+
+######## Internal method 
+#' @noRd
+l_ciLine.MultiRandomEffect <-  function(a){
+  
+  # Need use only data from one of the quantile, otherwise l_ciLine.randomEffect thinks
+  # that we have n * number_of_quantiles responses, rather than just n
+  a$data$fit <- a$data$fit[a$data$fit$qu == levels(a$data$fit$qu)[1], ]
+  
+  return( l_ciLine.randomEffect(a) )
+  
+}

@@ -93,7 +93,7 @@ l_points.Check1DNumeric <- l_points.PtermNumeric <- function(a){
 
 ######## Internal method for random effects
 #' @noRd
-l_points.randomEffect <- function(a){
+l_points.randomEffect <- l_points.MultiRandomEffect <- function(a){
     
     a$data <- a$data$fit
     if( is.null(a$shape) ) { a$shape <- 19 } 

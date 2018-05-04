@@ -12,7 +12,7 @@
 #' @export plot.random.effect
 #' @export
 #' @examples 
-#' library(mgcv)
+#' library(mgcViz)
 #' b <- gam(travel~s(Rail,bs="re"), data=Rail, method="REML")
 #' b <- getViz(b)
 #' plot(sm(b, 1)) + l_fitLine(colour = 2, linetype = 2) + l_points() + 
@@ -22,7 +22,17 @@
 #' 
 #' # Default
 #' plot(b)
-#'  
+#' 
+#' ###
+#' # Quantile GAM version
+#' ###
+#' b <- mqgamV(travel~s(Rail,bs="re"), data=as.data.frame(Rail), qu = c(0.2, 0.4, 0.6, 0.8))
+#' 
+#' plot(sm(b, 1)) + l_ciPoly() + l_points()
+#' 
+#' # Default
+#' plot(b)
+#' 
 plot.random.effect <- function(x, trans = identity, ...) {
   
   # 1) Prepare data

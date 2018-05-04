@@ -47,6 +47,20 @@ l_fitLine.randomEffect <- function(a){
 
 ######## Internal method 
 #' @noRd
+l_fitLine.MultiRandomEffect <-  function(a){
+  
+  # Need use only data from one of the quantile, otherwise l_fitLine.randomEffect thinks
+  # that we have n * number_of_quantiles responses, rather than just n
+  a$data$fit <- a$data$fit[a$data$fit$qu == levels(a$data$fit$qu)[1], ]
+
+  return( l_fitLine.randomEffect(a) )
+  
+}
+
+
+
+######## Internal method 
+#' @noRd
 l_fitLine.fs1D <- function(a){
   
   a$data <- a$data$fit
