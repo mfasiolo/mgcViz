@@ -109,23 +109,25 @@ plot.gamViz <- function(x, n = 100, n2 = 40, select = NULL, allTerms = FALSE, ..
   
   smo <- .extractSeveralEffects(.x = x, .sel = select, .allT = allTerms)
 
-  # Wrapper function to plot each smooth
-  wrap <- function(.smo, .n, .n2, ...){
-    
-    if( "mgcv.smooth.MD" %in% class(.smo) ) { return(NULL) }
-    if( "mgcv.smooth.2D" %in% class(.smo) ) { .n <- .n2 }
-    
-    return( suppressMessages(plot(x = .smo, n = .n, ...)) )
-  }
-  
-  # Plotting each smooth. If a plot is NULL we don't include it in the list `pls`.
-  zz <- 1
   pls <- list()
-  for(ii in 1:length(smo)){
-    tmp <- wrap(smo[[ii]], .n = n, .n2 = n2, ...)
-    if( !is.null(tmp) ){ 
-      pls[[zz]] <- tmp
-      zz <- zz + 1
+  if( !is.null(smo) ){
+    # Wrapper function to plot each smooth
+    wrap <- function(.smo, .n, .n2, ...){
+      
+      if( "mgcv.smooth.MD" %in% class(.smo) ) { return(NULL) }
+      if( "mgcv.smooth.2D" %in% class(.smo) ) { .n <- .n2 }
+      
+      return( suppressMessages(plot(x = .smo, n = .n, ...)) )
+    }
+    
+    # Plotting each smooth. If a plot is NULL we don't include it in the list `pls`.
+    zz <- 1
+    for(ii in 1:length(smo)){
+      tmp <- wrap(smo[[ii]], .n = n, .n2 = n2, ...)
+      if( !is.null(tmp) ){ 
+        pls[[zz]] <- tmp
+        zz <- zz + 1
+      }
     }
   }
   

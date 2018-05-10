@@ -102,7 +102,7 @@ plotSlice <- function(x, fix, a.facet = list(), ...){
   lbs <- plot(x, fix = indx[1, ])$ggObj$labels
   
   .pl <- ggplot(data = .dat$fit, aes(x = x, y = y, z = tz)) +
-    labs(title = lbs$title, x = lbs$x, y = lbs$y, z = z) + 
+    labs(title = lbs$title, x = lbs$x, y = lbs$y) + 
     theme_bw() +
     theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
   

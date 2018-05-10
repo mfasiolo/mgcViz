@@ -43,7 +43,7 @@ b <- mqgamV(travel~s(Rail,bs="re"), data=as.data.frame(Rail), qu = c(0.2, 0.4, 0
 
 plot(sm(b, 1)) + l_ciPoly() + l_points()
 
-# Defauls
+# Default
 plot(b)
 
 }

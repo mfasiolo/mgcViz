@@ -38,6 +38,7 @@ plot.multi.random.effect <- function(x, trans = identity, ...) {
   
   .pl <- ggplot(data = .dat$fit, aes("x" = x, "y" = ty, "colour" = qu)) +
     labs(title = P$main, x = P$xlab, y = P$ylab) + 
+    scale_colour_discrete(labels = round(as.numeric(levels(.dat$fit$qu)), 3)) +
     theme_bw() +
     theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
   

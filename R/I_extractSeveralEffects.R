@@ -11,14 +11,20 @@
   }
   
   if( is.null(.sel) ) { 
-    .sel <- if( .allT ) { 1:(nsm+npr) } else { 1:nsm } 
+    .sel <- if( .allT ) { 
+      1:(nsm+npr) 
+    } 
+    else { 
+      if(nsm > 0){ 1:nsm } else { return(NULL) } 
+    } 
   }
+  
   selS <- .sel[ .sel <= nsm ]
   selP <- .sel[ .sel > nsm & .sel <= (nsm+npr) ]
   
   smo <- list()
   # Extract smooths
-  smo <- lapply(selS, sm, o = .x)
+  if( length(selS) ) { smo <- lapply(selS, sm, o = .x) }
   
   # Add also parametric terms
   return( c(smo, lapply(selP-nsm, pterm, o = .x)) )
