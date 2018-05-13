@@ -32,7 +32,7 @@
 #' b <- getViz(b)
 #' 
 #' # Default smooth effect plotting
-#' plot(b)
+#' print(plot(b), ask = FALSE)
 #' 
 #' # Now on one page and with out title on the second plot
 #' print(plot(b) + labs(title = NULL), pages = 1) 
