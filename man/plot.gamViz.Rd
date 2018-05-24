@@ -46,7 +46,7 @@ b <- bam(y~s(x0)+s(x1, x2)+s(x3), data=dat)
 b <- getViz(b)
 
 # Default smooth effect plotting
-plot(b)
+print(plot(b), ask = FALSE)
 
 # Now on one page and with out title on the second plot
 print(plot(b) + labs(title = NULL), pages = 1) 
