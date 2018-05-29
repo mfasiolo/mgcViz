@@ -4,35 +4,37 @@ Version: 0.1.1
 Authors@R: c(person("Matteo", "Fasiolo", email = "matteo.fasiolo@gmail.com", role = c("aut", "cre")),
   person("Raphael", "Nedellec", email = "raphael.nedellec@edf.fr", role = c("aut")))
 Description: mgcViz.
-Depends: 
-  R (>= 3.4.4),
-  mgcv (>= 1.8-23), 
-  qgam (>= 1.2.1),
-  ggplot2,
-  rgl
+Depends:
+    R (>= 3.4.4),
+    mgcv (>= 1.8-23),
+    qgam (>= 1.2.1),
+    ggplot2,
+    rgl
 Imports:
-  shiny,
-  matrixStats,
-  viridis,
-  colourpicker, 
-  miniUI,
-  rstudioapi,
-  plotly,
-  GGally, 
-  KernSmooth, 
-  data.table,
-  dplyr,
-  gridExtra,
-  mvnfast,
-  plyr
-Suggests: 
-  knitr,
-  rmarkdown,
-  testthat,
-  MASS
+    shiny,
+    matrixStats,
+    viridis,
+    colourpicker,
+    miniUI,
+    rstudioapi,
+    plotly,
+    GGally,
+    KernSmooth,
+    data.table,
+    dplyr,
+    gridExtra,
+    mvnfast,
+    plyr
+Suggests:
+    knitr,
+    rmarkdown,
+    testthat,
+    MASS
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
+URL: https://github.com/mfasiolo/mgcViz
+BugReports: https://github.com/mfasiolo/mgcViz/issues

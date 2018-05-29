@@ -13,7 +13,7 @@ plot.multi.mgcv.smooth.1D <- function(x, n = 100, xlim = NULL, maxpo = 1e4, tran
   P <- list("data" = lapply(tmp, "[[", "data"), 
             "main" = tmp[[1]]$ggObj$labels$title, 
             "xlab" = tmp[[1]]$ggObj$labels$x,
-            "ylab" = paste0("s(",tmp[[1]]$ggObj$labels$x, ")"))
+            "ylab" = gsub("\\d|,| |\\.", replacement = "", x = tmp[[1]]$ggObj$labels$y))
   names( P$data ) <- names( x )
   
   # 2) Produce output object
