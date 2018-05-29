@@ -18,13 +18,22 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
+<meta property="og:title" content="Plotting two dimensional smooth effects — plot.mgcv.smooth.2D" />
+
+<meta property="og:description" content="Plotting method for two dimensional smooth effects." />
+<meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,8 +56,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">mgcViz</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">mgcViz</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.1</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -70,13 +83,22 @@
     <li>
       <a href="../articles/mgcviz.html">mgcViz: visual tools for GAMs</a>
     </li>
+    <li>
+      <a href="../articles/qgam_mgcViz.html">Quantile additive models using qgam and mgcViz</a>
+    </li>
   </ul>
 </li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/mfasiolo/mgcViz">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -84,22 +106,31 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Plotting two dimensional smooth effects</h1>
+    <small class="dont-index">Source: <a href='https://github.com/mfasiolo/mgcViz/blob/master/R/plot_mgcv_smooth_2D.R'><code>R/plot_mgcv_smooth_2D.R</code></a>, <a href='https://github.com/mfasiolo/mgcViz/blob/master/R/plot_multi_mgcv_smooth_2D.R'><code>R/plot_multi_mgcv_smooth_2D.R</code></a></small>
+    <div class="hidden name"><code>plot.mgcv.smooth.2D.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Plotting method for two dimensional smooth effects.</p>
     
+    </div>
 
     <pre class="usage"><span class='co'># S3 method for mgcv.smooth.2D</span>
 <span class='fu'>plot</span>(<span class='no'>x</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>40</span>, <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>maxpo</span> <span class='kw'>=</span> <span class='fl'>10000</span>, <span class='kw'>too.far</span> <span class='kw'>=</span> <span class='fl'>0.1</span>, <span class='kw'>trans</span> <span class='kw'>=</span> <span class='no'>identity</span>, <span class='kw'>seWithMean</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>unconditional</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
+  <span class='kw'>unconditional</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for multi.mgcv.smooth.2D</span>
+<span class='fu'>plot</span>(<span class='no'>x</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ylim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>maxpo</span> <span class='kw'>=</span> <span class='fl'>10000</span>, <span class='kw'>too.far</span> <span class='kw'>=</span> <span class='fl'>0.1</span>, <span class='kw'>trans</span> <span class='kw'>=</span> <span class='no'>identity</span>, <span class='kw'>seWithMean</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>unconditional</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>a.facet</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='no'>...</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -156,6 +187,11 @@ Otherwise the bands treat the smoothing parameters as fixed.</p></td>
       <th>...</th>
       <td><p>currently unused.</p></td>
     </tr>
+    <tr>
+      <th>a.facet</th>
+      <td><p>arguments to be passed to <a href='http://www.rdocumentation.org/packages/ggplot2/topics/facet_wrap'>ggplot2::facet_wrap</a> or <a href='http://www.rdocumentation.org/packages/ggplot2/topics/facet_grid'>ggplot2::facet_grid</a>. The former gets
+called when <code>fix</code> contains one vector, the latter when <code>fix</code> contains two vectors.</p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -169,22 +205,26 @@ Generalized Additive Model Components. Scandinavian Journal of Statistics.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'>library</span>(<span class='no'>mgcViz</span>)
+    <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>mgcViz</span>)
 <span class='fu'>set.seed</span>(<span class='fl'>2</span>) <span class='co'>## simulate some data...</span>
-<span class='no'>dat</span> <span class='kw'>&lt;-</span> <span class='fu'>gamSim</span>(<span class='fl'>1</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>dist</span> <span class='kw'>=</span> <span class='st'>"normal"</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>2</span>)
-<span class='no'>b</span> <span class='kw'>&lt;-</span> <span class='fu'>gam</span>(<span class='no'>y</span> ~ <span class='fu'>s</span>(<span class='no'>x0</span>) + <span class='fu'>s</span>(<span class='no'>x1</span>, <span class='no'>x2</span>) + <span class='fu'>s</span>(<span class='no'>x3</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>dat</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"REML"</span>)
+<span class='no'>dat</span> <span class='kw'>&lt;-</span> <span class='fu'>gamSim</span>(<span class='fl'>1</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>dist</span> <span class='kw'>=</span> <span class='st'>"normal"</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; Gu &amp; Wahba 4 term additive model</div><div class='input'><span class='no'>b</span> <span class='kw'>&lt;-</span> <span class='fu'>gam</span>(<span class='no'>y</span> ~ <span class='fu'>s</span>(<span class='no'>x0</span>) + <span class='fu'>s</span>(<span class='no'>x1</span>, <span class='no'>x2</span>) + <span class='fu'>s</span>(<span class='no'>x3</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>dat</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"REML"</span>)
 <span class='no'>b</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='getViz.html'>getViz</a></span>(<span class='no'>b</span>)
 
 <span class='co'># Plot 2D effect with noised-up raster, contour and rug for design points </span>
 <span class='co'># Opacity is proportional to the significance of the effect</span>
 <span class='fu'>plot</span>(<span class='fu'><a href='sm.html'>sm</a></span>(<span class='no'>b</span>, <span class='fl'>2</span>)) + <span class='fu'><a href='l_fitRaster.html'>l_fitRaster</a></span>(<span class='kw'>pTrans</span> <span class='kw'>=</span> <span class='fu'><a href='zto1.html'>zto1</a></span>(<span class='fl'>0.05</span>, <span class='fl'>2</span>, <span class='fl'>0.1</span>), <span class='kw'>noiseup</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) +
-  <span class='fu'><a href='l_rug.html'>l_rug</a></span>() + <span class='fu'><a href='l_fitContour.html'>l_fitContour</a></span>()
-
+  <span class='fu'><a href='l_rug.html'>l_rug</a></span>() + <span class='fu'><a href='l_fitContour.html'>l_fitContour</a></span>()</div><div class='img'><img src='plot.mgcv.smooth.2D-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Plot contour of effect joint density of design points</span>
 <span class='fu'>plot</span>(<span class='fu'><a href='sm.html'>sm</a></span>(<span class='no'>b</span>, <span class='fl'>2</span>)) + <span class='fu'><a href='l_dens.html'>l_dens</a></span>(<span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"joint"</span>) + <span class='fu'><a href='l_points.html'>l_points</a></span>() + <span class='fu'><a href='l_fitContour.html'>l_fitContour</a></span>() +
-  <span class='fu'>coord_cartesian</span>(<span class='kw'>expand</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) <span class='co'># Fill the plot</span>
-<span class='co'># }</span></pre>
+  <span class='fu'>coord_cartesian</span>(<span class='kw'>expand</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) <span class='co'># Fill the plot</span></div><div class='img'><img src='plot.mgcv.smooth.2D-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'>###</span>
+<span class='co'># Quantile GAM example</span>
+<span class='co'>###</span>
+<span class='no'>b</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='mqgamV.html'>mqgamV</a></span>(<span class='no'>y</span> ~ <span class='fu'>s</span>(<span class='no'>x0</span>) + <span class='fu'>s</span>(<span class='no'>x1</span>, <span class='no'>x2</span>) + <span class='fu'>s</span>(<span class='no'>x3</span>), <span class='kw'>qu</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0.3</span>, <span class='fl'>0.7</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>dat</span>)</div><div class='output co'>#&gt; Estimating learning rate. Each dot corresponds to a loss evaluation. 
+#&gt; qu = 0.7............done 
+#&gt; qu = 0.3...............done </div><div class='input'>
+<span class='fu'>plot</span>(<span class='fu'><a href='sm.html'>sm</a></span>(<span class='no'>b</span>, <span class='fl'>2</span>)) + <span class='fu'><a href='l_fitRaster.html'>l_fitRaster</a></span>(<span class='kw'>noiseup</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) + <span class='fu'><a href='l_fitContour.html'>l_fitContour</a></span>(<span class='kw'>colour</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='img'><img src='plot.mgcv.smooth.2D-3.png' alt='' width='700' height='433' /></div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -207,11 +247,14 @@ Generalized Additive Model Components. Scandinavian Journal of Statistics.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

@@ -18,13 +18,24 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
+<meta property="og:title" content="Checking residuals conditional density — l_densCheck" />
+
+<meta property="og:description" content="This layer calculates and plots how the empirical conditional density of
+the residuals, r, differs from its theoretical or model-based counterpart,
+along a covariate, x." />
+<meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,8 +58,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">mgcViz</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">mgcViz</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.1</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -70,13 +85,22 @@
     <li>
       <a href="../articles/mgcviz.html">mgcViz: visual tools for GAMs</a>
     </li>
+    <li>
+      <a href="../articles/qgam_mgcViz.html">Quantile additive models using qgam and mgcViz</a>
+    </li>
   </ul>
 </li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/mfasiolo/mgcViz">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -84,21 +108,25 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Checking residuals conditional density</h1>
+    <small class="dont-index">Source: <a href='https://github.com/mfasiolo/mgcViz/blob/master/R/L_densCheck.R'><code>R/L_densCheck.R</code></a></small>
+    <div class="hidden name"><code>l_densCheck.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>This layer calculates and plots how the empirical conditional density of
 the residuals, r, differs from its theoretical or model-based counterpart,
 along a covariate, x.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>l_densCheck</span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>80</span>, <span class='fl'>80</span>), <span class='kw'>bw</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>tol</span> <span class='kw'>=</span> <span class='fl'>1e-06</span>, <span class='kw'>dFun</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -146,8 +174,7 @@ depending on the residual type used in the <a href='check1D.html'>check1D</a> ca
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'>library</span>(<span class='no'>mgcViz</span>);
+    <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>mgcViz</span>);
 
 <span class='co'># Dataset where variance increases linearly with x2, for x2 &gt; 0.2</span>
 <span class='no'>n</span> <span class='kw'>&lt;-</span> <span class='fl'>1e3</span>
@@ -163,9 +190,8 @@ depending on the residual type used in the <a href='check1D.html'>check1D</a> ca
 <span class='co'># the model (residuals should be N(0, sigma) here).</span>
 <span class='co'># Here there are clear signs of heteroscedasticity: </span>
 <span class='co'># the conditional variance is is increasing for x2 &gt; 0.2. </span>
-<span class='fu'><a href='check1D.html'>check1D</a></span>(<span class='no'>b</span>, <span class='st'>"x2"</span>) + <span class='fu'>l_densCheck</span>() + <span class='fu'><a href='l_rug.html'>l_rug</a></span>()
-
-<span class='co'># }</span></pre>
+<span class='fu'><a href='check1D.html'>check1D</a></span>(<span class='no'>b</span>, <span class='st'>"x2"</span>) + <span class='fu'>l_densCheck</span>() + <span class='fu'><a href='l_rug.html'>l_rug</a></span>()</div><div class='img'><img src='l_densCheck-1.png' alt='' width='700' height='433' /></div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -188,11 +214,14 @@ depending on the residual type used in the <a href='check1D.html'>check1D</a> ca
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

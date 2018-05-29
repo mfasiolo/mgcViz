@@ -18,13 +18,25 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
+<meta property="og:title" content="Some diagnostics for a fitted gam model — check.gamViz" />
+
+<meta property="og:description" content="Takes a fitted GAM model and produces some diagnostic information about the fitting
+procedure and results. The default is to produce 4 residual plots, some information about
+the convergence of the smoothness selection optimization, and to run diagnostic tests of
+whether the basis dimension choises are adequate." />
+<meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,8 +59,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">mgcViz</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">mgcViz</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.1</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -70,13 +86,22 @@
     <li>
       <a href="../articles/mgcviz.html">mgcViz: visual tools for GAMs</a>
     </li>
+    <li>
+      <a href="../articles/qgam_mgcViz.html">Quantile additive models using qgam and mgcViz</a>
+    </li>
   </ul>
 </li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/mfasiolo/mgcViz">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -84,25 +109,29 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Some diagnostics for a fitted gam model</h1>
+    <small class="dont-index">Source: <a href='https://github.com/mfasiolo/mgcViz/blob/master/R/check_gamViz.R'><code>R/check_gamViz.R</code></a></small>
+    <div class="hidden name"><code>check.gamViz.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Takes a fitted GAM model and produces some diagnostic information about the fitting
 procedure and results. The default is to produce 4 residual plots, some information about
 the convergence of the smoothness selection optimization, and to run diagnostic tests of
 whether the basis dimension choises are adequate.</p>
     
+    </div>
 
     <pre class="usage"><span class='co'># S3 method for gamViz</span>
 <span class='fu'>check</span>(<span class='no'>obj</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"auto"</span>, <span class='st'>"deviance"</span>, <span class='st'>"pearson"</span>,
   <span class='st'>"response"</span>, <span class='st'>"tunif"</span>, <span class='st'>"tnormal"</span>), <span class='kw'>k.sample</span> <span class='kw'>=</span> <span class='fl'>5000</span>, <span class='kw'>k.rep</span> <span class='kw'>=</span> <span class='fl'>200</span>,
   <span class='kw'>maxpo</span> <span class='kw'>=</span> <span class='fl'>10000</span>, <span class='kw'>a.qq</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='kw'>a.hist</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='kw'>a.respoi</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='no'>...</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -155,23 +184,19 @@ If number of datapoints &gt; <code>maxpo</code>, then a subsample of <code>maxpo
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'>library</span>(<span class='no'>mgcViz</span>)
+    <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>mgcViz</span>)
 <span class='fu'>set.seed</span>(<span class='fl'>0</span>)
-<span class='no'>dat</span> <span class='kw'>&lt;-</span> <span class='fu'>gamSim</span>(<span class='fl'>1</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>200</span>)
-<span class='no'>b</span> <span class='kw'>&lt;-</span> <span class='fu'>gam</span>(<span class='no'>y</span> ~ <span class='fu'>s</span>(<span class='no'>x0</span>) + <span class='fu'>s</span>(<span class='no'>x1</span>) + <span class='fu'>s</span>(<span class='no'>x2</span>) + <span class='fu'>s</span>(<span class='no'>x3</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>dat</span>)
+<span class='no'>dat</span> <span class='kw'>&lt;-</span> <span class='fu'>gamSim</span>(<span class='fl'>1</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>200</span>)</div><div class='output co'>#&gt; Gu &amp; Wahba 4 term additive model</div><div class='input'><span class='no'>b</span> <span class='kw'>&lt;-</span> <span class='fu'>gam</span>(<span class='no'>y</span> ~ <span class='fu'>s</span>(<span class='no'>x0</span>) + <span class='fu'>s</span>(<span class='no'>x1</span>) + <span class='fu'>s</span>(<span class='no'>x2</span>) + <span class='fu'>s</span>(<span class='no'>x3</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>dat</span>)
 <span class='no'>b</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='getViz.html'>getViz</a></span>(<span class='no'>b</span>)
 
 <span class='co'># Checks using default options</span>
-<span class='fu'>check</span>(<span class='no'>b</span>)
-
+<span class='fu'>check</span>(<span class='no'>b</span>)</div><div class='output co'>#&gt; <span class='error'>Error: `path` must be a string.</span></div><div class='input'>
 <span class='co'># Change some algorithmic and graphical parameters</span>
 <span class='fu'>check</span>(<span class='no'>b</span>,
       <span class='kw'>a.qq</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"tnorm"</span>,
                   <span class='kw'>a.cipoly</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"light blue"</span>)),
       <span class='kw'>a.respoi</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0.2</span>),
-      <span class='kw'>a.hist</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>bins</span> <span class='kw'>=</span> <span class='fl'>10</span>))
-<span class='co'># }</span></pre>
+      <span class='kw'>a.hist</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>bins</span> <span class='kw'>=</span> <span class='fl'>10</span>))</div><div class='output co'>#&gt; <span class='error'>Error: `path` must be a string.</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -194,11 +219,14 @@ If number of datapoints &gt; <code>maxpo</code>, then a subsample of <code>maxpo
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

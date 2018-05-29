@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Plotting factor or logical parametric effects — plot.ptermFactor • mgcViz</title>
+<title>Plotting factor or logical parametric effects — plot.multi.ptermFactor • mgcViz</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -18,13 +18,22 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
+<meta property="og:title" content="Plotting factor or logical parametric effects — plot.multi.ptermFactor" />
+
+<meta property="og:description" content="These are the plotting methods for parametric factor or logical effects." />
+<meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,8 +56,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">mgcViz</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">mgcViz</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.1</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -70,13 +83,22 @@
     <li>
       <a href="../articles/mgcviz.html">mgcViz: visual tools for GAMs</a>
     </li>
+    <li>
+      <a href="../articles/qgam_mgcViz.html">Quantile additive models using qgam and mgcViz</a>
+    </li>
   </ul>
 </li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/mfasiolo/mgcViz">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -84,28 +106,53 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Plotting factor or logical parametric effects</h1>
+    <small class="dont-index">Source: <a href='https://github.com/mfasiolo/mgcViz/blob/master/R/plot_multi_ptermFactor.R'><code>R/plot_multi_ptermFactor.R</code></a>, <a href='https://github.com/mfasiolo/mgcViz/blob/master/R/plot_multi_ptermLogical.R'><code>R/plot_multi_ptermLogical.R</code></a>, <a href='https://github.com/mfasiolo/mgcViz/blob/master/R/plot_ptermFactor.R'><code>R/plot_ptermFactor.R</code></a>, and 2 more</small>
+    <div class="hidden name"><code>plot.ptermFactor.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>These are the plotting methods for parametric factor or logical effects.</p>
     
+    </div>
 
-    <pre class="usage"><span class='co'># S3 method for ptermFactor</span>
+    <pre class="usage"><span class='co'># S3 method for multi.ptermFactor</span>
+<span class='fu'>plot</span>(<span class='no'>x</span>, <span class='kw'>a.facet</span> <span class='kw'>=</span> <span class='fu'>list</span>(), <span class='kw'>asFact</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for multi.ptermLogical</span>
+<span class='fu'>plot</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for ptermFactor</span>
 <span class='fu'>plot</span>(<span class='no'>x</span>, <span class='kw'>maxpo</span> <span class='kw'>=</span> <span class='fl'>10000</span>, <span class='kw'>trans</span> <span class='kw'>=</span> <span class='no'>identity</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for ptermLogical</span>
 <span class='fu'>plot</span>(<span class='no'>x</span>, <span class='kw'>maxpo</span> <span class='kw'>=</span> <span class='fl'>10000</span>, <span class='kw'>trans</span> <span class='kw'>=</span> <span class='no'>identity</span>, <span class='no'>...</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
       <td><p>a factor or logical parametric effect object, extracted using <a href='pterm.html'>mgcViz::pterm</a>.</p></td>
+    </tr>
+    <tr>
+      <th>a.facet</th>
+      <td><p>arguments to be passed to <a href='http://www.rdocumentation.org/packages/ggplot2/topics/facet_wrap'>ggplot2::facet_wrap</a> or <a href='http://www.rdocumentation.org/packages/ggplot2/topics/facet_grid'>ggplot2::facet_grid</a>. The former gets
+called when <code>fix</code> contains one vector, the latter when <code>fix</code> contains two vectors.</p></td>
+    </tr>
+    <tr>
+      <th>asFact</th>
+      <td><p>useful when plotting multiple factor effects, one for each quantile regression model. If
+<code>FALSE</code> quantile of interest (qu) is treated as a continuous variable, otherwise as
+a factor.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>currently unused.</p></td>
     </tr>
     <tr>
       <th>maxpo</th>
@@ -118,10 +165,6 @@ then a subsample of <code>maxpo</code> points will be taken.</p></td>
       <td><p>monotonic function to apply to the fit, confidence intervals and residuals,
 before plotting. Monotonicity is not checked.</p></td>
     </tr>
-    <tr>
-      <th>...</th>
-      <td><p>currently unused.</p></td>
-    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -130,11 +173,9 @@ before plotting. Monotonicity is not checked.</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='co'># Simulate data and fit GAM</span>
+    <pre class="examples"><div class='input'><span class='co'># Simulate data and fit GAM</span>
 <span class='fu'>set.seed</span>(<span class='fl'>3</span>)
-<span class='no'>dat</span> <span class='kw'>&lt;-</span> <span class='fu'>gamSim</span>(<span class='fl'>1</span>,<span class='kw'>n</span><span class='kw'>=</span><span class='fl'>2000</span>,<span class='kw'>dist</span><span class='kw'>=</span><span class='st'>"normal"</span>,<span class='kw'>scale</span><span class='kw'>=</span><span class='fl'>20</span>)
-<span class='no'>dat</span>$<span class='no'>fac</span> <span class='kw'>&lt;-</span> <span class='fu'>as.factor</span>( <span class='fu'>sample</span>(<span class='fu'>c</span>(<span class='st'>"A1"</span>, <span class='st'>"A2"</span>, <span class='st'>"A3"</span>), <span class='fu'>nrow</span>(<span class='no'>dat</span>), <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) )
+<span class='no'>dat</span> <span class='kw'>&lt;-</span> <span class='fu'>gamSim</span>(<span class='fl'>1</span>,<span class='kw'>n</span><span class='kw'>=</span><span class='fl'>2000</span>,<span class='kw'>dist</span><span class='kw'>=</span><span class='st'>"normal"</span>,<span class='kw'>scale</span><span class='kw'>=</span><span class='fl'>20</span>)</div><div class='output co'>#&gt; Gu &amp; Wahba 4 term additive model</div><div class='input'><span class='no'>dat</span>$<span class='no'>fac</span> <span class='kw'>&lt;-</span> <span class='fu'>as.factor</span>( <span class='fu'>sample</span>(<span class='fu'>c</span>(<span class='st'>"A1"</span>, <span class='st'>"A2"</span>, <span class='st'>"A3"</span>), <span class='fu'>nrow</span>(<span class='no'>dat</span>), <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) )
 <span class='no'>dat</span>$<span class='no'>logi</span> <span class='kw'>&lt;-</span> <span class='fu'>as.logical</span>( <span class='fu'>sample</span>(<span class='fu'>c</span>(<span class='fl'>TRUE</span>, <span class='fl'>FALSE</span>), <span class='fu'>nrow</span>(<span class='no'>dat</span>), <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) )
 <span class='no'>bs</span> <span class='kw'>&lt;-</span> <span class='st'>"cr"</span>; <span class='no'>k</span> <span class='kw'>&lt;-</span> <span class='fl'>12</span>
 <span class='no'>b</span> <span class='kw'>&lt;-</span> <span class='fu'>gam</span>(<span class='no'>y</span>~<span class='no'>fac</span> + <span class='fu'>s</span>(<span class='no'>x0</span>) + <span class='fu'>s</span>(<span class='no'>x1</span>) + <span class='fu'>s</span>(<span class='no'>x2</span>) + <span class='fu'>s</span>(<span class='no'>x3</span>) + <span class='no'>logi</span>, <span class='kw'>data</span><span class='kw'>=</span><span class='no'>dat</span>)
@@ -142,17 +183,14 @@ before plotting. Monotonicity is not checked.</p></td>
 
 <span class='co'># Extract factor terms and plot it</span>
 <span class='no'>pt</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='pterm.html'>pterm</a></span>(<span class='no'>o</span>, <span class='fl'>1</span>)
-<span class='fu'>plot</span>(<span class='no'>pt</span>) + <span class='fu'><a href='l_ciBar.html'>l_ciBar</a></span>() + <span class='fu'><a href='l_fitPoints.html'>l_fitPoints</a></span>(<span class='kw'>colour</span> <span class='kw'>=</span> <span class='fl'>2</span>) + <span class='fu'><a href='l_rug.html'>l_rug</a></span>(<span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.2</span>)
-
+<span class='fu'>plot</span>(<span class='no'>pt</span>) + <span class='fu'><a href='l_ciBar.html'>l_ciBar</a></span>() + <span class='fu'><a href='l_fitPoints.html'>l_fitPoints</a></span>(<span class='kw'>colour</span> <span class='kw'>=</span> <span class='fl'>2</span>) + <span class='fu'><a href='l_rug.html'>l_rug</a></span>(<span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.2</span>)</div><div class='img'><img src='plot.ptermFactor-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Use barplot instead of points</span>
 <span class='no'>pt</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='pterm.html'>pterm</a></span>(<span class='no'>o</span>, <span class='fl'>1</span>)
-<span class='fu'>plot</span>(<span class='no'>pt</span>) + <span class='fu'><a href='l_fitBar.html'>l_fitBar</a></span>() + <span class='fu'><a href='l_ciBar.html'>l_ciBar</a></span>()
-
+<span class='fu'>plot</span>(<span class='no'>pt</span>) + <span class='fu'><a href='l_fitBar.html'>l_fitBar</a></span>() + <span class='fu'><a href='l_ciBar.html'>l_ciBar</a></span>()</div><div class='img'><img src='plot.ptermFactor-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Same with binary varible</span>
 <span class='no'>pt</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='pterm.html'>pterm</a></span>(<span class='no'>o</span>, <span class='fl'>2</span>)
-<span class='fu'>plot</span>(<span class='no'>pt</span>) + <span class='fu'><a href='l_fitPoints.html'>l_fitPoints</a></span>() + <span class='fu'><a href='l_ciBar.html'>l_ciBar</a></span>()
-
-<span class='co'># }</span></pre>
+<span class='fu'>plot</span>(<span class='no'>pt</span>) + <span class='fu'><a href='l_fitPoints.html'>l_fitPoints</a></span>() + <span class='fu'><a href='l_ciBar.html'>l_ciBar</a></span>()</div><div class='img'><img src='plot.ptermFactor-3.png' alt='' width='700' height='433' /></div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -173,11 +211,14 @@ before plotting. Monotonicity is not checked.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

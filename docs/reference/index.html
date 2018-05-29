@@ -18,13 +18,19 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
+<meta property="og:title" content="Function reference" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,8 +53,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">mgcViz</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">mgcViz</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.1</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -70,13 +80,22 @@
     <li>
       <a href="../articles/mgcviz.html">mgcViz: visual tools for GAMs</a>
     </li>
+    <li>
+      <a href="../articles/qgam_mgcViz.html">Quantile additive models using qgam and mgcViz</a>
+    </li>
   </ul>
 </li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/mfasiolo/mgcViz">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -84,424 +103,443 @@
       
       </header>
 
-      <div class="row">
-  <div class="col-md-9">
+<div class="row">
+  <div class="contents col-md-9">
     <div class="page-header">
-      <h1>
-        Reference
-        <small>version&nbsp;0.1.0</small>
-      </h1>
+      <h1>Reference</h1>
     </div>
 
-    <div class="contents">
-      <table class="ref-index">
+    <table class="ref-index">
 
-      <colgroup>
-        <col class="alias" />
-        <col class="title" />
-      </colgroup>
+    <colgroup>
+      <col class="alias" />
+      <col class="title" />
+    </colgroup>
 
-      <tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-            <p class="section-desc"></p>
-          </th>
-        </tr>
-        <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="check1D.html">check1D</a></code> </p>
-          </td>
-          <td><p>Checking GAM residuals along one covariate</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="check2D.html">check2D</a></code> </p>
-          </td>
-          <td><p>Checking GAM residuals along two covariates</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="check.gamViz.html">check</a></code> </p>
-          </td>
-          <td><p>Some diagnostics for a fitted gam model</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="fix.family.cdf.html">fix.family.cdf</a></code> </p>
-          </td>
-          <td><p>Getting the CDF of a gam family</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="getGam.html">getGam</a></code> </p>
-          </td>
-          <td><p>Convert gamViz object to gamObject</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="getViz.html">getViz</a></code> </p>
-          </td>
-          <td><p>Converting gam objects to gamViz objects</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="ggplotly.plotSmooth.html">ggplotly.plotSmooth</a></code> </p>
-          </td>
-          <td><p>Convert plotSmooth objects to plotly</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="gridPrint.html">gridPrint</a></code> </p>
-          </td>
-          <td><p>Plotting plotSmooth objects on a grid</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="l_bound.html">l_bound</a></code> </p>
-          </td>
-          <td><p>Add boundaries to smooth effect plot</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="l_ciBar.html">l_ciBar</a></code> </p>
-          </td>
-          <td><p>Adding confidence intervals to barplots</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="l_ciLine.html">l_ciLine</a></code> </p>
-          </td>
-          <td><p>Adding confidence intervals to effect plot</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="l_ciPoly.html">l_ciPoly</a></code> </p>
-          </td>
-          <td><p>Adding confidence band to effect plots</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="l_clusterLine.html">l_clusterLine</a></code> </p>
-          </td>
-          <td><p>Cluster and plot smooth effects</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="l_coordContour.html">l_coordContour</a></code> </p>
-          </td>
-          <td><p>Adding coordinate lines</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="l_densCheck.html">l_densCheck</a></code> </p>
-          </td>
-          <td><p>Checking residuals conditional density</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="l_dens.html">l_dens</a></code> </p>
-          </td>
-          <td><p>Adding density estimate heatmap</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="l_fitBar.html">l_fitBar</a></code> </p>
-          </td>
-          <td><p>Adding barplot to effect plots</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="l_fitContour.html">l_fitContour</a></code> </p>
-          </td>
-          <td><p>Adding fitted effect contour lines</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="l_fitLine.html">l_fitLine</a></code> </p>
-          </td>
-          <td><p>Add fitted smooth effect curve</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="l_fitPoints.html">l_fitPoints</a></code> </p>
-          </td>
-          <td><p>Adding points representing the fitted effect</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="l_fitRaster.html">l_fitRaster</a></code> </p>
-          </td>
-          <td><p>Adding raster representing the fitted effect</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="l_glyphs2D.html">l_glyphs2D</a></code> </p>
-          </td>
-          <td><p>Adding glyphs to 2D plots</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="l_gridCheck1D.html">l_gridCheck1D</a></code> </p>
-          </td>
-          <td><p>Binning and checking GAM residuals</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="l_gridCheck2D.html">l_gridCheck2D</a></code> </p>
-          </td>
-          <td><p>Binning and checking GAM residuals</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="l_gridQCheck1D.html">l_gridQCheck1D</a></code> </p>
-          </td>
-          <td><p>Checking sign of residuals along one covariate</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="listLayers.html">listLayers</a></code> </p>
-          </td>
-          <td><p>Lists available layers for plotSmooth objects</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="l_points.html">l_points</a></code> </p>
-          </td>
-          <td><p>Add points to plot</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="l_poly.html">l_poly</a></code> </p>
-          </td>
-          <td><p>Add polygons to effect plots</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="l_pvContour.html">l_pvContour</a></code> </p>
-          </td>
-          <td><p>Adding contour of p-values</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="l_pvRaster.html">l_pvRaster</a></code> </p>
-          </td>
-          <td><p>Adding raster or heat-map of p-values</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="l_rug.html">l_rug</a></code> </p>
-          </td>
-          <td><p>Adding rug to margins of a plot</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="plotDiff.mgcv.smooth.1D.html">plotDiff</a></code> </p>
-          </td>
-          <td><p>Plotting differences between two 1D smooth effects</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="plotDiff.mgcv.smooth.2D.html">plotDiff</a></code> </p>
-          </td>
-          <td><p>Plotting differences between two 2D smooth effects</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="plotDiff.html">plotDiff</a></code> </p>
-          </td>
-          <td><p>Generic plotting of differences</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="plotDiff.sos.smooth.html">plotDiff</a></code> </p>
-          </td>
-          <td><p>Plotting differences between two smooths on the sphere</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="plot.fs.interaction.1D.html">plot</a></code> </p>
-          </td>
-          <td><p>Plotting one dimensional smooth factor interactions</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="plot.gamViz.html">plot</a></code> </p>
-          </td>
-          <td><p>Basic GAM plotting</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="plot.mgcv.smooth.1D.html">plot</a></code> </p>
-          </td>
-          <td><p>Plotting one dimensional smooth effects</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="plot.mgcv.smooth.2D.html">plot</a></code> </p>
-          </td>
-          <td><p>Plotting two dimensional smooth effects</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="plot.mgcv.smooth.MD.html">plot</a></code> </p>
-          </td>
-          <td><p>Plotting slice of higher-dimensional smooth effects</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="plot.mrf.smooth.html">plot</a></code> </p>
-          </td>
-          <td><p>Plotting Markov random field smooths</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="plot.ptermFactor.html">plot</a></code> </p>
-          </td>
-          <td><p>Plotting factor or logical parametric effects</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="plot.ptermNumeric.html">plot</a></code> </p>
-          </td>
-          <td><p>Plotting numeric parametric effects</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="plot.random.effect.html">plot</a></code> </p>
-          </td>
-          <td><p>Plotting random effects</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="plotRGL.mgcv.smooth.2D.html">plotRGL</a></code> </p>
-          </td>
-          <td><p>Visualizing 2D smooth effects in 3D</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="plotRGL.mgcv.smooth.MD.html">plotRGL</a></code> </p>
-          </td>
-          <td><p>Visualizing a 2D slice of a smooth effects in 3D</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="plotRGL.html">plotRGL</a></code> </p>
-          </td>
-          <td><p>Generic RGL plotting function</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="plotSlice.html">plotSlice</a></code> </p>
-          </td>
-          <td><p>Plotting sequence of slices of 2D smooth effect</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="plot.sos.smooth.html">plot</a></code> </p>
-          </td>
-          <td><p>Plotting smooths on the sphere</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="print.checkGam.html">print</a></code> </p>
-          </td>
-          <td><p>Printing the output of check.gamViz</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="print.plotGam.html">print</a></code> </p>
-          </td>
-          <td><p>Printing the output of plot.gamViz</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="print.plotSmooth.html">print</a></code> </p>
-          </td>
-          <td><p>Printing plots of smooth effects</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="print.qqGam.html">print</a></code> </p>
-          </td>
-          <td><p>Printing the output of qq.gamViz</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="pterm.html">pterm</a></code> </p>
-          </td>
-          <td><p>Extracting parametric effects from a GAM model</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="qq.gamViz.html">qq</a></code> </p>
-          </td>
-          <td><p>QQ plots for gam model residuals</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="qqplots.html">qqnorm</a></code> <code><a href="qqplots.html">qqplot</a></code> <code><a href="qqplots.html">qqline</a></code> </p>
-          </td>
-          <td><p>Quantile-Quantile Plots</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="qq.html">qq</a></code> </p>
-          </td>
-          <td><p>Generic QQ plots</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="residuals.gamViz.html">residuals</a></code> </p>
-          </td>
-          <td><p>Generalized Additive Model residuals</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="shine.qqGam.html">shine</a></code> </p>
-          </td>
-          <td><p>Shiny QQ-plots for GAMs</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="shine.html">shine</a></code> </p>
-          </td>
-          <td><p>Generic shine function</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="simulate.gam.html">simulate</a></code> </p>
-          </td>
-          <td><p>Simulating responses from a GAM object</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="sm.html">sm</a></code> </p>
-          </td>
-          <td><p>Extracting a smooth effect from a GAM model</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="zoom.qqGam.html">zoom</a></code> </p>
-          </td>
-          <td><p>Efficiently zooming on GAM QQ-plots</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="zoom.html">zoom</a></code> </p>
-          </td>
-          <td><p>Generic zooming function</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="zto1.html">zto1</a></code> </p>
-          </td>
-          <td><p>Constructing a decreasing function from (0,1) to (0,1)</p></td>
-        </tr>
-      </tbody>
-      </table>
-    </div>
+    <tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        <!--  -->
+        <td>
+          <p><code><a href="check.gamViz.html">check(<i>&lt;gamViz&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Some diagnostics for a fitted gam model</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="check1D.html">check1D()</a></code> </p>
+        </td>
+        <td><p>Checking GAM residuals along one covariate</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="check2D.html">check2D()</a></code> </p>
+        </td>
+        <td><p>Checking GAM residuals along two covariates</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="fix.family.cdf.html">fix.family.cdf()</a></code> </p>
+        </td>
+        <td><p>Getting the CDF of a gam family</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="gamV.html">bamV()</a></code> <code><a href="gamV.html">gamV()</a></code> </p>
+        </td>
+        <td><p>Fit a GAM model and get a gamViz object</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="getGam.html">getGam()</a></code> </p>
+        </td>
+        <td><p>Convert gamViz object to gamObject</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="getViz.html">getViz()</a></code> </p>
+        </td>
+        <td><p>Converting gam objects to gamViz objects</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="ggplotly.plotSmooth.html">ggplotly.plotSmooth()</a></code> </p>
+        </td>
+        <td><p>Convert plotSmooth objects to plotly</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="gridPrint.html">gridPrint()</a></code> </p>
+        </td>
+        <td><p>Plotting plotSmooth objects on a grid</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="l_bound.html">l_bound()</a></code> </p>
+        </td>
+        <td><p>Add boundaries to smooth effect plot</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="l_ciBar.html">l_ciBar()</a></code> </p>
+        </td>
+        <td><p>Adding confidence intervals to barplots</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="l_ciLine.html">l_ciLine()</a></code> </p>
+        </td>
+        <td><p>Adding confidence intervals to effect plot</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="l_ciPoly.html">l_ciPoly()</a></code> </p>
+        </td>
+        <td><p>Adding confidence band to effect plots</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="l_clusterLine.html">l_clusterLine()</a></code> </p>
+        </td>
+        <td><p>Cluster and plot smooth effects</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="l_coordContour.html">l_coordContour()</a></code> </p>
+        </td>
+        <td><p>Adding coordinate lines</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="l_dens.html">l_dens()</a></code> </p>
+        </td>
+        <td><p>Adding density estimate heatmap</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="l_densCheck.html">l_densCheck()</a></code> </p>
+        </td>
+        <td><p>Checking residuals conditional density</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="l_fitBar.html">l_fitBar()</a></code> </p>
+        </td>
+        <td><p>Adding barplot to effect plots</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="l_fitContour.html">l_fitContour()</a></code> </p>
+        </td>
+        <td><p>Adding fitted effect contour lines</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="l_fitLine.html">l_fitLine()</a></code> </p>
+        </td>
+        <td><p>Add fitted smooth effect curve</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="l_fitPoints.html">l_fitPoints()</a></code> </p>
+        </td>
+        <td><p>Adding points representing the fitted effect</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="l_fitRaster.html">l_fitRaster()</a></code> </p>
+        </td>
+        <td><p>Adding raster representing the fitted effect</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="l_glyphs2D.html">l_glyphs2D()</a></code> </p>
+        </td>
+        <td><p>Adding glyphs to 2D plots</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="l_gridCheck1D.html">l_gridCheck1D()</a></code> </p>
+        </td>
+        <td><p>Binning and checking GAM residuals</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="l_gridCheck2D.html">l_gridCheck2D()</a></code> </p>
+        </td>
+        <td><p>Binning and checking GAM residuals</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="l_gridQCheck1D.html">l_gridQCheck1D()</a></code> </p>
+        </td>
+        <td><p>Checking sign of residuals along one covariate</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="l_points.html">l_points()</a></code> </p>
+        </td>
+        <td><p>Add points to plot</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="l_poly.html">l_poly()</a></code> </p>
+        </td>
+        <td><p>Add polygons to effect plots</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="l_pvContour.html">l_pvContour()</a></code> </p>
+        </td>
+        <td><p>Adding contour of p-values</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="l_pvRaster.html">l_pvRaster()</a></code> </p>
+        </td>
+        <td><p>Adding raster or heat-map of p-values</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="l_rug.html">l_rug()</a></code> </p>
+        </td>
+        <td><p>Adding rug to margins of a plot</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="listLayers.html">listLayers()</a></code> </p>
+        </td>
+        <td><p>Lists available layers for plotSmooth objects</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="mqgamV.html">mqgamV()</a></code> </p>
+        </td>
+        <td><p>Fit multiple QGAM models and get a mgamViz object</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="plot.fs.interaction.1D.html">plot(<i>&lt;fs.interaction.1D&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Plotting one dimensional smooth factor interactions</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="plot.gamViz.html">plot(<i>&lt;gamViz&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Basic GAM plotting</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="plot.mgamViz.html">plot(<i>&lt;mgamViz&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Plotting multiple quantile GAMs</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="plot.mgcv.smooth.1D.html">plot(<i>&lt;mgcv.smooth.1D&gt;</i>)</a></code> <code><a href="plot.mgcv.smooth.1D.html">plot(<i>&lt;multi.mgcv.smooth.1D&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Plotting one dimensional smooth effects</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="plot.mgcv.smooth.2D.html">plot(<i>&lt;mgcv.smooth.2D&gt;</i>)</a></code> <code><a href="plot.mgcv.smooth.2D.html">plot(<i>&lt;multi.mgcv.smooth.2D&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Plotting two dimensional smooth effects</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="plot.mgcv.smooth.MD.html">plot(<i>&lt;mgcv.smooth.MD&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Plotting slice of higher-dimensional smooth effects</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="plot.mrf.smooth.html">plot(<i>&lt;mrf.smooth&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Plotting Markov random field smooths</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="plot.ptermFactor.html">plot(<i>&lt;multi.ptermFactor&gt;</i>)</a></code> <code><a href="plot.ptermFactor.html">plot(<i>&lt;multi.ptermLogical&gt;</i>)</a></code> <code><a href="plot.ptermFactor.html">plot(<i>&lt;ptermFactor&gt;</i>)</a></code> <code><a href="plot.ptermFactor.html">plot(<i>&lt;ptermLogical&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Plotting factor or logical parametric effects</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="plot.ptermNumeric.html">plot(<i>&lt;multi.ptermNumeric&gt;</i>)</a></code> <code><a href="plot.ptermNumeric.html">plot(<i>&lt;ptermNumeric&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Plotting numeric parametric effects</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="plot.random.effect.html">plot(<i>&lt;multi.random.effect&gt;</i>)</a></code> <code><a href="plot.random.effect.html">plot(<i>&lt;random.effect&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Plotting random effects</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="plot.sos.smooth.html">plot(<i>&lt;sos.smooth&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Plotting smooths on the sphere</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="plotDiff.html">plotDiff()</a></code> </p>
+        </td>
+        <td><p>Generic plotting of differences</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="plotDiff.mgcv.smooth.1D.html">plotDiff(<i>&lt;mgcv.smooth.1D&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Plotting differences between two 1D smooth effects</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="plotDiff.mgcv.smooth.2D.html">plotDiff(<i>&lt;mgcv.smooth.2D&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Plotting differences between two 2D smooth effects</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="plotDiff.sos.smooth.html">plotDiff(<i>&lt;sos.smooth&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Plotting differences between two smooths on the sphere</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="plotRGL.html">plotRGL()</a></code> </p>
+        </td>
+        <td><p>Generic RGL plotting function</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="plotRGL.mgcv.smooth.2D.html">plotRGL(<i>&lt;mgcv.smooth.2D&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Visualizing 2D smooth effects in 3D</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="plotRGL.mgcv.smooth.MD.html">plotRGL(<i>&lt;mgcv.smooth.MD&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Visualizing a 2D slice of a smooth effects in 3D</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="plotSlice.html">plotSlice()</a></code> </p>
+        </td>
+        <td><p>Plotting sequence of slices of 2D smooth effect</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="print.checkGam.html">print(<i>&lt;checkGam&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Printing the output of check.gamViz</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="print.plotGam.html">print(<i>&lt;plotGam&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Printing the output of plot.gamViz</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="print.plotSmooth.html">print(<i>&lt;plotSmooth&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Printing plots of smooth effects</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="print.qqGam.html">print(<i>&lt;qqGam&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Printing the output of qq.gamViz</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="pterm.html">pterm()</a></code> </p>
+        </td>
+        <td><p>Extracting parametric effects from a GAM model</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="qgamV.html">qgamV()</a></code> </p>
+        </td>
+        <td><p>Fit a QGAM model and get a gamViz object</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="qq.html">qq()</a></code> </p>
+        </td>
+        <td><p>Generic QQ plots</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="qq.gamViz.html">qq(<i>&lt;gamViz&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>QQ plots for gam model residuals</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="qqplots.html">qqnorm()</a></code> <code><a href="qqplots.html">qqplot()</a></code> <code><a href="qqplots.html">qqline()</a></code> </p>
+        </td>
+        <td><p>Quantile-Quantile Plots</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="residuals.gamViz.html">residuals(<i>&lt;gamViz&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Generalized Additive Model residuals</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="shine.html">shine()</a></code> </p>
+        </td>
+        <td><p>Generic shine function</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="shine.qqGam.html">shine(<i>&lt;qqGam&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Shiny QQ-plots for GAMs</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="simulate.gam.html">simulate(<i>&lt;gam&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Simulating responses from a GAM object</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="sm.html">sm()</a></code> </p>
+        </td>
+        <td><p>Extracting a smooth effect from a GAM model</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="zoom.html">zoom()</a></code> </p>
+        </td>
+        <td><p>Generic zooming function</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="zoom.qqGam.html">zoom(<i>&lt;qqGam&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Efficiently zooming on GAM QQ-plots</p></td>
+      </tr><tr>
+        <!--  -->
+        <td>
+          <p><code><a href="zto1.html">zto1()</a></code> </p>
+        </td>
+        <td><p>Constructing a decreasing function from (0,1) to (0,1)</p></td>
+      </tr>
+    </tbody>
+    </table>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -518,11 +556,14 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

@@ -18,13 +18,23 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
+<meta property="og:title" content="Extracting parametric effects from a GAM model — pterm" />
+
+<meta property="og:description" content="This function can be used to extract a parametric effect from an object of
+class gamViz." />
+<meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,8 +57,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">mgcViz</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">mgcViz</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.1</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -70,13 +84,22 @@
     <li>
       <a href="../articles/mgcviz.html">mgcViz: visual tools for GAMs</a>
     </li>
+    <li>
+      <a href="../articles/qgam_mgcViz.html">Quantile additive models using qgam and mgcViz</a>
+    </li>
   </ul>
 </li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/mfasiolo/mgcViz">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -84,20 +107,24 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Extracting parametric effects from a GAM model</h1>
+    <small class="dont-index">Source: <a href='https://github.com/mfasiolo/mgcViz/blob/master/R/pterm.R'><code>R/pterm.R</code></a></small>
+    <div class="hidden name"><code>pterm.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>This function can be used to extract a parametric effect from an object of
 class <code>gamViz</code>.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>pterm</span>(<span class='no'>o</span>, <span class='no'>select</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -118,62 +145,61 @@ will return an object of class "ptermNumeric".</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='co'>####### 1. Gaussian GAM </span>
-<span class='fu'>library</span>(<span class='no'>mgcv</span>)
+    <pre class="examples"><div class='input'><span class='co'>####### 1. Gaussian GAM </span>
+<span class='fu'>library</span>(<span class='no'>mgcViz</span>)
 <span class='fu'>set.seed</span>(<span class='fl'>3</span>)
-<span class='no'>dat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/mgcv/topics/gamSim'>gamSim</a></span>(<span class='fl'>1</span>,<span class='kw'>n</span><span class='kw'>=</span><span class='fl'>1500</span>,<span class='kw'>dist</span><span class='kw'>=</span><span class='st'>"normal"</span>,<span class='kw'>scale</span><span class='kw'>=</span><span class='fl'>20</span>)
-<span class='no'>dat</span>$<span class='no'>fac</span> <span class='kw'>&lt;-</span> <span class='fu'>as.factor</span>( <span class='fu'>sample</span>(<span class='fu'>c</span>(<span class='st'>"A1"</span>, <span class='st'>"A2"</span>, <span class='st'>"A3"</span>), <span class='fu'>nrow</span>(<span class='no'>dat</span>), <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) )
+<span class='no'>dat</span> <span class='kw'>&lt;-</span> <span class='fu'>gamSim</span>(<span class='fl'>1</span>,<span class='kw'>n</span><span class='kw'>=</span><span class='fl'>1500</span>,<span class='kw'>dist</span><span class='kw'>=</span><span class='st'>"normal"</span>,<span class='kw'>scale</span><span class='kw'>=</span><span class='fl'>20</span>)</div><div class='output co'>#&gt; Gu &amp; Wahba 4 term additive model</div><div class='input'><span class='no'>dat</span>$<span class='no'>fac</span> <span class='kw'>&lt;-</span> <span class='fu'>as.factor</span>( <span class='fu'>sample</span>(<span class='fu'>c</span>(<span class='st'>"A1"</span>, <span class='st'>"A2"</span>, <span class='st'>"A3"</span>), <span class='fu'>nrow</span>(<span class='no'>dat</span>), <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) )
 <span class='no'>dat</span>$<span class='no'>logi</span> <span class='kw'>&lt;-</span> <span class='fu'>as.logical</span>( <span class='fu'>sample</span>(<span class='fu'>c</span>(<span class='fl'>TRUE</span>, <span class='fl'>FALSE</span>), <span class='fu'>nrow</span>(<span class='no'>dat</span>), <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) )
 <span class='no'>bs</span> <span class='kw'>&lt;-</span> <span class='st'>"cr"</span>; <span class='no'>k</span> <span class='kw'>&lt;-</span> <span class='fl'>12</span>
-<span class='no'>b</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/mgcv/topics/gam'>gam</a></span>(<span class='no'>y</span> ~ <span class='no'>x0</span> + <span class='no'>x1</span> + <span class='fu'>I</span>(<span class='no'>x1</span>^<span class='fl'>2</span>) + <span class='fu'><a href='http://www.rdocumentation.org/packages/mgcv/topics/s'>s</a></span>(<span class='no'>x2</span>,<span class='kw'>bs</span><span class='kw'>=</span><span class='no'>bs</span>,<span class='kw'>k</span><span class='kw'>=</span><span class='no'>k</span>) + <span class='no'>fac</span> + <span class='no'>x3</span>:<span class='no'>fac</span> + <span class='fu'>I</span>(<span class='no'>x1</span>*<span class='no'>x2</span>) + <span class='no'>logi</span> +
-            <span class='fu'><a href='http://www.rdocumentation.org/packages/mgcv/topics/s'>s</a></span>(<span class='no'>x3</span>, <span class='kw'>bs</span><span class='kw'>=</span><span class='no'>bs</span>),<span class='kw'>data</span><span class='kw'>=</span><span class='no'>dat</span>)
+<span class='no'>b</span> <span class='kw'>&lt;-</span> <span class='fu'>gam</span>(<span class='no'>y</span> ~ <span class='no'>x0</span> + <span class='no'>x1</span> + <span class='fu'>I</span>(<span class='no'>x1</span>^<span class='fl'>2</span>) + <span class='fu'>s</span>(<span class='no'>x2</span>,<span class='kw'>bs</span><span class='kw'>=</span><span class='no'>bs</span>,<span class='kw'>k</span><span class='kw'>=</span><span class='no'>k</span>) + <span class='no'>fac</span> + <span class='no'>x3</span>:<span class='no'>fac</span> + <span class='fu'>I</span>(<span class='no'>x1</span>*<span class='no'>x2</span>) + <span class='no'>logi</span>,<span class='kw'>data</span><span class='kw'>=</span><span class='no'>dat</span>)
 <span class='no'>o</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='getViz.html'>getViz</a></span>(<span class='no'>b</span>)
 
 <span class='co'># Plot effect of 'x0'</span>
 <span class='no'>pt</span> <span class='kw'>&lt;-</span> <span class='fu'>pterm</span>(<span class='no'>o</span>, <span class='fl'>1</span>)
-<span class='fu'>plot</span>(<span class='no'>pt</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>60</span>) + <span class='fu'><a href='l_ciPoly.html'>l_ciPoly</a></span>() + <span class='fu'><a href='l_fitLine.html'>l_fitLine</a></span>() + <span class='fu'><a href='l_ciLine.html'>l_ciLine</a></span>() + <span class='fu'><a href='l_points.html'>l_points</a></span>()
-
+<span class='fu'>plot</span>(<span class='no'>pt</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>60</span>) + <span class='fu'><a href='l_ciPoly.html'>l_ciPoly</a></span>() + <span class='fu'><a href='l_fitLine.html'>l_fitLine</a></span>() + <span class='fu'><a href='l_ciLine.html'>l_ciLine</a></span>() + <span class='fu'><a href='l_points.html'>l_points</a></span>()</div><div class='img'><img src='pterm-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Plot effect of 'x3'</span>
 <span class='no'>pt</span> <span class='kw'>&lt;-</span> <span class='fu'>pterm</span>(<span class='no'>o</span>, <span class='fl'>1</span>)
-<span class='fu'>plot</span>(<span class='no'>pt</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>60</span>) + <span class='fu'><a href='l_fitLine.html'>l_fitLine</a></span>() + <span class='fu'><a href='l_ciLine.html'>l_ciLine</a></span>(<span class='kw'>colour</span> <span class='kw'>=</span> <span class='fl'>2</span>)
-
+<span class='fu'>plot</span>(<span class='no'>pt</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>60</span>) + <span class='fu'><a href='l_fitLine.html'>l_fitLine</a></span>() + <span class='fu'><a href='l_ciLine.html'>l_ciLine</a></span>(<span class='kw'>colour</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='img'><img src='pterm-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Plot effect of 'fac'</span>
 <span class='no'>pt</span> <span class='kw'>&lt;-</span> <span class='fu'>pterm</span>(<span class='no'>o</span>, <span class='fl'>4</span>)
 <span class='fu'>plot</span>(<span class='no'>pt</span>) + <span class='fu'><a href='l_ciBar.html'>l_ciBar</a></span>(<span class='kw'>colour</span> <span class='kw'>=</span> <span class='st'>"blue"</span>) + <span class='fu'><a href='l_fitPoints.html'>l_fitPoints</a></span>(<span class='kw'>colour</span> <span class='kw'>=</span> <span class='st'>"red"</span>) +
-           <span class='fu'><a href='l_rug.html'>l_rug</a></span>(<span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.3</span>)
-
+           <span class='fu'><a href='l_rug.html'>l_rug</a></span>(<span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.3</span>)</div><div class='img'><img src='pterm-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Plot effect of 'logi'</span>
 <span class='no'>pt</span> <span class='kw'>&lt;-</span> <span class='fu'>pterm</span>(<span class='no'>o</span>, <span class='fl'>6</span>)
-<span class='fu'>plot</span>(<span class='no'>pt</span>) + <span class='fu'><a href='l_fitBar.html'>l_fitBar</a></span>(<span class='kw'>a.aes</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='fu'>I</span>(<span class='st'>"light blue"</span>))) + <span class='fu'><a href='l_ciBar.html'>l_ciBar</a></span>(<span class='kw'>colour</span> <span class='kw'>=</span> <span class='st'>"blue"</span>)
-
+<span class='fu'>plot</span>(<span class='no'>pt</span>) + <span class='fu'><a href='l_fitBar.html'>l_fitBar</a></span>(<span class='kw'>a.aes</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>fill</span> <span class='kw'>=</span> <span class='fu'>I</span>(<span class='st'>"light blue"</span>))) + <span class='fu'><a href='l_ciBar.html'>l_ciBar</a></span>(<span class='kw'>colour</span> <span class='kw'>=</span> <span class='st'>"blue"</span>)</div><div class='img'><img src='pterm-4.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Plot effect of 'x3:fac': no method available yet available for second order terms</span>
 <span class='no'>pt</span> <span class='kw'>&lt;-</span> <span class='fu'>pterm</span>(<span class='no'>o</span>, <span class='fl'>7</span>)
-<span class='fu'>plot</span>(<span class='no'>pt</span>)
-
+<span class='fu'>plot</span>(<span class='no'>pt</span>)</div><div class='output co'>#&gt; <span class='message'>mgcViz does not know how to plot this effect. Returning NULL.</span></div><div class='input'>
+<span class='co'>####### 1. Continued: Quantile GAMs</span>
+<span class='no'>b</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='mqgamV.html'>mqgamV</a></span>(<span class='no'>y</span> ~ <span class='no'>x0</span> + <span class='no'>x1</span> + <span class='fu'>I</span>(<span class='no'>x1</span>^<span class='fl'>2</span>) + <span class='fu'>s</span>(<span class='no'>x2</span>,<span class='kw'>bs</span><span class='kw'>=</span><span class='no'>bs</span>,<span class='kw'>k</span><span class='kw'>=</span><span class='no'>k</span>) + <span class='no'>x3</span>:<span class='no'>fac</span> +
+              <span class='fu'>I</span>(<span class='no'>x1</span>*<span class='no'>x2</span>) + <span class='no'>logi</span>, <span class='kw'>data</span><span class='kw'>=</span><span class='no'>dat</span>, <span class='kw'>qu</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0.3</span>, <span class='fl'>0.5</span>, <span class='fl'>0.8</span>))</div><div class='output co'>#&gt; Estimating learning rate. Each dot corresponds to a loss evaluation. 
+#&gt; qu = 0.5............done 
+#&gt; qu = 0.3........done 
+#&gt; qu = 0.8........done </div><div class='input'>
+<span class='fu'>plot</span>(<span class='fu'>pterm</span>(<span class='no'>b</span>, <span class='fl'>3</span>)) + <span class='fu'><a href='l_ciBar.html'>l_ciBar</a></span>(<span class='kw'>colour</span> <span class='kw'>=</span> <span class='fl'>2</span>) + <span class='fu'><a href='l_fitPoints.html'>l_fitPoints</a></span>()</div><div class='img'><img src='pterm-5.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>plot</span>(<span class='fu'>pterm</span>(<span class='no'>b</span>, <span class='fl'>4</span>)) + <span class='fu'><a href='l_fitBar.html'>l_fitBar</a></span>(<span class='kw'>colour</span> <span class='kw'>=</span> <span class='st'>"blue"</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='fl'>3</span>) + <span class='fu'><a href='l_ciBar.html'>l_ciBar</a></span>(<span class='kw'>colour</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='img'><img src='pterm-6.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># Don't know how to plot this interaction</span>
+<span class='fu'>plot</span>(<span class='fu'>pterm</span>(<span class='no'>b</span>, <span class='fl'>6</span>))</div><div class='output co'>#&gt; <span class='message'>mgcViz does not know how to plot this effect. Returning NULL.</span></div><div class='input'>
 <span class='co'>####### 2. Gaussian GAMLSS model</span>
 <span class='fu'>library</span>(<span class='no'>MASS</span>)
 <span class='no'>mcycle</span>$<span class='no'>fac</span> <span class='kw'>&lt;-</span> <span class='fu'>as.factor</span>( <span class='fu'>sample</span>(<span class='fu'>c</span>(<span class='st'>"z"</span>, <span class='st'>"k"</span>, <span class='st'>"a"</span>, <span class='st'>"f"</span>), <span class='fu'>nrow</span>(<span class='no'>mcycle</span>), <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) )
-<span class='no'>b</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/mgcv/topics/gam'>gam</a></span>(<span class='fu'>list</span>(<span class='no'>accel</span>~<span class='no'>times</span> + <span class='fu'>I</span>(<span class='no'>times</span>^<span class='fl'>2</span>) + <span class='fu'><a href='http://www.rdocumentation.org/packages/mgcv/topics/s'>s</a></span>(<span class='no'>times</span>,<span class='kw'>k</span><span class='kw'>=</span><span class='fl'>10</span>), ~ <span class='no'>times</span> + <span class='no'>fac</span> + <span class='fu'><a href='http://www.rdocumentation.org/packages/mgcv/topics/s'>s</a></span>(<span class='no'>times</span>)),
-          <span class='kw'>data</span><span class='kw'>=</span><span class='no'>mcycle</span>,<span class='kw'>family</span><span class='kw'>=</span><span class='fu'><a href='http://www.rdocumentation.org/packages/mgcv/topics/gaulss'>gaulss</a></span>(), <span class='kw'>optimizer</span> <span class='kw'>=</span> <span class='st'>"efs"</span>)
+<span class='no'>b</span> <span class='kw'>&lt;-</span> <span class='fu'>gam</span>(<span class='fu'>list</span>(<span class='no'>accel</span>~<span class='no'>times</span> + <span class='fu'>I</span>(<span class='no'>times</span>^<span class='fl'>2</span>) + <span class='fu'>s</span>(<span class='no'>times</span>,<span class='kw'>k</span><span class='kw'>=</span><span class='fl'>10</span>), ~ <span class='no'>times</span> + <span class='no'>fac</span> + <span class='fu'>s</span>(<span class='no'>times</span>)),
+          <span class='kw'>data</span><span class='kw'>=</span><span class='no'>mcycle</span>,<span class='kw'>family</span><span class='kw'>=</span><span class='fu'>gaulss</span>(), <span class='kw'>optimizer</span> <span class='kw'>=</span> <span class='st'>"efs"</span>)
 <span class='no'>o</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='getViz.html'>getViz</a></span>(<span class='no'>b</span>)
 
 <span class='co'># Plot effect of 'I(times^2)' on mean: notice that partial residuals</span>
 <span class='co'># are unavailable for GAMLSS models, hence l_point does not do anything here.</span>
 <span class='no'>pt</span> <span class='kw'>&lt;-</span> <span class='fu'>pterm</span>(<span class='no'>o</span>, <span class='fl'>2</span>)
-<span class='fu'>plot</span>(<span class='no'>pt</span>) + <span class='fu'><a href='l_ciPoly.html'>l_ciPoly</a></span>() + <span class='fu'><a href='l_fitLine.html'>l_fitLine</a></span>() + <span class='fu'><a href='l_ciLine.html'>l_ciLine</a></span>() + <span class='fu'><a href='l_points.html'>l_points</a></span>()
-
+<span class='fu'>plot</span>(<span class='no'>pt</span>) + <span class='fu'><a href='l_ciPoly.html'>l_ciPoly</a></span>() + <span class='fu'><a href='l_fitLine.html'>l_fitLine</a></span>() + <span class='fu'><a href='l_ciLine.html'>l_ciLine</a></span>() + <span class='fu'><a href='l_points.html'>l_points</a></span>()</div><div class='output co'>#&gt; <span class='message'>l_points(): Partial residuals are not available</span></div><div class='img'><img src='pterm-7.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Plot effect of 'times' in second linear predictor.</span>
 <span class='co'># Notice that partial residuals are unavailable.</span>
 <span class='no'>pt</span> <span class='kw'>&lt;-</span> <span class='fu'>pterm</span>(<span class='no'>o</span>, <span class='fl'>3</span>)
-<span class='fu'>plot</span>(<span class='no'>pt</span>) + <span class='fu'><a href='l_ciPoly.html'>l_ciPoly</a></span>() + <span class='fu'><a href='l_fitLine.html'>l_fitLine</a></span>() + <span class='fu'><a href='l_ciLine.html'>l_ciLine</a></span>(<span class='kw'>linetype</span> <span class='kw'>=</span> <span class='fl'>3</span>) + <span class='fu'><a href='l_rug.html'>l_rug</a></span>()
-
+<span class='fu'>plot</span>(<span class='no'>pt</span>) + <span class='fu'><a href='l_ciPoly.html'>l_ciPoly</a></span>() + <span class='fu'><a href='l_fitLine.html'>l_fitLine</a></span>() + <span class='fu'><a href='l_ciLine.html'>l_ciLine</a></span>(<span class='kw'>linetype</span> <span class='kw'>=</span> <span class='fl'>3</span>) + <span class='fu'><a href='l_rug.html'>l_rug</a></span>()</div><div class='img'><img src='pterm-8.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Plot effect of 'fac' in second linear predictor.</span>
 <span class='no'>pt</span> <span class='kw'>&lt;-</span> <span class='fu'>pterm</span>(<span class='no'>o</span>, <span class='fl'>4</span>)
 <span class='fu'>plot</span>(<span class='no'>pt</span>) + <span class='fu'><a href='l_ciBar.html'>l_ciBar</a></span>(<span class='kw'>colour</span> <span class='kw'>=</span> <span class='st'>"blue"</span>) + <span class='fu'><a href='l_fitPoints.html'>l_fitPoints</a></span>(<span class='kw'>colour</span> <span class='kw'>=</span> <span class='st'>"red"</span>) +
-           <span class='fu'><a href='l_rug.html'>l_rug</a></span>()
-
-<span class='co'># }</span></pre>
+           <span class='fu'><a href='l_rug.html'>l_rug</a></span>()</div><div class='img'><img src='pterm-9.png' alt='' width='700' height='433' /></div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -194,11 +220,14 @@ will return an object of class "ptermNumeric".</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

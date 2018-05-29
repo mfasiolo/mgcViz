@@ -18,13 +18,27 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
+<meta property="og:title" content="Quantile-Quantile Plots — qqplots" />
+
+<meta property="og:description" content="This is a re-write of the QQ-plotting functions provided by stats, using the
+ggplot2 library.
+qqnorm is a generic function the default method of which produces a normal
+QQ plot of the values in y. qqline adds a line to a “theoretical”, by default normal,
+quantile-quantile plot which passes through the probs quantiles, by default the
+first and third quartiles. qqplot produces a QQ plot of two datasets." />
+<meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,8 +61,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">mgcViz</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">mgcViz</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.1</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -70,13 +88,22 @@
     <li>
       <a href="../articles/mgcviz.html">mgcViz: visual tools for GAMs</a>
     </li>
+    <li>
+      <a href="../articles/qgam_mgcViz.html">Quantile additive models using qgam and mgcViz</a>
+    </li>
   </ul>
 </li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/mfasiolo/mgcViz">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -84,12 +111,15 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Quantile-Quantile Plots</h1>
+    <small class="dont-index">Source: <a href='https://github.com/mfasiolo/mgcViz/blob/master/R/qqplots.R'><code>R/qqplots.R</code></a></small>
+    <div class="hidden name"><code>qqplots.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>This is a re-write of the QQ-plotting functions provided by <code>stats</code>, using the
 <code>ggplot2</code> library.
@@ -98,6 +128,7 @@ QQ plot of the values in y. <code>qqline</code> adds a line to a “theoretical�
 quantile-quantile plot which passes through the <code>probs</code> quantiles, by default the
 first and third quartiles. <code>qqplot</code> produces a QQ plot of two datasets.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>qqnorm</span>(<span class='no'>y</span>, <span class='no'>ylim</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"Normal Q-Q Plot"</span>, <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"Theoretical Quantiles"</span>,
   <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"Sample Quantiles"</span>, <span class='kw'>datax</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
@@ -108,7 +139,7 @@ first and third quartiles. <code>qqplot</code> produces a QQ plot of two dataset
 <span class='fu'>qqline</span>(<span class='no'>y</span>, <span class='kw'>datax</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>distribution</span> <span class='kw'>=</span> <span class='no'>qnorm</span>, <span class='kw'>probs</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0.25</span>, <span class='fl'>0.75</span>),
   <span class='kw'>qtype</span> <span class='kw'>=</span> <span class='fl'>7</span>, <span class='no'>...</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -154,14 +185,11 @@ Corresponding quantile pairs define the line drawn.</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'>library</span>(<span class='no'>mgcViz</span>)
+    <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>mgcViz</span>)
 <span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'>rt</span>(<span class='fl'>500</span>, <span class='kw'>df</span> <span class='kw'>=</span> <span class='fl'>5</span>)
 
 <span class='co'># Compare new and old version of qqnorm</span>
-<span class='kw pkg'>stats</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/stats/topics/qqnorm'>qqnorm</a></span>(<span class='no'>y</span>)
-<span class='fu'>qqnorm</span>(<span class='no'>y</span>)
-
+<span class='kw pkg'>stats</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/stats/topics/qqnorm'>qqnorm</a></span>(<span class='no'>y</span>)</div><div class='img'><img src='qqplots-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>qqnorm</span>(<span class='no'>y</span>)</div><div class='img'><img src='qqplots-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># You can also convert ggplot2 graphs to interactive plots with</span>
 <span class='co'># library(plotly)</span>
 <span class='co'># ggplotly() function. Use with caution.</span>
@@ -170,20 +198,15 @@ Corresponding quantile pairs define the line drawn.</p></td>
 <span class='co'># Compare new and old version of qqplot</span>
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>rt</span>(<span class='fl'>200</span>, <span class='kw'>df</span> <span class='kw'>=</span> <span class='fl'>5</span>)
 <span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'>rt</span>(<span class='fl'>300</span>, <span class='kw'>df</span> <span class='kw'>=</span> <span class='fl'>5</span>)
-<span class='kw pkg'>stats</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/stats/topics/qqnorm'>qqplot</a></span>(<span class='no'>x</span>, <span class='no'>y</span>)
-<span class='fu'>qqplot</span>(<span class='no'>x</span>, <span class='no'>y</span>)
-<span class='co'># add a qqline()</span>
-<span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/last_plot'>last_plot</a></span>() + <span class='fu'>qqline</span>(<span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'>rt</span>(<span class='fl'>500</span>, <span class='kw'>df</span> <span class='kw'>=</span> <span class='fl'>4.8</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"green"</span>)
-
+<span class='kw pkg'>stats</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/stats/topics/qqnorm'>qqplot</a></span>(<span class='no'>x</span>, <span class='no'>y</span>)</div><div class='img'><img src='qqplots-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>qqplot</span>(<span class='no'>x</span>, <span class='no'>y</span>)</div><div class='img'><img src='qqplots-4.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># add a qqline()</span>
+<span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/last_plot'>last_plot</a></span>() + <span class='fu'>qqline</span>(<span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'>rt</span>(<span class='fl'>500</span>, <span class='kw'>df</span> <span class='kw'>=</span> <span class='fl'>4.8</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"green"</span>)</div><div class='img'><img src='qqplots-5.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'>## "QQ-Chisquare" : --------------------------</span>
 <span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'>rchisq</span>(<span class='fl'>500</span>, <span class='kw'>df</span> <span class='kw'>=</span> <span class='fl'>3</span>)
 <span class='co'>## Q-Q plot for Chi^2 data against true theoretical distribution:</span>
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>qchisq</span>(<span class='fu'>ppoints</span>(<span class='fl'>500</span>), <span class='kw'>df</span> <span class='kw'>=</span> <span class='fl'>3</span>)
 <span class='kw pkg'>stats</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/stats/topics/qqnorm'>qqplot</a></span>(<span class='fu'>qchisq</span>(<span class='fu'>ppoints</span>(<span class='fl'>500</span>), <span class='kw'>df</span> <span class='kw'>=</span> <span class='fl'>3</span>), <span class='fu'>rchisq</span>(<span class='fl'>500</span>, <span class='kw'>df</span> <span class='kw'>=</span> <span class='fl'>3</span>),
-      <span class='kw'>main</span> <span class='kw'>=</span> <span class='fu'>expression</span>(<span class='st'>"Q-Q plot for"</span> ~~ {<span class='no'>chi</span>^<span class='fl'>2</span>}[<span class='no'>nu</span> <span class='kw'>==</span> <span class='fl'>3</span>]))
-<span class='fu'>qqplot</span>(<span class='fu'>qchisq</span>(<span class='fu'>ppoints</span>(<span class='fl'>500</span>), <span class='kw'>df</span> <span class='kw'>=</span> <span class='fl'>3</span>), <span class='fu'>rchisq</span>(<span class='fl'>500</span>, <span class='kw'>df</span> <span class='kw'>=</span> <span class='fl'>3</span>),
-      <span class='kw'>main</span> <span class='kw'>=</span> <span class='fu'>expression</span>(<span class='st'>"Q-Q plot for"</span> ~~ {<span class='no'>chi</span>^<span class='fl'>2</span>}[<span class='no'>nu</span> <span class='kw'>==</span> <span class='fl'>3</span>])) + <span class='fu'>theme_bw</span>()
-<span class='co'># }</span></pre>
+      <span class='kw'>main</span> <span class='kw'>=</span> <span class='fu'>expression</span>(<span class='st'>"Q-Q plot for"</span> ~~ {<span class='no'>chi</span>^<span class='fl'>2</span>}[<span class='no'>nu</span> <span class='kw'>==</span> <span class='fl'>3</span>]))</div><div class='img'><img src='qqplots-6.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>qqplot</span>(<span class='fu'>qchisq</span>(<span class='fu'>ppoints</span>(<span class='fl'>500</span>), <span class='kw'>df</span> <span class='kw'>=</span> <span class='fl'>3</span>), <span class='fu'>rchisq</span>(<span class='fl'>500</span>, <span class='kw'>df</span> <span class='kw'>=</span> <span class='fl'>3</span>),
+      <span class='kw'>main</span> <span class='kw'>=</span> <span class='fu'>expression</span>(<span class='st'>"Q-Q plot for"</span> ~~ {<span class='no'>chi</span>^<span class='fl'>2</span>}[<span class='no'>nu</span> <span class='kw'>==</span> <span class='fl'>3</span>])) + <span class='fu'>theme_bw</span>()</div><div class='img'><img src='qqplots-7.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -204,11 +227,14 @@ Corresponding quantile pairs define the line drawn.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

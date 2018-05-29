@@ -18,13 +18,24 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
+<meta property="og:title" content="Checking GAM residuals along one covariate — check1D" />
+
+<meta property="og:description" content="This function extracts the residuals of a fitted GAM model, and orders
+them according to the value of a single covariate. Then several visual residuals diagnostics
+can be plotted by adding layers." />
+<meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,8 +58,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">mgcViz</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">mgcViz</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.1</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -70,13 +85,22 @@
     <li>
       <a href="../articles/mgcviz.html">mgcViz: visual tools for GAMs</a>
     </li>
+    <li>
+      <a href="../articles/qgam_mgcViz.html">Quantile additive models using qgam and mgcViz</a>
+    </li>
   </ul>
 </li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/mfasiolo/mgcViz">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -84,21 +108,25 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Checking GAM residuals along one covariate</h1>
+    <small class="dont-index">Source: <a href='https://github.com/mfasiolo/mgcViz/blob/master/R/check1D.R'><code>R/check1D.R</code></a></small>
+    <div class="hidden name"><code>check1D.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>This function extracts the residuals of a fitted GAM model, and orders
 them according to the value of a single covariate. Then several visual residuals diagnostics
 can be plotted by adding layers.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>check1D</span>(<span class='no'>o</span>, <span class='no'>x</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"auto"</span>, <span class='kw'>maxpo</span> <span class='kw'>=</span> <span class='fl'>10000</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -133,8 +161,7 @@ then a subsample of <code>maxpo</code> points will be taken.</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='co'>### Example 1: diagnosing heteroscedasticity</span>
+    <pre class="examples"><div class='input'><span class='co'>### Example 1: diagnosing heteroscedasticity</span>
 <span class='fu'>library</span>(<span class='no'>mgcViz</span>);
 <span class='fu'>set.seed</span>(<span class='fl'>4124</span>)
 <span class='no'>n</span> <span class='kw'>&lt;-</span> <span class='fl'>1e4</span>
@@ -149,16 +176,13 @@ then a subsample of <code>maxpo</code> points will be taken.</p></td>
 <span class='no'>ck</span> <span class='kw'>&lt;-</span> <span class='fu'>check1D</span>(<span class='no'>b</span>, <span class='st'>"x"</span>)
 
 <span class='co'># Can't see that much</span>
-<span class='no'>ck</span> + <span class='fu'><a href='l_dens.html'>l_dens</a></span>(<span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"cond"</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.8</span>) + <span class='fu'><a href='l_points.html'>l_points</a></span>() + <span class='fu'><a href='l_rug.html'>l_rug</a></span>(<span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.2</span>)
-
+<span class='no'>ck</span> + <span class='fu'><a href='l_dens.html'>l_dens</a></span>(<span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"cond"</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.8</span>) + <span class='fu'><a href='l_points.html'>l_points</a></span>() + <span class='fu'><a href='l_rug.html'>l_rug</a></span>(<span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.2</span>)</div><div class='img'><img src='check1D-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Some evidence of heteroscedasticity</span>
-<span class='no'>ck</span> + <span class='fu'><a href='l_densCheck.html'>l_densCheck</a></span>()
-
+<span class='no'>ck</span> + <span class='fu'><a href='l_densCheck.html'>l_densCheck</a></span>()</div><div class='img'><img src='check1D-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Compare observed residuals std dev with that of simulated data,</span>
 <span class='co'># heteroscedasticity is clearly visible</span>
 <span class='no'>b</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='getViz.html'>getViz</a></span>(<span class='no'>b</span>, <span class='kw'>nsim</span> <span class='kw'>=</span> <span class='fl'>50</span>)
-<span class='fu'>check1D</span>(<span class='no'>b</span>, <span class='st'>"x"</span>) + <span class='fu'><a href='l_gridCheck1D.html'>l_gridCheck1D</a></span>(<span class='kw'>gridFun</span> <span class='kw'>=</span> <span class='no'>sd</span>, <span class='kw'>show.reps</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-
+<span class='fu'>check1D</span>(<span class='no'>b</span>, <span class='st'>"x"</span>) + <span class='fu'><a href='l_gridCheck1D.html'>l_gridCheck1D</a></span>(<span class='kw'>gridFun</span> <span class='kw'>=</span> <span class='no'>sd</span>, <span class='kw'>show.reps</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='img'><img src='check1D-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># This also works with factor or logical data</span>
 <span class='no'>fac</span> <span class='kw'>&lt;-</span> <span class='fu'>sample</span>(<span class='no'>letters</span>, <span class='no'>n</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='no'>logi</span> <span class='kw'>&lt;-</span> <span class='fu'>sample</span>(<span class='fu'>c</span>(<span class='fl'>TRUE</span>, <span class='fl'>FALSE</span>), <span class='no'>n</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
@@ -167,15 +191,11 @@ then a subsample of <code>maxpo</code> points will be taken.</p></td>
 
 <span class='co'># Look along "fac"</span>
 <span class='no'>ck</span> <span class='kw'>&lt;-</span> <span class='fu'>check1D</span>(<span class='no'>b</span>, <span class='st'>"fac"</span>)
-<span class='no'>ck</span> + <span class='fu'><a href='l_points.html'>l_points</a></span>() + <span class='fu'><a href='l_rug.html'>l_rug</a></span>()
-<span class='no'>ck</span> + <span class='fu'><a href='l_gridCheck1D.html'>l_gridCheck1D</a></span>(<span class='kw'>gridFun</span> <span class='kw'>=</span> <span class='no'>sd</span>)
-
+<span class='no'>ck</span> + <span class='fu'><a href='l_points.html'>l_points</a></span>() + <span class='fu'><a href='l_rug.html'>l_rug</a></span>()</div><div class='img'><img src='check1D-4.png' alt='' width='700' height='433' /></div><div class='input'><span class='no'>ck</span> + <span class='fu'><a href='l_gridCheck1D.html'>l_gridCheck1D</a></span>(<span class='kw'>gridFun</span> <span class='kw'>=</span> <span class='no'>sd</span>)</div><div class='img'><img src='check1D-5.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Look along "logi"</span>
 <span class='no'>ck</span> <span class='kw'>&lt;-</span> <span class='fu'>check1D</span>(<span class='no'>b</span>, <span class='st'>"logi"</span>)
-<span class='no'>ck</span> + <span class='fu'><a href='l_points.html'>l_points</a></span>() + <span class='fu'><a href='l_rug.html'>l_rug</a></span>()
-<span class='no'>ck</span> + <span class='fu'><a href='l_gridCheck1D.html'>l_gridCheck1D</a></span>(<span class='kw'>gridFun</span> <span class='kw'>=</span> <span class='no'>sd</span>)
-
-<span class='co'># }</span></pre>
+<span class='no'>ck</span> + <span class='fu'><a href='l_points.html'>l_points</a></span>() + <span class='fu'><a href='l_rug.html'>l_rug</a></span>()</div><div class='img'><img src='check1D-6.png' alt='' width='700' height='433' /></div><div class='input'><span class='no'>ck</span> + <span class='fu'><a href='l_gridCheck1D.html'>l_gridCheck1D</a></span>(<span class='kw'>gridFun</span> <span class='kw'>=</span> <span class='no'>sd</span>)</div><div class='img'><img src='check1D-7.png' alt='' width='700' height='433' /></div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -196,11 +216,14 @@ then a subsample of <code>maxpo</code> points will be taken.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

@@ -18,13 +18,24 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
+<meta property="og:title" content="Plotting one dimensional smooth factor interactions — plot.fs.interaction.1D" />
+
+<meta property="og:description" content="This method should be used to plot smooth effects
+of class "fs.interaction.1D", that is smooth constructed
+using the basis bs="tp". See mgcv::s." />
+<meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,8 +58,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">mgcViz</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">mgcViz</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.1</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -70,13 +85,22 @@
     <li>
       <a href="../articles/mgcviz.html">mgcViz: visual tools for GAMs</a>
     </li>
+    <li>
+      <a href="../articles/qgam_mgcViz.html">Quantile additive models using qgam and mgcViz</a>
+    </li>
   </ul>
 </li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/mfasiolo/mgcViz">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -84,23 +108,27 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Plotting one dimensional smooth factor interactions</h1>
+    <small class="dont-index">Source: <a href='https://github.com/mfasiolo/mgcViz/blob/master/R/plot_fs_interaction_1D.R'><code>R/plot_fs_interaction_1D.R</code></a></small>
+    <div class="hidden name"><code>plot.fs.interaction.1D.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>This method should be used to plot smooth effects
 of class <code>"fs.interaction.1D"</code>, that is smooth constructed
 using the basis <code>bs="tp"</code>. See <a href='http://www.rdocumentation.org/packages/mgcv/topics/s'>mgcv::s</a>.</p>
     
+    </div>
 
     <pre class="usage"><span class='co'># S3 method for fs.interaction.1D</span>
 <span class='fu'>plot</span>(<span class='no'>x</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>trans</span> <span class='kw'>=</span> <span class='no'>identity</span>, <span class='no'>...</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -134,8 +162,7 @@ Monotonicity is not checked.</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'>library</span>(<span class='no'>mgcViz</span>)
+    <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>mgcViz</span>)
 <span class='fu'>set.seed</span>(<span class='fl'>0</span>)
 <span class='co'>## simulate data...</span>
 <span class='no'>f0</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fl'>2</span> * <span class='fu'>sin</span>(<span class='no'>pi</span> * <span class='no'>x</span>)
@@ -158,19 +185,15 @@ Monotonicity is not checked.</p></td>
 <span class='no'>v</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='getViz.html'>getViz</a></span>(<span class='no'>bm</span>$<span class='no'>gam</span>)
 
 <span class='co'># Plot with fitted effects and changing title </span>
-<span class='fu'>plot</span>(<span class='fu'><a href='sm.html'>sm</a></span>(<span class='no'>v</span>, <span class='fl'>2</span>)) + <span class='fu'><a href='l_fitLine.html'>l_fitLine</a></span>(<span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.6</span>) + <span class='fu'>labs</span>(<span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"Smooth factor interactions"</span>)
-
+<span class='fu'>plot</span>(<span class='fu'><a href='sm.html'>sm</a></span>(<span class='no'>v</span>, <span class='fl'>2</span>)) + <span class='fu'><a href='l_fitLine.html'>l_fitLine</a></span>(<span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.6</span>) + <span class='fu'>labs</span>(<span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"Smooth factor interactions"</span>)</div><div class='img'><img src='plot.fs.interaction.1D-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Changing plotting limits</span>
-<span class='fu'>plot</span>(<span class='fu'><a href='sm.html'>sm</a></span>(<span class='no'>v</span>, <span class='fl'>2</span>)) + <span class='fu'><a href='l_fitLine.html'>l_fitLine</a></span>() + <span class='fu'>ylim</span>(-<span class='fl'>0.5</span>, <span class='fl'>0.5</span>) + <span class='fu'>xlim</span>(<span class='fl'>0.25</span>, <span class='fl'>0.75</span>)
-
+<span class='fu'>plot</span>(<span class='fu'><a href='sm.html'>sm</a></span>(<span class='no'>v</span>, <span class='fl'>2</span>)) + <span class='fu'><a href='l_fitLine.html'>l_fitLine</a></span>() + <span class='fu'>ylim</span>(-<span class='fl'>0.5</span>, <span class='fl'>0.5</span>) + <span class='fu'>xlim</span>(<span class='fl'>0.25</span>, <span class='fl'>0.75</span>)</div><div class='img'><img src='plot.fs.interaction.1D-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Change line type and remove legend</span>
 <span class='fu'>plot</span>(<span class='fu'><a href='sm.html'>sm</a></span>(<span class='no'>v</span>, <span class='fl'>2</span>)) + <span class='fu'><a href='l_fitLine.html'>l_fitLine</a></span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1.3</span>, <span class='kw'>linetype</span><span class='kw'>=</span><span class='st'>"dotted"</span>) +
-                 <span class='fu'>theme</span>(<span class='kw'>legend.position</span><span class='kw'>=</span><span class='st'>"none"</span>)
-
+                 <span class='fu'>theme</span>(<span class='kw'>legend.position</span><span class='kw'>=</span><span class='st'>"none"</span>)</div><div class='img'><img src='plot.fs.interaction.1D-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Clustering smooth effects in 3 groups</span>
 <span class='fu'>plot</span>(<span class='fu'><a href='sm.html'>sm</a></span>(<span class='no'>v</span>, <span class='fl'>2</span>)) + <span class='fu'><a href='l_fitLine.html'>l_fitLine</a></span>(<span class='kw'>colour</span> <span class='kw'>=</span> <span class='st'>"grey"</span>) +
-                 <span class='fu'><a href='l_clusterLine.html'>l_clusterLine</a></span>(<span class='kw'>centers</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>a.clu</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>nstart</span> <span class='kw'>=</span> <span class='fl'>100</span>))
-<span class='co'># }</span></pre>
+                 <span class='fu'><a href='l_clusterLine.html'>l_clusterLine</a></span>(<span class='kw'>centers</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>a.clu</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>nstart</span> <span class='kw'>=</span> <span class='fl'>100</span>))</div><div class='img'><img src='plot.fs.interaction.1D-4.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -191,11 +214,14 @@ Monotonicity is not checked.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

@@ -18,13 +18,23 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
+<meta property="og:title" content="Plotting plotSmooth objects on a grid — gridPrint" />
+
+<meta property="og:description" content="This is a wrapper for gridExtra::grid.arrange, which allows to
+plot several plotSmooth objects on a grid." />
+<meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,8 +57,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">mgcViz</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">mgcViz</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.1</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -70,13 +84,22 @@
     <li>
       <a href="../articles/mgcviz.html">mgcViz: visual tools for GAMs</a>
     </li>
+    <li>
+      <a href="../articles/qgam_mgcViz.html">Quantile additive models using qgam and mgcViz</a>
+    </li>
   </ul>
 </li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/mfasiolo/mgcViz">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -84,20 +107,24 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Plotting plotSmooth objects on a grid</h1>
+    <small class="dont-index">Source: <a href='https://github.com/mfasiolo/mgcViz/blob/master/R/gridPrint.R'><code>R/gridPrint.R</code></a></small>
+    <div class="hidden name"><code>gridPrint.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>This is a wrapper for <code><a href='http://www.rdocumentation.org/packages/gridExtra/topics/arrangeGrob'>gridExtra::grid.arrange</a></code>, which allows to
 plot several <code>plotSmooth</code> objects on a grid.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>gridPrint</span>(<span class='no'>...</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -113,8 +140,7 @@ object of class <code>plotSmooth</code> and passes them to <code><a href='http:/
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'>library</span>(<span class='no'>mgcViz</span>)
+    <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>mgcViz</span>)
 <span class='no'>n</span>  <span class='kw'>&lt;-</span> <span class='fl'>1e3</span>
 <span class='no'>x1</span> <span class='kw'>&lt;-</span> <span class='fu'>rnorm</span>(<span class='no'>n</span>)
 <span class='no'>x2</span> <span class='kw'>&lt;-</span> <span class='fu'>rnorm</span>(<span class='no'>n</span>)
@@ -128,15 +154,12 @@ object of class <code>plotSmooth</code> and passes them to <code><a href='http:/
 <span class='no'>qpl</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='qq.html'>qq</a></span>(<span class='no'>b</span>)
 
 <span class='co'># All on one page, method 1:</span>
-<span class='fu'>gridPrint</span>(<span class='no'>o1</span>, <span class='no'>o2</span>, <span class='no'>qpl</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>)
-
+<span class='fu'>gridPrint</span>(<span class='no'>o1</span>, <span class='no'>o2</span>, <span class='no'>qpl</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='img'><img src='gridPrint-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># All on one page, method 2:</span>
-<span class='fu'>gridPrint</span>(<span class='kw'>grobs</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='no'>o1</span>, <span class='no'>o2</span>, <span class='no'>qpl</span>), <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>)
-
+<span class='fu'>gridPrint</span>(<span class='kw'>grobs</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='no'>o1</span>, <span class='no'>o2</span>, <span class='no'>qpl</span>), <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='img'><img src='gridPrint-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Works also when some ggplot objects are present</span>
-<span class='fu'>gridPrint</span>(<span class='no'>o1</span>, <span class='no'>o2</span>, <span class='no'>qpl</span>, <span class='fu'>ggplot</span>(), <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>)
-
-<span class='co'># }</span></pre>
+<span class='fu'>gridPrint</span>(<span class='no'>o1</span>, <span class='no'>o2</span>, <span class='no'>qpl</span>, <span class='fu'>ggplot</span>(), <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='img'><img src='gridPrint-3.png' alt='' width='700' height='433' /></div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -157,11 +180,14 @@ object of class <code>plotSmooth</code> and passes them to <code><a href='http:/
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

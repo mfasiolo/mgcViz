@@ -1,0 +1,7 @@
+pandoc: 1.17.2
+pkgdown: 1.0.0
+pkgdown_sha: ~
+articles:
+  mgcviz: mgcviz.html
+  qgam_mgcViz: qgam_mgcViz.html
+
