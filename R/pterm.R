@@ -95,9 +95,9 @@ pterm <- function(o, select){
   np <- sapply(order, length)
   tot <- sum( np )
   
-  vNam <- as.vector(sapply(terms, function(.inp) attr(.inp, "term.labels")))[select]
+  vNam <- unlist(sapply(terms, function(.inp) attr(.inp, "term.labels")))[select]
   nam <- if(length(terms)>1){ attr(terms, "term.labels")[select] } else { attr(terms[[1]], "term.labels")[select] }
-  cls <- as.vector(sapply(terms, function(.inp) unname(attr(.inp, "dataClasses"))[-1]))[select]
+  cls <- unlist(sapply(terms, function(.inp) unname(attr(.inp, "dataClasses"))[-1]))[select]
 
   if(length(select)>1){ stop("select should be a scalar") }
   if(select > tot){ stop(paste("select should be smaller than", tot, "the number of parametric terms in gamObject")) }
