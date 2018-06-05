@@ -48,7 +48,7 @@
 #
 gamV <- function(formula, family = gaussian(), data = list(), method = "REML", aGam = list(), aViz = list()){
   
-  obj <- do.call("gam", c(list("formula" = formula, "family" = family, "data" = data), aGam))
+  obj <- do.call("gam", c(list("formula" = formula, "family" = family, "data" = data, "method" = method), aGam))
   
   obj <- do.call("getViz", c(list("o" = obj), aViz))
   
