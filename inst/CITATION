@@ -1,0 +1,15 @@
+citHeader("To cite the mvnfast package in publications use:")
+
+citEntry(
+         entry="Manual",
+         title="mgcViz: visual tools for Generalized Additive Models. R package version 0.1.1.",
+         author=personList(as.person("Matteo Fasiolo"), as.person("Raphael Nedellec"), 
+                           as.person("Yannig Goude"), as.person("Simon N. Wood") ),	   
+	 year=2018,
+	 url="https://CRAN.R-project.org/package=mgcViz",
+	 textVersion=paste(
+			   "Fasiolo M., Nedellec R., Goude Y. and Wood S. N. (2018)",
+			   "mgcViz: visual tools for Generalized Additive Models. R package version 0.1.1."
+			  ))	 
+
+citFooter("As mgcViz is often updated, you may want to cite its version number. Find it with 'help(package=mvnfast)'.")
