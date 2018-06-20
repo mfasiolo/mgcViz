@@ -6,7 +6,7 @@ Authors@R: c(person("Matteo", "Fasiolo", email = "matteo.fasiolo@gmail.com", rol
 Description: mgcViz.
 Depends:
     R (>= 3.4),
-    mgcv (>= 1.8-23),
+    mgcv (>= 1.8-24),
     qgam (>= 1.2.2),
     ggplot2,
     rgl
