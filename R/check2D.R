@@ -128,6 +128,7 @@ check2D <- function(o, x1, x2, type = "auto", maxpo = 1e4, na.rm = TRUE)
   cls2 <- .mapVarClass( class(x2) )
   # If x2 is factor and x1 is not we swap them. So factor variable is always on x axis.
   if( cls2 == "factor" && cls1 != "factor" ){
+    message("check2D likes to have factor variables on x axis: I am swapping the coordinates.")
     tmp <- x1; x1 <- x2; x2 <- tmp
     tmp <- xnm1; xnm1 <- xnm2; xnm2 <- tmp
     cls2 <- cls1; cls1 <- "factor"
