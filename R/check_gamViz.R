@@ -20,7 +20,6 @@
 #' @return An object of class \code{checkGam}, which is simply a list of \code{ggplot} objects.
 #' @importFrom stats napredict fitted printCoefmat 
 #' @importFrom qgam check check.qgam
-#' @importFrom mgcv k.check
 #' @examples
 #' library(mgcViz)
 #' set.seed(0)
@@ -159,7 +158,7 @@ check.gamViz <- function(obj,
           "\n")
     }
     cat("\n")
-    kchck <- k.check(obj, subsample = k.sample, n.rep = k.rep)
+    kchck <- mgcv:::k.check(obj, subsample = k.sample, n.rep = k.rep)
     if (!is.null(kchck)) {
       cat("Basis dimension (k) checking results. Low p-value (k-index<1) may\n")
       cat("indicate that k is too low, especially if edf is close to k'.\n\n")
