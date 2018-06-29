@@ -98,6 +98,9 @@ pterm <- function(o, select){
   vNam <- unlist(sapply(terms, function(.inp) attr(.inp, "term.labels")))[select]
   nam <- if(length(terms)>1){ attr(terms, "term.labels")[select] } else { attr(terms[[1]], "term.labels")[select] }
   cls <- unlist(sapply(terms, function(.inp) unname(attr(.inp, "dataClasses"))[-1]))[select]
+  
+  # We treat ordered factors as simple factors
+  if(cls == "ordered"){ cls <- "factor" }
 
   if(length(select)>1){ stop("select should be a scalar") }
   if(select > tot){ stop(paste("select should be smaller than", tot, "the number of parametric terms in gamObject")) }
