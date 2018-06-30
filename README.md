@@ -1,6 +1,6 @@
 
 [![Build Status](https://travis-ci.org/mfasiolo/mgcViz.svg?branch=master)](https://travis-ci.org/mfasiolo/mgcViz)
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/mfasiolo/mvnfast?branch=master&svg=true)](https://ci.appveyor.com/project/mfasiolo/mgcViz)
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/mfasiolo/mgcViz?branch=master&svg=true)](https://ci.appveyor.com/project/mfasiolo/mgcViz)
 
 # **mgcViz**: visual tools for Generalized Additive Models
 
