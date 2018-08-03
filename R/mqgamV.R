@@ -16,13 +16,13 @@
 #' dat <- gamSim(2,n=500,dist="normal",scale=0.25)$data
 #' 
 #' # Fit GAM and get gamViz object
-#' b <- mqgamV(y~s(x) + s(z) + I(x*z), data = dat, qu = c(0.2, 0.4, 0.6, 0.8),
+#' b <- mqgamV(y~s(x) + s(z) + I(x*z), data = dat, qu = c(0.25, 0.5, 0.75),
 #'             aQgam = list(argGam = list(select = TRUE)), aViz = list("nsim" = 0))
 #' 
 #' # This is equivalent to doing
 #' # 1. Fit QGAM
 #' # b <- mqgam(y~s(x) + s(z) + I(x*z), data=dat, 
-#' #            qu = c(0.2, 0.4, 0.6, 0.8), argGam = list(select = TRUE))
+#' #            qu = c(0.25, 0.5, 0.75), argGam = list(select = TRUE))
 #' # 2. Convert to gamViz object
 #' # b <- getViz(b, nsim = 0)
 #' 

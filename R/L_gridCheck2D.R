@@ -16,7 +16,7 @@
 #'              \code{std_stat = (obs_stat-mean(sim_stat))/sd(sim_stat)}.
 #' @param binFun the \code{ggplot2} function used to perform the binning. By default it 
 #'               is either [ggplot2::stat_summary_2d] or [ggplot2::stat_summary_hex], depending 
-#'               on which the class of the covariates x1 and x2.
+#'               on the class of the covariates x1 and x2.
 #' @param ... graphical arguments to be passed to \code{ggplot2::stat_summary_hex}.
 #' @return An object of class \code{gamLayer}
 #' @examples 

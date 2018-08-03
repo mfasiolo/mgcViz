@@ -20,7 +20,7 @@ the simulated statistics in that same cell. That is, we will actually plot
 
 \item{binFun}{the \code{ggplot2} function used to perform the binning. By default it
 is either \link[ggplot2:stat_summary_2d]{ggplot2::stat_summary_2d} or \link[ggplot2:stat_summary_hex]{ggplot2::stat_summary_hex}, depending
-on which the class of the covariates x1 and x2.}
+on the class of the covariates x1 and x2.}
 
 \item{...}{graphical arguments to be passed to \code{ggplot2::stat_summary_hex}.}
 }

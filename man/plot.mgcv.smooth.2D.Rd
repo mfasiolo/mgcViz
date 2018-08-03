@@ -61,7 +61,7 @@ Plotting method for two dimensional smooth effects.
 \examples{
 library(mgcViz)
 set.seed(2) ## simulate some data...
-dat <- gamSim(1, n = 1000, dist = "normal", scale = 2)
+dat <- gamSim(1, n = 700, dist = "normal", scale = 2)
 b <- gam(y ~ s(x0) + s(x1, x2) + s(x3), data = dat, method = "REML")
 b <- getViz(b)
 
