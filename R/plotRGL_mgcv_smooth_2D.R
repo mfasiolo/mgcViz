@@ -110,6 +110,9 @@ plotRGL.mgcv.smooth.2D <- function(x, se = TRUE, n = 40, residuals = FALSE, type
 .getResidualsPlotRGL <- function(gamObj, X, type, maxpo, xlimit, ylimit, exclude, trans)
 {
   res <- residuals.gamViz(gamObj, type = type) 
+  
+  # For qgams only plot sign of residuals
+  if(inherits(gamObj, "qgam")) { res <- sign(res) }
 
   # Checking if we are too far from current slice: relevant only for plotRGL.mgcv.smooth.MD
   if( any(exclude) ){
