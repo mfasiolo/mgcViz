@@ -6,5 +6,7 @@ cache: packages
 warnings_are_errors: false
 notifications:
   email: false
+before_isntall:
+  - Rscript -e 'install.packages("mgcv", lib="/home/travis/R-bin/lib/R/library/")'
 #r_github_packages: 
 # - mfasiolo/qgam

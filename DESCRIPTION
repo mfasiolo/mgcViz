@@ -5,7 +5,7 @@ Authors@R: c(person("Matteo", "Fasiolo", email = "matteo.fasiolo@gmail.com", rol
   person("Raphael", "Nedellec", email = "raphael.nedellec@edf.fr", role = c("aut")))
 Description: Extension of the 'mgcv' package, providing visual tools for Generalized Additive Models that exploit the additive structure of such models, scale to large data sets and can be used in conjunction with a wide range of response distributions. The focus is providing visual methods for better understanding the model output and for aiding model checking and development beyond simple exponential family regression. The graphical framework is based on the layering system provided by 'ggplot2'.
 Depends:
-    R (>= 3.5),
+    R (>= 3.4),
     mgcv (>= 1.8-24),
     qgam (>= 1.2.2),
     ggplot2,
