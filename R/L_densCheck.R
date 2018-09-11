@@ -37,7 +37,7 @@
 #' b <- gam(y ~ s(x1)+s(x2), data=dat)
 #' b <- getViz(b)
 #' 
-#' # (Blue) Yellow indicates area where the empirical density 
+#' # (Red) Blue indicates area where the empirical density 
 #' # of the residuals is (lower) higher than it should be under 
 #' # the model (residuals should be N(0, sigma) here).
 #' # Here there are clear signs of heteroscedasticity: 
@@ -93,7 +93,7 @@ l_densCheck.Check1DNumeric <- function(a){
   # Build layers
   out <- list()
   out[[1]] <- do.call("geom_raster", a) 
-  out[[2]] <- scale_fill_gradientn(colours = viridis(50, begin = 0.2), na.value = "white") 
+  out[[2]] <- scale_fill_gradient2(low = "red", mid = "white", high = "blue", midpoint = 0) 
 
   class(out) <- "listOfLayers"
   

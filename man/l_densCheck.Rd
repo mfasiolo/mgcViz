@@ -53,7 +53,7 @@ dat <- data.frame("x1"=x1,
 b <- gam(y ~ s(x1)+s(x2), data=dat)
 b <- getViz(b)
 
-# (Blue) Yellow indicates area where the empirical density 
+# (Red) Blue indicates area where the empirical density 
 # of the residuals is (lower) higher than it should be under 
 # the model (residuals should be N(0, sigma) here).
 # Here there are clear signs of heteroscedasticity: 
