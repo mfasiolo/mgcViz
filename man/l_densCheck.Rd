@@ -20,7 +20,7 @@ deviation of the residuals. Set \code{tol} to -1 plot the density on
 the whole x-y plane, no matter how low it is.}
 
 \item{dFun}{function used to compute the difference between the empirical (em) and theoretical (th)
-conditional density of the residuals. By default it is \code{abs(sqrt(em)-sqrt(th))^(1/3)},
+conditional density of the residuals. By default it is \code{(sqrt(em)-sqrt(th))^(1/3)},
 where \code{th} is computed using either a uniform or a normal density, depending on the
 type of residuals used in the \link{check1D} call. It should as arguments three vectors: \code{.ed} (the empirical
 conditional density), \code{.gr} (the points along y where the density is evaluated) and
