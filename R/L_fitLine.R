@@ -46,16 +46,19 @@ l_fitLine.randomEffect <- function(a){
 }
 
 ######## Internal method 
-#' @noRd
-l_fitLine.MultiRandomEffect <-  function(a){
-  
-  # Need use only data from one of the quantile, otherwise l_fitLine.randomEffect thinks
-  # that we have n * number_of_quantiles responses, rather than just n
-  a$data$fit <- a$data$fit[a$data$fit$qu == levels(a$data$fit$qu)[1], ]
-
-  return( l_fitLine.randomEffect(a) )
-  
-}
+# Adding reference line to plot where different QQ-plots appear (corresponding to  random effect estimated on
+# different data) does not make sense as the reference line depend on the variance of the estimated
+# random effect, which is different for each run.
+# #' @noRd
+# l_fitLine.MultiRandomEffect <-  function(a){
+# 
+#   # Need use only data from one of the quantile, otherwise l_fitLine.randomEffect thinks
+#   # that we have n * number_of_quantiles responses, rather than just n
+#   a$data$fit <- a$data$fit[a$data$fit$id == levels(a$data$fit$id)[1], ]
+# 
+#   return( l_fitLine.randomEffect(a) )
+#   
+#}
 
 
 

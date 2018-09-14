@@ -51,7 +51,7 @@ listLayers <- function(o){
                                        "l_coordContour", "l_bound"), 
                 "sos1" = c("l_fitContour", "l_fitRaster", "l_points", "l_rug"),
                 "randomEffect" = c("l_fitLine", "l_points", "l_ciLine", "l_ciPoly"),
-                "MultiRandomEffect" = c("l_fitLine", "l_points", "l_ciLine", "l_ciPoly"),
+                "MultiRandomEffect" = c("l_points"),
                 "mrf" = c("l_poly"),
                 
                 # Slices of MD smooths
