@@ -39,7 +39,7 @@ l_fitPoints.PtermFactor <- l_fitPoints.MultiPtermNumeric <- function(a){
 #'
 l_fitPoints.MultiPtermFactor <- function(a){
   
-  if( is.null(a$mapping) ){ a$mapping <- aes("x" = qu, "y" = ty, "colour" = qu) }
+  if( is.null(a$mapping) ){ a$mapping <- aes("x" = id, "y" = ty, "colour" = id) }
   
   l_fitPoints.PtermFactor( a )
   

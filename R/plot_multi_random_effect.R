@@ -28,17 +28,22 @@ plot.multi.random.effect <- function(x, trans = identity, ...) {
   
   .fitDat <- lapply(P$data, "[[", "fit")
   
+  suppressWarnings( .idNam <- as.numeric(names(P$data)) )
+  if( anyNA(.idNam) ){ .idNam <- names(P$data) }
+  
   .dat <- list()
-  .dat$fit <- data.frame("x" = rep(.fitDat[[1]]$x, length(.fitDat)), 
+  .dat$fit <- data.frame("x" = as.vector( sapply(.fitDat, "[[", "x") ), 
                          "y" = as.vector( sapply(.fitDat, "[[", "y") ), 
                          "ty" = as.vector( sapply(.fitDat, "[[", "ty") ),  
-                         "qu" = as.factor(rep(as.numeric(names(P$data)), each = length(.fitDat[[1]]$x))))
+                         "id" = as.factor(rep(.idNam, each = length(.fitDat[[1]]$x))))
   
   .dat$misc <- list("trans" = trans)
   
-  .pl <- ggplot(data = .dat$fit, aes("x" = x, "y" = ty, "colour" = qu)) +
+  if( is.numeric(.idNam) ){ .idNam <- round(.idNam, 3) }
+  
+  .pl <- ggplot(data = .dat$fit, aes("x" = x, "y" = ty, "colour" = id)) +
     labs(title = P$main, x = P$xlab, y = P$ylab) + 
-    scale_colour_discrete(labels = round(as.numeric(levels(.dat$fit$qu)), 3)) +
+    scale_colour_discrete(labels = .idNam) +
     theme_bw() +
     theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
   

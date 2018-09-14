@@ -80,6 +80,14 @@
 #' 
 pterm <- function(o, select){
   
+  if( inherits(o, "list") ){
+    if( all(sapply(o, function(.x){inherits(.x, "gamViz")})) == FALSE ){
+      stop("Object \"o\" should be of class \"mgamViz\" or (a list of) \"gamViz\" objects")
+    }
+    if( is.null(names(o)) ){ names(o) <- 1:length(o) }
+    class(o) <- "mgamViz"
+  }
+  
   if( inherits(o, "mgamViz") ){
     out <- lapply(o, pterm, select = select)
     class(out) <- paste0("multi.", class(out[[1]]))

@@ -35,24 +35,27 @@ plot.multi.ptermFactor <- function(x, a.facet = list(), asFact = TRUE, ...) {
   
   basel <- .fitDat[[1]]$x[.fitDat[[1]]$y == 0]
   
+  suppressWarnings( .idNam <- as.numeric(names(P$data)) )
+  if( anyNA(.idNam) ){ .idNam <- names(P$data) }
+  
   .dat <- list()
   .dat$fit <- data.frame("x" = as.factor(rep(.fitDat[[1]]$x, length(.fitDat))), 
                          "y" = as.vector( sapply(.fitDat, "[[", "y") ), 
                          "ty" = as.vector( sapply(.fitDat, "[[", "ty") ),  
-                         "qu" = rep(as.numeric(names(P$data)), each = length(.fitDat[[1]]$x)), 
+                         "id" = rep(.idNam, each = length(.fitDat[[1]]$x)), 
                          "se" = as.vector( sapply(.fitDat, "[[", "se") ))
-  if( asFact ){ .dat$fit$qu <- as.factor( .dat$fit$qu ) }
+  if( asFact ){ .dat$fit$id <- as.factor( .dat$fit$id ) }
   
   .dat$fit <- .dat$fit[.dat$fit$x != basel, ]
   
   .dat$misc <- list("trans" = trans)
   
-  .pl <- ggplot(data = .dat$fit, aes("x" = qu, "y" = ty)) + labs(title = NULL, x = P$xlab, y = P$ylab) + 
+  .pl <- ggplot(data = .dat$fit, aes("x" = id, "y" = ty)) + labs(title = NULL, x = P$xlab, y = P$ylab) + 
          theme_bw() + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) 
   
-  if( asFact ){ 
-    tmpLevs <- round(as.numeric(levels(.dat$fit$qu)), 3)
-    .pl <- .pl + scale_x_discrete(labels = tmpLevs) + scale_colour_discrete(labels = tmpLevs)
+  if( asFact ){
+    if( is.numeric(.idNam) ){ .idNam <- round(as.numeric(levels(.dat$fit$id)), 3) }
+    .pl <- .pl + scale_x_discrete(labels = .idNam) + scale_colour_discrete(labels = .idNam)
   }
   
   if( is.null(a.facet$facets) ){ a.facet$facets <- as.formula("~ x") }

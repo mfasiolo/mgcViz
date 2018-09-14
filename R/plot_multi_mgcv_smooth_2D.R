@@ -31,19 +31,19 @@ plot.multi.mgcv.smooth.2D <- function(x, n = 30, xlim = NULL, ylim = NULL, maxpo
 #' @noRd
 .plot.multi.mgcv.smooth.2D <- function(P, trans, a.facet){
   
-  n <- nrow(P$data[[1]]$fit)
-  nr <- nrow(P$data[[1]]$res)
   nsl <- length( P$data )
-  gridVar <- "qu"
+  gridVar <- "id"
   
   # Get data for quantile
   for(ii in 1:nsl){
-    tmp <- paste0("qu=", names(P$data)[ii])
-    P$data[[ii]]$fit$.fx.qu <- rep(tmp, n)
-    P$data[[ii]]$res$.fx.qu <- rep(tmp, nr)
-    tmp <- as.numeric(names(P$data)[ii]) 
-    P$data[[ii]]$fit$qu <- as.factor(rep(tmp, n))
-    P$data[[ii]]$res$qu <- as.factor(rep(tmp, nr))
+    n <- nrow(P$data[[ii]]$fit)
+    nr <- nrow(P$data[[ii]]$res)
+    tmp <- paste0("id=", names(P$data)[ii])
+    P$data[[ii]]$fit$.fx.id <- rep(tmp, n)
+    P$data[[ii]]$res$.fx.id <- rep(tmp, nr)
+    tmp <- names(P$data)[ii] 
+    P$data[[ii]]$fit$id <- as.factor(rep(tmp, n))
+    P$data[[ii]]$res$id <- as.factor(rep(tmp, nr))
   }
   
   .dat <- list()

@@ -12,7 +12,7 @@ plot.multi.ptermNumeric <- function(x, ...) {
   
   # 1) Prepare data
   nm <- x[[1]]$name
-  qus <- as.numeric( names(x) )
+  qus <- names(x)
   
   tmp <- lapply(x, function(.x){ 
     .o <- summary(.x$gObj)$p.table
@@ -25,7 +25,7 @@ plot.multi.ptermNumeric <- function(x, ...) {
                            "ty" = sapply(tmp, "[", 1), 
                            "se" = sapply(tmp, "[", 2))
   P$ylab <- paste0("coeff ", nm)
-  P$xlab <- "qu"
+  P$xlab <- "id"
   P$data$misc <- list("trans" = identity)
 
   # 2) Produce output object
@@ -40,9 +40,12 @@ plot.multi.ptermNumeric <- function(x, ...) {
 #' @noRd
 .plot.multi.ptermNumeric <- function(P = P) {
   
+  suppressWarnings( .idNam <- round(as.numeric(levels(P$data$fit$x)), 3) )
+  if( anyNA(.idNam) ){ .idNam <- levels(P$data$fit$x) }
+  
   .pl <- ggplot(data = P$data$fit, aes("x" = x, "y" = ty)) +
     labs(title = NULL, x = P$xlab, y = P$ylab) + 
-    scale_x_discrete(labels = round(as.numeric(levels(P$data$fit$x)), 3)) +
+    scale_x_discrete(labels = .idNam) +
     theme_bw() +
     theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) 
   

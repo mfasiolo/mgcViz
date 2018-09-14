@@ -23,6 +23,14 @@
 #' @rdname getViz
 #' @export getViz
 getViz <- function(o, nsim = 0, ...){
+
+  if( inherits(o, "list") ){
+    tmp <- names(o)
+    o <- lapply(o, function(.x, ...) getViz(.x, nsim = nsim, ...))
+    if( is.null(tmp) ) names(o) <- 1:length(o)
+    class(o) <- "mgamViz"
+    return( o )
+  }
   
   if( "mqgam" %in% class(o) ){
     qus <- as.numeric( names(o$fit) )

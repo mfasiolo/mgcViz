@@ -105,7 +105,9 @@
 #'
 plot.gamViz <- function(x, n = 100, n2 = 40, select = NULL, allTerms = FALSE, ...) {
   
-  if( !inherits(x, "gamViz") ){ stop("Argument 'x' should be of class 'gamViz'. See ?getViz") }
+  if( !inherits(x, "gam") ){ stop("Argument 'x' should be of class 'gam' or 'gamViz'. See ?getViz") }
+  
+  if( !inherits(x, "gamViz") ){ x <- getViz(x, ...) }
   
   smo <- .extractSeveralEffects(.x = x, .sel = select, .allT = allTerms)
 
