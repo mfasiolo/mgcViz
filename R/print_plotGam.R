@@ -29,7 +29,7 @@ print.plotGam <- function(x, ask = TRUE, pages = NULL, addLay = TRUE, ...){
                  "sos0" = .l + l_fitRaster() + l_fitContour(), 
                  "sos1" = .l + l_fitRaster() + l_fitContour(),
                  "randomEffect" = .l + l_fitLine() + l_ciLine() + l_points(), 
-                 "MultiRandomEffect" = .l + l_fitLine() + l_ciLine() + l_points(), 
+                 "MultiRandomEffect" = .l + l_points(), 
                  "mrf" = .l + l_poly(), 
                  "PtermNumeric" = .l + l_fitLine() + l_ciLine(),
                  "PtermFactor" = .l + l_ciBar() + l_fitPoints(),
