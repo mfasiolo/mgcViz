@@ -62,7 +62,7 @@ individual smooth effect classes (such as plot.multi.mgcv.smooth.1D)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mgcViz</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.2</span>
       </span>
     </div>
 
@@ -86,6 +86,9 @@ individual smooth effect classes (such as plot.multi.mgcv.smooth.1D)." />
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/mgcviz.html">mgcViz: visual tools for GAMs</a>
+    </li>
+    <li>
+      <a href="../articles/miscellanea.html">Miscellanea: things you can do in mgcViz</a>
     </li>
     <li>
       <a href="../articles/qgam_mgcViz.html">Quantile additive models using qgam and mgcViz</a>
@@ -186,6 +189,30 @@ plotting methods for each effect (e.g. to <a href='plot.mgcv.smooth.1D.html'>plo
 #&gt; qu = 0.2.........done 
 #&gt; qu = 0.8...............done </div><div class='input'>
 <span class='fu'>print</span>(<span class='fu'>plot</span>(<span class='no'>fit</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>4</span>, <span class='kw'>allTerms</span> <span class='kw'>=</span> <span class='no'>T</span>), <span class='kw'>pages</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='img'><img src='plot.mgamViz-1.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><span class='co'># NOT RUN {</span>
+<span class='co'># Example where we are fitting the same model to different datasets, but</span>
+<span class='co'># plotting the estimate effects together </span>
+<span class='no'>dat</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>()
+<span class='kw'>for</span>(<span class='no'>ii</span> <span class='kw'>in</span> <span class='fl'>1</span>:<span class='fl'>4</span>){
+  <span class='co'># Simulate 4 datasets, we are adding 2 factor variables "fac" and "ref" just</span>
+  <span class='co'># for illustrating the plotting method (the two factors have no effect on y)</span>
+  <span class='no'>n</span> <span class='kw'>&lt;-</span> <span class='fl'>1000</span>
+  <span class='no'>dat</span><span class='kw'>[[</span><span class='no'>ii</span>]] <span class='kw'>&lt;-</span> <span class='fu'>gamSim</span>(<span class='fl'>1</span>,<span class='kw'>n</span><span class='kw'>=</span><span class='no'>n</span>,<span class='kw'>dist</span><span class='kw'>=</span><span class='st'>"normal"</span>,<span class='kw'>scale</span><span class='kw'>=</span><span class='fl'>2</span>)
+  <span class='no'>dat</span><span class='kw'>[[</span><span class='no'>ii</span>]]$<span class='no'>fac</span> <span class='kw'>&lt;-</span> <span class='fu'>as.factor</span>( <span class='fu'>sample</span>(<span class='fu'>c</span>(<span class='st'>"A1"</span>, <span class='st'>"A2"</span>, <span class='st'>"A3"</span>), <span class='no'>n</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) )
+  <span class='no'>dat</span><span class='kw'>[[</span><span class='no'>ii</span>]]$<span class='no'>ref</span> <span class='kw'>&lt;-</span> <span class='fu'>as.factor</span>( <span class='fu'>sample</span>(<span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>10</span>], <span class='no'>n</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) )
+}
+
+<span class='co'># Estimating model on each dataset</span>
+<span class='no'>mods</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>()
+<span class='kw'>for</span>(<span class='no'>ii</span> <span class='kw'>in</span> <span class='fl'>1</span>:<span class='fl'>4</span>){
+  <span class='no'>mods</span><span class='kw'>[[</span><span class='no'>ii</span>]] <span class='kw'>&lt;-</span> <span class='fu'><a href='gamV.html'>gamV</a></span>(<span class='no'>y</span>~<span class='fu'>s</span>(<span class='no'>x0</span>)+<span class='fu'>s</span>(<span class='no'>x1</span>, <span class='no'>x2</span>)+<span class='no'>x3</span>+<span class='no'>fac</span>+<span class='fu'>s</span>(<span class='no'>ref</span>, <span class='kw'>bs</span> <span class='kw'>=</span> <span class='st'>"re"</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>dat</span><span class='kw'>[[</span><span class='no'>ii</span>]])
+}
+
+<span class='co'># Names will be used to identify the four models we have fitted </span>
+<span class='fu'>names</span>(<span class='no'>mods</span>) <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"M1"</span>, <span class='st'>"M2"</span>, <span class='st'>"M3"</span>, <span class='st'>"M4"</span>)
+<span class='co'># Plotting on the same plots</span>
+<span class='fu'>print</span>(<span class='fu'>plot.mgamViz</span>(<span class='no'>mods</span>, <span class='kw'>allTerms</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>), <span class='kw'>pages</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+<span class='co'># }</span><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

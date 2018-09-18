@@ -62,7 +62,7 @@ plot.mgcv.smooth.1D and plot.random.effect)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mgcViz</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.2</span>
       </span>
     </div>
 
@@ -86,6 +86,9 @@ plot.mgcv.smooth.1D and plot.random.effect)." />
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/mgcviz.html">mgcViz: visual tools for GAMs</a>
+    </li>
+    <li>
+      <a href="../articles/miscellanea.html">Miscellanea: things you can do in mgcViz</a>
     </li>
     <li>
       <a href="../articles/qgam_mgcViz.html">Quantile additive models using qgam and mgcViz</a>
@@ -191,41 +194,50 @@ plotting methods for each effect (e.g. to <a href='plot.mgcv.smooth.1D.html'>plo
 <span class='fu'>print</span>(<span class='no'>pl</span>, <span class='kw'>pages</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='img'><img src='plot.gamViz-5.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># We might want to plot only the first smooth</span>
 <span class='fu'>plot</span>(<span class='no'>b</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='fl'>1</span>) + <span class='fu'><a href='l_dens.html'>l_dens</a></span>(<span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"cond"</span>) + <span class='fu'><a href='l_fitLine.html'>l_fitLine</a></span>() + <span class='fu'><a href='l_ciLine.html'>l_ciLine</a></span>()</div><div class='img'><img src='plot.gamViz-6.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><span class='co'># NOT RUN {</span>
 <span class='co'>######## Example with "by variable" smooth effect</span>
 <span class='co'># Simulate data and fit model</span>
-<span class='no'>dat</span> <span class='kw'>&lt;-</span> <span class='fu'>gamSim</span>(<span class='fl'>4</span>)</div><div class='output co'>#&gt; Factor `by' variable example</div><div class='input'><span class='no'>b</span> <span class='kw'>&lt;-</span> <span class='fu'>gam</span>(<span class='no'>y</span> ~ <span class='no'>fac</span>+<span class='fu'>s</span>(<span class='no'>x2</span>,<span class='kw'>by</span><span class='kw'>=</span><span class='no'>fac</span>)+<span class='fu'>s</span>(<span class='no'>x0</span>),<span class='kw'>data</span><span class='kw'>=</span><span class='no'>dat</span>)
+<span class='no'>dat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/mgcv/topics/gamSim'>gamSim</a></span>(<span class='fl'>4</span>)
+<span class='no'>b</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/mgcv/topics/gam'>gam</a></span>(<span class='no'>y</span> ~ <span class='no'>fac</span>+<span class='fu'><a href='http://www.rdocumentation.org/packages/mgcv/topics/s'>s</a></span>(<span class='no'>x2</span>,<span class='kw'>by</span><span class='kw'>=</span><span class='no'>fac</span>)+<span class='fu'><a href='http://www.rdocumentation.org/packages/mgcv/topics/s'>s</a></span>(<span class='no'>x0</span>),<span class='kw'>data</span><span class='kw'>=</span><span class='no'>dat</span>)
 <span class='no'>b</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='getViz.html'>getViz</a></span>(<span class='no'>b</span>)
 <span class='co'># print() only needed because we want to plot on a single page</span>
-<span class='fu'>print</span>(<span class='fu'>plot</span>(<span class='no'>b</span>), <span class='kw'>pages</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='img'><img src='plot.gamViz-7.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>print</span>(<span class='fu'>plot</span>(<span class='no'>b</span>, <span class='kw'>allTerms</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>), <span class='kw'>pages</span> <span class='kw'>=</span> <span class='fl'>1</span>) <span class='co'># Including also parametric effect</span></div><div class='img'><img src='plot.gamViz-8.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>print</span>(<span class='fu'>plot</span>(<span class='no'>b</span>), <span class='kw'>pages</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+<span class='fu'>print</span>(<span class='fu'>plot</span>(<span class='no'>b</span>, <span class='kw'>allTerms</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>), <span class='kw'>pages</span> <span class='kw'>=</span> <span class='fl'>1</span>) <span class='co'># Including also parametric effect</span>
+
 <span class='co'>######## Example with 3D smooth effect which cannot be plotted</span>
 <span class='co'># Simulate data and fit model</span>
 <span class='no'>n</span> <span class='kw'>&lt;-</span> <span class='fl'>5e3</span>
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>rnorm</span>(<span class='no'>n</span>); <span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'>rnorm</span>(<span class='no'>n</span>); <span class='no'>z</span> <span class='kw'>&lt;-</span> <span class='fu'>rnorm</span>(<span class='no'>n</span>); <span class='no'>z2</span> <span class='kw'>&lt;-</span> <span class='fu'>rnorm</span>(<span class='no'>n</span>)
 
 <span class='no'>ob</span> <span class='kw'>&lt;-</span> (<span class='no'>x</span>-<span class='no'>z</span>)^<span class='fl'>2</span> + (<span class='no'>y</span>-<span class='no'>z</span>)^<span class='fl'>2</span> + <span class='no'>z2</span>^<span class='fl'>3</span> + <span class='fu'>rnorm</span>(<span class='no'>n</span>)
-<span class='no'>b1</span> <span class='kw'>&lt;-</span> <span class='fu'>bam</span>(<span class='no'>ob</span> ~ <span class='fu'>s</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='no'>z</span>) + <span class='fu'>s</span>(<span class='no'>z2</span>), <span class='kw'>discrete</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='no'>b1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/mgcv/topics/bam'>bam</a></span>(<span class='no'>ob</span> ~ <span class='fu'><a href='http://www.rdocumentation.org/packages/mgcv/topics/s'>s</a></span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='no'>z</span>) + <span class='fu'><a href='http://www.rdocumentation.org/packages/mgcv/topics/s'>s</a></span>(<span class='no'>z2</span>), <span class='kw'>discrete</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='no'>b1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='getViz.html'>getViz</a></span>(<span class='no'>b1</span>)
 
 <span class='co'># Only second effect get plotted</span>
-<span class='fu'>plot</span>(<span class='no'>b1</span>)</div><div class='img'><img src='plot.gamViz-9.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># In fact this does not plot anything</span>
-<span class='fu'>plot</span>(<span class='no'>b1</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; <span class='message'>Nothing to plot!</span></div><div class='input'><span class='co'># For plotting effects with more than 2D, one we need specific method. </span>
+<span class='fu'>plot</span>(<span class='no'>b1</span>)
+<span class='co'># In fact this does not plot anything</span>
+<span class='fu'>plot</span>(<span class='no'>b1</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+<span class='co'># For plotting effects with more than 2D, one we need specific method. </span>
 <span class='co'># See ?plot.mgcv.smooth.MD</span>
 
 <span class='co'>######## Examples about plotting parametric effects</span>
 <span class='co'># 1 Gaussian GAM</span>
 <span class='fu'>set.seed</span>(<span class='fl'>3</span>)
-<span class='no'>dat</span> <span class='kw'>&lt;-</span> <span class='fu'>gamSim</span>(<span class='fl'>1</span>,<span class='kw'>n</span><span class='kw'>=</span><span class='fl'>2500</span>,<span class='kw'>dist</span><span class='kw'>=</span><span class='st'>"normal"</span>,<span class='kw'>scale</span><span class='kw'>=</span><span class='fl'>20</span>)</div><div class='output co'>#&gt; Gu &amp; Wahba 4 term additive model</div><div class='input'><span class='no'>dat</span>$<span class='no'>fac</span> <span class='kw'>&lt;-</span> <span class='fu'>as.factor</span>( <span class='fu'>sample</span>(<span class='fu'>c</span>(<span class='st'>"A1"</span>, <span class='st'>"A2"</span>, <span class='st'>"A3"</span>), <span class='fu'>nrow</span>(<span class='no'>dat</span>), <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) )
+<span class='no'>dat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/mgcv/topics/gamSim'>gamSim</a></span>(<span class='fl'>1</span>,<span class='kw'>n</span><span class='kw'>=</span><span class='fl'>2500</span>,<span class='kw'>dist</span><span class='kw'>=</span><span class='st'>"normal"</span>,<span class='kw'>scale</span><span class='kw'>=</span><span class='fl'>20</span>)
+<span class='no'>dat</span>$<span class='no'>fac</span> <span class='kw'>&lt;-</span> <span class='fu'>as.factor</span>( <span class='fu'>sample</span>(<span class='fu'>c</span>(<span class='st'>"A1"</span>, <span class='st'>"A2"</span>, <span class='st'>"A3"</span>), <span class='fu'>nrow</span>(<span class='no'>dat</span>), <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) )
 <span class='no'>dat</span>$<span class='no'>logi</span> <span class='kw'>&lt;-</span> <span class='fu'>as.logical</span>( <span class='fu'>sample</span>(<span class='fu'>c</span>(<span class='fl'>TRUE</span>, <span class='fl'>FALSE</span>), <span class='fu'>nrow</span>(<span class='no'>dat</span>), <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) )
 <span class='no'>bs</span> <span class='kw'>&lt;-</span> <span class='st'>"cr"</span>; <span class='no'>k</span> <span class='kw'>&lt;-</span> <span class='fl'>12</span>
-<span class='no'>b</span> <span class='kw'>&lt;-</span> <span class='fu'>bam</span>(<span class='no'>y</span> ~ <span class='no'>x0</span> + <span class='no'>x1</span> + <span class='fu'>I</span>(<span class='no'>x1</span>^<span class='fl'>2</span>) + <span class='fu'>s</span>(<span class='no'>x2</span>,<span class='kw'>bs</span><span class='kw'>=</span><span class='no'>bs</span>,<span class='kw'>k</span><span class='kw'>=</span><span class='no'>k</span>) + <span class='no'>fac</span> + <span class='no'>x3</span>:<span class='no'>fac</span> + <span class='fu'>I</span>(<span class='no'>x1</span>*<span class='no'>x2</span>) + <span class='no'>logi</span> +
-            <span class='fu'>s</span>(<span class='no'>x3</span>, <span class='kw'>bs</span><span class='kw'>=</span><span class='no'>bs</span>),<span class='kw'>data</span><span class='kw'>=</span><span class='no'>dat</span>, <span class='kw'>discrete</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='no'>b</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/mgcv/topics/bam'>bam</a></span>(<span class='no'>y</span> ~ <span class='no'>x0</span> + <span class='no'>x1</span> + <span class='fu'>I</span>(<span class='no'>x1</span>^<span class='fl'>2</span>) + <span class='fu'><a href='http://www.rdocumentation.org/packages/mgcv/topics/s'>s</a></span>(<span class='no'>x2</span>,<span class='kw'>bs</span><span class='kw'>=</span><span class='no'>bs</span>,<span class='kw'>k</span><span class='kw'>=</span><span class='no'>k</span>) + <span class='no'>fac</span> + <span class='no'>x3</span>:<span class='no'>fac</span> + <span class='fu'>I</span>(<span class='no'>x1</span>*<span class='no'>x2</span>) + <span class='no'>logi</span> +
+            <span class='fu'><a href='http://www.rdocumentation.org/packages/mgcv/topics/s'>s</a></span>(<span class='no'>x3</span>, <span class='kw'>bs</span><span class='kw'>=</span><span class='no'>bs</span>),<span class='kw'>data</span><span class='kw'>=</span><span class='no'>dat</span>, <span class='kw'>discrete</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='no'>b</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='getViz.html'>getViz</a></span>(<span class='no'>b</span>)
 
 <span class='co'># All effects in one page. Notably 'x3:fac' is missing: we have no methods</span>
 <span class='co'># for plotting second order effects.</span>
-<span class='fu'>print</span>(<span class='fu'>plot</span>(<span class='no'>b</span>, <span class='kw'>allTerms</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>), <span class='kw'>pages</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='img'><img src='plot.gamViz-10.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>print</span>(<span class='fu'>plot</span>(<span class='no'>b</span>, <span class='kw'>allTerms</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>), <span class='kw'>pages</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+
 <span class='co'># Plotting only parametric effects</span>
-<span class='fu'>print</span>(<span class='fu'>plot</span>(<span class='no'>b</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='fl'>3</span>:<span class='fl'>9</span>), <span class='kw'>pages</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='img'><img src='plot.gamViz-11.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>print</span>(<span class='fu'>plot</span>(<span class='no'>b</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='fl'>3</span>:<span class='fl'>9</span>), <span class='kw'>pages</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+
 <span class='co'># 2 GAMLSS Gaussian model</span>
 <span class='fu'>library</span>(<span class='no'>mgcv</span>);<span class='fu'>library</span>(<span class='no'>MASS</span>)
 <span class='no'>mcycle</span>$<span class='no'>fac</span> <span class='kw'>&lt;-</span> <span class='fu'>as.factor</span>( <span class='fu'>sample</span>(<span class='fu'>c</span>(<span class='st'>"z"</span>, <span class='st'>"k"</span>, <span class='st'>"a"</span>, <span class='st'>"f"</span>), <span class='fu'>nrow</span>(<span class='no'>mcycle</span>), <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) )
@@ -234,7 +246,8 @@ plotting methods for each effect (e.g. to <a href='plot.mgcv.smooth.1D.html'>plo
 <span class='no'>b</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='getViz.html'>getViz</a></span>(<span class='no'>b</span>)
 
 <span class='co'># All effects on one page: effect of second linear predictor end with '.1'</span>
-<span class='fu'>print</span>(<span class='fu'>plot</span>(<span class='no'>b</span>, <span class='kw'>allTerms</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>), <span class='kw'>pages</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='img'><img src='plot.gamViz-12.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>print</span>(<span class='fu'>plot</span>(<span class='no'>b</span>, <span class='kw'>allTerms</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>), <span class='kw'>pages</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+<span class='co'># }</span><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

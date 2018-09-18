@@ -59,7 +59,7 @@ effects on the sphere. Mainly meant to be used with by-factor smooths." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mgcViz</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.2</span>
       </span>
     </div>
 
@@ -83,6 +83,9 @@ effects on the sphere. Mainly meant to be used with by-factor smooths." />
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/mgcviz.html">mgcViz: visual tools for GAMs</a>
+    </li>
+    <li>
+      <a href="../articles/miscellanea.html">Miscellanea: things you can do in mgcViz</a>
     </li>
     <li>
       <a href="../articles/qgam_mgcViz.html">Quantile additive models using qgam and mgcViz</a>
@@ -240,11 +243,14 @@ Generalized Additive Model Components. Scandinavian Journal of Statistics.</p>
 <span class='no'>pl0</span> + <span class='fu'><a href='l_fitRaster.html'>l_fitRaster</a></span>() + <span class='fu'><a href='l_fitContour.html'>l_fitContour</a></span>() + <span class='fu'><a href='l_coordContour.html'>l_coordContour</a></span>() + <span class='fu'><a href='l_bound.html'>l_bound</a></span>()</div><div class='img'><img src='plotDiff.sos.smooth-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Plot p-values for significance of differences</span>
 <span class='no'>pl0</span> + <span class='fu'><a href='l_pvRaster.html'>l_pvRaster</a></span>() + <span class='fu'><a href='l_pvContour.html'>l_pvContour</a></span>(<span class='kw'>breaks</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>0.05</span>, <span class='fl'>0.1</span>, <span class='fl'>0.2</span>, <span class='fl'>0.3</span>, <span class='fl'>0.5</span>))</div><div class='img'><img src='plotDiff.sos.smooth-2.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><span class='co'># NOT RUN {</span>
 <span class='co'># Using scheme = 1</span>
 <span class='no'>pl1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='plotDiff.html'>plotDiff</a></span>(<span class='kw'>s1</span> <span class='kw'>=</span> <span class='fu'><a href='sm.html'>sm</a></span>(<span class='no'>bp</span>, <span class='fl'>1</span>), <span class='kw'>s2</span> <span class='kw'>=</span> <span class='fu'><a href='sm.html'>sm</a></span>(<span class='no'>bp</span>, <span class='fl'>2</span>), <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='fl'>1</span>)
-<span class='no'>pl1</span> + <span class='fu'><a href='l_fitRaster.html'>l_fitRaster</a></span>() + <span class='fu'><a href='l_fitContour.html'>l_fitContour</a></span>()</div><div class='img'><img src='plotDiff.sos.smooth-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='no'>pl1</span> + <span class='fu'><a href='l_fitRaster.html'>l_fitRaster</a></span>() + <span class='fu'><a href='l_fitContour.html'>l_fitContour</a></span>()
+
 <span class='co'># Plot p-values for significance of differences</span>
-<span class='no'>pl1</span> + <span class='fu'><a href='l_pvRaster.html'>l_pvRaster</a></span>() + <span class='fu'><a href='l_pvContour.html'>l_pvContour</a></span>(<span class='kw'>breaks</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>0.05</span>, <span class='fl'>0.1</span>, <span class='fl'>0.2</span>, <span class='fl'>0.3</span>, <span class='fl'>0.5</span>))</div><div class='img'><img src='plotDiff.sos.smooth-4.png' alt='' width='700' height='433' /></div></pre>
+<span class='no'>pl1</span> + <span class='fu'><a href='l_pvRaster.html'>l_pvRaster</a></span>() + <span class='fu'><a href='l_pvContour.html'>l_pvContour</a></span>(<span class='kw'>breaks</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>0.05</span>, <span class='fl'>0.1</span>, <span class='fl'>0.2</span>, <span class='fl'>0.3</span>, <span class='fl'>0.5</span>))
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

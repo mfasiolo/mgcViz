@@ -58,7 +58,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mgcViz</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.2</span>
       </span>
     </div>
 
@@ -82,6 +82,9 @@
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/mgcviz.html">mgcViz: visual tools for GAMs</a>
+    </li>
+    <li>
+      <a href="../articles/miscellanea.html">Miscellanea: things you can do in mgcViz</a>
     </li>
     <li>
       <a href="../articles/qgam_mgcViz.html">Quantile additive models using qgam and mgcViz</a>
@@ -215,6 +218,7 @@ Generalized Additive Model Components. Scandinavian Journal of Statistics.</p>
 <span class='co'># Plot one 2D slice</span>
 <span class='fu'>plot</span>( <span class='fu'><a href='sm.html'>sm</a></span>(<span class='no'>b</span>, <span class='fl'>1</span>), <span class='kw'>fix</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"z"</span><span class='kw'>=</span><span class='fl'>0</span>) ) + <span class='fu'><a href='l_fitRaster.html'>l_fitRaster</a></span>(<span class='kw'>noiseup</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>mul</span> <span class='kw'>=</span> <span class='fl'>3</span>) +
   <span class='fu'><a href='l_fitContour.html'>l_fitContour</a></span>(<span class='kw'>linetype</span> <span class='kw'>=</span> <span class='fl'>2</span>) + <span class='fu'><a href='l_points.html'>l_points</a></span>(<span class='kw'>shape</span> <span class='kw'>=</span>  <span class='fl'>2</span>)</div><div class='img'><img src='plot.mgcv.smooth.MD-1.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><span class='co'># NOT RUN {</span>
 <span class='co'>## 4D</span>
 <span class='no'>n</span> <span class='kw'>&lt;-</span> <span class='fl'>5e3</span>
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>rnorm</span>(<span class='no'>n</span>); <span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'>rnorm</span>(<span class='no'>n</span>); <span class='no'>z</span> <span class='kw'>&lt;-</span> <span class='fu'>rnorm</span>(<span class='no'>n</span>); <span class='no'>z2</span> <span class='kw'>&lt;-</span> <span class='fu'>rnorm</span>(<span class='no'>n</span>)
@@ -224,7 +228,8 @@ Generalized Additive Model Components. Scandinavian Journal of Statistics.</p>
 <span class='no'>b1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='getViz.html'>getViz</a></span>(<span class='no'>b1</span>)
 
 <span class='co'># Plot one 2D slice</span>
-<span class='fu'>plot</span>(<span class='fu'><a href='sm.html'>sm</a></span>(<span class='no'>b1</span>, <span class='fl'>1</span>), <span class='kw'>fix</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"z"</span><span class='kw'>=</span><span class='fl'>0</span>, <span class='st'>"z2"</span><span class='kw'>=</span><span class='fl'>1</span>)) + <span class='fu'><a href='l_fitRaster.html'>l_fitRaster</a></span>() + <span class='fu'><a href='l_fitContour.html'>l_fitContour</a></span>()</div><div class='img'><img src='plot.mgcv.smooth.MD-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>plot</span>(<span class='fu'><a href='sm.html'>sm</a></span>(<span class='no'>b1</span>, <span class='fl'>1</span>), <span class='kw'>fix</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"z"</span><span class='kw'>=</span><span class='fl'>0</span>, <span class='st'>"z2"</span><span class='kw'>=</span><span class='fl'>1</span>)) + <span class='fu'><a href='l_fitRaster.html'>l_fitRaster</a></span>() + <span class='fu'><a href='l_fitContour.html'>l_fitContour</a></span>()
+<span class='co'># }</span><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

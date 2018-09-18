@@ -58,7 +58,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mgcViz</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.2</span>
       </span>
     </div>
 
@@ -82,6 +82,9 @@
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/mgcviz.html">mgcViz: visual tools for GAMs</a>
+    </li>
+    <li>
+      <a href="../articles/miscellanea.html">Miscellanea: things you can do in mgcViz</a>
     </li>
     <li>
       <a href="../articles/qgam_mgcViz.html">Quantile additive models using qgam and mgcViz</a>
@@ -207,7 +210,7 @@ Generalized Additive Model Components. Scandinavian Journal of Statistics.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>mgcViz</span>)
 <span class='fu'>set.seed</span>(<span class='fl'>2</span>) <span class='co'>## simulate some data...</span>
-<span class='no'>dat</span> <span class='kw'>&lt;-</span> <span class='fu'>gamSim</span>(<span class='fl'>1</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>dist</span> <span class='kw'>=</span> <span class='st'>"normal"</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; Gu &amp; Wahba 4 term additive model</div><div class='input'><span class='no'>b</span> <span class='kw'>&lt;-</span> <span class='fu'>gam</span>(<span class='no'>y</span> ~ <span class='fu'>s</span>(<span class='no'>x0</span>) + <span class='fu'>s</span>(<span class='no'>x1</span>, <span class='no'>x2</span>) + <span class='fu'>s</span>(<span class='no'>x3</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>dat</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"REML"</span>)
+<span class='no'>dat</span> <span class='kw'>&lt;-</span> <span class='fu'>gamSim</span>(<span class='fl'>1</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>700</span>, <span class='kw'>dist</span> <span class='kw'>=</span> <span class='st'>"normal"</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; Gu &amp; Wahba 4 term additive model</div><div class='input'><span class='no'>b</span> <span class='kw'>&lt;-</span> <span class='fu'>gam</span>(<span class='no'>y</span> ~ <span class='fu'>s</span>(<span class='no'>x0</span>) + <span class='fu'>s</span>(<span class='no'>x1</span>, <span class='no'>x2</span>) + <span class='fu'>s</span>(<span class='no'>x3</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>dat</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"REML"</span>)
 <span class='no'>b</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='getViz.html'>getViz</a></span>(<span class='no'>b</span>)
 
 <span class='co'># Plot 2D effect with noised-up raster, contour and rug for design points </span>
@@ -221,8 +224,8 @@ Generalized Additive Model Components. Scandinavian Journal of Statistics.</p>
 <span class='co'># Quantile GAM example</span>
 <span class='co'>###</span>
 <span class='no'>b</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='mqgamV.html'>mqgamV</a></span>(<span class='no'>y</span> ~ <span class='fu'>s</span>(<span class='no'>x0</span>) + <span class='fu'>s</span>(<span class='no'>x1</span>, <span class='no'>x2</span>) + <span class='fu'>s</span>(<span class='no'>x3</span>), <span class='kw'>qu</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0.3</span>, <span class='fl'>0.7</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>dat</span>)</div><div class='output co'>#&gt; Estimating learning rate. Each dot corresponds to a loss evaluation. 
-#&gt; qu = 0.7............done 
-#&gt; qu = 0.3...............done </div><div class='input'>
+#&gt; qu = 0.7.........done 
+#&gt; qu = 0.3..............done </div><div class='input'>
 <span class='fu'>plot</span>(<span class='fu'><a href='sm.html'>sm</a></span>(<span class='no'>b</span>, <span class='fl'>2</span>)) + <span class='fu'><a href='l_fitRaster.html'>l_fitRaster</a></span>(<span class='kw'>noiseup</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) + <span class='fu'><a href='l_fitContour.html'>l_fitContour</a></span>(<span class='kw'>colour</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='img'><img src='plot.mgcv.smooth.2D-3.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>

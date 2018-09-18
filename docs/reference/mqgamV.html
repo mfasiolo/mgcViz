@@ -60,7 +60,7 @@ It is essentially a shortcut." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mgcViz</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.2</span>
       </span>
     </div>
 
@@ -84,6 +84,9 @@ It is essentially a shortcut." />
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/mgcviz.html">mgcViz: visual tools for GAMs</a>
+    </li>
+    <li>
+      <a href="../articles/miscellanea.html">Miscellanea: things you can do in mgcViz</a>
     </li>
     <li>
       <a href="../articles/qgam_mgcViz.html">Quantile additive models using qgam and mgcViz</a>
@@ -154,16 +157,15 @@ It is essentially a shortcut.</p>
 <span class='fu'>set.seed</span>(<span class='fl'>2</span>) <span class='co'>## simulate some data...</span>
 <span class='no'>dat</span> <span class='kw'>&lt;-</span> <span class='fu'>gamSim</span>(<span class='fl'>2</span>,<span class='kw'>n</span><span class='kw'>=</span><span class='fl'>500</span>,<span class='kw'>dist</span><span class='kw'>=</span><span class='st'>"normal"</span>,<span class='kw'>scale</span><span class='kw'>=</span><span class='fl'>0.25</span>)$<span class='no'>data</span></div><div class='output co'>#&gt; Bivariate smoothing example</div><div class='input'>
 <span class='co'># Fit GAM and get gamViz object</span>
-<span class='no'>b</span> <span class='kw'>&lt;-</span> <span class='fu'>mqgamV</span>(<span class='no'>y</span>~<span class='fu'>s</span>(<span class='no'>x</span>) + <span class='fu'>s</span>(<span class='no'>z</span>) + <span class='fu'>I</span>(<span class='no'>x</span>*<span class='no'>z</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>dat</span>, <span class='kw'>qu</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0.2</span>, <span class='fl'>0.4</span>, <span class='fl'>0.6</span>, <span class='fl'>0.8</span>),
+<span class='no'>b</span> <span class='kw'>&lt;-</span> <span class='fu'>mqgamV</span>(<span class='no'>y</span>~<span class='fu'>s</span>(<span class='no'>x</span>) + <span class='fu'>s</span>(<span class='no'>z</span>) + <span class='fu'>I</span>(<span class='no'>x</span>*<span class='no'>z</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>dat</span>, <span class='kw'>qu</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0.25</span>, <span class='fl'>0.5</span>, <span class='fl'>0.75</span>),
             <span class='kw'>aQgam</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>argGam</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>select</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)), <span class='kw'>aViz</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='st'>"nsim"</span> <span class='kw'>=</span> <span class='fl'>0</span>))</div><div class='output co'>#&gt; Estimating learning rate. Each dot corresponds to a loss evaluation. 
-#&gt; qu = 0.4................done 
-#&gt; qu = 0.6..........done 
-#&gt; qu = 0.2............done 
-#&gt; qu = 0.8....................done </div><div class='input'>
+#&gt; qu = 0.5..........done 
+#&gt; qu = 0.25.........done 
+#&gt; qu = 0.75...........done </div><div class='input'>
 <span class='co'># This is equivalent to doing</span>
 <span class='co'># 1. Fit QGAM</span>
 <span class='co'># b &lt;- mqgam(y~s(x) + s(z) + I(x*z), data=dat, </span>
-<span class='co'>#            qu = c(0.2, 0.4, 0.6, 0.8), argGam = list(select = TRUE))</span>
+<span class='co'>#            qu = c(0.25, 0.5, 0.75), argGam = list(select = TRUE))</span>
 <span class='co'># 2. Convert to gamViz object</span>
 <span class='co'># b &lt;- getViz(b, nsim = 0)</span>
 

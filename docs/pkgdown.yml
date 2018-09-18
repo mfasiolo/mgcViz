@@ -3,5 +3,6 @@ pkgdown: 1.0.0
 pkgdown_sha: ~
 articles:
   mgcviz: mgcviz.html
+  miscellanea: miscellanea.html
   qgam_mgcViz: qgam_mgcViz.html
 

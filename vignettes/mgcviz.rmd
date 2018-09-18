@@ -10,7 +10,9 @@ vignette: >
 
 ```{r setup, include=FALSE}
 library(knitr)
+library(rgl)
 opts_chunk$set(out.extra='style="display:block; margin: auto"', fig.align="center", tidy=FALSE)
+knit_hooks$set(webgl = hook_webgl)
 ```
 
 The `mgcViz` R package offers visual tools for Generalized Additive Models (GAMs). The visualizations provided by `mgcViz` differs from those implemented in `mgcv`, in that most of the plots are based on `ggplot2`'s powerful layering system. This has been implemented by wrapping several `ggplot2` layers and integrating them with computations specific to GAM models. Further, `mgcViz` uses binning and/or sub-sampling to produce plots that can scale to large datasets ($n \approx 10^7$), and offers a variety of new methods for visual model checking/selection.
@@ -156,7 +158,7 @@ plot(b, allTerms = TRUE, select = 4) + geom_hline(yintercept = 0)
 `mgcViz` provides tools for generating interactive plots of multidimensional smooths
 via the `rgl` R package. Here is an example where we are plotting a 2D slice of 
 a 3D smooth effect, with confidence surfaces:
-```{r 16, warning = F}
+```{r 16, warning = F, webgl=TRUE}
 library(mgcViz)
 n <- 500
 x <- rnorm(n); y <- rnorm(n); z <- rnorm(n)
@@ -164,7 +166,6 @@ ob <- (x-z)^2 + (y-z)^2 + rnorm(n)
 b <- gam(ob ~ s(x, y, z))
 b <- getViz(b)
 
-# This will not appear in the .pdf or .html document, but do try it!
 plotRGL(sm(b, 1), fix = c("z" = 0), residuals = TRUE)
 ```
 
@@ -173,10 +174,7 @@ The `fix` argument is used to determine where the 3D effect should be sliced alo
 aspect3d(1, 2, 1)
 ```
 
-We then close the window using:
-```{r 18}
-rgl.close()
-```
+We then close the window using `rgl.close()`.
 
 ## 2 Model checking
 
@@ -465,7 +463,7 @@ pl + l_fitRaster() + l_fitContour() + l_points() + l_rug()
 References
 ==========
   
-  -   Buuren, S. v. and Fredriks, M. (2001) Worm plot: a simple diagnostic device for modelling
+-   Buuren, S. v. and Fredriks, M. (2001) Worm plot: a simple diagnostic device for modelling
 growth reference curves, Statistics in medicine, 20, 1259–1277.
 
 -   Murdoch, D. (2001) Rgl: An r interface to opengl, in Proceedings of DSC, p. 2.

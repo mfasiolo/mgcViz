@@ -60,7 +60,7 @@ can be plotted by adding layers." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mgcViz</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.2</span>
       </span>
     </div>
 
@@ -84,6 +84,9 @@ can be plotted by adding layers." />
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/mgcviz.html">mgcViz: visual tools for GAMs</a>
+    </li>
+    <li>
+      <a href="../articles/miscellanea.html">Miscellanea: things you can do in mgcViz</a>
     </li>
     <li>
       <a href="../articles/qgam_mgcViz.html">Quantile additive models using qgam and mgcViz</a>
@@ -183,6 +186,7 @@ then a subsample of <code>maxpo</code> points will be taken.</p></td>
 <span class='co'># heteroscedasticity is clearly visible</span>
 <span class='no'>b</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='getViz.html'>getViz</a></span>(<span class='no'>b</span>, <span class='kw'>nsim</span> <span class='kw'>=</span> <span class='fl'>50</span>)
 <span class='fu'>check1D</span>(<span class='no'>b</span>, <span class='st'>"x"</span>) + <span class='fu'><a href='l_gridCheck1D.html'>l_gridCheck1D</a></span>(<span class='kw'>gridFun</span> <span class='kw'>=</span> <span class='no'>sd</span>, <span class='kw'>show.reps</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='img'><img src='check1D-3.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><span class='co'># NOT RUN {</span>
 <span class='co'># This also works with factor or logical data</span>
 <span class='no'>fac</span> <span class='kw'>&lt;-</span> <span class='fu'>sample</span>(<span class='no'>letters</span>, <span class='no'>n</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='no'>logi</span> <span class='kw'>&lt;-</span> <span class='fu'>sample</span>(<span class='fu'>c</span>(<span class='fl'>TRUE</span>, <span class='fl'>FALSE</span>), <span class='no'>n</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
@@ -191,10 +195,14 @@ then a subsample of <code>maxpo</code> points will be taken.</p></td>
 
 <span class='co'># Look along "fac"</span>
 <span class='no'>ck</span> <span class='kw'>&lt;-</span> <span class='fu'>check1D</span>(<span class='no'>b</span>, <span class='st'>"fac"</span>)
-<span class='no'>ck</span> + <span class='fu'><a href='l_points.html'>l_points</a></span>() + <span class='fu'><a href='l_rug.html'>l_rug</a></span>()</div><div class='img'><img src='check1D-4.png' alt='' width='700' height='433' /></div><div class='input'><span class='no'>ck</span> + <span class='fu'><a href='l_gridCheck1D.html'>l_gridCheck1D</a></span>(<span class='kw'>gridFun</span> <span class='kw'>=</span> <span class='no'>sd</span>)</div><div class='img'><img src='check1D-5.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='no'>ck</span> + <span class='fu'><a href='l_points.html'>l_points</a></span>() + <span class='fu'><a href='l_rug.html'>l_rug</a></span>()
+<span class='no'>ck</span> + <span class='fu'><a href='l_gridCheck1D.html'>l_gridCheck1D</a></span>(<span class='kw'>gridFun</span> <span class='kw'>=</span> <span class='no'>sd</span>)
+
 <span class='co'># Look along "logi"</span>
 <span class='no'>ck</span> <span class='kw'>&lt;-</span> <span class='fu'>check1D</span>(<span class='no'>b</span>, <span class='st'>"logi"</span>)
-<span class='no'>ck</span> + <span class='fu'><a href='l_points.html'>l_points</a></span>() + <span class='fu'><a href='l_rug.html'>l_rug</a></span>()</div><div class='img'><img src='check1D-6.png' alt='' width='700' height='433' /></div><div class='input'><span class='no'>ck</span> + <span class='fu'><a href='l_gridCheck1D.html'>l_gridCheck1D</a></span>(<span class='kw'>gridFun</span> <span class='kw'>=</span> <span class='no'>sd</span>)</div><div class='img'><img src='check1D-7.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='no'>ck</span> + <span class='fu'><a href='l_points.html'>l_points</a></span>() + <span class='fu'><a href='l_rug.html'>l_rug</a></span>()
+<span class='no'>ck</span> + <span class='fu'><a href='l_gridCheck1D.html'>l_gridCheck1D</a></span>(<span class='kw'>gridFun</span> <span class='kw'>=</span> <span class='no'>sd</span>)
+<span class='co'># }</span><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

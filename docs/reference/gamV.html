@@ -60,7 +60,7 @@ It is essentially a shortcut." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mgcViz</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.2</span>
       </span>
     </div>
 
@@ -84,6 +84,9 @@ It is essentially a shortcut." />
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/mgcviz.html">mgcViz: visual tools for GAMs</a>
+    </li>
+    <li>
+      <a href="../articles/miscellanea.html">Miscellanea: things you can do in mgcViz</a>
     </li>
     <li>
       <a href="../articles/qgam_mgcViz.html">Quantile additive models using qgam and mgcViz</a>
@@ -174,7 +177,7 @@ It is essentially a shortcut.</p>
 <span class='co'># Simulate data</span>
 <span class='fu'>library</span>(<span class='no'>mgcViz</span>)
 <span class='fu'>set.seed</span>(<span class='fl'>2</span>) <span class='co'>## simulate some data...</span>
-<span class='no'>dat</span> <span class='kw'>&lt;-</span> <span class='fu'>gamSim</span>(<span class='fl'>1</span>,<span class='kw'>n</span><span class='kw'>=</span><span class='fl'>10000</span>,<span class='kw'>dist</span><span class='kw'>=</span><span class='st'>"normal"</span>,<span class='kw'>scale</span><span class='kw'>=</span><span class='fl'>2</span>)</div><div class='output co'>#&gt; Gu &amp; Wahba 4 term additive model</div><div class='input'>
+<span class='no'>dat</span> <span class='kw'>&lt;-</span> <span class='fu'>gamSim</span>(<span class='fl'>1</span>,<span class='kw'>n</span><span class='kw'>=</span><span class='fl'>2000</span>,<span class='kw'>dist</span><span class='kw'>=</span><span class='st'>"normal"</span>,<span class='kw'>scale</span><span class='kw'>=</span><span class='fl'>2</span>)</div><div class='output co'>#&gt; Gu &amp; Wahba 4 term additive model</div><div class='input'>
 <span class='co'># Fit using bam() and get gamViz object</span>
 <span class='no'>b</span> <span class='kw'>&lt;-</span> <span class='fu'>bamV</span>(<span class='no'>y</span>~<span class='fu'>s</span>(<span class='no'>x0</span>)+<span class='fu'>s</span>(<span class='no'>x1</span>, <span class='no'>x2</span>)+<span class='fu'>s</span>(<span class='no'>x3</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>dat</span>,
           <span class='kw'>aGam</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>discrete</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>), <span class='kw'>aViz</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='st'>"nsim"</span> <span class='kw'>=</span> <span class='fl'>0</span>))

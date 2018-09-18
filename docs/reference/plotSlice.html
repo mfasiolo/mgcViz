@@ -59,7 +59,7 @@ and to plot the resulting sequence of 2D slices in an array of plots." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mgcViz</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.2</span>
       </span>
     </div>
 
@@ -83,6 +83,9 @@ and to plot the resulting sequence of 2D slices in an array of plots." />
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/mgcviz.html">mgcViz: visual tools for GAMs</a>
+    </li>
+    <li>
+      <a href="../articles/miscellanea.html">Miscellanea: things you can do in mgcViz</a>
     </li>
     <li>
       <a href="../articles/qgam_mgcViz.html">Quantile additive models using qgam and mgcViz</a>
@@ -159,7 +162,8 @@ called when <code>fix</code> contains one vector, the latter when <code>fix</cod
     <pre class="examples"><div class='input'><span class='co'>### Example 1: plotting slices of 3D smooth</span>
 <span class='co'># Simulate data and fit GAM</span>
 <span class='fu'>library</span>(<span class='no'>mgcViz</span>)
-<span class='no'>n</span> <span class='kw'>&lt;-</span> <span class='fl'>1e3</span>
+<span class='fu'>set.seed</span>(<span class='fl'>414</span>)
+<span class='no'>n</span> <span class='kw'>&lt;-</span> <span class='fl'>600</span>
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>rnorm</span>(<span class='no'>n</span>); <span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'>rnorm</span>(<span class='no'>n</span>); <span class='no'>z</span> <span class='kw'>&lt;-</span> <span class='fu'>rnorm</span>(<span class='no'>n</span>)
 <span class='no'>ob</span> <span class='kw'>&lt;-</span> (<span class='no'>x</span>-<span class='no'>z</span>)^<span class='fl'>2</span> + (<span class='no'>y</span>-<span class='no'>z</span>)^<span class='fl'>2</span> + <span class='fu'>rnorm</span>(<span class='no'>n</span>)
 <span class='no'>b</span> <span class='kw'>&lt;-</span> <span class='fu'>gam</span>(<span class='no'>ob</span> ~ <span class='fu'>s</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='no'>z</span>))
@@ -169,11 +173,13 @@ called when <code>fix</code> contains one vector, the latter when <code>fix</cod
 <span class='no'>pl</span> <span class='kw'>&lt;-</span> <span class='fu'>plotSlice</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='sm.html'>sm</a></span>(<span class='no'>v</span>, <span class='fl'>1</span>),
                 <span class='kw'>fix</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='st'>"z"</span> <span class='kw'>=</span> <span class='fu'>seq</span>(-<span class='fl'>2</span>, <span class='fl'>2</span>, <span class='kw'>length.out</span> <span class='kw'>=</span> <span class='fl'>9</span>)))
 <span class='no'>pl</span> + <span class='fu'><a href='l_fitRaster.html'>l_fitRaster</a></span>() + <span class='fu'><a href='l_fitContour.html'>l_fitContour</a></span>() + <span class='fu'><a href='l_points.html'>l_points</a></span>() + <span class='fu'><a href='l_rug.html'>l_rug</a></span>()</div><div class='img'><img src='plotSlice-1.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><span class='co'># NOT RUN {</span>
 <span class='co'># Over-ride default layout</span>
 <span class='no'>pl</span> <span class='kw'>&lt;-</span> <span class='fu'>plotSlice</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='sm.html'>sm</a></span>(<span class='no'>v</span>, <span class='fl'>1</span>),
                 <span class='kw'>fix</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='st'>"z"</span> <span class='kw'>=</span> <span class='fu'>seq</span>(-<span class='fl'>2</span>, <span class='fl'>2</span>, <span class='kw'>length.out</span> <span class='kw'>=</span> <span class='fl'>9</span>)),
                 <span class='kw'>a.facet</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>))
-<span class='no'>pl</span> + <span class='fu'><a href='l_fitRaster.html'>l_fitRaster</a></span>() + <span class='fu'><a href='l_fitContour.html'>l_fitContour</a></span>() + <span class='fu'>theme</span>(<span class='kw'>panel.spacing</span> <span class='kw'>=</span> <span class='fu'>unit</span>(<span class='fl'>0.5</span>, <span class='st'>"lines"</span>))</div><div class='img'><img src='plotSlice-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='no'>pl</span> + <span class='fu'><a href='l_fitRaster.html'>l_fitRaster</a></span>() + <span class='fu'><a href='l_fitContour.html'>l_fitContour</a></span>() + <span class='fu'>theme</span>(<span class='kw'>panel.spacing</span> <span class='kw'>=</span> <span class='fu'>unit</span>(<span class='fl'>0.5</span>, <span class='st'>"lines"</span>))
+
 <span class='co'>### Example 2: plotting slices of 4D smooth</span>
 <span class='co'># Simulate data and fit GAM</span>
 <span class='no'>n</span> <span class='kw'>&lt;-</span> <span class='fl'>5e3</span>
@@ -185,11 +191,13 @@ called when <code>fix</code> contains one vector, the latter when <code>fix</cod
 <span class='co'># Plot slices across "z" and "x"</span>
 <span class='no'>pl</span> <span class='kw'>&lt;-</span> <span class='fu'>plotSlice</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='sm.html'>sm</a></span>(<span class='no'>v</span>, <span class='fl'>1</span>),
                 <span class='kw'>fix</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='st'>"z"</span> <span class='kw'>=</span> <span class='fu'>seq</span>(-<span class='fl'>2</span>, <span class='fl'>2</span>, <span class='kw'>length.out</span> <span class='kw'>=</span> <span class='fl'>3</span>), <span class='st'>"x"</span> <span class='kw'>=</span> <span class='fu'>c</span>(-<span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>1</span>)))
-<span class='no'>pl</span> + <span class='fu'><a href='l_fitRaster.html'>l_fitRaster</a></span>() + <span class='fu'><a href='l_fitContour.html'>l_fitContour</a></span>() + <span class='fu'><a href='l_points.html'>l_points</a></span>() + <span class='fu'><a href='l_rug.html'>l_rug</a></span>()</div><div class='img'><img src='plotSlice-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='no'>pl</span> + <span class='fu'><a href='l_fitRaster.html'>l_fitRaster</a></span>() + <span class='fu'><a href='l_fitContour.html'>l_fitContour</a></span>() + <span class='fu'><a href='l_points.html'>l_points</a></span>() + <span class='fu'><a href='l_rug.html'>l_rug</a></span>()
+
 <span class='co'># Plot slices across "x", keeping "z" fixed</span>
 <span class='no'>pl</span> <span class='kw'>&lt;-</span> <span class='fu'>plotSlice</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='sm.html'>sm</a></span>(<span class='no'>v</span>, <span class='fl'>1</span>),
                 <span class='kw'>fix</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='st'>"z"</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='st'>"x"</span> <span class='kw'>=</span> <span class='fu'>seq</span>(-<span class='fl'>3</span>, <span class='fl'>3</span>, <span class='kw'>length.out</span> <span class='kw'>=</span> <span class='fl'>9</span>)))
-<span class='no'>pl</span> + <span class='fu'><a href='l_fitRaster.html'>l_fitRaster</a></span>() + <span class='fu'><a href='l_fitContour.html'>l_fitContour</a></span>() + <span class='fu'><a href='l_points.html'>l_points</a></span>() + <span class='fu'><a href='l_rug.html'>l_rug</a></span>()</div><div class='img'><img src='plotSlice-4.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='no'>pl</span> + <span class='fu'><a href='l_fitRaster.html'>l_fitRaster</a></span>() + <span class='fu'><a href='l_fitContour.html'>l_fitContour</a></span>() + <span class='fu'><a href='l_points.html'>l_points</a></span>() + <span class='fu'><a href='l_rug.html'>l_rug</a></span>()
+<span class='co'># }</span><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
