@@ -43,7 +43,7 @@
   if (method == "simul2"){
     CI <- "none" # CI do not make sense with this method
     fam <- fix.family.qf(o$family)
-    ix <- frankv(D) # Or should this be 1:n??
+    ix <- 1:n # 1:n was frank(D), but according to mgcv::qq.gam we only need 1:n
     U <- (ix - 0.5)/n
     if (!is.null(fam$qf)) { # If CDF not available use first method
       dm <- list()

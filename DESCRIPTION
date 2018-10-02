@@ -12,19 +12,11 @@ Depends:
     ggplot2,
     rgl
 Imports:
-    shiny,
     matrixStats,
     viridis,
-    colourpicker,
-    miniUI,
-    rstudioapi,
-    plotly,
     GGally,
     KernSmooth,
-    data.table,
-    dplyr,
     gridExtra,
-    mvnfast,
     plyr
 Suggests:
     knitr,

@@ -60,8 +60,7 @@
 #' plot(sm(b1, 1), fix = c("z"=0, "z2"=1)) + l_fitRaster() + l_fitContour()
 #'
 #' @rdname plot.mgcv.smooth.MD
-#' @importFrom mvnfast maha
-#' @importFrom stats cov quantile
+#' @importFrom stats cov quantile mahalanobis
 #' @export plot.mgcv.smooth.MD
 #' @export
 #' 

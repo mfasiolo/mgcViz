@@ -61,7 +61,6 @@
 #' a + l_gridCheck2D(gridFun = sd, bw = c(1, 4)) + l_rug() + l_points() 
 #' 
 #' @rdname check2D
-#' @importFrom dplyr filter sample_n
 #' @export check2D
 #' 
 check2D <- function(o, x1, x2, type = "auto", maxpo = 1e4, na.rm = TRUE)

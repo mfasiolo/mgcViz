@@ -101,7 +101,7 @@ plot.mgcv.smooth.1D <- function(x, n = 100, xlim = NULL, maxpo = 1e4, trans = id
     }
     
     # Exclude residuals falling outside boundaries
-    .dat$res <- filter(res, x >= P$xlim[1] & x <= P$xlim[2])
+    .dat$res <- res[res$x >= P$xlim[1] & res$x <= P$xlim[2], , drop = FALSE]
 
     # Sample if too many points (> maxpo)  
     nres <- nrow( .dat$res )

@@ -8,7 +8,8 @@
   allTerms = FALSE, ...)
 }
 \arguments{
-\item{x}{an object of class \code{mgamViz}, the output of a \link{getViz} call.}
+\item{x}{an object of class \code{mgamViz}, the output of a \link{getViz} call. Alternatively x can
+be a list of fitted GAM models, each having the same model formula.}
 
 \item{n}{number of points used for each 1-d plot. For a nice smooth plot
 this needs to be several times the estimated degrees of freedom for the smooth.}

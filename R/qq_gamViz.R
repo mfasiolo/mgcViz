@@ -47,7 +47,6 @@
 #' @import ggplot2
 #' @importFrom stats residuals sd qnorm dnorm qbeta approx var predict
 #' @importFrom mgcv fix.family.qf fix.family.rd
-#' @importFrom data.table frankv
 #' @importFrom matrixStats rowSds rowOrderStats
 #' @return An object of class \code{c("qqGam", "plotSmooth", "gg")}.
 #' @export qq.gamViz

@@ -38,7 +38,7 @@
     # far from X-Y plane (the slice of interest)
     if (is.na(too.far[2]) || too.far[2] > 0) {
       tmp <- sapply(ov, function(.nm) as.numeric(data[.nm][[1]])) 
-      tmp <- sqrt(maha(tmp, fix, diag(diag(cov(tmp)), ncol(tmp)))) # Euclidean distance
+      tmp <- sqrt(mahalanobis(tmp, fix, diag(diag(cov(tmp)), ncol(tmp)))) # Euclidean distance
       exclude2 <- tmp > if( is.na(too.far[2]) ){ quantile(tmp, 0.1) } else { too.far[2] } 
     } else { 
       exclude2 <- FALSE

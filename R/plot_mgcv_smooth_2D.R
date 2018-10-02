@@ -102,8 +102,8 @@ plot.mgcv.smooth.2D <- function(x, n = 40, xlim = NULL, ylim = NULL, maxpo = 1e4
     }
     
     # Exclude residuals falling outside boundaries
-    .dat$res <- filter(P$raw, x >= P$xlim[1] & x <= P$xlim[2] & 
-                              y >= P$ylim[1] & y <= P$ylim[2] )
+    .dat$res <- P$raw[P$raw$x >= P$xlim[1] & P$raw$x <= P$xlim[2] & 
+                      P$raw$y >= P$ylim[1] & P$raw$y <= P$ylim[2] , , drop = FALSE]
   
     # Sample if too many points (> maxpo) 
     nres <- nrow( .dat$res )

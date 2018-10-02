@@ -11,17 +11,6 @@
 zoom <- function(o, ...) UseMethod("zoom")
 
 #'
-#' Generic shine function
-#'
-#' @description Generic function for taking an object and transforming it into a \code{shiny} app.
-#' @param o the object we want to transform into a \code{shiny} app.
-#' @param ... arguments to be passed to methods.
-#' @seealso shine.qqGam
-#' @rdname shine
-#' @export shine
-shine <- function(o, ...) UseMethod("shine")
-
-#'
 #' Generic RGL plotting function
 #'
 #' @description Generic function for producing an interactive RGL plot.

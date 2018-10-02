@@ -85,7 +85,7 @@ plot.ptermNumeric <- function(x, n = 100, xlim = NULL, maxpo = 1e4, trans = iden
   }
   
   # Exclude residuals falling outside boundaries
-  .dat$res <- filter(.dat$res, x >= xlim[1] & x <= xlim[2])
+  .dat$res <- .dat$res[.dat$res$x >= xlim[1] & .dat$res$x <= xlim[2], , drop = FALSE]
   
   # Sample if too many points (> maxpo)  
   nres <- nrow( .dat$res )
