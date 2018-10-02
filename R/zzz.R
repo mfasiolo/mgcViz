@@ -8,7 +8,7 @@
       c("x", "x", "y", "z", "sx", "sy", 
         "resx", "resy", "id", "response", "uci", "lci", "d", 
         "tz", "ty", "gx", "gy", "gid", "ll", "ul", "lo", "la", 
-        "qu")
+        "qu", "p")
     )
   invisible()
 }
