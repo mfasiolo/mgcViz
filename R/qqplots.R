@@ -30,11 +30,6 @@
 #' stats::qqnorm(y)
 #' qqnorm(y)
 #' 
-#' # You can also convert ggplot2 graphs to interactive plots with
-#' # library(plotly)
-#' # ggplotly() function. Use with caution.
-#' # ggplotly(qqnorm(y) + theme_minimal())
-#' 
 #' # Compare new and old version of qqplot
 #' x <- rt(200, df = 5)
 #' y <- rt(300, df = 5)
