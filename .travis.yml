@@ -3,9 +3,9 @@
 language: R
 sudo: false
 cache: packages
-warnings_are_errors: false
+warnings_are_errors: true
 notifications:
-  email: false
+  email: true
 before_install:
   - Rscript -e 'install.packages("mgcv", lib="/home/travis/R-bin/lib/R/library/")'
 #r_github_packages: 
