@@ -77,12 +77,12 @@ we can do
 plot(sm(b, 1)) + l_fitRaster() + l_fitContour() + l_points()
 ```
 
-This can be converted to an interactive `plotly` plot as follows:
-```{r 8, eval = FALSE}
-# Cannot run this when building the pdf for this vignette, but do try it!
-library(plotly)
-ggplotly( plot(sm(b, 1)) + l_fitRaster() + l_points() + l_fitContour()  )
-```
+<!-- This can be converted to an interactive `plotly` plot as follows: -->
+<!-- ```{r 8, eval = FALSE} -->
+<!-- # Cannot run this when building the pdf for this vignette, but do try it! -->
+<!-- library(plotly) -->
+<!-- ggplotly( plot(sm(b, 1)) + l_fitRaster() + l_points() + l_fitContour()  ) -->
+<!-- ``` -->
 
 We can extract the parametric effect `x3` using the `pterm` function (which is
 the parametric equivalent of `sm`). We can then plot the two effects on a grid using

@@ -17,7 +17,9 @@ Imports:
     GGally,
     KernSmooth,
     gridExtra,
-    plyr
+    plyr,
+    shiny,
+    miniUI
 Suggests:
     knitr,
     rmarkdown,
