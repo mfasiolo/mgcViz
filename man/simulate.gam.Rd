@@ -5,7 +5,7 @@
 \title{Simulating responses from a GAM object}
 \usage{
 \method{simulate}{gam}(object, nsim = 1, seed = NULL, method = "auto",
-  u = NULL, ...)
+  newdata = NULL, u = NULL, w = NULL, ...)
 }
 \arguments{
 \item{object}{the output of a \code{gam()} or \code{bam()} call.}
@@ -19,8 +19,13 @@ will be used, if available. If set to "qf" then \code{o$family$qf()} (which is
 the inverse cdf of the response distribution) will be used to transform some
 uniform variates.}
 
+\item{newdata}{Optional new data frame or list to be passed to \link{predict.gam}.}
+
 \item{u}{a matrix where each row is a vector of uniform random variables in (0, 1).
 This will be used to simulate responses only if \code{method = "qf"}.}
+
+\item{w}{vector of prior weights to be used in the simulations. If \code{newdata==NULL} then
+\code{w} is set to \code{object$prior.weights} otherwise it is a vector of ones.}
 
 \item{...}{currently not used.}
 }
