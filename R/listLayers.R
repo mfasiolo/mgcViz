@@ -43,7 +43,7 @@ listLayers <- function(o){
   out <- switch(ty, 
                 # Smooth effects plots
                 "fs1D" = c("l_fitLine"),
-                "1D" = c("l_ciLine", "l_ciPoly", "l_fitLine", "l_dens", "l_points", "l_rug"),
+                "1D" = c("l_ciLine", "l_ciPoly", "l_fitLine", "l_dens", "l_points", "l_rug", "l_simLine"),
                 "Multi1D" = c("l_fitLine", "l_rug"),
                 "2D" = c("l_fitContour", "l_fitRaster", "l_dens", "l_points", "l_rug"), 
                 "MD" = c("l_fitContour", "l_fitRaster", "l_dens", "l_points", "l_rug"), 

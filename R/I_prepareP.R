@@ -2,7 +2,7 @@
 # Prepares P list, smooth (sm) and
 .prepareP <- function(o, unconditional, residuals, resDen, se, se.mult,
                       n, n2, xlab, ylab, main, ylim, xlim, too.far, 
-                      seWithMean, ...) {
+                      seWithMean, nsim = 0, ...) {
   
   Q <- .initialize(o = o, unconditional = unconditional, residuals = residuals, 
                    se.mult = se.mult, resDen = resDen, se = se)
@@ -24,6 +24,7 @@
                 fitSmooth = Q$fv.terms,
                 w.resid = Q$w.resid, 
                 resDen = resDen, 
+                nsim = nsim,
                 ...)
   
   P$doPlotResid <- Q$partial.resids

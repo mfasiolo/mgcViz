@@ -53,7 +53,7 @@
                      ylim, xlim, too.far,
                      se1.mult, se2.mult,
                      seWithMean, fitSmooth, w.resid,
-                     resDen, ...) {
+                     resDen, nsim, ...) {
   first <- sm$first.para
   last  <- sm$last.para
   edf   <- sum(x$edf[first:last]) ## Effective DoF for this term
@@ -92,10 +92,11 @@
             X1 <- X1 / meanL1
           }
           X1[, first:last] <- P$X
+          if( nsim > 0 ){ P$simF <- drop(P$fit) + X1 %*% t(rmvn(nsim, numeric(ncol(x$Vp)), x$Vp)) }
           se.fit <- sqrt(pmax(0, rowSums((X1 %*% x$Vp) * X1)))
-        } else {
-          se.fit <- ## se in centred (or anyway unconstained) space only
-            sqrt(pmax(0, rowSums((P$X %*% x$Vp[first:last, first:last, drop = FALSE]) * P$X)))
+        } else { ## se in centred (or anyway unconstrained) space only
+          if( nsim > 0 ){ P$simF <- drop(P$fit) + P$X %*% t(rmvn(nsim, numeric(length(p)), x$Vp[first:last, first:last, drop = FALSE])) }
+          se.fit <- sqrt(pmax(0, rowSums((P$X %*% x$Vp[first:last, first:last, drop = FALSE]) * P$X)))
         }
         if (!is.null(P$exclude)) {
           P$se.fit[P$exclude] <- NA

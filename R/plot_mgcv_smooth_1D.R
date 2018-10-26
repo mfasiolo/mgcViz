@@ -21,6 +21,8 @@
 #'                   relates purely to the centred smooth itself. Marra and Wood (2012) suggests 
 #'                   that TRUE results in better coverage performance, and this is also suggested 
 #'                   by simulation.
+#' @param nsim number of smooth effect curves to be simulated from the posterior distribution. 
+#'             These can be plotted using the \link{l_simLine} layer. See Examples section below.  
 #' @param ... currently unused.
 #' @return An objects of class \code{plotSmooth}.
 #' @references Marra, G and S.N. Wood (2012) Coverage Properties of Confidence Intervals for 
@@ -32,14 +34,13 @@
 #' x2 <- rnorm(n)
 #' dat <- data.frame("x1" = x1, "x2" = x2,
 #'                   "y" = sin(x1) + 0.5 * x2^2 + pmax(x2, 0.2) * rnorm(n))
-#' b <- bam(y ~ s(x1)+s(x2), data = dat, method = "fREML", discrete = TRUE)
-#' b <- getViz(b)
+#' b <- bamV(y ~ s(x1)+s(x2), data = dat, method = "fREML", aGam = list(discrete = TRUE))
 #' 
-#' o <- plot( sm(b, 1) ) 
+#' o <- plot(sm(b, 1), nsim = 50) # 50 posterior simulations 
 #' 
-#' # Plot with fitted effect + rug on both axis
-#' ( o <- o + l_fitLine(colour = "red") + 
-#'     l_rug(mapping = aes(x=x, y=y), alpha = 0.8) )
+#' # Plot with fitted effect + posterior simulations + rug on x axis
+#' ( o <- o + l_simLine() + l_fitLine(colour = "red") + 
+#'        l_rug(alpha = 0.8) )
 #' 
 #' # Add CI lines at 1*sigma and 5*sigma
 #' ( o <- o + l_ciLine(mul = 1) + l_ciLine(mul = 5, colour = "blue", linetype = 2) )
@@ -71,13 +72,13 @@
 #' @export
 #' 
 plot.mgcv.smooth.1D <- function(x, n = 100, xlim = NULL, maxpo = 1e4, trans = identity, 
-                                unconditional = FALSE, seWithMean = FALSE, ...) {
+                                unconditional = FALSE, seWithMean = FALSE, nsim = 0, ...) {
   
   # 1) Prepare data
   P <- .prepareP(o = x, unconditional = unconditional, residuals = TRUE, 
                  resDen = "none", se = TRUE, se.mult = 1, n = n, n2 = NULL,  
                  xlab = NULL, ylab = NULL, main = NULL, ylim = NULL, xlim = xlim,
-                 too.far = NULL, seWithMean = seWithMean)
+                 too.far = NULL, seWithMean = seWithMean, nsim = nsim)
   
   # 2) Produce output object
   out <- .plot.mgcv.smooth.1D(x = P$smooth, P = P, trans = trans, maxpo = maxpo)
@@ -112,11 +113,17 @@ plot.mgcv.smooth.1D <- function(x, n = 100, xlim = NULL, maxpo = 1e4, trans = id
     }
   }
   
-  # base plot ----
   .dat$fit <- data.frame(x = P$x,                  # x values
                          y = P$fit,                # fitted values
                          ty = trans( P$fit ),      # fitted values after trans
                          se = P$se)                # standard error
+  
+  if( !is.null(P$simF) ){
+    nsim <- ncol(P$simF)
+   .dat$sim <- data.frame("x" = rep(P$x, nsim), 
+                          "ty" = trans(as.vector(P$simF)), 
+                          "id" = as.factor(rep(1:nsim, each = nrow(P$simF))))
+  }
   
   .dat$misc <- list("trans" = trans)  
   
