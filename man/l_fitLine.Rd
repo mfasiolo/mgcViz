@@ -13,7 +13,7 @@ l_fitLine(...)
 An object of class \code{gamLayer}.
 }
 \description{
-This layes add lines representing a single or a group of
+This layer add lines representing a single or a group of
 parametric or smooth 1D effects.
 }
 \details{
