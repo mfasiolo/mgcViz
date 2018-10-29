@@ -1,7 +1,7 @@
 #'
 #' Add fitted smooth effect curve
 #' 
-#' @description This layes add lines representing a single or a group of 
+#' @description This layer add lines representing a single or a group of 
 #'              parametric or smooth 1D effects.
 #'
 #' @param ... graphical arguments to be passed to \code{ggplot2::geom_line}.
