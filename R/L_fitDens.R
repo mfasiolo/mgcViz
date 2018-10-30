@@ -10,7 +10,8 @@
 #'              width of the y-axis.
 #' @param trans monotonic function to be applied to the density of the fit, which determines colour of 
 #'              the plot. Monotonicity is not checked.  
-#' @detail See Bowman (2018) for explanations about the advantages of density strips, relative
+#' @param ... further arguments to be passed to \code{ggplot2::geom_raster}.
+#' @details See Bowman (2018) for explanations about the advantages of density strips, relative
 #'         to plots including the mean fit + confidence intervals.
 #' @references Bowman, D. W (2018). Graphics for uncertainty. Journal of the Royal Statistical Society: Series A.
 #' @return An object of class gamLayer.   

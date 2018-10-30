@@ -15,6 +15,8 @@ width of the y-axis.}
 
 \item{trans}{monotonic function to be applied to the density of the fit, which determines colour of
 the plot. Monotonicity is not checked.}
+
+\item{...}{further arguments to be passed to \code{ggplot2::geom_raster}.}
 }
 \value{
 An object of class gamLayer.
@@ -23,6 +25,10 @@ An object of class gamLayer.
 This layer adds a conditional posterior density strip to 1D smooth effects plots.
 With the default colour scale, the opacity is proportional to the conditional density of the fitted
 effects, under the usual Gaussian approximation the posterior.
+}
+\details{
+See Bowman (2018) for explanations about the advantages of density strips, relative
+to plots including the mean fit + confidence intervals.
 }
 \examples{
 library(mgcViz)

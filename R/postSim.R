@@ -42,7 +42,9 @@
 #'      ylab = "Acceleration", xlab = "Times")
 #' points(mcycle$times, mcycle$accel, col = 2)
 #' 
-#' @importFrom plyr rlply
+#' @importFrom plyr rlply laply
+#' @importFrom mgcv rmvn
+#' @importFrom stats coef vcov
 #' @export postSim
 #' 
 postSim <- function(o, nsim, newdata, fun = identity, method = "auto", 
@@ -108,7 +110,7 @@ postSim <- function(o, nsim, newdata, fun = identity, method = "auto",
                  beta <- rmvn(1, cf, V)
                  mu <- lnki( X %*% beta + offI )
                  # Simulated and transform
-                 fun( drop(mgcViz:::.simulate.gam(mu = mu, w = w, sig = o$sig2, method = method, fam = o$family, nsim = 1, u = NULL)) )
+                 fun( drop(.simulate.gam(mu = mu, w = w, sig = o$sig2, method = method, fam = o$family, nsim = 1, u = NULL)) )
                })
   
   return( out )
@@ -150,7 +152,7 @@ postSim <- function(o, nsim, newdata, fun = identity, method = "auto",
                                   lnki[[.ii]]( X[ , lpi[[.ii]]] %*% beta[lpi[[.ii]]] + offI[[.ii]] )
                                 }) )
                  # Simulated and transform
-                 fun( drop(mgcViz:::.simulate.gam(mu = mu, w = w, sig = o$sig2, method = method, fam = o$family, nsim = 1, u = NULL)) )
+                 fun( drop(.simulate.gam(mu = mu, w = w, sig = o$sig2, method = method, fam = o$family, nsim = 1, u = NULL)) )
                })
   
 }

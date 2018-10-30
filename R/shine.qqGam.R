@@ -7,7 +7,7 @@
 #' @param ... currently not used.
 #' @details In RStudio, this function returns a call to \code{qq.gamViz} that reproduces the last plot
 #'         rendered in the interactive shiny window.
-#' @importFrom shiny fillRow fillCol selectizeInput sliderInput plotOutput brushOpts reactiveValues reactive renderPlot observeEvent runGadget dialogViewer
+#' @importFrom shiny fillRow fillCol selectizeInput sliderInput plotOutput brushOpts reactiveValues reactive renderPlot observeEvent runGadget dialogViewer stopApp
 #' @importFrom miniUI miniPage gadgetTitleBar miniContentPanel
 #' @export shine.qqGam
 #' @export
