@@ -17,3 +17,4 @@ plot.ptermInteraction <- function(x, ...){
   return( invisible(NULL) ) 
   
 }
+
