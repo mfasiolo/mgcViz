@@ -24,6 +24,12 @@ l_simLine <- function(...){
 l_simLine.1D <- function(a){
   
   a$data <- a$data$sim
+  
+  if( is.null(a$data) ){
+    message("l_simLine(): the object does not contain any posterior simulation.")
+    return( NULL )
+  }
+  
   if( is.null(a$mapping) ){ 
     a$mapping <- aes("x" = x, "y" = ty, "group" = id) 
     if( is.null(a$colour) ){ a$colour <- "grey40" }
