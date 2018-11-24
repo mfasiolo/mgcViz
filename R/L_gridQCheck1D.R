@@ -69,6 +69,8 @@ l_gridQCheck1D.Check1DFactor <- l_gridQCheck1D.Check1DLogical <- function(a){
 #' @noRd
 .l_gridQCheck1D <- function(a){
   
+  if(a$data$misc$resType == "y"){ message("Using l_gridQCheck1D might not make sense with residual type == \"y\". See ?check1D")}
+  
   funCreator <- function(.qu, .lev, .type){
     .ciFun <- function(.x){
       .n <- length(.x)

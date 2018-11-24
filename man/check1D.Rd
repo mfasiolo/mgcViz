@@ -13,7 +13,8 @@ check1D(o, x, type = "auto", maxpo = 10000, na.rm = TRUE)
 In the first case it should be the name of one of the variables in the dataframe used to fit \code{o}.
 In the second case the length of \code{x} should be equal to the length of \code{residuals(o)}.}
 
-\item{type}{the type of residuals to be used. See \link{residuals.gamViz}.}
+\item{type}{the type of residuals to be used. See \link{residuals.gamViz}.
+If \code{"type == y"} then the raw observations will be used.}
 
 \item{maxpo}{maximum number of residuals points that will be used by layers such as
 \code{resRug()} and \code{resPoints()}. If number of datapoints > \code{maxpo},

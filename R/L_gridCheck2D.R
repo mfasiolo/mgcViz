@@ -99,6 +99,10 @@ l_gridCheck2D.Check2DNumericNumeric <- function(a){
   bw <- xtra$bw
   stand <- xtra$stand
   
+  if( a$data$misc$resType == "y" && !is.null(attr(xtra$gridFun, "quantile")) ){
+    message("Using l_gridQCheck2D might not make sense with residual type == \"y\". See ?check2D")
+  }
+  
   # Wrapper that allows to compute the gridFun() over the observed and
   # simulated residuals. The observed statistic in each cell is than normalized using
   # the standard deviation of the simulated statistics in the corresponding cell

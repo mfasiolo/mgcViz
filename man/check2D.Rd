@@ -15,7 +15,8 @@ In the second case the length of \code{x1} should be equal to the length of \cod
 
 \item{x2}{same as \code{x2}, but this will appear on the y-axis.}
 
-\item{type}{the type of residuals to be used. See \link{residuals.gamViz}.}
+\item{type}{the type of residuals to be used. See \link{residuals.gamViz}.
+If \code{"type == y"} then the raw observations will be used.}
 
 \item{maxpo}{maximum number of residuals points that will be used by layers such as
 \code{resRug()} and \code{resPoints()}. If number of datapoints > \code{maxpo},

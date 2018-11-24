@@ -60,6 +60,8 @@ l_densCheck <- function(n=c(80, 80), bw=NULL, tol=1e-6, dFun=NULL, ...){
 #' @noRd    
 l_densCheck.Check1DNumeric <- function(a){
   
+  if(a$data$misc$resType == "y"){ message("Using l_densCheck might not make sense with residual type == \"y\". See ?check1D")}
+  
   ### 1. Preparation
   xtra <- a$xtra
   a$xtra <- NULL

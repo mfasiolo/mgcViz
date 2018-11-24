@@ -59,6 +59,8 @@ l_gridQCheck2D <- function(qu, bw = c(NA, NA), stand = TRUE, binFun = NULL, ...)
   
   gridFun <- .closure(.qu = qu, .stand = stand) 
   
+  attr(gridFun, "quantile") <- TRUE # Used to signal to l_gridCheck2D that we are interested in quantiles
+  
   o <- l_gridCheck2D(gridFun = gridFun, bw = bw, stand = FALSE, binFun = binFun, ...)
   
   return(o)

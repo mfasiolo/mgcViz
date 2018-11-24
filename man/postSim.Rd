@@ -54,7 +54,7 @@ plot(rep(mcycle$times, n), as.vector(t(sim)), col = "grey",
 points(mcycle$times, mcycle$accel, col = 2)
 
 # There is clear disagreement between simulations' and data's 
-# conditional variance, can be solved using flexible GAMLSS model:
+# conditional variance, which can be solved using flexible GAMLSS model:
 b <- gam(list(accel~s(times, k=20), ~s(times)), data=mcycle, family = gaulss)
 sim <- postSim(o = b, nsim = n)
 plot(rep(mcycle$times, n), as.vector(t(sim)), col = "grey", 

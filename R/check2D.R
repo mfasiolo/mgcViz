@@ -10,7 +10,8 @@
 #'          In the first case it should be the name of one of the variables in the dataframe used to fit \code{o}.
 #'          In the second case the length of \code{x1} should be equal to the length of \code{residuals(o)}.
 #' @param x2 same as \code{x2}, but this will appear on the y-axis.
-#' @param type the type of residuals to be used. See [residuals.gamViz].
+#' @param type the type of residuals to be used. See [residuals.gamViz]. 
+#'             If \code{"type == y"} then the raw observations will be used. 
 #' @param maxpo maximum number of residuals points that will be used by layers such as
 #'              \code{resRug()} and \code{resPoints()}. If number of datapoints > \code{maxpo},
 #'              then a subsample of \code{maxpo} points will be taken.
@@ -113,14 +114,17 @@ check2D <- function(o, x1, x2, type = "auto", maxpo = 1e4, na.rm = TRUE)
     rep(T, m) 
   }
   
-  ### 2. Transform responses to residuals
+  ### 2. Transform simulated responses to residuals (unless type == "y")
   sim <- NULL
   if( !is.null(o$store$sim) ){
-    sim <- aaply(o$store$sim, 1, 
-                 function(.yy){  
-                   o$y <- .yy
-                   return( residuals(o, type = type) )
-                 }) 
+    sim <- o$store$sim
+    if( type != "y" ){
+      sim <- aaply(sim, 1, 
+                   function(.yy){  
+                     o$y <- .yy
+                     return( residuals(o, type = type) )
+                   }) 
+    }
   }
   
   cls1 <- .mapVarClass( class(x1) )

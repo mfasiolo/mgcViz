@@ -9,7 +9,8 @@
 #' @param x should be either a single character or a numeric vector. 
 #'          In the first case it should be the name of one of the variables in the dataframe used to fit \code{o}.
 #'          In the second case the length of \code{x} should be equal to the length of \code{residuals(o)}.
-#' @param type the type of residuals to be used. See [residuals.gamViz].
+#' @param type the type of residuals to be used. See [residuals.gamViz]. 
+#'             If \code{"type == y"} then the raw observations will be used. 
 #' @param maxpo maximum number of residuals points that will be used by layers such as
 #'              \code{resRug()} and \code{resPoints()}. If number of datapoints > \code{maxpo},
 #'              then a subsample of \code{maxpo} points will be taken.
@@ -69,14 +70,17 @@ check1D <- function(o, x, type = "auto", maxpo = 1e4, na.rm = TRUE){
   
   ### 1. Preparation
   type <- match.arg(type, c("auto", "deviance", "pearson", "scaled.pearson", 
-                            "working", "response", "tunif", "tnormal"))
-  
-  # Returns the appropriate residual type for each GAM family
-  if( type=="auto" ) { type <- .getResTypeAndMethod(o$family$family)$type }
-  
-  # Get residuals
-  y <- residuals(o, type = type)
-  
+                            "working", "response", "tunif", "tnormal", "y"))
+
+  # Get residuals or raw observations
+  if(type == "y"){
+    y <- o$y
+  } else {
+    # Returns the appropriate residual type for each GAM family
+    if( type=="auto" ) { type <- .getResTypeAndMethod(o$family$family)$type }
+    y <- residuals(o, type = type)
+  }
+
   xnm <- "x" # If `x` is char, get related vector from dataframe
   if( is.character(x) ){ 
     xnm <- x
@@ -103,16 +107,19 @@ check1D <- function(o, x, type = "auto", maxpo = 1e4, na.rm = TRUE){
     rep(T, m) 
   }
   
-  ### 2. Transform responses to residuals
+  ### 2. Transform simulated responses to residuals (unless type == "y")
   sim <- NULL
   if( !is.null(o$store$sim) ){
-    sim <- aaply(o$store$sim, 1, 
+    sim <- o$store$sim
+    if( type != "y" ){
+    sim <- aaply(sim, 1, 
                  function(.yy){  
                    o$y <- .yy
                    return( residuals(o, type = type) )
                  }) 
+    }
   }
-    
+  
   ### 3. Build output object
   res <- data.frame("x" = x, "y" = y, "sub" = sub)
   pl <- ggplot(data = res, mapping = aes(x = x, y = y)) + theme_bw() + 
