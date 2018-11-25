@@ -1,5 +1,5 @@
 #'
-#' Checking GAM residuals along one covariate
+#' Checking GAM residuals or responses along one covariate
 #' 
 #' @description This function extracts the residuals of a fitted GAM model, and orders
 #'              them according to the value of a single covariate. Then several visual residuals diagnostics 
@@ -15,6 +15,8 @@
 #'              \code{resRug()} and \code{resPoints()}. If number of datapoints > \code{maxpo},
 #'              then a subsample of \code{maxpo} points will be taken.
 #' @param na.rm if \code{TRUE} missing cases in \code{x} or \code{y} will be dropped out.
+#' @param trans function used to transform the observed and simulated residuals or responses. It must take a vector of 
+#'              as input, and must return a vector of the same length. 
 #' @return An object of class \code{c("plotSmooth", "gg")}.
 #' @importFrom stats complete.cases
 #' @examples 
@@ -64,7 +66,7 @@
 #' @rdname check1D
 #' @export check1D
 #' 
-check1D <- function(o, x, type = "auto", maxpo = 1e4, na.rm = TRUE){
+check1D <- function(o, x, type = "auto", maxpo = 1e4, na.rm = TRUE, trans = NULL){
   
   if( !inherits(o, "gamViz") ){ stop("Argument 'o' should be of class 'gamViz'. See ?getViz") }
   
@@ -90,7 +92,7 @@ check1D <- function(o, x, type = "auto", maxpo = 1e4, na.rm = TRUE){
       y <- residuals(o, type = type)
     }
   }
-
+  
   # Get the covariate of interest from the dataset
   xnm <- "x" # If `x` is char, get related vector from dataframe
   if( is.character(x) ){ 
@@ -130,6 +132,12 @@ check1D <- function(o, x, type = "auto", maxpo = 1e4, na.rm = TRUE){
     }
   }
   
+  # Apply optional transformation to observed and simulated y's
+  if( !is.null(trans) ){
+    y <- trans( y )
+    if( !is.null(sim) ) { sim <- t(apply(sim, 1, trans)) }
+  }
+  
   ### 3. Build output object
   res <- data.frame("x" = x, "y" = y, "sub" = sub)
   pl <- ggplot(data = res, mapping = aes(x = x, y = y)) + theme_bw() + 
@@ -139,7 +147,7 @@ check1D <- function(o, x, type = "auto", maxpo = 1e4, na.rm = TRUE){
   cls <- .mapVarClass(class(res$x))
   if( cls == "factor" ){ pl <- pl + scale_x_discrete()}
   
-  misc <- list("resType" = type)
+  misc <- list("resType" = type, "trans" = trans)
   
   out <- structure(list("ggObj" = pl, 
                         "data" = list("res" = res, 

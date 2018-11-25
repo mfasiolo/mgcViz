@@ -16,6 +16,8 @@
 #'              \code{resRug()} and \code{resPoints()}. If number of datapoints > \code{maxpo},
 #'              then a subsample of \code{maxpo} points will be taken.
 #' @param na.rm if \code{TRUE} missing cases in \code{x} or \code{y} will be dropped out 
+#' @param trans function used to transform the observed and simulated residuals or responses. It must take a vector of 
+#'              as input, and must return a vector of the same length. 
 #' @return An object of class \code{c("plotSmooth", "gg")}.
 #' @examples 
 #' library(mgcViz);
@@ -64,7 +66,7 @@
 #' @rdname check2D
 #' @export check2D
 #' 
-check2D <- function(o, x1, x2, type = "auto", maxpo = 1e4, na.rm = TRUE)
+check2D <- function(o, x1, x2, type = "auto", maxpo = 1e4, na.rm = TRUE, trans = NULL)
 {
   if( !inherits(o, "gamViz") ){ stop("Argument 'o' should be of class 'gamViz'. See ?getViz") }
   
@@ -140,6 +142,12 @@ check2D <- function(o, x1, x2, type = "auto", maxpo = 1e4, na.rm = TRUE)
     }
   }
   
+  # Apply optional transformation to observed and simulated y's
+  if( !is.null(trans) ){
+    y <- trans( y )
+    if( !is.null(sim) ) { sim <- t(apply(sim, 1, trans)) }
+  }
+  
   cls1 <- .mapVarClass( class(x1) )
   cls2 <- .mapVarClass( class(x2) )
   # If x2 is factor and x1 is not we swap them. So factor variable is always on x axis.
@@ -159,7 +167,7 @@ check2D <- function(o, x1, x2, type = "auto", maxpo = 1e4, na.rm = TRUE)
   if( cls1 == "factor" ){ pl <- pl + scale_x_discrete()}
   if( cls2 == "factor" ){ pl <- pl + scale_y_discrete()}
 
-  misc <- list("resType" = type, "vnam" = c(xnm1, xnm2))
+  misc <- list("resType" = type, "vnam" = c(xnm1, xnm2), "trans" = trans)
   
   out <- structure(list("ggObj" = pl, 
                         "data" = list("res" = res, 

@@ -19,9 +19,6 @@
 #'              deviation of the simulated stats in that bin. 
 #'              If "s" we do only scaling, if "c" only centering.
 #' @param show.reps if \code{TRUE} the individuals simulated statistics are also plotted.
-#' @param trans function used to transform the residuals, before \code{gridFun} is applied.
-#'              It must take a vector of residuals as input, and must return a vector of the 
-#'              same length. 
 #' @param ... graphical arguments to be passed to \code{ggplot2::geom_point}.
 #' @return An object of class \code{gamLayer}
 #' @examples 
@@ -48,10 +45,10 @@
 #' @importFrom plyr aaply
 #' @rdname l_gridCheck1D
 #' @export l_gridCheck1D
-l_gridCheck1D <- function(gridFun = NULL, n = 20, level = 0.8, stand = "none", show.reps = TRUE, trans = identity, ...){
+l_gridCheck1D <- function(gridFun = NULL, n = 20, level = 0.8, stand = "none", show.reps = TRUE, ...){
   arg <- list(...)
   arg$xtra <- list("gridFun"=gridFun, "n"=n, 
-                   "level"=level, "stand"=stand, "show.reps"=show.reps, "trans"=trans)
+                   "level"=level, "stand"=stand, "show.reps"=show.reps)
   o <- structure(list("fun" = "l_gridCheck1D",
                       "arg" = arg), 
                  class = "gamLayer")
@@ -100,13 +97,7 @@ l_gridCheck1D.Check1DFactor <- l_gridCheck1D.Check1DLogical <- function(a){
   n <- xtra$n
   level <- xtra$level
   cls <- xtra$class 
-  trans <- xtra$trans
-  
-  if( !identical(trans, identity) ){
-    y <- trans( y )
-    if( !is.null(sim) ) { sim <- t(apply(sim, 1, trans)) }
-  }
-  
+
   ### 2. Computation on grid
   if(cls == "numeric"){ # Bin observed data
     grid <- seq(min(x), max(x), length.out = n)
