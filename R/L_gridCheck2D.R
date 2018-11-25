@@ -17,6 +17,9 @@
 #' @param binFun the \code{ggplot2} function used to perform the binning. By default it 
 #'               is either [ggplot2::stat_summary_2d] or [ggplot2::stat_summary_hex], depending 
 #'               on the class of the covariates x1 and x2.
+#' @param trans function used to transform the residuals, before \code{gridFun} is applied.
+#'              It must take a vector of residuals as input, and must return a vector of the 
+#'              same length. 
 #' @param ... graphical arguments to be passed to \code{ggplot2::stat_summary_hex}.
 #' @return An object of class \code{gamLayer}
 #' @examples 
@@ -42,10 +45,10 @@
 #' @export l_gridCheck2D
 #' 
 #' 
-l_gridCheck2D <- function(gridFun = mean, bw = c(NA, NA), stand = TRUE, binFun = NULL, ...){
+l_gridCheck2D <- function(gridFun = mean, bw = c(NA, NA), stand = TRUE, binFun = NULL, trans = identity, ...){
   arg <- list(...)
   if( length(bw) == 1 ) { bw <- c(bw, bw) }
-  arg$xtra <- list("gridFun" = gridFun, "bw" = bw, "stand" = stand, "binFun" = binFun)
+  arg$xtra <- list("gridFun" = gridFun, "bw" = bw, "stand" = stand, "binFun" = binFun, "trans" = trans)
   o <- structure(list("fun" = "l_gridCheck2D",
                       "arg" = arg), 
                  class = "gamLayer")
@@ -98,7 +101,8 @@ l_gridCheck2D.Check2DNumericNumeric <- function(a){
   binFun <- xtra$binFun
   bw <- xtra$bw
   stand <- xtra$stand
-  
+  trans <- xtra$trans
+
   if( a$data$misc$resType == "y" && !is.null(attr(xtra$gridFun, "quantile")) ){
     message("Using l_gridQCheck2D might not make sense with residual type == \"y\". See ?check2D")
   }
@@ -135,6 +139,12 @@ l_gridCheck2D.Check2DNumericNumeric <- function(a){
   y <- a$data$res$y
   z <- a$data$res$z   # Observed residuals
   sim <- a$data$sim   # Simulated residuals
+  
+  # Transform residuals and simulations
+  if( !identical(trans, identity) ){
+    z <- trans( z )
+    if( !is.null(sim) ) { sim <- t(apply(sim, 1, trans)) }
+  }
   
   if( stand && is.null(sim) ){
     message("stand==TRUE but object does not contain any simulations. See ?getViz.")
