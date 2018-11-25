@@ -70,26 +70,39 @@ check2D <- function(o, x1, x2, type = "auto", maxpo = 1e4, na.rm = TRUE)
   
   ### 1. Preparation
   type <- match.arg(type, c("auto", "deviance", "pearson", "scaled.pearson", 
-                            "working", "response", "tunif", "tnormal"))
+                            "working", "response", "tunif", "tnormal", "y"))
   
-  # Returns the appropriate residual type for each GAM family
-  if( type=="auto" ) { type <- .getResTypeAndMethod(o$family$family)$type }
-  
-  # Get residuals
-  y <- residuals(o, type = type)
+  if( !is.null(o$store$newdata) ){ # (1) Newdata has been provided, so this is a predictive check OR ...
+    ynam <- if(is.list(o$formula)){ o$formula[[1]][[2]] } else { o$formula[[2]] }
+    data <- o$store$newdata
+    y <- data[[ynam]]
+    if(type == "auto") { type <- "y" }
+    if(type != "y") { 
+      stop("Predictive checks on newdata can be performed only with raw observations (type == \"y\"). See ?check1D") 
+    }
+  } else { # ... (2) No newdata so we get either residuals or responses y
+    data <- o$model
+    if(type == "y"){
+      y <- o$y
+    } else {
+      # Returns the appropriate residual type for each GAM family
+      if( type=="auto" ) { type <- .getResTypeAndMethod(o$family$family)$type }
+      y <- residuals(o, type = type)
+    }
+  }
 
   # Get covariate vectors: x1 or x2 are chars, get related vectors from dataframe
   xnm1 <- "x1"
   if( is.character(x1) ){ 
     xnm1 <- x1
-    if( !(x1 %in% names(o$model)) ) stop("(x1 %in% names(data)) == FALSE")
+    if( !(x1 %in% names(data)) ) stop("(x1 %in% names(data)) == FALSE")
     x1 <- xfull1 <- o$model[[x1]]
   }
   
   xnm2 <- "x2"
   if( is.character(x2) ){ 
     xnm2 <- x2
-    if( !(x2 %in% names(o$model)) ) stop("(x2 %in% names(data)) == FALSE")
+    if( !(x2 %in% names(data)) ) stop("(x2 %in% names(data)) == FALSE")
     x2 <- xfull2 <- o$model[[x2]]
   }
   

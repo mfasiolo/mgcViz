@@ -71,20 +71,30 @@ check1D <- function(o, x, type = "auto", maxpo = 1e4, na.rm = TRUE){
   ### 1. Preparation
   type <- match.arg(type, c("auto", "deviance", "pearson", "scaled.pearson", 
                             "working", "response", "tunif", "tnormal", "y"))
-
-  # Get residuals or raw observations
-  if(type == "y"){
-    y <- o$y
-  } else {
-    # Returns the appropriate residual type for each GAM family
-    if( type=="auto" ) { type <- .getResTypeAndMethod(o$family$family)$type }
-    y <- residuals(o, type = type)
+  
+  if( !is.null(o$store$newdata) ){ # (1) Newdata has been provided, so this is a predictive check OR ...
+    ynam <- if(is.list(o$formula)){ o$formula[[1]][[2]] } else { o$formula[[2]] }
+    data <- o$store$newdata
+    y <- data[[ynam]]
+    if(type == "auto") { type <- "y" }
+    if(type != "y") { 
+        stop("Predictive checks on newdata can be performed only with raw observations (type == \"y\"). See ?check1D") 
+    }
+  } else { # ... (2) No newdata so we get either residuals or responses y
+    data <- o$model
+    if(type == "y"){
+      y <- o$y
+    } else {
+      # Returns the appropriate residual type for each GAM family
+      if( type=="auto" ) { type <- .getResTypeAndMethod(o$family$family)$type }
+      y <- residuals(o, type = type)
+    }
   }
 
+  # Get the covariate of interest from the dataset
   xnm <- "x" # If `x` is char, get related vector from dataframe
   if( is.character(x) ){ 
     xnm <- x
-    data <- o$model
     if( !(x %in% names(data)) ) stop("(x %in% names(data)) == FALSE")
     x <- xfull <- data[[x]]
   }
@@ -124,7 +134,7 @@ check1D <- function(o, x, type = "auto", maxpo = 1e4, na.rm = TRUE){
   res <- data.frame("x" = x, "y" = y, "sub" = sub)
   pl <- ggplot(data = res, mapping = aes(x = x, y = y)) + theme_bw() + 
         theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + 
-        labs(x = xnm, y = "r")
+        labs(x = xnm, y = ifelse(type == "y", "y", "r"))
   
   cls <- .mapVarClass(class(res$x))
   if( cls == "factor" ){ pl <- pl + scale_x_discrete()}
