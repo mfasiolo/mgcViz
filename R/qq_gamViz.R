@@ -23,7 +23,7 @@
 #'           distribution is Gaussian and if set to \code{"quantile"} they will be sample quantiles of simulated
 #'           responses from the model.
 #' @param worm if \code{TRUE} a worm-plot (a de-trended QQ-plot) is plotted.
-#' @param show.reps if \code{TRUE} all the QQ-lines corresponding to the simulated (model-based) QQ-plots.
+#' @param showReps if \code{TRUE} all the QQ-lines corresponding to the simulated (model-based) QQ-plots.
 #' @param sortFun the function to be used for sorting the residuals. If left to \code{NULL} it will be set to
 #'                \code{function(.x) sort(.x, method = "quick")} internally.
 #' @param discrete if \code{TRUE} the QQ-plot is discretized into \code{ngr} bins before plotting,
@@ -77,7 +77,7 @@
 #' qq(lr.fit, rep = 100, level = .9, CI = "quantile")
 #' 
 #' # Simulation based QQ-plot, Pearson resids, all simulations lines shown 
-#' qq(lr.fit, rep = 100, CI = "none", show.reps = TRUE, type = "pearson", 
+#' qq(lr.fit, rep = 100, CI = "none", showReps = TRUE, type = "pearson", 
 #'        a.qqpoi = list(shape=19, size = 0.5))
 #' 
 #' ### Now fit the wrong model and check
@@ -89,7 +89,7 @@
 #' 
 #' qq(pif, rep = 100, level = .9, CI = "quantile")
 #' 
-#' qq(pif, rep = 100, type = "pearson", CI = "none", show.reps = TRUE, 
+#' qq(pif, rep = 100, type = "pearson", CI = "none", showReps = TRUE, 
 #'                a.qqpoi = list(shape=19, size = 0.5))
 #' 
 #' ######## Example: binary data model violation so gross that you see a problem 
@@ -102,14 +102,14 @@
 #' # Note that the next two are not necessarily similar under gross 
 #' # model violation...
 #' qq(b, method = "simul2")
-#' qq(b, rep = 50, CI = "none", show.reps = TRUE)
+#' qq(b, rep = 50, CI = "none", showReps = TRUE)
 #' 
 #' ### alternative model
 #' b <- gam(y ~ s(x, k = 5), family = binomial, method = "ML")
 #' b <- getViz(b)
 #' 
 #' qq(b, method = "simul2")
-#' qq(b, rep = 50, show.reps = TRUE, CI = "none", shape = 19)
+#' qq(b, rep = 50, showReps = TRUE, CI = "none", shape = 19)
 #' 
 #' \dontrun{
 #' ########  "Big Data" example: 
@@ -127,24 +127,24 @@
 #' 
 #' # Turning discretization off (on by default for large datasets).
 #' set.seed(414) # Setting the seed because qq.gamViz is doing simulations
-#' o <- qq(lr.fit, rep = 10, method = "simul1", CI = "normal", show.reps = TRUE, 
+#' o <- qq(lr.fit, rep = 10, method = "simul1", CI = "normal", showReps = TRUE, 
 #'             discrete = F, a.replin = list(alpha = 0.1))
 #' o # This might take some time!
 #' 
 #' # Using default discretization
 #' set.seed(414)
-#' o <- qq(lr.fit, rep = 10, method = "simul1", CI = "normal", show.reps = TRUE, 
+#' o <- qq(lr.fit, rep = 10, method = "simul1", CI = "normal", showReps = TRUE, 
 #'             a.replin = list(alpha = 0.1))
 #' o # Much faster plotting!
 #' 
 #' # Very coarse discretization
 #' set.seed(414)
-#' o <- qq(lr.fit, rep = 10, method = "simul1", CI = "normal", show.reps = TRUE,
+#' o <- qq(lr.fit, rep = 10, method = "simul1", CI = "normal", showReps = TRUE,
 #'             ngr = 1e2, a.replin = list(alpha = 0.1), a.qqpoi = list(shape = 19))
 #' o 
 #' 
 #' # We can also zoom in at no extra costs (most work already done by qq.gamViz)
-#' zoom(o, xlim = c(-0.25, 0.25), show.reps = TRUE, discrete = TRUE, a.replin = list(alpha = 0.2))
+#' zoom(o, xlim = c(-0.25, 0.25), showReps = TRUE, discrete = TRUE, a.replin = list(alpha = 0.2))
 #' }
 #' 
 qq.gamViz <- function(o, rep = 10,
@@ -153,7 +153,7 @@ qq.gamViz <- function(o, rep = 10,
                       type = "auto",
                       CI = "none",
                       worm = FALSE,
-                      show.reps = FALSE,
+                      showReps = FALSE,
                       sortFun = NULL,
                       discrete = NULL,
                       ngr = 1e3,
@@ -166,6 +166,12 @@ qq.gamViz <- function(o, rep = 10,
                       ...) {
   
   if( !inherits(o, "gamViz") ){ stop("Argument 'o' should be of class 'gamViz'. See ?getViz") }
+  
+  arg <- list(...)
+  if( !is.null(arg$show.reps) ){ # Here for compatibility (on old mgcViz versions the argument name was show.reps)
+    message("Pedantic message from qq.gamViz(): argument \"show.reps\" is deprecated, please use \"showReps\".")
+    showReps <- arg$show.reps
+  }
   
   a.all <- .argMaster("qq.gamViz")
   for(nam in names(a.all)){
@@ -194,8 +200,8 @@ qq.gamViz <- function(o, rep = 10,
   P0 <- .compute.qq.gam(o = o, type = type, method = method, CI = CI, 
                        level = level, rep = rep, sortFun = sortFun)
   P1 <- .discretize.qq.gam(P = P0, discrete = discrete, ngr = ngr,
-                           CI = (CI != "none"), show.reps = show.reps)
-  pl <- .plot.qq.gam(P = P1, CI = (CI != "none"), worm = worm, show.reps = show.reps,
+                           CI = (CI != "none"), showReps = showReps)
+  pl <- .plot.qq.gam(P = P1, CI = (CI != "none"), worm = worm, showReps = showReps,
                      xlimit = xlim, ylimit = ylim, a.all = a.all)
   out <- structure(list("ggObj" = pl, "store" = P0, "type" = "qqGam"),
                    "class" = c("qqGam", "plotSmooth", "gg"), 

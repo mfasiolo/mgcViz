@@ -22,9 +22,9 @@ the whole x-y plane, no matter how low it is.}
 \item{dFun}{function used to compute the difference between the empirical (em) and theoretical (th)
 conditional density of the residuals. By default it is \code{(sqrt(em)-sqrt(th))^(1/3)},
 where \code{th} is computed using either a uniform or a normal density, depending on the
-type of residuals used in the \link{check1D} call. It should as arguments three vectors: \code{.ed} (the empirical
-conditional density), \code{.gr} (the points along y where the density is evaluated) and
-\code{.y} (the partial residuals).}
+type of residuals used in the \link{check1D} call. It should have as arguments three vectors: \code{.ed} (the empirical
+conditional density), \code{.gr} (the points along the y-axis where the density is evaluated) and
+\code{.y} (the residuals).}
 
 \item{...}{graphical arguments to be passed to \code{ggplot2::geom_raster}.}
 }
@@ -37,13 +37,24 @@ the residuals, r, differs from its theoretical or model-based counterpart,
 along a covariate, x.
 }
 \details{
-This layer is mainly meant to work together with the \link{check1D} function. The default \code{dFun}
-if compare the conditional distribution of the residuals with N(0, 1) or Unif(0, 1) densities,
-depending on the residual type used in the \link{check1D} call.
+This layer is mainly meant to work together with the \link{check1D} function. If check1D() is called with
+residual type == "tunif" or "tnormal", then \code{l_densCheck} compares the conditional distribution
+of the residuals with Unif(0, 1) or N(0, 1). By changing the distance function \code{dFun}
+one could of course change both the distance metric and the reference distribution (see Examples below). \cr \cr
+WARNING: if check1D() is called with type != "tunif" or "tnormal", then the default distance used by l_densCheck is \cr
+\code{dFun <- function(.ed, .gr, .y)} \code{\{}\cr
+\code{d <- dnorm(.gr, 0, sd=sd(.y)) # sd=sd(.y) !!!}\cr
+\code{d <- sqrt(.ed)-sqrt(d) }\cr
+\code{return(sign(d)*abs(d)^(1/3))}\cr
+\code{\}} \cr
+so the residuals are standardized using their own std dev \code{sd(.y)}.
+Hence \code{l_densCheck} might not detect that the mean estimated variance
+under the fitted model is different from the residuals variance.
+Hence it is safer to use residual types "tunif" or "tnormal", or a
+customized distance function dFun (see below for an example on how to do this).
 }
 \examples{
 library(mgcViz);
-
 # Dataset where variance increases linearly with x2, for x2 > 0.2
 n <- 1e3
 x1 <- rnorm(1e3)
@@ -58,6 +69,18 @@ b <- getViz(b)
 # the model (residuals should be N(0, sigma) here).
 # Here there are clear signs of heteroscedasticity: 
 # the conditional variance is is increasing for x2 > 0.2. 
-check1D(b, "x2") + l_densCheck() + l_rug()
+check1D(b, "x2", type = "tnormal") + l_densCheck() + l_rug()
+
+# Suppose we want to compare the conditional density of the standardized residuals
+# not with a Gaussian, but with a Student-t density with 3 degree of freedom.
+# We could achieve this as follows:
+myDistance <- function(.ed, .gr, .y){
+  d <- dt(.gr / sd(.y), df = 3)
+  d <- abs( sqrt(.ed) - sqrt(d) ) # We are using absolute difference between sqrt-densities 
+}
+
+check1D(b, "x2", type = "response") + l_densCheck(dFun = myDistance) + l_rug()
+# NB comparing with a Student density is not useful for this example, but it illustrates
+# how both the distance function and the reference density can be customized.
 
 }

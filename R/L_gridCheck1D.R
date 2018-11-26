@@ -18,7 +18,7 @@
 #'              in each bin are scaled and centered using the mean and standard
 #'              deviation of the simulated stats in that bin. 
 #'              If "s" we do only scaling, if "c" only centering.
-#' @param show.reps if \code{TRUE} the individuals simulated statistics are also plotted.
+#' @param showReps if \code{TRUE} the individuals simulated statistics are also plotted.
 #' @param ... graphical arguments to be passed to \code{ggplot2::geom_point}.
 #' @return An object of class \code{gamLayer}
 #' @examples 
@@ -45,10 +45,16 @@
 #' @importFrom plyr aaply
 #' @rdname l_gridCheck1D
 #' @export l_gridCheck1D
-l_gridCheck1D <- function(gridFun = NULL, n = 20, level = 0.8, stand = "none", show.reps = TRUE, ...){
+l_gridCheck1D <- function(gridFun = NULL, n = 20, level = 0.8, stand = "none", showReps = TRUE, ...){
   arg <- list(...)
+  
+  if( !is.null(arg$show.reps) ){ # Here for compatibility (on old mgcViz version the argument name was show.reps)
+    message("Pedantic message from l_gridCheck1D(): argument \"show.reps\" is deprecated, please use \"showReps\".")
+    showReps <- arg$show.reps
+  }
+  
   arg$xtra <- list("gridFun"=gridFun, "n"=n, 
-                   "level"=level, "stand"=stand, "show.reps"=show.reps)
+                   "level"=level, "stand"=stand, "showReps"=showReps)
   o <- structure(list("fun" = "l_gridCheck1D",
                       "arg" = arg), 
                  class = "gamLayer")
@@ -181,7 +187,7 @@ l_gridCheck1D.Check1DFactor <- l_gridCheck1D.Check1DLogical <- function(a){
   
   if( rep > 0){
     datS <- data.frame("x" = rep(grX, rep), "y" = as.vector(t(grS)))
-    if(xtra$show.reps) {
+    if(xtra$showReps) {
       out[[2]] <- geom_point(data = datS, aes(x = x, y = y), na.rm = TRUE, shape = 46)
     }
     if(level > 0){

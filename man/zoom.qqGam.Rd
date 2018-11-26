@@ -6,7 +6,7 @@
 \usage{
 \method{zoom}{qqGam}(o, xlim = NULL, ylim = NULL, discrete = NULL,
   ngr = 1000, adGrid = TRUE, CI = FALSE, worm = FALSE,
-  show.reps = FALSE, a.qqpoi = list(), a.ablin = list(),
+  showReps = FALSE, a.qqpoi = list(), a.ablin = list(),
   a.cipoly = list(), a.replin = list(), ...)
 }
 \arguments{
@@ -31,7 +31,7 @@ the QQ-points used in the original \code{qq.gamViz} call (but only those falling
 
 \item{worm}{if \code{TRUE} a worm-plot (a de-trended QQ-plot) is plotted, rather than a QQ-plot.}
 
-\item{show.reps}{if \code{TRUE} all the QQ-lines corresponding to the simulated (model-based) QQ-plots.}
+\item{showReps}{if \code{TRUE} all the QQ-lines corresponding to the simulated (model-based) QQ-plots.}
 
 \item{a.qqpoi}{list of arguments to be passed to \code{ggplot2::geom_point}, which plots the main QQ-plot.}
 
@@ -67,6 +67,6 @@ o <- qq(lr.fit, rep = 50, method = "simul1", CI = "normal")
 o # This is the whole qqplot
 
 # We can zoom in along x at little extra costs (most computation already done by qq.gamViz)
-zoom(o, xlim = c(0, 1), show.reps = TRUE, 
+zoom(o, xlim = c(0, 1), showReps = TRUE, 
      a.replin = list(alpha = 0.1), a.qqpoi =  list(shape = 19))
 }

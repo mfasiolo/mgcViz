@@ -5,7 +5,7 @@
 \title{QQ plots for gam model residuals}
 \usage{
 \method{qq}{gamViz}(o, rep = 10, level = 0.8, method = "auto",
-  type = "auto", CI = "none", worm = FALSE, show.reps = FALSE,
+  type = "auto", CI = "none", worm = FALSE, showReps = FALSE,
   sortFun = NULL, discrete = NULL, ngr = 1000, xlim = NULL,
   ylim = NULL, a.qqpoi = list(), a.ablin = list(), a.cipoly = list(),
   a.replin = list(), ...)
@@ -35,7 +35,7 @@ responses from the model.}
 
 \item{worm}{if \code{TRUE} a worm-plot (a de-trended QQ-plot) is plotted.}
 
-\item{show.reps}{if \code{TRUE} all the QQ-lines corresponding to the simulated (model-based) QQ-plots.}
+\item{showReps}{if \code{TRUE} all the QQ-lines corresponding to the simulated (model-based) QQ-plots.}
 
 \item{sortFun}{the function to be used for sorting the residuals. If left to \code{NULL} it will be set to
 \code{function(.x) sort(.x, method = "quick")} internally.}
@@ -102,7 +102,7 @@ qq(lr.fit, method = "simul2",
 qq(lr.fit, rep = 100, level = .9, CI = "quantile")
 
 # Simulation based QQ-plot, Pearson resids, all simulations lines shown 
-qq(lr.fit, rep = 100, CI = "none", show.reps = TRUE, type = "pearson", 
+qq(lr.fit, rep = 100, CI = "none", showReps = TRUE, type = "pearson", 
        a.qqpoi = list(shape=19, size = 0.5))
 
 ### Now fit the wrong model and check
@@ -114,7 +114,7 @@ qq(pif, method = "simul2")
 
 qq(pif, rep = 100, level = .9, CI = "quantile")
 
-qq(pif, rep = 100, type = "pearson", CI = "none", show.reps = TRUE, 
+qq(pif, rep = 100, type = "pearson", CI = "none", showReps = TRUE, 
                a.qqpoi = list(shape=19, size = 0.5))
 
 ######## Example: binary data model violation so gross that you see a problem 
@@ -127,14 +127,14 @@ class(b) <- c("gamViz", class(b)) # Tricking qq.gamViz to use it on a glm
 # Note that the next two are not necessarily similar under gross 
 # model violation...
 qq(b, method = "simul2")
-qq(b, rep = 50, CI = "none", show.reps = TRUE)
+qq(b, rep = 50, CI = "none", showReps = TRUE)
 
 ### alternative model
 b <- gam(y ~ s(x, k = 5), family = binomial, method = "ML")
 b <- getViz(b)
 
 qq(b, method = "simul2")
-qq(b, rep = 50, show.reps = TRUE, CI = "none", shape = 19)
+qq(b, rep = 50, showReps = TRUE, CI = "none", shape = 19)
 
 \dontrun{
 ########  "Big Data" example: 
@@ -152,24 +152,24 @@ lr.fit <- getViz(lr.fit)
 
 # Turning discretization off (on by default for large datasets).
 set.seed(414) # Setting the seed because qq.gamViz is doing simulations
-o <- qq(lr.fit, rep = 10, method = "simul1", CI = "normal", show.reps = TRUE, 
+o <- qq(lr.fit, rep = 10, method = "simul1", CI = "normal", showReps = TRUE, 
             discrete = F, a.replin = list(alpha = 0.1))
 o # This might take some time!
 
 # Using default discretization
 set.seed(414)
-o <- qq(lr.fit, rep = 10, method = "simul1", CI = "normal", show.reps = TRUE, 
+o <- qq(lr.fit, rep = 10, method = "simul1", CI = "normal", showReps = TRUE, 
             a.replin = list(alpha = 0.1))
 o # Much faster plotting!
 
 # Very coarse discretization
 set.seed(414)
-o <- qq(lr.fit, rep = 10, method = "simul1", CI = "normal", show.reps = TRUE,
+o <- qq(lr.fit, rep = 10, method = "simul1", CI = "normal", showReps = TRUE,
             ngr = 1e2, a.replin = list(alpha = 0.1), a.qqpoi = list(shape = 19))
 o 
 
 # We can also zoom in at no extra costs (most work already done by qq.gamViz)
-zoom(o, xlim = c(-0.25, 0.25), show.reps = TRUE, discrete = TRUE, a.replin = list(alpha = 0.2))
+zoom(o, xlim = c(-0.25, 0.25), showReps = TRUE, discrete = TRUE, a.replin = list(alpha = 0.2))
 }
 
 }

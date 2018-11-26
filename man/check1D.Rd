@@ -2,9 +2,9 @@
 % Please edit documentation in R/check1D.R
 \name{check1D}
 \alias{check1D}
-\title{Checking GAM residuals along one covariate}
+\title{Checking GAM residuals or responses along one covariate}
 \usage{
-check1D(o, x, type = "auto", maxpo = 10000, na.rm = TRUE)
+check1D(o, x, type = "auto", maxpo = 10000, na.rm = TRUE, trans = NULL)
 }
 \arguments{
 \item{o}{an object of class \code{gamViz}.}
@@ -21,6 +21,9 @@ If \code{"type == y"} then the raw observations will be used.}
 then a subsample of \code{maxpo} points will be taken.}
 
 \item{na.rm}{if \code{TRUE} missing cases in \code{x} or \code{y} will be dropped out.}
+
+\item{trans}{function used to transform the observed and simulated residuals or responses. It must take a vector of
+as input, and must return a vector of the same length.}
 }
 \value{
 An object of class \code{c("plotSmooth", "gg")}.
@@ -54,7 +57,7 @@ ck + l_densCheck()
 # Compare observed residuals std dev with that of simulated data,
 # heteroscedasticity is clearly visible
 b <- getViz(b, nsim = 50)
-check1D(b, "x") + l_gridCheck1D(gridFun = sd, show.reps = TRUE)
+check1D(b, "x") + l_gridCheck1D(gridFun = sd, showReps = TRUE)
 
 # This also works with factor or logical data
 fac <- sample(letters, n, replace = TRUE)

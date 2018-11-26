@@ -15,7 +15,7 @@
 #'               \code{xlim} and \code{ylim} will be plotted).
 #' @param CI if \code{TRUE} confidence intervals are plotted.
 #' @param worm if \code{TRUE} a worm-plot (a de-trended QQ-plot) is plotted, rather than a QQ-plot.
-#' @param show.reps if \code{TRUE} all the QQ-lines corresponding to the simulated (model-based) QQ-plots.
+#' @param showReps if \code{TRUE} all the QQ-lines corresponding to the simulated (model-based) QQ-plots.
 #' @param a.qqpoi list of arguments to be passed to \code{ggplot2::geom_point}, which plots the main QQ-plot.
 #' @param a.ablin list of arguments to be passed to \code{ggplot2::geom_abline}, which adds the reference line.
 #' @param a.cipoly list of arguments to be passed to \code{ggplot2::geom_polygon}, which add the confidence intervals.
@@ -42,7 +42,7 @@
 #' o # This is the whole qqplot
 #' 
 #' # We can zoom in along x at little extra costs (most computation already done by qq.gamViz)
-#' zoom(o, xlim = c(0, 1), show.reps = TRUE, 
+#' zoom(o, xlim = c(0, 1), showReps = TRUE, 
 #'      a.replin = list(alpha = 0.1), a.qqpoi =  list(shape = 19))
 #' @rdname zoom.qqGam
 #' @export zoom.qqGam
@@ -50,9 +50,15 @@
 #' 
 zoom.qqGam <- function(o, xlim = NULL, ylim = NULL, discrete = NULL, ngr = 1e3,
                        adGrid = TRUE, CI = FALSE, 
-                       worm = FALSE, show.reps = FALSE, 
+                       worm = FALSE, showReps = FALSE, 
                        a.qqpoi = list(), a.ablin = list(), a.cipoly = list(), 
                        a.replin = list(), ...) {
+  
+  arg <- list(...)
+  if( !is.null(arg$show.reps) ){ # Here for compatibility (on old mgcViz versions the argument name was show.reps)
+    message("Pedantic message from zoom.qqGam(): argument \"show.reps\" is deprecated, please use \"showReps\".")
+    showReps <- arg$show.reps
+  }
   
   a.all <- .argMaster("zoom.qqGam")
   for(nam in names(a.all)){
@@ -70,8 +76,8 @@ zoom.qqGam <- function(o, xlim = NULL, ylim = NULL, discrete = NULL, ngr = 1e3,
   }
   if(is.null(discrete)) discrete <- length(P$Dq) > 1e4 
   P <- .discretize.qq.gam(P = P, discrete = discrete, ngr = ngr,
-                          CI = CI, show.reps = show.reps)
-  .pl <- .plot.qq.gam(P = P, CI = CI, worm = worm, show.reps = show.reps,
+                          CI = CI, showReps = showReps)
+  .pl <- .plot.qq.gam(P = P, CI = CI, worm = worm, showReps = showReps,
                       xlimit = xlim, ylimit = ylim, a.all = a.all)
   return(.pl)
 }

@@ -209,7 +209,7 @@ starting with `a.` are lists that will be passed directly to the corresponding `
 layer (`geom_point` and `geom_abline` here). We can remove the confidence intervals and 
 show all simulated (model-based) QQ-curves as follows:
 ```{r 21}
-qq(lr.fit, rep = 20, show.reps = T, CI = "none", a.qqpoi = list("shape" = 19), a.replin = list("alpha" = 0.2))
+qq(lr.fit, rep = 20, showReps = T, CI = "none", a.qqpoi = list("shape" = 19), a.replin = list("alpha" = 0.2))
 ```
 
 Importantly, `mgcViz::qq.gam` can handle large datasets by discretizing the QQ-plot before
@@ -231,14 +231,14 @@ lr.fit <- getViz(lr.fit)
 Here the `discrete` argument determines whether the QQ-plot is discretized or not.
 Notice that we can compute the QQ-plot, store it in `o` and then plot it (via `print.qqGam`).
 ```{r 23}
-o <- qq(lr.fit, rep = 10, method = "simul1", CI = "normal", show.reps = TRUE, 
+o <- qq(lr.fit, rep = 10, method = "simul1", CI = "normal", showReps = TRUE, 
         a.replin = list(alpha = 0.1), discrete = TRUE)
 o 
 ```
 
 The coarseness of the discretization grid is determined by the `ngr` argument:
 ```{r 24}
-o <- qq(lr.fit, rep = 10, method = "simul1", CI = "normal", show.reps = TRUE,
+o <- qq(lr.fit, rep = 10, method = "simul1", CI = "normal", showReps = TRUE,
         ngr = 1e2, a.replin = list(alpha = 0.1), a.qqpoi = list(shape = 19))
 o 
 ```
@@ -324,8 +324,8 @@ This layers adds an heatmap proportional to $\{p(r|x)^{1/2} - p_m(r|x)^{1/2}\}^{
 The `l_gridCheck1D` provides another way of finding residuals patterns. For instance:
 ```{r 30}
 b <- getViz(b, nsim = 50)
-gridPrint(check1D(b, "x") + l_gridCheck1D(gridFun = sd, show.reps = TRUE), 
-          check1D(b, "z") + l_gridCheck1D(gridFun = sd, show.reps = TRUE), ncol = 2)
+gridPrint(check1D(b, "x") + l_gridCheck1D(gridFun = sd, showReps = TRUE), 
+          check1D(b, "z") + l_gridCheck1D(gridFun = sd, showReps = TRUE), ncol = 2)
 ```
 
 Here we converted `b` again using `getViz` with `nsim = 50`. This is because `l_gridCheck1D` needs some simulations to compute the confidence intervals. The simulations are done by `getViz` and then stored

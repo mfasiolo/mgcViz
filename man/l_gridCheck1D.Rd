@@ -5,7 +5,7 @@
 \title{Binning and checking GAM residuals}
 \usage{
 l_gridCheck1D(gridFun = NULL, n = 20, level = 0.8, stand = "none",
-  show.reps = TRUE, ...)
+  showReps = TRUE, ...)
 }
 \arguments{
 \item{gridFun}{scalar-valued function used to summarize the residuals in each bin.
@@ -23,7 +23,7 @@ in each bin are scaled and centered using the mean and standard
 deviation of the simulated stats in that bin.
 If "s" we do only scaling, if "c" only centering.}
 
-\item{show.reps}{if \code{TRUE} the individuals simulated statistics are also plotted.}
+\item{showReps}{if \code{TRUE} the individuals simulated statistics are also plotted.}
 
 \item{...}{graphical arguments to be passed to \code{ggplot2::geom_point}.}
 }

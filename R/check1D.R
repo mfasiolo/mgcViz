@@ -43,7 +43,7 @@
 #' # Compare observed residuals std dev with that of simulated data,
 #' # heteroscedasticity is clearly visible
 #' b <- getViz(b, nsim = 50)
-#' check1D(b, "x") + l_gridCheck1D(gridFun = sd, show.reps = TRUE)
+#' check1D(b, "x") + l_gridCheck1D(gridFun = sd, showReps = TRUE)
 #' 
 #' # This also works with factor or logical data
 #' fac <- sample(letters, n, replace = TRUE)

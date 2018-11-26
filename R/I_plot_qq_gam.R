@@ -3,15 +3,15 @@
 #' @param P A list, the output of `.discretize.qq.gam()`.
 #' @param CI If TRUE, we want to compute also confidence intervals.
 #' @param xlimit,ylimit X & Y axes ranges.
-#' @param show.reps,rl.col,rep.col,rep.alpha,ci.col See [qq.gamViz] documentation.
+#' @param showReps,rl.col,rep.col,rep.alpha,ci.col See [qq.gamViz] documentation.
 #' @return A ggplot object.
 #' @noRd
-.plot.qq.gam <- function(P, CI, worm, show.reps, xlimit, ylimit, a.all, ...) {
+.plot.qq.gam <- function(P, CI, worm, showReps, xlimit, ylimit, a.all, ...) {
   
   # Rotate everything if worm plot needed
   if( worm ){
     if (CI && !is.null(P$conf)) { P$conf$y <- P$conf$y - P$conf$x }
-    if (show.reps && !is.null(P$dm)){ P$dm$y <- P$dm$y - P$dm$x }
+    if (showReps && !is.null(P$dm)){ P$dm$y <- P$dm$y - P$dm$x }
     P$D <- P$D - P$Dq
   } 
   
@@ -20,7 +20,7 @@
     .pl <- .pl + do.call("geom_polygon", 
                          c(list(data = P$conf, aes(x = x, y = y)), a.all$a.cipoly))
   }
-  if (show.reps && !is.null(P$dm)) { # Add a line for each simulation
+  if (showReps && !is.null(P$dm)) { # Add a line for each simulation
     .pl <- .pl + do.call("geom_line", 
                          c(list(data = P$dm, aes(x = x, y = y, group = id)), a.all$a.replin))
   }

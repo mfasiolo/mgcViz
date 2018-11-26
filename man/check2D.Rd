@@ -4,7 +4,8 @@
 \alias{check2D}
 \title{Checking GAM residuals along two covariates}
 \usage{
-check2D(o, x1, x2, type = "auto", maxpo = 10000, na.rm = TRUE)
+check2D(o, x1, x2, type = "auto", maxpo = 10000, na.rm = TRUE,
+  trans = NULL)
 }
 \arguments{
 \item{o}{an object of class \code{gamViz}.}
@@ -23,6 +24,9 @@ If \code{"type == y"} then the raw observations will be used.}
 then a subsample of \code{maxpo} points will be taken.}
 
 \item{na.rm}{if \code{TRUE} missing cases in \code{x} or \code{y} will be dropped out}
+
+\item{trans}{function used to transform the observed and simulated residuals or responses. It must take a vector of
+as input, and must return a vector of the same length.}
 }
 \value{
 An object of class \code{c("plotSmooth", "gg")}.

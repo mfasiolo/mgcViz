@@ -4,10 +4,10 @@
 # - discrete if TRUE we are going to bin the residuals and interpolate their conf interv
 # - ngr number of grid points
 # - CI if TRUE we want to compute also conf interv
-# - show.reps if TRUE we want to plot all simulated reps
+# - showReps if TRUE we want to plot all simulated reps
 # OUTPUT
 # - P a list ready to be feed to .plot.qq.gam()
-.discretize.qq.gam <- function(P, discrete, ngr, CI, show.reps){
+.discretize.qq.gam <- function(P, discrete, ngr, CI, showReps){
   
   n <- length(P$Dq)
   rep <- ncol(P$dm)
@@ -25,7 +25,7 @@
     P$D <- tmp$ym
     P$Dq <- tmp$xm
     
-    if( show.reps && !is.null(P$dm) ){
+    if( showReps && !is.null(P$dm) ){
       tmp <- lapply(1:ncol(P$dm), function(ii) bin1D(DqFull, P$dm[ , ii], ngr))
       dmx <- do.call("c", lapply(tmp, function(inp) inp$xm))
       dmy <- do.call("c", lapply(tmp, function(inp) inp$ym))
@@ -38,14 +38,14 @@
                       approx(x=DqFull, y=P$conf[2, , drop=T], xout=P$Dq)$y)
     }
   } else {
-    if( show.reps && !is.null(P$dm) ){
+    if( showReps && !is.null(P$dm) ){
       dmx <- rep(P$Dq, rep)
       dmy <- c( as.numeric(P$dm) )
       id <- rep(1:rep, each=n)
     }
   }
   
-  if( show.reps && !is.null(P$dm) ){
+  if( showReps && !is.null(P$dm) ){
     P$dm <- data.frame("x"=dmx, "y"=dmy, "id"=id)
   }
   
