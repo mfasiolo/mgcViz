@@ -6,7 +6,6 @@
 #'              residuals, \code{p(r|x)}, or the joint density \code{p(r, x)}. For 2D
 #'              effect plots it adds either \code{p(x1|x2)} or \code{p(x1, x2)}, where 
 #'              \code{x1} and \code{x2} are the relevant covariates.  
-#'
 #' @param type for 1D effect plots, if set to "cond" then the conditional residual 
 #'             density \code{p(r|x)} is plotted. If set to "joint" the 
 #'             joint density of residuals, \code{p(r, x)}, is plotted. 
@@ -30,29 +29,34 @@
 #' @importFrom KernSmooth dpik bkde bkde2D
 #' @return An object of class \code{gamLayer}.
 #' @seealso See [plot.mgcv.smooth.1D], [plot.mgcv.smooth.2D] and [check1D] for examples.
-#' @export l_dens
+#' @aliases l_dens
+#' @export l_dens2D
 #'
-l_dens <- function(type, n = c(50, 50), 
-                    bw = NULL, tol = 1e-6, trans = sqrt, ...){
+l_dens2D <- function(type, n = c(50, 50), bw = NULL, tol = 1e-6, trans = sqrt, ...){
   arg <- list(...)
   match.arg(type, c("cond", "joint"))
   arg$xtra <- list("type" = type, "n" = n, "bw" = bw, 
                    "tol" = tol, "trans" = trans, "grad" = list())
-  o <- structure(list("fun" = "l_dens",
+  o <- structure(list("fun" = "l_dens2D",
                       "arg" = arg), 
                  class = "gamLayer")
   return(o)
 }
 
+#### Alias
+#' @rdname l_dens2D
+#' @export l_dens
+l_dens <- l_dens2D
+
 ######## Internal method 
 #' @noRd
-l_dens.1D <- l_dens.Check1DNumeric <- l_dens.PtermNumeric <- function(a){
+l_dens2D.1D <- l_dens2D.Check1DNumeric <- l_dens2D.PtermNumeric <- function(a){
   
   xtra <- a$xtra
   a$xtra <- NULL
   
   if( is.null(a$data$res$y) ){ 
-    message("l_dens(): Partial residuals are not available")  
+    message("l_dens2D(): Partial residuals are not available")  
     return( NULL )
   }
   
@@ -81,8 +85,8 @@ l_dens.1D <- l_dens.Check1DNumeric <- l_dens.PtermNumeric <- function(a){
 
 ######## Internal method 
 #' @noRd
-l_dens.2D <- l_dens.Check2DNumericNumeric <- function(a){
+l_dens2D.2D <- l_dens2D.Check2DNumericNumeric <- function(a){
  
-  return( l_dens.1D(a) )
+  return( l_dens2D.1D(a) )
   
 }
