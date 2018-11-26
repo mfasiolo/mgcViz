@@ -4,8 +4,8 @@
 \alias{postSim}
 \title{Posterior simulation from a GAM object}
 \usage{
-postSim(o, nsim, newdata, fun = identity, method = "auto", w = NULL,
-  offset = NULL, simplify = "rbind", ...)
+postSim(o, nsim, newdata, trans = NULL, method = "auto", w = NULL,
+  offset = NULL, ...)
 }
 \arguments{
 \item{o}{the output of a \code{gam()} or \code{bam()} call.}
@@ -14,21 +14,19 @@ postSim(o, nsim, newdata, fun = identity, method = "auto", w = NULL,
 
 \item{newdata}{Optional new data frame used to perform the simulations. To be passed to \link{predict.gam}.}
 
-\item{fun}{function used to summarize each vector of simulated responses. It must take a vector as argument,
-but it can output any type of object.}
+\item{trans}{function used to transform or summarize each vector of simulated responses.
+It must take a vector as argument, but it can output a vector or a scalar.
+Potentially useful for saving storage (e.g. by transforming each simulated vector
+to a scalar). If left to \code{NULL} then \code{trans = identity} will be used.}
 
 \item{method}{the method used for the simulation of responses. See \link{simulate.gam}.}
 
 \item{w}{vector of prior weights of each response. See \link{simulate.gam}.}
 
 \item{offset}{numeric vector of offsets. For GAMs with multiple linear predictor (see eg \link{gaulss}) it
-must be a list of vectors. If \code{newdat!=NULL} the offsets will be assumed to be zero,
-unless their are explicitly provided. If \code{newdat==NULL} the simulations will use the
+must be a list of vectors. If \code{newdata!=NULL} the offsets will be assumed to be zero,
+unless their are explicitly provided. If \code{newdata==NULL} the simulations will use the
 offsets used during model fitting, unless offset is explicitly provided.}
-
-\item{simplify}{character string indicating the function that will be used to simplify the list of simulations.
-It will be used in a call such as \code{do.call(simplify, listOfSimul)}. Set it to \code{NULL} to get
-simply a list out.}
 
 \item{...}{arguments to be passed to \link{vcov.gam}.}
 }
@@ -44,9 +42,10 @@ library(mgcViz)
 library(MASS)
 b <- gam(accel~s(times, k=20), data=mcycle)
 
-# Simulate list of 10 vectors of responses from posterior
+# Simulate list of 10 vectors of responses from posterior, taking into
+# account smoothing parameters uncertainty (see ?vcov.gam)
 n <- 10
-sim <- postSim(o = b, nsim = n)
+sim <- postSim(o = b, nsim = n, unconditional = TRUE)
 
 # Posterior simulations in grey and data in red
 plot(rep(mcycle$times, n), as.vector(t(sim)), col = "grey", 

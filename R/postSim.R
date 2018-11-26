@@ -6,17 +6,16 @@
 #' @param o the output of a \code{gam()} or \code{bam()} call.
 #' @param nsim the number of simulated vectors of responses. A positive integer.
 #' @param newdata Optional new data frame used to perform the simulations. To be passed to \link{predict.gam}.
-#' @param fun function used to summarize each vector of simulated responses. It must take a vector as argument, 
-#'            but it can output any type of object.
+#' @param trans function used to transform or summarize each vector of simulated responses. 
+#'              It must take a vector as argument, but it can output a vector or a scalar.
+#'              Potentially useful for saving storage (e.g. by transforming each simulated vector
+#'              to a scalar). If left to \code{NULL} then \code{trans = identity} will be used.
 #' @param method the method used for the simulation of responses. See \link{simulate.gam}.
 #' @param w vector of prior weights of each response. See \link{simulate.gam}. 
 #' @param offset numeric vector of offsets. For GAMs with multiple linear predictor (see eg \link{gaulss}) it
-#'               must be a list of vectors. If \code{newdat!=NULL} the offsets will be assumed to be zero, 
-#'               unless their are explicitly provided. If \code{newdat==NULL} the simulations will use the 
+#'               must be a list of vectors. If \code{newdata!=NULL} the offsets will be assumed to be zero, 
+#'               unless their are explicitly provided. If \code{newdata==NULL} the simulations will use the 
 #'               offsets used during model fitting, unless offset is explicitly provided. 
-#' @param simplify character string indicating the function that will be used to simplify the list of simulations.
-#'                 It will be used in a call such as \code{do.call(simplify, listOfSimul)}. Set it to \code{NULL} to get
-#'                 simply a list out.
 #' @param ... arguments to be passed to \link{vcov.gam}.
 #' @return A matrix where each row is a vector of simulated responses or a transformed version of it. 
 #'         
@@ -25,9 +24,10 @@
 #' library(MASS)
 #' b <- gam(accel~s(times, k=20), data=mcycle)
 #' 
-#' # Simulate list of 10 vectors of responses from posterior
+#' # Simulate list of 10 vectors of responses from posterior, taking into
+#' # account smoothing parameters uncertainty (see ?vcov.gam)
 #' n <- 10
-#' sim <- postSim(o = b, nsim = n)
+#' sim <- postSim(o = b, nsim = n, unconditional = TRUE)
 #' 
 #' # Posterior simulations in grey and data in red
 #' plot(rep(mcycle$times, n), as.vector(t(sim)), col = "grey", 
@@ -47,10 +47,11 @@
 #' @importFrom stats coef vcov
 #' @export postSim
 #' 
-postSim <- function(o, nsim, newdata, fun = identity, method = "auto", 
-                    w = NULL, offset = NULL, simplify = "rbind", ...)
+postSim <- function(o, nsim, newdata, trans = NULL, method = "auto", 
+                    w = NULL, offset = NULL, ...)
 {
   if( is.null(o$sig2) ){ o$sig2 <- summary(o)$dispersion }
+  if( is.null(trans) ) { trans <- identity }
   
   # Get mean linear predictor
   muHat <- predict(o, type = "link", newdata = newdata)
@@ -68,25 +69,26 @@ postSim <- function(o, nsim, newdata, fun = identity, method = "auto",
   # Get inverse link and determine offsets
   if( is.null(attr(X, "lpi")) ){ # Single linear predictor case
     out <- .postSim1LP(o = o, X = X, cf = cf, V = V, n = n, muHat = muHat, 
-                       nsim = nsim, w = w, method = method, fun = fun, offset = offset, newdata = newdata)
+                       nsim = nsim, w = w, method = method, trans = trans, offset = offset, newdata = newdata)
   } else { # Multiple linear predictor case
     out <- .postSimMLP(o = o, X = X, cf = cf, V = V, n = n, muHat = muHat, 
-                       nsim = nsim, w = w, method = method, fun = fun, offset = offset, newdata = newdata)
+                       nsim = nsim, w = w, method = method, trans = trans, offset = offset, newdata = newdata)
   }
   
-  # Try to simplify, if this fails return the list as it is
-  if( !is.null(simplify) ){
-   out <- tryCatch( do.call(simplify, out), error = function(e) out )
+  # We want nsim rows and number of columns depending on trans() 
+  if( is.vector(out) ) { 
+    out <- as.matrix( out )
+    if(nsim == 1) { out <- t(out) }
   }
   
-  return( out )
+  return( unname(out) )
   
 }
 
 
 ######### Internal function for single linear predictor case
 #
-.postSim1LP <- function(o, X, cf, V, n, muHat, nsim, w, method, fun, offset, newdata){
+.postSim1LP <- function(o, X, cf, V, n, muHat, nsim, w, method, trans, offset, newdata){
   
   lnki <- o$family$linkinv   # Get inverse link function
   
@@ -104,13 +106,14 @@ postSim <- function(o, nsim, newdata, fun = identity, method = "auto",
     }
   }
   
-  # Simulate a vector of responses for each vector of coefficients, and transform it using fun()
-  out <- rlply(nsim,
+  # Simulate a vector of responses for each vector of coefficients, and transform it using trans()
+  out <- raply(nsim,
                {
                  beta <- rmvn(1, cf, V)
                  mu <- lnki( X %*% beta + offI )
                  # Simulated and transform
-                 fun( drop(.simulate.gam(mu = mu, w = w, sig = o$sig2, method = method, fam = o$family, nsim = 1, u = NULL)) )
+                 drop(.simulate.gam(mu = mu, w = w, sig = o$sig2, method = method, 
+                                    fam = o$family, nsim = 1, u = NULL, trans = trans))
                })
   
   return( out )
@@ -120,7 +123,7 @@ postSim <- function(o, nsim, newdata, fun = identity, method = "auto",
 
 ######### Internal function for multiple linear predictors case
 #
-.postSimMLP <- function(o, X, cf, V, n, muHat, nsim, w, method, fun, offset, newdata){
+.postSimMLP <- function(o, X, cf, V, n, muHat, nsim, w, method, trans, offset, newdata){
   
   lpi <- attr(X, "lpi")
   nte <- length(lpi)                                 
@@ -143,8 +146,8 @@ postSim <- function(o, nsim, newdata, fun = identity, method = "auto",
     }
   }
   
-  # Simulate a vector of responses for each vector of coefficients, and transform it using fun()
-  out <- rlply(nsim,  
+  # Simulate a vector of responses for each vector of coefficients, and transform it using trans()
+  out <- raply(nsim,  
                {
                  beta <- rmvn(1, cf, V)
                  mu <- t( laply(1:nte, # Need to do it term by term
@@ -152,8 +155,11 @@ postSim <- function(o, nsim, newdata, fun = identity, method = "auto",
                                   lnki[[.ii]]( X[ , lpi[[.ii]]] %*% beta[lpi[[.ii]]] + offI[[.ii]] )
                                 }) )
                  # Simulated and transform
-                 fun( drop(.simulate.gam(mu = mu, w = w, sig = o$sig2, method = method, fam = o$family, nsim = 1, u = NULL)) )
+                 drop(.simulate.gam(mu = mu, w = w, sig = o$sig2, method = method, 
+                                    fam = o$family, nsim = 1, u = NULL, trans = trans) )
                })
+  
+  return( out )
   
 }
 

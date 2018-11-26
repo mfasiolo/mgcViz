@@ -17,7 +17,7 @@ In the second case the length of \code{x} should be equal to the length of \code
 If \code{"type == y"} then the raw observations will be used.}
 
 \item{maxpo}{maximum number of residuals points that will be used by layers such as
-\code{resRug()} and \code{resPoints()}. If number of datapoints > \code{maxpo},
+\code{l_rug()}. If number of datapoints > \code{maxpo},
 then a subsample of \code{maxpo} points will be taken.}
 
 \item{na.rm}{if \code{TRUE} missing cases in \code{x} or \code{y} will be dropped out.}

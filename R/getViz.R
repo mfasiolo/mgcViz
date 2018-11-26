@@ -5,7 +5,14 @@
 #'              for which \code{mgcViz} provides several plotting methods.
 #' @param o an object of class \code{gam}.
 #' @param nsim the number of simulated vectors of responses. A positive integer.
-#' @param ... extra arguments to be passed to \code{simulate.gam}
+#' @param post if \code{TRUE} then posterior simulation is performed. That is, we simulate \code{nsim} vectors 
+#'             of regression coefficients from a Gaussian approximation to the posterior, and then we simulate
+#'             a vector of response using each parameter vector. If \code{FALSE}, then \code{nsim} vectors of 
+#'             responses are simulated using parameters fixed at the posterior mode. 
+#' @param newdata Optional new data frame used to perform the simulations. To be passed to \link{predict.gam} and, 
+#'                if \code{post == TRUE}, to \code{postSim}.
+#' @param ... extra arguments to be passed to \link{simulate.gam} or \link{postSim}. For instance, we could pass prior 
+#'            weights \code{w} and \code{offset}.
 #' @return An object of class \code{gamViz}.
 #' @name getViz
 #' @examples 
@@ -22,29 +29,28 @@
 #' @importFrom qgam qdo
 #' @rdname getViz
 #' @export getViz
-getViz <- function(o, nsim = 0, ...){
+getViz <- function(o, nsim = 0, post = FALSE, newdata, ...){
 
   if( inherits(o, "list") ){
     tmp <- names(o)
-    o <- lapply(o, function(.x, ...) getViz(.x, nsim = nsim, ...))
+    o <- lapply(o, function(.x, ...) getViz(.x, nsim = nsim, post = post, newdata = newdata, ...))
     if( is.null(tmp) ) names(o) <- 1:length(o)
     class(o) <- "mgamViz"
     return( o )
   }
   
-  if( "mqgam" %in% class(o) ){
+  if( inherits(o, "mqgam") ){
     qus <- as.numeric( names(o$fit) )
-    o <- lapply(qus, function(.q) qdo(o, .q, getViz, nsim = 0))
+    o <- lapply(qus, function(.q) qdo(o, .q, getViz, nsim = 0, post = post, newdata = newdata, ...))
     names(o) <- qus
     class(o) <- "mgamViz"
     return( o )
   }
   
-  if( !("gam" %in% class(o)) ){ stop("\"o\" should be of class \"gam\"") }
+  if( !inherits(o, "gam") ){ stop("\"o\" should be of class \"gam\"") }
   
   # If `o` is already a `gamViz` object we don't recompute the `termsFit`
-  if( !("gamViz" %in% class(o)) ){
-    
+  if( !inherits(o, "gamViz") ){
     tmp <- o$pterms
     np <- if (is.list(tmp)){ length(unlist(lapply(tmp,attr,"order"))) } else { length(attr(tmp,"order")) }
     ns <- length( o$smooth )
@@ -67,11 +73,28 @@ getViz <- function(o, nsim = 0, ...){
   
   # We try to simulate responses. If an error occurs we report it but do no stop.
   # Most likely error if that o$family does not have any simulation method available.
+  # NB: we do not allow to use trans() here, as it might lead to problems with check1D and check2D
   if( nsim > 0 ){ 
-    tryCatch(o$store$sim <- simulate(o, nsim = nsim, ...), 
-             error = function(e){ 
-               message( paste("simulate.gam() failed:", e$message) ) 
-             })
+    if( post ){ # Posterior simulations OR ...
+      tryCatch(o$store$sim <- postSim(o, nsim = nsim, newdata = newdata, trans = NULL, ...), 
+               error = function(e){ 
+                 message( paste("postSim() failed:", e$message) ) 
+               })
+    } else {    # ... parameters fixed at MAP 
+      tryCatch(o$store$sim <- simulate(o, nsim = nsim, newdata = newdata, trans = NULL, ...), 
+               error = function(e){ 
+                 message( paste("simulate.gam() failed:", e$message) ) 
+               })
+    }
+  }
+  
+  # We store new dataset which will be used for checking in check0D, check1D, check2D ...
+  # If object 'o' already contained newdata, we either over-write it or set it to NULL
+  if( !missing(newdata) ){
+    o$store$newdata <- newdata
+  } else {
+    if( !is.null(o$store$newdata) ) { message("getViz: newdata removed from gamViz object") }
+    o$store$newdata <- NULL 
   }
   
   return( o )

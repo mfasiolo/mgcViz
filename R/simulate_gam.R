@@ -10,11 +10,19 @@
 #'               will be used, if available. If set to "qf" then \code{o$family$qf()} (which is
 #'               the inverse cdf of the response distribution) will be used to transform some
 #'               uniform variates.
+#' @param trans function used to transform or summarize each vector of simulated responses. 
+#'              It must take a vector as argument, but it can output a vector or a scalar.
+#'              Potentially useful for saving storage (e.g. by transforming each simulated vector
+#'              to a scalar). If left to \code{NULL} then \code{trans = identity} will be used.
 #' @param newdata Optional new data frame or list to be passed to \link{predict.gam}.
 #' @param u a matrix where each row is a vector of uniform random variables in (0, 1).
 #'          This will be used to simulate responses only if \code{method = "qf"}. 
 #' @param w vector of prior weights to be used in the simulations. If \code{newdata==NULL} then
 #'          \code{w} is set to \code{object$prior.weights} otherwise it is a vector of ones.
+#' @param offset numeric vector of offsets. For GAMs with multiple linear predictor (see eg \link{gaulss}) it
+#'               must be a list of vectors. NB: if \code{newdata!=NULL} the offsets will be assumed to be zero, 
+#'               unless their are explicitly provided. If \code{newdata==NULL} then simulations will use the 
+#'               offsets used during model fitting, and \code{offset} argument will be ignored. 
 #' @param ... currently not used.
 #' @return A matrix where each row is a vector of simulated responses. The number of columns
 #'         is equal to the number of responses in the fitted object.
@@ -28,26 +36,52 @@
 #' # Simulate three vectors of responses
 #' matplot(t(simulate(b, nsim = 3)), pch = 19, col = c(1, 3, 4)) 
 #'
-#' @importFrom plyr raply aaply
+#' @importFrom plyr raply aaply laply
 #' @export simulate.gam
 #' @export
 #' 
-simulate.gam <- function(object, nsim = 1, seed = NULL, method = "auto", newdata = NULL, u = NULL, w = NULL, ...)
+simulate.gam <- function(object, nsim = 1, seed = NULL, method = "auto", newdata, 
+                         u = NULL, w = NULL, offset = NULL, trans = NULL, ...)
 {
   o <- object
   method <- match.arg(method, c("auto", "rd", "qf"))
   if ( is.null(o$sig2) ){ o$sig2 <- summary(o)$dispersion }
+  if( is.null(trans) ) { trans <- identity }
   
-  # Either use data in GAM object or predict using new data 
-  if( is.null(newdata) ){
+  # Either (a) use data in GAM object or (b) predict using new data 
+  if( missing(newdata) ){ # (a) the offset should already be included in o$fitted.values
+    
     mu <- o$fitted.values
-    if( is.null(w) ){ w <- o$prior.weights }
-  } else{
-    mu <- predict(o, newdata = newdata, type = "response")
+    if( is.null(w) ) { w <- o$prior.weights }
+    if( !is.null(offset) ) { message("simulate.gam: offset argument ignored. No newdata provided, so offset is already in object$fitted.values")}
+    
+  } else{ # (b) the user-defined offset is added to linear predictor
+    
+    mu <- predict(o, newdata = newdata, type = "link")
     if( is.null(w) ){ w <- mu*0 + 1 }
-  }
+    
+    # Dealing with offset and inverting link function
+    form <- o$formula
+    if( is.list(form) ){ # [1] GAMLSS case
+      n <- length( mu[[1]] )
+      nte <- length( form ) 
+      lnki <- lapply(o$family$linfo, "[[", "linkinv")
+      if( is.null(offset) ) { offset <- rlply(nte, { numeric(n) }) }
+      mu <- t( laply(1:nte, function(.ii){ lnki[[.ii]](mu[ , .ii] + offset[[.ii]]) }) )
+    } else { # [2] GAM case
+      if( is.null(offset) ) { offset <- mu * 0 }
+      mu <- o$family$linkinv( mu + offset )
+    }
+    
+  } 
   
-  out <- .simulate.gam(mu = mu, w = w, sig = o$sig2, method = method, fam = o$family, nsim = nsim, u = u)
+  out <- .simulate.gam(mu = mu, w = w, sig = o$sig2, method = method, fam = o$family, nsim = nsim, u = u, trans = trans)
+  
+  # We want nsim rows and number of columns depending on trans() 
+  if( is.vector(out) ) { 
+    out <- as.matrix( out )
+    if(nsim == 1) { out <- t(out) }
+  }
   
   return( unname(out) )
   
@@ -55,7 +89,7 @@ simulate.gam <- function(object, nsim = 1, seed = NULL, method = "auto", newdata
 
 # Internal function to simulate observations for given family
 #
-.simulate.gam <- function(mu, w, sig, method, fam, nsim, u) {
+.simulate.gam <- function(mu, w, sig, method, fam, nsim, u, trans) {
   
   # Try method == 'rd', if that does not work 'qf', if that is not good either throw an error
   if( method == "auto" ){
@@ -72,7 +106,7 @@ simulate.gam <- function(object, nsim = 1, seed = NULL, method = "auto", newdata
   if( method == "rd" ){
     if( is.null(fam$rd) ) { fam <- fix.family.rd(fam) }
     if( is.null(fam$rd) ) { stop( "fam$rd unavailable, try using method = `qf`") }
-    sim <- raply(nsim, { fam$rd(mu, w, sig) }  ) 
+    sim <- raply(nsim, { trans(fam$rd(mu, w, sig)) }  ) 
   }
   
   if( method == "qf" ){
@@ -82,14 +116,12 @@ simulate.gam <- function(object, nsim = 1, seed = NULL, method = "auto", newdata
     nobs <- length( mu )
     sim <- if( is.null(u) ){
       raply(nsim, { 
-        fam$qf(runif(nobs), mu, w, sig)
+        trans(fam$qf(runif(nobs), mu, w, sig))
       }  ) 
     } else {
-      aaply(u, 1, fam$qf, mu = mu, wt = w, scale = sig)
+      aaply(u, 1, function(.u) { trans(fam$qf(.u)) }, mu = mu, wt = w, scale = sig)
     }
   }
-  
-  if( is.vector(sim) ) { sim <- matrix(sim, 1, length(sim)) }
   
   return( sim )
   

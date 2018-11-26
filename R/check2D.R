@@ -13,7 +13,7 @@
 #' @param type the type of residuals to be used. See [residuals.gamViz]. 
 #'             If \code{"type == y"} then the raw observations will be used. 
 #' @param maxpo maximum number of residuals points that will be used by layers such as
-#'              \code{resRug()} and \code{resPoints()}. If number of datapoints > \code{maxpo},
+#'              \code{l_rug()}. If number of datapoints > \code{maxpo},
 #'              then a subsample of \code{maxpo} points will be taken.
 #' @param na.rm if \code{TRUE} missing cases in \code{x} or \code{y} will be dropped out 
 #' @param trans function used to transform the observed and simulated residuals or responses. It must take a vector of 
@@ -74,24 +74,11 @@ check2D <- function(o, x1, x2, type = "auto", maxpo = 1e4, na.rm = TRUE, trans =
   type <- match.arg(type, c("auto", "deviance", "pearson", "scaled.pearson", 
                             "working", "response", "tunif", "tnormal", "y"))
   
-  if( !is.null(o$store$newdata) ){ # (1) Newdata has been provided, so this is a predictive check OR ...
-    ynam <- if(is.list(o$formula)){ o$formula[[1]][[2]] } else { o$formula[[2]] }
-    data <- o$store$newdata
-    y <- data[[ynam]]
-    if(type == "auto") { type <- "y" }
-    if(type != "y") { 
-      stop("Predictive checks on newdata can be performed only with raw observations (type == \"y\"). See ?check1D") 
-    }
-  } else { # ... (2) No newdata so we get either residuals or responses y
-    data <- o$model
-    if(type == "y"){
-      y <- o$y
-    } else {
-      # Returns the appropriate residual type for each GAM family
-      if( type=="auto" ) { type <- .getResTypeAndMethod(o$family$family)$type }
-      y <- residuals(o, type = type)
-    }
-  }
+  # Get data, responses and type of residuals
+  tmp <- .getDataTypeY(o = o, type = type)
+  y <- tmp$y
+  data <- tmp$data
+  type <- tmp$type
 
   # Get covariate vectors: x1 or x2 are chars, get related vectors from dataframe
   xnm1 <- "x1"
@@ -113,40 +100,20 @@ check2D <- function(o, x1, x2, type = "auto", maxpo = 1e4, na.rm = TRUE, trans =
   }
   
   # Discard NAs
-  m <- length(x1)
   if( na.rm ){
     good <- complete.cases(y, x1, x2)
     y <- y[ good ]
     x1 <- x1[ good ]
     x2 <- x2[ good ]
-    m <- length( good )
   }
   
-  # Sample if too many points (> maxpo)  
-  sub <- if(m > maxpo) { 
-    sample( c(rep(T, maxpo), rep(F, m-maxpo)) )
-  } else { 
-    rep(T, m) 
-  }
-  
-  ### 2. Transform simulated responses to residuals (unless type == "y")
-  sim <- NULL
-  if( !is.null(o$store$sim) ){
-    sim <- o$store$sim
-    if( type != "y" ){
-      sim <- aaply(sim, 1, 
-                   function(.yy){  
-                     o$y <- .yy
-                     return( residuals(o, type = type) )
-                   }) 
-    }
-  }
-  
-  # Apply optional transformation to observed and simulated y's
-  if( !is.null(trans) ){
-    y <- trans( y )
-    if( !is.null(sim) ) { sim <- t(apply(sim, 1, trans)) }
-  }
+  ### 2. a) Transform simulated responses to residuals (unless type == "y")
+  ###    b) Apply optional transformation to observed and simulated y's
+  ###    c) Obtain subsample indexes
+  tmp <- .getresidualsTransformSubsample(o = o, y = y, maxpo = maxpo, trans = trans, type = type)
+  y <- tmp$y
+  sim <- tmp$sim
+  sub <- tmp$sub
   
   cls1 <- .mapVarClass( class(x1) )
   cls2 <- .mapVarClass( class(x2) )
