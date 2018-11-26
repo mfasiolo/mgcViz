@@ -81,6 +81,7 @@ l_gridQCheck1D.Check1DFactor <- l_gridQCheck1D.Check1DLogical <- function(a){
   }
   
   xtra <- a$xtra
+  a$xtra$showObs <- TRUE
   a$xtra$level <- 0
   a$data$sim <- NULL
   
