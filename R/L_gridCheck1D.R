@@ -18,7 +18,8 @@
 #'              in each bin are scaled and centered using the mean and standard
 #'              deviation of the simulated stats in that bin. 
 #'              If "s" we do only scaling, if "c" only centering.
-#' @param showReps if \code{TRUE} the individuals simulated statistics are also plotted.
+#' @param showReps if \code{TRUE} the individuals simulated statistics are also plotted using small points.
+#' @param showObs if \code{TRUE} the observed statistics are plotted using large points.
 #' @param ... graphical arguments to be passed to \code{ggplot2::geom_point}.
 #' @return An object of class \code{gamLayer}
 #' @examples 
@@ -45,7 +46,7 @@
 #' @importFrom plyr aaply
 #' @rdname l_gridCheck1D
 #' @export l_gridCheck1D
-l_gridCheck1D <- function(gridFun = NULL, n = 20, level = 0.8, stand = "none", showReps = TRUE, ...){
+l_gridCheck1D <- function(gridFun = NULL, n = 20, level = 0.8, stand = "none", showReps = TRUE, showObs = TRUE, ...){
   arg <- list(...)
   
   if( !is.null(arg$show.reps) ){ # Here for compatibility (on old mgcViz version the argument name was show.reps)
@@ -54,7 +55,7 @@ l_gridCheck1D <- function(gridFun = NULL, n = 20, level = 0.8, stand = "none", s
   }
   
   arg$xtra <- list("gridFun"=gridFun, "n"=n, 
-                   "level"=level, "stand"=stand, "showReps"=showReps)
+                   "level"=level, "stand"=stand, "showReps"=showReps, "showObs"=showObs)
   o <- structure(list("fun" = "l_gridCheck1D",
                       "arg" = arg), 
                  class = "gamLayer")
@@ -182,18 +183,19 @@ l_gridCheck1D.Check1DFactor <- l_gridCheck1D.Check1DLogical <- function(a){
   if( is.null(a$shape) ){ a$shape <- 19 }
   
   # Build layers
+  showObs <- xtra$showObs
   out <- list()
-  out[[1]] <- do.call("geom_point", a)
+  if( showObs ){ out[[1]] <- do.call("geom_point", a) }
   
   if( rep > 0){
     datS <- data.frame("x" = rep(grX, rep), "y" = as.vector(t(grS)))
     if(xtra$showReps) {
-      out[[2]] <- geom_point(data = datS, aes(x = x, y = y), na.rm = TRUE, shape = 46)
+      out[[1+showObs]] <- geom_point(data = datS, aes(x = x, y = y), na.rm = TRUE, shape = 46)
     }
     if(level > 0){
       datCI <- data.frame("x" = goX, "ll" = conf[1, ], "ul" = conf[2, ])
-      out[[3]] <- geom_line(data = datCI, aes(x = as.numeric(x), y = ll), na.rm = TRUE, linetype = 2, colour = "red")
-      out[[4]] <- geom_line(data = datCI, aes(x = as.numeric(x), y = ul), na.rm = TRUE, linetype = 2, colour = "red")
+      out[[2+showObs]] <- geom_line(data = datCI, aes(x = as.numeric(x), y = ll), na.rm = TRUE, linetype = 2, colour = "red")
+      out[[3+showObs]] <- geom_line(data = datCI, aes(x = as.numeric(x), y = ul), na.rm = TRUE, linetype = 2, colour = "red")
     }
   }
 
