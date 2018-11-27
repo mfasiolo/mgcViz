@@ -26,8 +26,8 @@ l_hist.Check0DVectorNumeric <- function(a){
   # Get data out of original object
   obs <- a$data$res$x
   sim <- a$data$sim
-  nsim <- nrow(sim)
-  n <- ncol(sim)
+  nsim <- ifelse(is.null(sim), 0, nrow(sim))
+  n <- length(obs)
   
   a$data <- data.frame("x" = c(obs, as.vector(sim)), 
                        "id" = factor(c(rep("obs", n), rep("sim", n*nsim))))
@@ -51,6 +51,11 @@ l_hist.Check0DVectorNumeric <- function(a){
 ######## Internal method for posterior checks: scalar case
 #' @noRd
 l_hist.Check0DScalarNumeric <- function(a){
+  
+  if( is.null(a$data$sim) ){
+    message("l_hist: gamViz object does not contain any simulation, so there is nothing to plot")
+    return(NULL)
+  }
   
   a$data <- data.frame("x" = as.vector(a$data$sim))
   

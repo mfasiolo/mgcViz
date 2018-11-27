@@ -47,7 +47,7 @@ check0D(b) + l_hist() + l_rug()
 
 # Histogram of simulated 4th central moment (~ kurtosis) of simulated residuals.
 # The vertical line is the 4th moment of the observed residuals
-check0D(b, trans = function(.y) mean((.y - mean(.y))^4)) + l_hist() + l_vline() + l_rug()
+check0D(b, trans = function(.y) mean((.y - mean(.y))^4)) + l_dens1D() + l_vline() + l_rug()
 # Residuals look very fat tails, but the real problem here is the heteroscedasticity 
-# which can be diagnosted using check1D()
+# which can be diagnosted using check1D(b, "x2") + l_gridCheck1D(sd)
 }

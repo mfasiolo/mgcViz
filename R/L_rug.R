@@ -45,6 +45,11 @@ l_rug.Check1DLogical <- function(a){
 #' @noRd
 l_rug.Check0DScalarNumeric <- function(a){
   
+  if( is.null(a$data$sim) ){
+    message("l_rug: gamViz object does not contain any simulation, so there is nothing to plot")
+    return(NULL)
+  }
+  
   a$data$res <- data.frame("x" = drop(a$data$sim), "sub" = rep(TRUE, nrow(a$data$res)))
 
   l_rug.1D( a )
