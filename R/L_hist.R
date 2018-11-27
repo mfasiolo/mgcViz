@@ -7,6 +7,7 @@
 #' @param ... graphical arguments to be passed to \code{ggplot2::geom_histogram}.
 #' @return An object of class \code{gamLayer}.
 #' @seealso See [check0D] for examples.
+#' @importFrom stats density
 #' @export l_hist
 #'
 l_hist <- function(...){
