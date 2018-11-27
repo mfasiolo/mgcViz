@@ -41,7 +41,7 @@ getViz <- function(o, nsim = 0, post = FALSE, newdata, ...){
   
   if( inherits(o, "mqgam") ){
     qus <- as.numeric( names(o$fit) )
-    o <- lapply(qus, function(.q) qdo(o, .q, getViz, nsim = 0, post = post, newdata = newdata, ...))
+    o <- qdo(o, qus, getViz, nsim = 0, post = post, newdata = newdata, ...)
     names(o) <- qus
     class(o) <- "mgamViz"
     return( o )
