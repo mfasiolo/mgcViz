@@ -4,7 +4,7 @@
 \alias{print.plotSmooth}
 \title{Printing plots of smooth effects}
 \usage{
-\method{print}{plotSmooth}(x, ...)
+\method{print}{plotSmooth}(x, addLay = TRUE, ...)
 }
 \arguments{
 \item{x}{an object of class \code{plotSmooth}.}

@@ -18,8 +18,35 @@
 #' 
 print.plotGam <- function(x, ask = TRUE, pages = NULL, addLay = TRUE, ...){
   
+  mcls <- x$plots[[1]]$data$misc$modelClass
+  
   .addDefaultLayers <- function( .l ){
     .cl <- paste(.l$type, collapse = '')
+    
+    if( grepl("Check", .cl) ){ # [A] Checking plots
+      if("qgam" %in% mcls){ # a.1 Quantile GAMS
+        .l <- switch(.cl, 
+                     "Check1DNumeric" =  .l + l_gridQCheck1D() + l_rug(), 
+                     "Check1DFactor" = .l + l_gridQCheck1D() + l_rug(),
+                     "Check1DLogical" = .l + l_gridQCheck1D() + l_rug(),
+                     "Check2DNumericNumeric" = .l + l_gridQCheck2D(),
+                     "Check2DFactorFactor" = .l + l_gridQCheck2D() + l_rug(),
+                     "Check2DFactorNumeric" = .l + l_gridQCheck2D() + l_rug(),
+                     .l
+        )
+      } else { # a.2 Standard GAMS
+        .l <- switch(.cl, 
+                     "Check1DNumeric" =  .l + l_dens2D("cond") + l_gridCheck1D(showReps = FALSE), 
+                     "Check1DFactor" = .l + l_gridCheck1D(showReps = FALSE) + l_rug(),
+                     "Check1DLogical" = .l + l_gridCheck1D(showReps = FALSE) + l_rug(),
+                     "Check2DNumericNumeric" = .l + l_gridCheck2D(),
+                     "Check2DFactorFactor" = .l + l_gridCheck2D() + l_rug(),
+                     "Check2DFactorNumeric" = .l + l_gridCheck2D() + l_rug(),
+                     .l
+        )
+      }
+    } else { # [B] Smooth effect plots
+    
     .l <- switch(.cl, 
                  "fs1D" = .l + l_fitLine() + theme(legend.position="none"),
                  "1D" = .l + l_fitLine() + l_ciLine(),
@@ -37,8 +64,11 @@ print.plotGam <- function(x, ask = TRUE, pages = NULL, addLay = TRUE, ...){
                  "Multi1D" = .l + l_fitLine(),
                  "Multi2D" = .l + l_fitRaster() + l_fitContour(),
                  "MultiPtermNumeric" = .l + l_ciBar() + l_fitPoints(),
-                 "MultiPtermFactor" = .l + l_ciBar() + l_fitPoints()
+                 "MultiPtermFactor" = .l + l_ciBar() + l_fitPoints(), 
+                  .l
                  )
+    
+    }
     
     return( .l )
   }

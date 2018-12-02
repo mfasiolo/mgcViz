@@ -46,7 +46,7 @@ b <- bam(ob ~ s(x,k=30) + s(y, k=30), discrete = TRUE)
 b <- getViz(b)
 
 # Look at residuals along "x"
-ck <- check1D(b, "x")
+ck <- check1D(b, "x", type = "tnormal")
 
 # Can't see that much
 ck + l_dens(type = "cond", alpha = 0.8) + l_points() + l_rug(alpha = 0.2)

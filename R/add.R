@@ -11,9 +11,12 @@
 #'
 addPlotSmooth <- function(e1, e2) {
   
+  empty <- TRUE
+  
   # If e2 is a gamLayer, we need to call the corresponding layer internal.
   # This returns either a ggplot or a list of ggplots (with class listOfLayers)
   if( "gamLayer" %in% class(e2) ){
+    empty <- FALSE
     e2$arg$data <- e1$data 
     fun <- tryCatch(get( paste(e2$fun, ".", paste(e1$type, collapse = ''), sep = '') ), 
                     error = function(e){
@@ -32,12 +35,15 @@ addPlotSmooth <- function(e1, e2) {
   # If e2 is a "listOfLayers" (list of ggplots) add them one by one.
   # Calling directly ggplot %+% here.
   if( "listOfLayers" %in% class(e2) ){
+    empty <- FALSE
     for(ii in 1:length(e2)){
       e1$ggObj <- e1$ggObj %+% e2[[ii]]
     } 
   } else {
     e1$ggObj <- e1$ggObj %+% e2
   }
+  
+  e1$empty <- empty
   
   return( e1 )
 }
