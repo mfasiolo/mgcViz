@@ -4,7 +4,7 @@
 \alias{l_gridQCheck1D}
 \title{Checking sign of residuals along one covariate}
 \usage{
-l_gridQCheck1D(qu, n = 20, level = 0.8, ...)
+l_gridQCheck1D(qu = NULL, n = 20, level = 0.8, ...)
 }
 \arguments{
 \item{qu}{the quantile of interest. Should be in (0, 1).}

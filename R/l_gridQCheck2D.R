@@ -43,7 +43,7 @@
 #' @rdname l_gridQCheck2D
 #' @export l_gridQCheck2D
 #' 
-l_gridQCheck2D <- function(qu, bw = c(NA, NA), stand = TRUE, binFun = NULL, ...){
+l_gridQCheck2D <- function(qu = NULL, bw = c(NA, NA), stand = TRUE, binFun = NULL, ...){
   
   .closure <- function(.qu, .stand){
     .tmp <- function(.x){ 
@@ -57,11 +57,10 @@ l_gridQCheck2D <- function(qu, bw = c(NA, NA), stand = TRUE, binFun = NULL, ...)
     return( .tmp )
   }
   
-  gridFun <- .closure(.qu = qu, .stand = stand) 
+  attr(.closure, "Qcheck") <- TRUE # Used to signal to l_gridCheck2D that we are interested in quantiles
+  attr(.closure, "qu") <- qu 
   
-  attr(gridFun, "quantile") <- TRUE # Used to signal to l_gridCheck2D that we are interested in quantiles
-  
-  o <- l_gridCheck2D(gridFun = gridFun, bw = bw, stand = FALSE, binFun = binFun, ...)
+  o <- l_gridCheck2D(gridFun = .closure, bw = bw, stand = stand, binFun = binFun, ...)
   
   return(o)
 

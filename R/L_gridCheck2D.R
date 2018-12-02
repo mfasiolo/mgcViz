@@ -98,9 +98,18 @@ l_gridCheck2D.Check2DNumericNumeric <- function(a){
   binFun <- xtra$binFun
   bw <- xtra$bw
   stand <- xtra$stand
-
-  if( a$data$misc$resType == "y" && !is.null(attr(xtra$gridFun, "quantile")) ){
-    message("Using l_gridQCheck2D might not make sense with residual type == \"y\". See ?check2D")
+  
+  # Quantile GAM case: need to get specific gridFun()
+  if( !is.null(attr(xtra$gridFun, "Qcheck")) ){
+    if( a$data$misc$resType == "y" ){
+      message("Using l_gridQCheck2D might not make sense with residual type == \"y\". See ?check2D")
+    }
+    if( is.null(a$xtra$qu) ){ 
+      if( is.null(a$data$misc$qu) ){ stop("Please specify argument qu in the call to l_gridQCheck1D") }
+      xtra$qu <- a$data$misc$qu 
+    }
+    gridFun <- gridFun(.qu = xtra$qu, .stand = stand) # Fixing .qu and .stand values inside closure
+    stand <- FALSE # Standardization already happening in gridFun
   }
   
   # Wrapper that allows to compute the gridFun() over the observed and

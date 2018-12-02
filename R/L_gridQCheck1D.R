@@ -35,7 +35,7 @@
 #' @importFrom stats qbinom
 #' @rdname l_gridQCheck1D
 #' @export l_gridQCheck1D
-l_gridQCheck1D <- function(qu, n = 20, level = 0.8, ...){
+l_gridQCheck1D <- function(qu = NULL, n = 20, level = 0.8, ...){
   arg <- list(...)
   arg$xtra <- list("qu" = qu, "n" = n, "level" = level, "stand" = "none")
   o <- structure(list("fun" = "l_gridQCheck1D",
@@ -70,7 +70,11 @@ l_gridQCheck1D.Check1DFactor <- l_gridQCheck1D.Check1DLogical <- function(a){
 .l_gridQCheck1D <- function(a){
   
   if(a$data$misc$resType == "y"){ message("Using l_gridQCheck1D might not make sense with residual type == \"y\". See ?check1D")}
-  
+  if( is.null(a$xtra$qu) ){ 
+    if( is.null(a$data$misc$qu) ){ stop("Please specify argument qu in the call to l_gridQCheck1D") }
+    a$xtra$qu <- a$data$misc$qu 
+  }
+    
   funCreator <- function(.qu, .lev, .type){
     .ciFun <- function(.x){
       .n <- length(.x)

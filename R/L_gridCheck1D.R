@@ -120,10 +120,10 @@ l_gridCheck1D.Check1DFactor <- l_gridCheck1D.Check1DLogical <- function(a){
   rep <- 0
   if( is.null(sim) ){ # NO simulations
     if( level > 0 ){
-      message("level>0 but object does not contain any simulations. See ?getViz.")
+      message("l_gridCheck1D: level>0 but object does not contain any simulations. See ?getViz.")
     } else {
       if( xtra$stand != "none" ){
-        message("stand!=`none` but object does not contain any simulations. See ?getViz.")
+        message("l_gridCheck1D: stand!=`none` but object does not contain any simulations. See ?getViz.")
       }
     }
   } else {  # YES simulations!
