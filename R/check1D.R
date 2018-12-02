@@ -32,7 +32,7 @@
 #' b <- getViz(b)
 #' 
 #' # Look at residuals along "x"
-#' ck <- check1D(b, "x")
+#' ck <- check1D(b, "x", type = "tnormal")
 #' 
 #' # Can't see that much
 #' ck + l_dens(type = "cond", alpha = 0.8) + l_points() + l_rug(alpha = 0.2)
@@ -69,6 +69,14 @@
 check1D <- function(o, x, type = "auto", maxpo = 1e4, na.rm = TRUE, trans = NULL){
   
   if( !inherits(o, "gamViz") ){ stop("Argument 'o' should be of class 'gamViz'. See ?getViz") }
+  
+  if( is.list(x) ){
+    out <- lapply(x, function(.x) check1D(o = o, x = .x, type = type, maxpo = maxpo, 
+                                          na.rm = na.rm, trans = trans))
+    out  <- structure(list("plots" = out, "empty" = TRUE), 
+                           "class" = c("plotGam", "gg"))
+    return( out )
+  }
   
   ### 1. Preparation
   type <- match.arg(type, c("auto", "deviance", "pearson", "scaled.pearson", 
@@ -114,7 +122,8 @@ check1D <- function(o, x, type = "auto", maxpo = 1e4, na.rm = TRUE, trans = NULL
   cls <- .mapVarClass(class(res$x))
   if( cls == "factor" ){ pl <- pl + scale_x_discrete()}
   
-  misc <- list("resType" = type, "trans" = trans)
+  misc <- list("resType" = type, "trans" = trans, "modelClass" = class(o))
+  if( inherits(o, "qgam") ) { misc$qu = o$family$getQu() }
   
   out <- structure(list("ggObj" = pl, 
                         "data" = list("res" = res, 

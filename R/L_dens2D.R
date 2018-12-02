@@ -76,8 +76,9 @@ l_dens2D.1D <- l_dens2D.Check1DNumeric <- l_dens2D.PtermNumeric <- function(a){
   # Build layers
   out <- list()
   out[[1]] <- do.call("geom_raster", a) 
-  out[[2]] <-  scale_fill_gradientn(colours = viridis(50, begin = 0.2), na.value = "white") 
-  
+  out[[2]] <-  scale_fill_gradientn(colours = viridis(50, begin = 0.2), 
+                                    na.value = "white", 
+                                    name=ifelse(xtra$type == "cond", "p(y|x)", "p(x,y)"))
   class(out) <- "listOfLayers"
   
   return( out )

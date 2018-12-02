@@ -63,12 +63,39 @@
 #' a <- check2D(b, x1 = "fac", x2 = "fac2")
 #' a + l_gridCheck2D(gridFun = sd, bw = c(1, 4)) + l_rug() + l_points() 
 #' 
+#' @importFrom utils combn
 #' @rdname check2D
 #' @export check2D
 #' 
 check2D <- function(o, x1, x2, type = "auto", maxpo = 1e4, na.rm = TRUE, trans = NULL)
 {
   if( !inherits(o, "gamViz") ){ stop("Argument 'o' should be of class 'gamViz'. See ?getViz") }
+  
+  # If x1 or x2 is not specified, and the one that is specified is a list, we 
+  # create all possible combinations of x1 and x2
+  anyMis <- which( c(missing(x1), missing(x2)) )
+  if( length(anyMis) ){
+    if( length(anyMis) == 2 ){ stop("Please specify x1 and x2") }
+    if( anyMis == 1 ) { x1 <- x2 }
+    if( !is.list(x1) ) { stop("Please specify x1 and x2") } 
+    np <- length( x1 )
+    cmb <- combn(np, 2)
+    x2 <- x1[ cmb[2, , drop = TRUE] ] # This before...
+    x1 <- x1[ cmb[1, , drop = TRUE] ] # ...that
+  }
+  
+  if( is.list(x1) && is.list(x2) ){
+    np <- length( x1 )
+    if( np != length(x2) ) { 
+      message("check2D: length(x1) != length(x2), not all pairs of variables will be plotted")
+      np <- min(np, length(x2))
+    }
+    out <- lapply(1:np, function(.ii) check2D(o = o, x1 = x1[[.ii]], x2 = x2[[.ii]], type = type, 
+                                              maxpo = maxpo, na.rm = na.rm, trans = trans))
+    out  <- structure(list("plots" = out, "empty" = TRUE), 
+                      "class" = c("plotGam", "gg"))
+    return( out )
+  }
   
   ### 1. Preparation
   type <- match.arg(type, c("auto", "deviance", "pearson", "scaled.pearson", 
@@ -134,7 +161,8 @@ check2D <- function(o, x1, x2, type = "auto", maxpo = 1e4, na.rm = TRUE, trans =
   if( cls1 == "factor" ){ pl <- pl + scale_x_discrete()}
   if( cls2 == "factor" ){ pl <- pl + scale_y_discrete()}
 
-  misc <- list("resType" = type, "vnam" = c(xnm1, xnm2), "trans" = trans)
+  misc <- list("resType" = type, "vnam" = c(xnm1, xnm2), "trans" = trans, "modelClass" = class(o))
+  if( inherits(o, "qgam") ) { misc$qu = o$family$getQu() }
   
   out <- structure(list("ggObj" = pl, 
                         "data" = list("res" = res, 
