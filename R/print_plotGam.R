@@ -27,7 +27,11 @@ print.plotGam <- function(x, ask = TRUE, pages = NULL, addLay = TRUE, ...){
       if("qgam" %in% mcls){ # a.1 Quantile GAMS
         .l <- switch(.cl, 
                      "Check0DScalarNumeric" = .l + l_hist() + l_vline(),
+                     "Check0DScalarFactor" = .l + l_hist() + l_vline(),
+                     "Check0DScalarLogical" = .l + l_hist() + l_vline(),
                      "Check0DVectorNumeric" = .l + l_hist(),
+                     "Check0DVectorFactor" = .l + l_hist(),
+                     "Check0DVectorLogical" = .l + l_hist(),
                      "Check1DNumeric" =  .l + l_gridQCheck1D() + l_rug(), 
                      "Check1DFactor" = .l + l_gridQCheck1D() + l_rug(),
                      "Check1DLogical" = .l + l_gridQCheck1D() + l_rug(),
@@ -39,7 +43,11 @@ print.plotGam <- function(x, ask = TRUE, pages = NULL, addLay = TRUE, ...){
       } else { # a.2 Standard GAMS
         .l <- switch(.cl, 
                      "Check0DScalarNumeric" = .l + l_hist() + l_vline(),
+                     "Check0DScalarFactor" = .l + l_hist() + l_vline(),
+                     "Check0DScalarLogical" = .l + l_hist() + l_vline(),
                      "Check0DVectorNumeric" = .l + l_hist(),
+                     "Check0DVectorFactor" = .l + l_hist(),
+                     "Check0DVectorLogical" = .l + l_hist(),
                      "Check1DNumeric" =  .l + l_dens2D("cond") + l_gridCheck1D(showReps = FALSE), 
                      "Check1DFactor" = .l + l_gridCheck1D(showReps = FALSE) + l_rug(),
                      "Check1DLogical" = .l + l_gridCheck1D(showReps = FALSE) + l_rug(),
