@@ -33,7 +33,8 @@ getViz <- function(o, nsim = 0, post = FALSE, newdata, ...){
 
   if( inherits(o, "list") ){
     tmp <- names(o)
-    o <- lapply(o, function(.x, ...) getViz(.x, nsim = nsim, post = post, newdata = newdata, ...))
+    # lapply does not handle missing arguments in the "...", need to pass it explictly
+    o <- lapply(o, function(.x, newdata, ...) getViz(.x, nsim = nsim, post = post, newdata = newdata, ...), newdata = newdata)
     if( is.null(tmp) ) names(o) <- 1:length(o)
     class(o) <- "mgamViz"
     return( o )
