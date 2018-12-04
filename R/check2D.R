@@ -112,14 +112,14 @@ check2D <- function(o, x1, x2, type = "auto", maxpo = 1e4, na.rm = TRUE, trans =
   if( is.character(x1) ){ 
     xnm1 <- x1
     if( !(x1 %in% names(data)) ) stop("(x1 %in% names(data)) == FALSE")
-    x1 <- xfull1 <- o$model[[x1]]
+    x1 <- xfull1 <- data[[x1]]
   }
   
   xnm2 <- "x2"
   if( is.character(x2) ){ 
     xnm2 <- x2
     if( !(x2 %in% names(data)) ) stop("(x2 %in% names(data)) == FALSE")
-    x2 <- xfull2 <- o$model[[x2]]
+    x2 <- xfull2 <- data[[x2]]
   }
   
   if( length(x1) != length(y) || length(x2) != length(y) ){ 
