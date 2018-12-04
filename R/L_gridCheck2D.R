@@ -113,7 +113,7 @@ l_gridCheck2D.Check2DNumericNumeric <- function(a){
   }
   
   # Wrapper that allows to compute the gridFun() over the observed and
-  # simulated residuals. The observed statistic in each cell is than normalized using
+  # simulated residuals. The observed statistic in each cell is then normalized using
   # the standard deviation of the simulated statistics in the corresponding cell
   getGridFun <- function(.ifun){
     # Internal wrapper  

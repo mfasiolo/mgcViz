@@ -48,7 +48,7 @@ print.plotGam <- function(x, ask = TRUE, pages = NULL, addLay = TRUE, ...){
                      "Check0DVectorNumeric" = .l + l_hist(),
                      "Check0DVectorFactor" = .l + l_hist(),
                      "Check0DVectorLogical" = .l + l_hist(),
-                     "Check1DNumeric" =  .l + l_dens2D("cond") + l_gridCheck1D(showReps = FALSE), 
+                     "Check1DNumeric" =  .l + l_dens2D("cond") + l_gridCheck1D(mean, showReps = FALSE), 
                      "Check1DFactor" = .l + l_gridCheck1D(showReps = FALSE) + l_rug(),
                      "Check1DLogical" = .l + l_gridCheck1D(showReps = FALSE) + l_rug(),
                      "Check2DNumericNumeric" = .l + l_gridCheck2D(),

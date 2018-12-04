@@ -2,11 +2,20 @@
 title: "mgcViz: visual tools for GAMs"
 author: "Matteo Fasiolo and Raphael Nedellec"
 date: "`r Sys.Date()`"
+output: 
+  html_document:
+    toc: true
+    number_sections: true
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteIndexEntry{mgcViz_vignette}
   %\VignetteEncoding{UTF-8}
 ---
+
+<style>
+body {
+text-align: justify}
+</style>
 
 ```{r setup, include=FALSE}
 library(knitr)
@@ -14,6 +23,8 @@ library(rgl)
 opts_chunk$set(out.extra='style="display:block; margin: auto"', fig.align="center", tidy=FALSE)
 knit_hooks$set(webgl = hook_webgl)
 ```
+
+# mgcViz basics
 
 The `mgcViz` R package offers visual tools for Generalized Additive Models (GAMs). The visualizations provided by `mgcViz` differs from those implemented in `mgcv`, in that most of the plots are based on `ggplot2`'s powerful layering system. This has been implemented by wrapping several `ggplot2` layers and integrating them with computations specific to GAM models. Further, `mgcViz` uses binning and/or sub-sampling to produce plots that can scale to large datasets ($n \approx 10^7$), and offers a variety of new methods for visual model checking/selection.
 
@@ -26,11 +37,11 @@ This document introduces the following categories of visualizations:
 3. **special plots**: differences-between-smooths plots in 1 or 2D and plotting slices of multidimensional smooth effects.
 
 
-## 1 Layered smooth effect plots
+## Layered smooth effect plots
 
 Here we describe effect-specific plotting methods and then we move to the `plot.gamViz` function, which wraps several effect plots together.
 
-#### 1.1 Effect-specific plots
+### Effect-specific plots
 
 Let's start with a simple example with two smooth effects:
 
@@ -87,7 +98,7 @@ plot(sm(b, 1)) + l_fitRaster() + l_fitContour() + l_points()
 We can extract the parametric effect `x3` using the `pterm` function (which is
 the parametric equivalent of `sm`). We can then plot the two effects on a grid using
 the `gridPrint` function:
-```{r 8a, message = F, warning = F}
+```{r 8a, message = F, warning = F, fig.width=10, fig.height=4}
 gridPrint(plot(sm(b, 1)) + l_fitRaster() + l_fitContour() + labs(title = NULL) + guides(fill=FALSE),
           plot(pterm(b, 1)) + l_ciPoly() + l_fitLine(), ncol = 2)
 ```
@@ -99,7 +110,7 @@ class(b)
 ```
 The only reason to do so might be to save some memory (`gamViz` objects store some extra objects).
 
-#### 1.2 The `plot.gamViz` method
+### The `plot.gamViz` method
 
 The `plot.gamViz` is the `mgcViz`'s equivalent of `mgcv::plot.gam`. This function
 wraps together the plotting methods related to each specific smooth or parametric effect, which can 
@@ -153,7 +164,7 @@ always come after smooth or random effects, hence to plot the factor effect we d
 plot(b, allTerms = TRUE, select = 4) + geom_hline(yintercept = 0)
 ```
 
-#### 1.3 Interactive `rgl` smooth effect plots 
+### Interactive `rgl` smooth effect plots 
 
 `mgcViz` provides tools for generating interactive plots of multidimensional smooths
 via the `rgl` R package. Here is an example where we are plotting a 2D slice of 
@@ -176,14 +187,14 @@ aspect3d(1, 2, 1)
 
 We then close the window using `rgl.close()`.
 
-## 2 Model checking
+## Model checking
 
-#### 2.1 New version of traditional model checks
+### New version of traditional model checks
 
 Most of the model checks provided by `mgcv` are contained in `qq.gam` and `gam.check`.
 `mgcViz` substitutes them with the more advanced `qq.gamViz` and `check.gamViz` methods. 
 
-##### 2.1.1 The `qq.gamViz` method
+#### The `qq.gamViz` method
 
 Consider the following model with binomial responses:
 ```{r 19, results='hide'}
@@ -254,7 +265,7 @@ The QQ-plot can also be manipulated interactively using the `shine` generic, whi
 shine(o)
 ```
 
-##### 2.1.2 The `check.gamViz` method
+#### The `check.gamViz` method
 
 The `check.gamViz` method is similar to `mgcv::gam.check`, with the difference that it
 produces a sequence of `ggplot` objects and that it sub-samples the residuals to 
@@ -276,13 +287,13 @@ check(b,
 The `a.qq` argument is a list that gets passed directly to `qq.gamViz`. Similarly,
 `a.repoi` is passed to `ggplot2::geom_points` and `a.hist` to `ggplot2::geom_hist`.
 
-#### 2.2 New layered model checks
+### New layered model checks
 
 The `qq.gamViz` and `check.gamViz` functions are not layered, and in fact require using lists of arguments
 to be passed to the underlying `ggplot2` layers. Instead the methods described in this
 section are fully layered, hence easy to extend and customize.
 
-##### 2.2.1 One dimensional checks using `check1D`
+#### One dimensional checks using `check1D`
 
 This function allows to verify how the residuals vary along one covariate. Consider the 
 following model:
@@ -300,18 +311,18 @@ b <- getViz(b)
 Here the responses variance varies a lot along $x$. Assume that we didn't know this, but
 that we wanted to find out whether the residuals are heteroscedastic. We can start by doing
 the following:
-```{r 27}
+```{r 27, fig.width=6, fig.height=3}
 ck1 <- check1D(b, "x")
 ck2 <- check1D(b, "z")
 gridPrint(ck1, ck2, ncol = 2)
 ```
 
-This produces two view along $x$ and $z$, but as you can see the plots are initially empty. We might
+This produces two views along $x$ and $z$, but as you can see the plots are initially empty. We might
 want to add a layer showing the conditional distribution of the residuals along $x$ and $z$ and another
 containing a rug:
-```{r 28}
+```{r 28, fig.width=10, fig.height=4}
 gridPrint(ck1 + l_dens(type = "cond", alpha = 0.8) + l_rug(alpha = 0.2), 
-          ck2 + l_points() + l_rug(alpha = 0.2), layout_matrix = matrix(c(1, 1, 2), 1, 3))
+          ck2 + l_points() + l_rug(alpha = 0.2), layout_matrix = matrix(c(1, 1, 1, 2, 2), 1, 5))
 ```
 
 The left plot suggests that the variance of the residuals might be lower in the middle ($x=0$), but it
@@ -322,7 +333,7 @@ ck1 + l_densCheck()
 This layers adds an heatmap proportional to $\{p(r|x)^{1/2} - p_m(r|x)^{1/2}\}^{1/3}$, where $r$ are the residuals, while $p$ and $p_m$ are their empirical and theoretical (model based) densities. In particular, $p$ is estimated using the the fast k.d.e. method of Wand (1994) (implemented by the `kernSmooth` package) and $p_m$ is a standard normal density here. This plot makes clear that the residuals are over-dispersed when $x$ is far from zero.
 
 The `l_gridCheck1D` provides another way of finding residuals patterns. For instance:
-```{r 30}
+```{r 30, fig.width=10, fig.height=4}
 b <- getViz(b, nsim = 50)
 gridPrint(check1D(b, "x") + l_gridCheck1D(gridFun = sd, showReps = TRUE), 
           check1D(b, "z") + l_gridCheck1D(gridFun = sd, showReps = TRUE), ncol = 2)
@@ -331,7 +342,7 @@ gridPrint(check1D(b, "x") + l_gridCheck1D(gridFun = sd, showReps = TRUE),
 Here we converted `b` again using `getViz` with `nsim = 50`. This is because `l_gridCheck1D` needs some simulations to compute the confidence intervals. The simulations are done by `getViz` and then stored
 inside `b`. `l_gridCheck1D` simply bins the residuals according to their $x$ values, and evaluates a user-defined function (`sd` here) over the observed and simulated residuals.
 
-##### 2.2.2 Two dimensional checks using `check2D`
+#### Two dimensional checks using `check2D`
 
 `check2D` is quite similar to `check1D`, but looks at the residuals along two covariates. Here is an
 example where the mean effect follows the Rosenbrock function:
@@ -348,7 +359,7 @@ b <- getViz(b, nsim = 50)
 We start by generating two 2D views:
 ```{r 32}
 ck1 <- check2D(b, x1 = "x1", x2 = "x2")
-ck2 <- check2D(b, x1 = "x2", x2 = X$fac) + labs(x = "fac")
+ck2 <- check2D(b, x1 = X$fac, x2 = "x2") + labs(x = "fac")
 ```
 
 Then we add the `l_gridCheck2D` layer:
@@ -414,9 +425,9 @@ ck + l_glyphs2D(glyFun = glyFun, ggLay = "geom_point", n = c(10, 10),
 
 Notice that worm-plots (Buuren and Fredriks, 2001) are simply rotated QQ-plots. An horizontal plot indicates well specified residual model. An increasing (decreasing) worm indicates over (under) dispersion.
 
-## 3 Special plots
+# Special plots
 
-#### 3.1 Differences-between-smooths plots
+## Differences-between-smooths plots
 
 Plotting the difference between two smooth effects can be useful when working with by-factor
 smooths. For example, here we are fitting a model containing a smooth along `x2` for each value
@@ -439,7 +450,7 @@ plotDiff(s1 = sm(b, 1), s2 = sm(b, 2)) + l_ciPoly() +
 
 Notice that the credible intervals for the difference smooth produced by `plotDiff` take into account the cross-covariance between the two smooths.
 
-#### 3.2 Plotting multiple slices of multi-dimensional smooth effects
+## Plotting multiple slices of multi-dimensional smooth effects
 
 When dealing with smooth effects defined on more than two dimensions, it is often useful to visualize
 them as a sequence of 2D slices. The `plotSlice` function provides such functionality, by exploiting the 

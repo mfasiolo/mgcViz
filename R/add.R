@@ -11,7 +11,7 @@
 #'
 addPlotSmooth <- function(e1, e2) {
   
-  empty <- TRUE
+  empty <- e1$empty
   
   # If e2 is a gamLayer, we need to call the corresponding layer internal.
   # This returns either a ggplot or a list of ggplots (with class listOfLayers)

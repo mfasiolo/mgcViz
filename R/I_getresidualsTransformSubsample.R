@@ -17,7 +17,7 @@
   
   # b) Apply optional transformation to observed and simulated y's
   if( !is.null(trans) ){
-    y <- trans( y )
+    y <- as.vector(trans( y ))
     if( !is.null(sim) ) { sim <- t(apply(sim, 1, trans)) }
   }
   
