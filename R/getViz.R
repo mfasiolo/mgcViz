@@ -11,7 +11,8 @@
 #'             responses are simulated using parameters fixed at the posterior mode. 
 #' @param newdata Optional new data frame used to perform the simulations. To be passed to \link{predict.gam} and, 
 #'                if \code{post == TRUE}, to \code{postSim}.
-#' @param ... extra arguments to be passed to \link{simulate.gam} or \link{postSim}. For instance, we could pass prior 
+#' @param ... extra arguments to be passed to \link{simulate.gam} (if \code{post==FALSE}) or
+#'            \link{postSim} (if \code{post==TRUE}). For instance, we could pass prior 
 #'            weights \code{w} and \code{offset}.
 #' @return An object of class \code{gamViz}.
 #' @name getViz
@@ -77,7 +78,7 @@ getViz <- function(o, nsim = 0, post = FALSE, newdata, ...){
   # NB: we do not allow to use trans() here, as it might lead to problems with check1D and check2D
   if( nsim > 0 ){ 
     if( post ){ # Posterior simulations OR ...
-      tryCatch(o$store$sim <- postSim(o, nsim = nsim, newdata = newdata, trans = NULL, ...), 
+      tryCatch(o$store$sim <- postSim(o, nsim = nsim, newdata = newdata, trans = NULL, savePar = FALSE, ...), 
                error = function(e){ 
                  message( paste("postSim() failed:", e$message) ) 
                })

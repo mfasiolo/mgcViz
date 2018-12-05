@@ -5,7 +5,7 @@
 \title{Posterior simulation from a GAM object}
 \usage{
 postSim(o, nsim, newdata, trans = NULL, method = "auto", w = NULL,
-  offset = NULL, ...)
+  offset = NULL, savePar = FALSE, ...)
 }
 \arguments{
 \item{o}{the output of a \code{gam()} or \code{bam()} call.}
@@ -28,10 +28,15 @@ must be a list of vectors. If \code{newdata!=NULL} the offsets will be assumed t
 unless their are explicitly provided. If \code{newdata==NULL} the simulations will use the
 offsets used during model fitting, unless offset is explicitly provided.}
 
+\item{savePar}{if \code{TRUE} than also the simulated parameters will be returned.}
+
 \item{...}{arguments to be passed to \link{vcov.gam}.}
 }
 \value{
-A matrix where each row is a vector of simulated responses or a transformed version of it.
+If \code{savePar == FALSE} the function will return a matrix where each row is a vector of
+simulated responses or a transformed version of it. If \code{savePar == TRUE} it will return
+a list where the \code{$simY} entry will contain the simulated responses and \code{$simBeta}
+the simulated parameters.
 }
 \description{
 This method can be used to simulate vectors of responses from the
