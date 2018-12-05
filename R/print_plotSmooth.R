@@ -3,6 +3,9 @@
 #' 
 #' @description This method prints objects of class \code{plotSmooth}.
 #' @param x an object of class \code{plotSmooth}.
+#' @param addLay if TRUE, and if the \code{$empty} slot of the \code{plotSmooth} object is TRUE
+#'               or NULL, we add some default layers to the plots, before printing. Does not have
+#'               any affect if the \code{plotSmooth} object already contains some layers (e.g. \code{l_rug()}).
 #' @param ... currently unused.
 #' @return Returns \code{NULL}, invisibly.
 #' @name print.plotSmooth

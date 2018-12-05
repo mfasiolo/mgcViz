@@ -9,6 +9,10 @@
 \arguments{
 \item{x}{an object of class \code{plotSmooth}.}
 
+\item{addLay}{if TRUE, and if the \code{$empty} slot of the \code{plotSmooth} object is TRUE
+or NULL, we add some default layers to the plots, before printing. Does not have
+any affect if the \code{plotSmooth} object already contains some layers (e.g. \code{l_rug()}).}
+
 \item{...}{currently unused.}
 }
 \value{

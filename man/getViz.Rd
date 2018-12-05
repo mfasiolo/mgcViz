@@ -19,7 +19,8 @@ responses are simulated using parameters fixed at the posterior mode.}
 \item{newdata}{Optional new data frame used to perform the simulations. To be passed to \link{predict.gam} and,
 if \code{post == TRUE}, to \code{postSim}.}
 
-\item{...}{extra arguments to be passed to \link{simulate.gam} or \link{postSim}. For instance, we could pass prior
+\item{...}{extra arguments to be passed to \link{simulate.gam} (if \code{post==FALSE}) or
+\link{postSim} (if \code{post==TRUE}). For instance, we could pass prior
 weights \code{w} and \code{offset}.}
 }
 \value{
