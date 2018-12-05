@@ -13,6 +13,8 @@
 #' @param na.rm if \code{TRUE} missing cases in \code{x} or \code{y} will be dropped out.
 #' @param trans function used to transform the observed and simulated residuals or responses. 
 #'              It must take a vector of as input, and it must either a vector of the same length or a scalar. 
+#' @param useSim if \code{FALSE} then the simulated responses contained in object \code{o} will not be used
+#'               by this function or by any of the layers that can be used with its output.
 #' @return An object of class \code{c("plotSmooth", "gg")}.
 #' @examples 
 #' # The variance of the response distribution changes along x2 
@@ -39,9 +41,10 @@
 #' @rdname check0D
 #' @export check0D
 #' 
-check0D <- function(o, type = "auto", maxpo = 1e4, na.rm = TRUE, trans = NULL){
+check0D <- function(o, type = "auto", maxpo = 1e4, na.rm = TRUE, trans = NULL, useSim = TRUE){
   
   if( !inherits(o, "gamViz") ){ stop("Argument 'o' should be of class 'gamViz'. See ?getViz") }
+  if( !useSim ) { o$store$sim <- NULL }
   
   ### 1. Preparation
   type <- match.arg(type, c("auto", "deviance", "pearson", "scaled.pearson", 

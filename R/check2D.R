@@ -6,9 +6,10 @@
 #'              can be plotted by adding layers. 
 #' @name check2D
 #' @param o an object of class \code{gamViz}.
-#' @param x1 should be either a single character or a numeric vector. 
-#'          In the first case it should be the name of one of the variables in the dataframe used to fit \code{o}.
-#'          In the second case the length of \code{x1} should be equal to the length of \code{residuals(o)}.
+#' @param x1 it can be either a) a single character, b) a numeric vector or c) a list of characters. 
+#'           In case a) it should be the name of one of the variables in the dataframe used to fit \code{o}.
+#'           In case b) its length should be equal to the length of \code{o$y}.
+#'           In case c) it should be a list of names of variables in the dataframe used to fit \code{o}.
 #' @param x2 same as \code{x2}, but this will appear on the y-axis.
 #' @param type the type of residuals to be used. See [residuals.gamViz]. 
 #'             If \code{"type == y"} then the raw observations will be used. 
@@ -18,7 +19,13 @@
 #' @param na.rm if \code{TRUE} missing cases in \code{x} or \code{y} will be dropped out 
 #' @param trans function used to transform the observed and simulated residuals or responses. It must take a vector of 
 #'              as input, and must return a vector of the same length. 
-#' @return An object of class \code{c("plotSmooth", "gg")}.
+#' @param useSim if \code{FALSE} then the simulated responses contained in object \code{o} will not be used
+#'               by this function or by any of the layers that can be used with its output.
+#' @return The function will return an object of class \code{c("plotSmooth", "gg")}, unless arguments \code{x1} and/or
+#'         \code{x2} are lists. If they are lists of the same length, then the function will return an object of class 
+#'         \code{c("plotGam", "gg")} containing a checking plot for each pair of variables. If \code{x1} is a list
+#'         and \code{x2} is not specified, the function will return an object of class \code{c("plotGam", "gg")} containing
+#'         a plot for each unique combination of the variables in \code{x1}.
 #' @examples 
 #' library(mgcViz);
 #' #### Example 1: Rosenbrock function
@@ -67,9 +74,10 @@
 #' @rdname check2D
 #' @export check2D
 #' 
-check2D <- function(o, x1, x2, type = "auto", maxpo = 1e4, na.rm = TRUE, trans = NULL)
+check2D <- function(o, x1, x2, type = "auto", maxpo = 1e4, na.rm = TRUE, trans = NULL, useSim = TRUE)
 {
   if( !inherits(o, "gamViz") ){ stop("Argument 'o' should be of class 'gamViz'. See ?getViz") }
+  if( !useSim ) { o$store$sim <- NULL }
   
   # If x1 or x2 is not specified, and the one that is specified is a list, we 
   # create all possible combinations of x1 and x2
@@ -91,7 +99,7 @@ check2D <- function(o, x1, x2, type = "auto", maxpo = 1e4, na.rm = TRUE, trans =
       np <- min(np, length(x2))
     }
     out <- lapply(1:np, function(.ii) check2D(o = o, x1 = x1[[.ii]], x2 = x2[[.ii]], type = type, 
-                                              maxpo = maxpo, na.rm = na.rm, trans = trans))
+                                              maxpo = maxpo, na.rm = na.rm, trans = trans, useSim = useSim))
     out  <- structure(list("plots" = out, "empty" = TRUE), 
                       "class" = c("plotGam", "gg"))
     return( out )

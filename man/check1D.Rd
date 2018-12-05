@@ -4,14 +4,16 @@
 \alias{check1D}
 \title{Checking GAM residuals or responses along one covariate}
 \usage{
-check1D(o, x, type = "auto", maxpo = 10000, na.rm = TRUE, trans = NULL)
+check1D(o, x, type = "auto", maxpo = 10000, na.rm = TRUE, trans = NULL,
+  useSim = TRUE)
 }
 \arguments{
 \item{o}{an object of class \code{gamViz}.}
 
-\item{x}{should be either a single character or a numeric vector.
-In the first case it should be the name of one of the variables in the dataframe used to fit \code{o}.
-In the second case the length of \code{x} should be equal to the length of \code{residuals(o)}.}
+\item{x}{it can be either a) a single character, b) a numeric vector or c) a list of characters.
+In case a) it should be the name of one of the variables in the dataframe used to fit \code{o}.
+In case b) its length should be equal to the length of \code{o$y}.
+In case c) it should be a list of names variables in the dataframe used to fit \code{o}.}
 
 \item{type}{the type of residuals to be used. See \link{residuals.gamViz}.
 If \code{"type == y"} then the raw observations will be used.}
@@ -24,9 +26,14 @@ then a subsample of \code{maxpo} points will be taken.}
 
 \item{trans}{function used to transform the observed and simulated residuals or responses. It must take a vector of
 as input, and must return a vector of the same length.}
+
+\item{useSim}{if \code{FALSE} then the simulated responses contained in object \code{o} will not be used
+by this function or by any of the layers that can be used with its output.}
 }
 \value{
-An object of class \code{c("plotSmooth", "gg")}.
+The function will return an object of class \code{c("plotSmooth", "gg")}, unless argument \code{x} is a
+list. In that case the function will return an object of class \code{c("plotGam", "gg")} containing
+a checking plot for each variable.
 }
 \description{
 This function extracts the residuals of a fitted GAM model, and orders

@@ -6,9 +6,10 @@
 #'              can be plotted by adding layers. 
 #' @name check1D
 #' @param o an object of class \code{gamViz}.
-#' @param x should be either a single character or a numeric vector. 
-#'          In the first case it should be the name of one of the variables in the dataframe used to fit \code{o}.
-#'          In the second case the length of \code{x} should be equal to the length of \code{residuals(o)}.
+#' @param x it can be either a) a single character, b) a numeric vector or c) a list of characters. 
+#'           In case a) it should be the name of one of the variables in the dataframe used to fit \code{o}.
+#'           In case b) its length should be equal to the length of \code{o$y}.
+#'           In case c) it should be a list of names variables in the dataframe used to fit \code{o}.
 #' @param type the type of residuals to be used. See [residuals.gamViz]. 
 #'             If \code{"type == y"} then the raw observations will be used. 
 #' @param maxpo maximum number of residuals points that will be used by layers such as
@@ -17,7 +18,11 @@
 #' @param na.rm if \code{TRUE} missing cases in \code{x} or \code{y} will be dropped out.
 #' @param trans function used to transform the observed and simulated residuals or responses. It must take a vector of 
 #'              as input, and must return a vector of the same length. 
-#' @return An object of class \code{c("plotSmooth", "gg")}.
+#' @param useSim if \code{FALSE} then the simulated responses contained in object \code{o} will not be used
+#'               by this function or by any of the layers that can be used with its output.
+#' @return The function will return an object of class \code{c("plotSmooth", "gg")}, unless argument \code{x} is a
+#'         list. In that case the function will return an object of class \code{c("plotGam", "gg")} containing 
+#'         a checking plot for each variable. 
 #' @importFrom stats complete.cases
 #' @examples 
 #' ### Example 1: diagnosing heteroscedasticity
@@ -66,13 +71,14 @@
 #' @rdname check1D
 #' @export check1D
 #' 
-check1D <- function(o, x, type = "auto", maxpo = 1e4, na.rm = TRUE, trans = NULL){
+check1D <- function(o, x, type = "auto", maxpo = 1e4, na.rm = TRUE, trans = NULL, useSim = TRUE){
   
   if( !inherits(o, "gamViz") ){ stop("Argument 'o' should be of class 'gamViz'. See ?getViz") }
+  if( !useSim ) { o$store$sim <- NULL }
   
   if( is.list(x) ){
     out <- lapply(x, function(.x) check1D(o = o, x = .x, type = type, maxpo = maxpo, 
-                                          na.rm = na.rm, trans = trans))
+                                          na.rm = na.rm, trans = trans, useSim = useSim))
     out  <- structure(list("plots" = out, "empty" = TRUE), 
                            "class" = c("plotGam", "gg"))
     return( out )

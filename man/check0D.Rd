@@ -4,7 +4,8 @@
 \alias{check0D}
 \title{Checking GAM simulated residuals or responses}
 \usage{
-check0D(o, type = "auto", maxpo = 10000, na.rm = TRUE, trans = NULL)
+check0D(o, type = "auto", maxpo = 10000, na.rm = TRUE, trans = NULL,
+  useSim = TRUE)
 }
 \arguments{
 \item{o}{an object of class \code{gamViz}.}
@@ -20,6 +21,9 @@ will be taken.}
 
 \item{trans}{function used to transform the observed and simulated residuals or responses.
 It must take a vector of as input, and it must either a vector of the same length or a scalar.}
+
+\item{useSim}{if \code{FALSE} then the simulated responses contained in object \code{o} will not be used
+by this function or by any of the layers that can be used with its output.}
 }
 \value{
 An object of class \code{c("plotSmooth", "gg")}.
