@@ -1,5 +1,5 @@
 ---
-title: "mgcViz: visual tools for GAMs"
+title: "An introduction to mgcViz: visual tools for GAMs"
 author: "Matteo Fasiolo and Raphael Nedellec"
 date: "`r Sys.Date()`"
 output: 
@@ -26,7 +26,7 @@ knit_hooks$set(webgl = hook_webgl)
 
 # mgcViz basics
 
-The `mgcViz` R package offers visual tools for Generalized Additive Models (GAMs). The visualizations provided by `mgcViz` differs from those implemented in `mgcv`, in that most of the plots are based on `ggplot2`'s powerful layering system. This has been implemented by wrapping several `ggplot2` layers and integrating them with computations specific to GAM models. Further, `mgcViz` uses binning and/or sub-sampling to produce plots that can scale to large datasets ($n \approx 10^7$), and offers a variety of new methods for visual model checking/selection.
+The `mgcViz` R package (Fasiolo et al, 2018) offers visual tools for Generalized Additive Models (GAMs). The visualizations provided by `mgcViz` differs from those implemented in `mgcv`, in that most of the plots are based on `ggplot2`'s powerful layering system. This has been implemented by wrapping several `ggplot2` layers and integrating them with computations specific to GAM models. Further, `mgcViz` uses binning and/or sub-sampling to produce plots that can scale to large datasets ($n \approx 10^7$), and offers a variety of new methods for visual model checking/selection.
 
 This document introduces the following categories of visualizations: 
 
@@ -476,6 +476,8 @@ References
   
 -   Buuren, S. v. and Fredriks, M. (2001) Worm plot: a simple diagnostic device for modelling
 growth reference curves, Statistics in medicine, 20, 1259–1277.
+
+-   Fasiolo, M., Nedellec, R., Goude, Y. and Wood, S.N. (2018). Scalable visualisation methods for modern Generalized Additive Models. arXiv preprint arXiv:1809.10632.
 
 -   Murdoch, D. (2001) Rgl: An r interface to opengl, in Proceedings of DSC, p. 2.
 
