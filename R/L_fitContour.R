@@ -23,7 +23,7 @@ l_fitContour.2D <- l_fitContour.sos1 <-
 l_fitContour.sos0 <- l_fitContour.MDslice <- function(a){
   
   a$data <- a$data$fit
-  a$mapping  <- aes(z = tz)
+  if( is.null(a$mapping) ) { a$mapping <- aes(z = tz) }
   if( is.null(a$na.rm) ){ a$na.rm <- TRUE}
   if( is.null(a$colour) ){ a$colour <- "black" }
   fun <- "geom_contour"

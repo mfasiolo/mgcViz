@@ -101,6 +101,7 @@ check1D <- function(o, x, type = "auto", maxpo = 1e4, na.rm = TRUE, trans = NULL
     if( !(x %in% names(data)) ) stop("(x %in% names(data)) == FALSE")
     x <- xfull <- data[[x]]
   }
+  x <- as.vector( x ) # Needed for functional GAMS
   
   if(length(x) != length(y)){ stop("length(x) != length(y)") }
   
