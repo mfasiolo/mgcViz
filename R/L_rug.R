@@ -111,16 +111,18 @@ l_rug.2D <- l_rug.sos0 <- l_rug.sos1 <- l_rug.Check2DNumericNumeric <- l_rug.MDs
   
   if( is.null(a$mapping$y) && ("PositionJitter" %in% class(a$position)) ){
     a$mapping <-  aes(x = x, y = y)
+    a$data$y <- NaN
     a$sides <- "b"
   }
   if( is.null(a$mapping$x) && ("PositionJitter" %in% class(a$position)) ){
     a$mapping <-  aes(x = x, y = y)
+    a$data$x <- NaN
     a$sides <- "l"
   }
   if( is.null(a$data$y) ){
     a$data$y <- NaN
   }
-
+  
   fun <- "geom_rug"
   out <- do.call(fun, a)
   return( out )

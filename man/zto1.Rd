@@ -13,7 +13,7 @@ zto1(o, a, m)
 A function whose parameters o, a and m have been fixed.
 }
 \description{
-This function returns a monotonically decreasing function from (0, 1) to (0, 1).
+This function returns a non-increasing function from (0, 1) to (0, 1).
 It takes inputs o, a and m, and it returns the function
 \code{f(p)={z=max(0, p-o); return(max((1-z)^a, m))}}. The function f(p) can be used,
 for instance, for transforming p-values before plotting them.
@@ -21,7 +21,7 @@ for instance, for transforming p-values before plotting them.
 \examples{
 library(mgcViz)
 x <- seq(0, 1, by = 0.01)
-plot(x, zto1(0.05, 2, 0.1)(x), ylim = c(0, 1))
+plot(x, zto1(0.05, 2, 0.1)(x), ylim = c(0, 1), type = 'l')
 lines(x, zto1(0.05, 1, 0.2)(x), col = 2)
 lines(x, zto1(0.1, 3, 0)(x), col = 3)
 }
