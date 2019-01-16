@@ -103,7 +103,7 @@ shine.qqGam <- function(o, ...){
     output$plot <- renderPlot(
       zoom(o, xlim = ranges$x, ylim = ranges$y,
            CI = as.logical(input$ci),
-           show.reps = as.logical(input$show_reps),
+           showReps = as.logical(input$show_reps),
            worm = as.logical(input$worm),
            a.qqpoi = list(shape = shape()),
            a.ablin = list(colour = "red"),
@@ -133,7 +133,7 @@ shine.qqGam <- function(o, ...){
       #     ifelse(!is.null(ranges$y),
       #            sprintf("ylim = %s, ", deparse(signif(ranges$y, 4))), ""),
       #     "CI = ", input$ci, ", ",
-      #     "show.reps = ", input$show_reps, ", ",
+      #     "showReps = ", input$show_reps, ", ",
       #     "worm = ", input$worm, ", ",
       #     "a.replin = list(colour = \"", input$color_rep, "\", alpha = ", input$rep_alpha, "), ",
       #     "a.ablin = list(colour = \"", input$color_line, "\"), ",

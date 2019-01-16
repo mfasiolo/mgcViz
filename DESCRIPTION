@@ -1,6 +1,6 @@
 Package: mgcViz
 Title: Visualisations for Generalized Additive Models
-Date: 2018-09-18
+Date: 2019-01-10
 Version: 0.1.3
 Authors@R: c(person("Matteo", "Fasiolo", email = "matteo.fasiolo@gmail.com", role = c("aut", "cre")),
   person("Raphael", "Nedellec", email = "raphael.nedellec@edf.fr", role = c("aut")), 
