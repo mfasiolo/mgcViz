@@ -46,10 +46,12 @@
 l_gridQCheck2D <- function(qu = NULL, bw = c(NA, NA), stand = TRUE, binFun = NULL, ...){
   
   .closure <- function(.qu, .stand){
+    force(.qu)    # Need to force evaluation now
+    force(.stand)
     .tmp <- function(.x){ 
       .p <- mean(.x <= 0)
       if( .stand ){
-      return( (.p-.qu)/sqrt(.qu*(1-.qu)/length(.x)) ) 
+        return( (.p-.qu)/sqrt(.qu*(1-.qu)/length(.x)) ) 
       }else{
         return( .p )
       }
