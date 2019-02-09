@@ -85,10 +85,9 @@ plotSlice <- function(x, fix, a.facet = list(), ...){
   plts <- alply(indx, 1,
                 function(.vr, ...){
                   .d <- plot(x, fix = .vr, ...)$data 
-                  .val <- paste0(names(.vr), "=", as.factor(.vr))
-                  .d$fit[paste0(".fx.", names(.vr))] <- drop(matrix(rep(.val, each = nrow(.d$fit)), 
+                  .d$fit[paste0(".fx.", names(.vr))] <- drop(matrix(rep(.vr, each = nrow(.d$fit)), 
                                                                     nrow(.d$fit), nfx))
-                  .d$res[paste0(".fx.", names(.vr))] <- drop(matrix(rep(.val, each = nrow(.d$res)), 
+                  .d$res[paste0(".fx.", names(.vr))] <- drop(matrix(rep(.vr, each = nrow(.d$res)), 
                                                                     nrow(.d$res), nfx))
                   return(.d)
                 }, ...) 
@@ -105,6 +104,13 @@ plotSlice <- function(x, fix, a.facet = list(), ...){
     labs(title = lbs$title, x = lbs$x, y = lbs$y) + 
     theme_bw() +
     theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+  
+  if( is.null(a.facet$labeller) ){ a.facet$labeller <- function (labels, multi_line = TRUE, sep = "=") {
+                                                          .labels <- label_both(labels, multi_line = TRUE, sep)
+                                                          .labels <- lapply(.labels, function(x) substring(x ,5))  # Drop .fx. prefix from labels
+                                                          return(.labels)
+                                                       }
+  }
   
   if( grD == 1 ){
     if( is.null(a.facet$nrow) && is.null(a.facet$ncol) ){ a.facet$ncol <- floor(sqrt(nsl)) }
