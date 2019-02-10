@@ -46,6 +46,8 @@ plot.multi.mgcv.smooth.1D <- function(x, n = 100, xlim = NULL, maxpo = 1e4, tran
   
   .pl <- ggplot(data = .dat$fit, aes("x" = x, "y" = ty, "colour" = id, "group" = id)) +
     labs(title = P$main, x = P$xlab, y = P$ylab) + 
+    scale_color_gradient(breaks = sort(.idNam, decreasing = T)) +
+    guides(color = guide_legend(override.aes = list(size = 5))) +
     theme_bw() +
     theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
   
