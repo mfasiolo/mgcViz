@@ -50,12 +50,15 @@ plot.multi.ptermFactor <- function(x, a.facet = list(), asFact = TRUE, ...) {
   
   .dat$misc <- list("trans" = trans)
   
-  .pl <- ggplot(data = .dat$fit, aes("x" = id, "y" = ty)) + labs(title = NULL, x = P$xlab, y = P$ylab) + 
+  .pl <- ggplot(data = .dat$fit, aes("x" = id, "y" = ty)) + labs(title = NULL, y = P$ylab) +
          theme_bw() + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) 
   
   if( asFact ){
     if( is.numeric(.idNam) ){ .idNam <- round(as.numeric(levels(.dat$fit$id)), 3) }
     .pl <- .pl + scale_x_discrete(labels = .idNam) + scale_colour_discrete(labels = .idNam)
+  } else {
+    .pl <- .pl + scale_color_gradient(breaks = sort(.idNam, decreasing = T)) +
+                 guides(color = guide_legend()) 
   }
   
   if( is.null(a.facet$facets) ){ a.facet$facets <- as.formula("~ x") }
