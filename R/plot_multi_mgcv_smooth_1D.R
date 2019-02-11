@@ -4,7 +4,7 @@
 #' @export
 #'
 plot.multi.mgcv.smooth.1D <- function(x, n = 100, xlim = NULL, maxpo = 1e4, trans = identity,
-                                      unconditional = FALSE, seWithMean = FALSE, ...) {
+                                      unconditional = FALSE, seWithMean = FALSE, asFact = NULL, ...) {
   
   # 1) Prepare data
   tmp <- lapply(x, function(.inp) plot(.inp, n = n, xlim = xlim, maxpo = maxpo, trans = trans, 
@@ -17,7 +17,7 @@ plot.multi.mgcv.smooth.1D <- function(x, n = 100, xlim = NULL, maxpo = 1e4, tran
   names( P$data ) <- names( x )
   
   # 2) Produce output object
-  out <- .plot.multi.mgcv.smooth.1D(P = P, trans = trans)
+  out <- .plot.multi.mgcv.smooth.1D(P = P, trans = trans, asFact = asFact)
   
   class(out) <- c("plotSmooth", "gg")
   
@@ -26,7 +26,7 @@ plot.multi.mgcv.smooth.1D <- function(x, n = 100, xlim = NULL, maxpo = 1e4, tran
 
 ############### Internal function
 #' @noRd
-.plot.multi.mgcv.smooth.1D <- function(P = P, trans = trans) {
+.plot.multi.mgcv.smooth.1D <- function(P = P, trans = trans, asFact) {
   
   .fitDat <- lapply(P$data, "[[", "fit")
   
@@ -46,10 +46,20 @@ plot.multi.mgcv.smooth.1D <- function(x, n = 100, xlim = NULL, maxpo = 1e4, tran
   
   .pl <- ggplot(data = .dat$fit, aes("x" = x, "y" = ty, "colour" = id, "group" = id)) +
     labs(title = P$main, x = P$xlab, y = P$ylab) + 
-    scale_color_gradient(breaks = sort(.idNam, decreasing = T)) +
-    guides(color = guide_legend(override.aes = list(size = 5))) +
     theme_bw() +
     theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+  
+  if (is.null(asFact)) 
+    if (length(.idNam)<10) { asFact=T } else { asFact=F }
+  
+  if (asFact == T) {
+    .pl <- .pl + scale_color_gradient(breaks = sort(.idNam, decreasing = T)) +
+                 guides(color = guide_legend(override.aes = list(size = 5)))
+  } else {
+    if (min(diff(sort(.idNam)))>0.099) { # Ticks will be plotted if they are more than 10% apart, rounding error prevents >=0.1
+      .pl <- .pl + scale_color_gradient(breaks = sort(.idNam, decreasing = T))
+    }
+  }
   
   return( list("ggObj" = .pl, "data" = .dat, "type" = c("Multi", "1D")) ) 
   

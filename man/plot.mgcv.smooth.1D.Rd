@@ -7,12 +7,12 @@
 \title{Plotting one dimensional smooth effects}
 \usage{
 \method{plot}{mgcv.smooth.1D}(x, n = 100, xlim = NULL, maxpo = 10000,
-  trans = identity, unconditional = FALSE, seWithMean = FALSE, nsim = 0,
-  ...)
+  trans = identity, unconditional = FALSE, seWithMean = FALSE,
+  nsim = 0, ...)
 
 \method{plot}{multi.mgcv.smooth.1D}(x, n = 100, xlim = NULL,
   maxpo = 10000, trans = identity, unconditional = FALSE,
-  seWithMean = FALSE, ...)
+  seWithMean = FALSE, asFact = NULL, ...)
 }
 \arguments{
 \item{x}{a smooth effect object, extracted using \link[mgcViz:sm]{mgcViz::sm}.}
@@ -44,6 +44,9 @@ by simulation.}
 These can be plotted using the \link{l_simLine} layer. See Examples section below.}
 
 \item{...}{currently unused.}
+
+\item{asFact}{whether a factor or colour bar legend should be used for plot.multi.mgcv.smooth.1D.
+Default is \code{FALSE} for less than 10 quantiles.}
 }
 \value{
 An objects of class \code{plotSmooth}.
