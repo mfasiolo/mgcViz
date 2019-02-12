@@ -20,7 +20,8 @@ plot.multi.ptermFactor <- function(x, a.facet = list(), asFact = TRUE, ...) {
   names( P$data ) <- names( x )
   
   # 2) Produce output object
-  out <- .plot.multi.ptermFactor(P = P, trans = identity, a.facet = a.facet, asFact = asFact)
+  out <- .plot.multi.ptermFactor(P = P, trans = identity, a.facet = a.facet, 
+                                 asFact = asFact, isMQGAM =  attr(x, "isMQGAM"))
   
   class(out) <- c("plotSmooth", "gg")
   
@@ -29,7 +30,7 @@ plot.multi.ptermFactor <- function(x, a.facet = list(), asFact = TRUE, ...) {
 
 ############### Internal function
 #' @noRd
-.plot.multi.ptermFactor <- function(P, trans, a.facet, asFact){
+.plot.multi.ptermFactor <- function(P, trans, a.facet, asFact, isMQGAM){
   
   .fitDat <- lapply(P$data, "[[", "fit")
   
@@ -53,12 +54,14 @@ plot.multi.ptermFactor <- function(x, a.facet = list(), asFact = TRUE, ...) {
   .pl <- ggplot(data = .dat$fit, aes("x" = id, "y" = ty)) + labs(title = NULL, y = P$ylab) +
          theme_bw() + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) 
   
-  if( asFact ){
-    if( is.numeric(.idNam) ){ .idNam <- round(as.numeric(levels(.dat$fit$id)), 3) }
-    .pl <- .pl + scale_x_discrete(labels = .idNam) + scale_colour_discrete(labels = .idNam)
-  } else {
-    if (min(diff(sort(.idNam)))>0.099) { # Ticks will be plotted if they are more than 10% apart, rounding error prevents >=0.1
-      .pl <- .pl + scale_color_gradient(breaks = sort(.idNam, decreasing = T))
+  if (isMQGAM){ # Setting legend for MQGAMs
+    if( asFact ){
+      if( is.numeric(.idNam) ){ .idNam <- round(as.numeric(levels(.dat$fit$id)), 3) }
+      .pl <- .pl + scale_x_discrete(labels = .idNam) + scale_colour_discrete(labels = .idNam)
+    } else {
+      if (min(diff(sort(.idNam)))>0.099) { # Ticks will be plotted if they are more than 10% apart, rounding error prevents >=0.1
+        .pl <- .pl + scale_color_gradient(breaks = sort(.idNam, decreasing = T))
+      }
     }
   }
   

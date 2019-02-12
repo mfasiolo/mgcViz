@@ -11,7 +11,7 @@
 #'              before plotting. Monotonicity is not checked. 
 #' @param a.facet arguments to be passed to [ggplot2::facet_wrap] or [ggplot2::facet_grid]. The former gets
 #'                called when \code{fix} contains one vector, the latter when \code{fix} contains two vectors.
-#' @param asFact useful when plotting multiple factor effects, one for each quantile regression model. If
+#' @param asFact relevant only when working with models fitted with \link{mqgamV}. If
 #'               \code{FALSE} quantile of interest (qu) is treated as a continuous variable, otherwise as 
 #'               a factor.
 #' @param ... currently unused.

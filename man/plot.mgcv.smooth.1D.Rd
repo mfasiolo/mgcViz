@@ -7,8 +7,8 @@
 \title{Plotting one dimensional smooth effects}
 \usage{
 \method{plot}{mgcv.smooth.1D}(x, n = 100, xlim = NULL, maxpo = 10000,
-  trans = identity, unconditional = FALSE, seWithMean = FALSE,
-  nsim = 0, ...)
+  trans = identity, unconditional = FALSE, seWithMean = FALSE, nsim = 0,
+  ...)
 
 \method{plot}{multi.mgcv.smooth.1D}(x, n = 100, xlim = NULL,
   maxpo = 10000, trans = identity, unconditional = FALSE,
@@ -45,7 +45,8 @@ These can be plotted using the \link{l_simLine} layer. See Examples section belo
 
 \item{...}{currently unused.}
 
-\item{asFact}{whether a factor or colour bar legend should be used for plot.multi.mgcv.smooth.1D.
+\item{asFact}{relevant only when working with models fitted with \link{mqgamV}. Determines
+whether to use a factor or colour bar legend for plot.multi.mgcv.smooth.1D.
 Default is \code{FALSE} for less than 10 quantiles.}
 }
 \value{

@@ -91,6 +91,7 @@ pterm <- function(o, select){
   if( inherits(o, "mgamViz") ){
     out <- lapply(o, pterm, select = select)
     class(out) <- paste0("multi.", class(out[[1]]))
+    attr(out, "isMQGAM") <- inherits(o, "mqgamViz") # Signal that 'o' is output of mqgamV
     return( out )
   }
   

@@ -45,7 +45,7 @@ getViz <- function(o, nsim = 0, post = FALSE, newdata, ...){
     qus <- as.numeric( names(o$fit) )
     o <- qdo(o, qus, getViz, nsim = 0, post = post, newdata = newdata, ...)
     names(o) <- qus
-    class(o) <- "mgamViz"
+    class(o) <- c("mqgamViz", "mgamViz")
     return( o )
   }
   

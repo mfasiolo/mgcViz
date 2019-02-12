@@ -23,7 +23,8 @@
 #'                   by simulation.
 #' @param nsim number of smooth effect curves to be simulated from the posterior distribution. 
 #'             These can be plotted using the \link{l_simLine} layer. See Examples section below. 
-#' @param asFact whether to use a factor or colour bar legend for plot.multi.mgcv.smooth.1D. 
+#' @param asFact relevant only when working with models fitted with \link{mqgamV}. Determines 
+#'               whether to use a factor or colour bar legend for plot.multi.mgcv.smooth.1D. 
 #'               Default is \code{FALSE} for less than 10 quantiles. 
 #' @param ... currently unused.
 #' @return An objects of class \code{plotSmooth}.

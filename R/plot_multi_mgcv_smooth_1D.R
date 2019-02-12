@@ -17,7 +17,8 @@ plot.multi.mgcv.smooth.1D <- function(x, n = 100, xlim = NULL, maxpo = 1e4, tran
   names( P$data ) <- names( x )
   
   # 2) Produce output object
-  out <- .plot.multi.mgcv.smooth.1D(P = P, trans = trans, asFact = asFact)
+  out <- .plot.multi.mgcv.smooth.1D(P = P, trans = trans, 
+                                    asFact = asFact, isMQGAM =  attr(x, "isMQGAM"))
   
   class(out) <- c("plotSmooth", "gg")
   
@@ -26,7 +27,7 @@ plot.multi.mgcv.smooth.1D <- function(x, n = 100, xlim = NULL, maxpo = 1e4, tran
 
 ############### Internal function
 #' @noRd
-.plot.multi.mgcv.smooth.1D <- function(P = P, trans = trans, asFact) {
+.plot.multi.mgcv.smooth.1D <- function(P, trans, asFact, isMQGAM) {
   
   .fitDat <- lapply(P$data, "[[", "fit")
   
@@ -49,17 +50,17 @@ plot.multi.mgcv.smooth.1D <- function(x, n = 100, xlim = NULL, maxpo = 1e4, tran
     theme_bw() +
     theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
   
-  if (is.null(asFact)) 
-    if (length(.idNam)<10) { asFact=T } else { asFact=F }
-  
-  if (asFact == T) {
-    .pl <- .pl + scale_color_gradient(breaks = sort(.idNam, decreasing = T)) +
-                 guides(color = guide_legend(override.aes = list(size = 5)))
-  } else {
-    if (min(diff(sort(.idNam)))>0.099) { # Ticks will be plotted if they are more than 10% apart, rounding error prevents >=0.1
-      .pl <- .pl + scale_color_gradient(breaks = sort(.idNam, decreasing = T))
+  if (isMQGAM){ # Setting legend for MQGAMs
+    if (is.null(asFact)){ asFact <- length(.idNam) < 10 }
+    if (asFact == TRUE) {
+       .pl <- .pl + scale_color_gradient(breaks = round(sort(.idNam, decreasing = TRUE), 3)) +
+        guides(color = guide_legend(override.aes = list(size = 5)))
+    } else {
+      if (min(diff(sort(.idNam)))>0.099) { # Ticks will be plotted if they are more than 10% apart, rounding error prevents >=0.1
+        .pl <- .pl + scale_color_gradient(breaks = sort(.idNam, decreasing = TRUE))
+      }
     }
-  }
+  } 
   
   return( list("ggObj" = .pl, "data" = .dat, "type" = c("Multi", "1D")) ) 
   
