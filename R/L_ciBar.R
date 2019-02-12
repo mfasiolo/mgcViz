@@ -41,7 +41,8 @@ l_ciBar.PtermFactor <- l_ciBar.MultiPtermNumeric <- l_ciBar.MultiPtermFactor <- 
   .dat$lci <- .trans( .dat$y - xtra$mul * .dat$se )
   a$data <- .dat
   
-  if( is.null(a$width) ){ a$width <- 0.5 }
+  if( is.null(a$width) )
+    if( is.factor(a$data$id) | is.null(a$data$id) ){ a$width <- 0.5 }
   if( is.null(a$linetype) ){ a$linetype <- 2 }
   
   a$mapping <- aes(ymin = lci, ymax = uci)
