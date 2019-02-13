@@ -39,7 +39,9 @@ plot.multi.mgcv.smooth.1D <- function(x, n = 100, xlim = NULL, maxpo = 1e4, tran
                          "y" = as.vector( sapply(.fitDat, "[[", "y") ), 
                          "ty" = as.vector( sapply(.fitDat, "[[", "ty") ),  
                          "id" = rep(.idNam, each = length(.fitDat[[1]]$x)))
-  if( !isMQGAM ){ .dat$fit$id <- as.factor( .dat$fit$id ) } 
+  if( !isMQGAM ){ 
+    .dat$fit$id <- if(is.null(asFact)||asFact){ as.factor(.dat$fit$id) } else { as.numeric(.dat$fit$id) }
+  }
   
   .dat$res <- P$data[[1]]$res
   .dat$res$y <- NULL
