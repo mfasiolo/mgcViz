@@ -47,7 +47,8 @@ plot.multi.ptermFactor <- function(x, a.facet = list(), asFact = TRUE, ...) {
                          "se" = as.vector( sapply(.fitDat, "[[", "se") ))
   if( asFact ){ .dat$fit$id <- as.factor( .dat$fit$id ) }
   
-  .dat$fit <- .dat$fit[.dat$fit$x != basel, ]
+  # Drop base level if it is present
+  if( length(basel) ) { .dat$fit <- .dat$fit[.dat$fit$x != basel, ] }
   
   .dat$misc <- list("trans" = trans)
   
