@@ -7,8 +7,8 @@
 \title{Plotting one dimensional smooth effects}
 \usage{
 \method{plot}{mgcv.smooth.1D}(x, n = 100, xlim = NULL, maxpo = 10000,
-  trans = identity, unconditional = FALSE, seWithMean = FALSE, nsim = 0,
-  ...)
+  trans = identity, unconditional = FALSE, seWithMean = FALSE,
+  nsim = 0, ...)
 
 \method{plot}{multi.mgcv.smooth.1D}(x, n = 100, xlim = NULL,
   maxpo = 10000, trans = identity, unconditional = FALSE,

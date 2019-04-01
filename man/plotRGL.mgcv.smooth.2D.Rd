@@ -4,10 +4,11 @@
 \alias{plotRGL.mgcv.smooth.2D}
 \title{Visualizing 2D smooth effects in 3D}
 \usage{
-\method{plotRGL}{mgcv.smooth.2D}(x, se = TRUE, n = 40, residuals = FALSE,
-  type = "auto", maxpo = 1000, too.far = 0, xlab = NULL, ylab = NULL,
-  main = NULL, xlim = NULL, ylim = NULL, se.mult = 1,
-  trans = identity, seWithMean = FALSE, unconditional = FALSE, ...)
+\method{plotRGL}{mgcv.smooth.2D}(x, se = TRUE, n = 40,
+  residuals = FALSE, type = "auto", maxpo = 1000, too.far = 0,
+  xlab = NULL, ylab = NULL, main = NULL, xlim = NULL,
+  ylim = NULL, se.mult = 1, trans = identity, seWithMean = FALSE,
+  unconditional = FALSE, ...)
 }
 \arguments{
 \item{x}{a smooth effect object, extracted using \link[mgcViz:sm]{mgcViz::sm}.}

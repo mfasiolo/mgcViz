@@ -4,9 +4,10 @@
 \alias{l_glyphs2D}
 \title{Adding glyphs to 2D plots}
 \usage{
-l_glyphs2D(glyFun, ggLay = "geom_points", n = c(4, 4), mapping = NULL,
-  data = NULL, polar = FALSE, height = ggplot2::rel(0.95),
-  width = ggplot2::rel(0.95), y_scale = I, x_scale = I, ...)
+l_glyphs2D(glyFun, ggLay = "geom_points", n = c(4, 4),
+  mapping = NULL, data = NULL, polar = FALSE,
+  height = ggplot2::rel(0.95), width = ggplot2::rel(0.95),
+  y_scale = I, x_scale = I, ...)
 }
 \arguments{
 \item{glyFun}{the function that produces the data needed to construct the glyphs.

@@ -4,8 +4,9 @@
 \alias{plotDiff.sos.smooth}
 \title{Plotting differences between two smooths on the sphere}
 \usage{
-\method{plotDiff}{sos.smooth}(s1, s2, n = 40, too.far = 0.1, phi = 30,
-  theta = 30, scheme = 0, trans = identity, unconditional = FALSE, ...)
+\method{plotDiff}{sos.smooth}(s1, s2, n = 40, too.far = 0.1,
+  phi = 30, theta = 30, scheme = 0, trans = identity,
+  unconditional = FALSE, ...)
 }
 \arguments{
 \item{s1}{a smooth effect object, extracted using \link[mgcViz:sm]{mgcViz::sm}.}

@@ -21,7 +21,7 @@ gammV(formula, random, family = gaussian(), data = list(),
 
 \item{aViz}{list of arguments to be passed to \link{getViz}.}
 
-\item{keepGAMObj}{if \code{TRUE} a copy of the gamViz Object is kept under $gam to assure comatibility with \link[mgcv:gamm]{mgcv::gamm} and \link[gamm4:gamm4]{gamm4::gamm4}. Defaults to \code{FALSE}.}
+\item{keepGAMObj}{if \code{TRUE} a copy of the gamViz Object is kept under $gam to assure compatibility with \link[mgcv:gamm]{mgcv::gamm} and \link[gamm4:gamm4]{gamm4::gamm4}. Defaults to \code{FALSE}.}
 
 \item{method}{same as in \link[mgcv:gamm]{mgcv::gamm}}
 }
@@ -39,7 +39,7 @@ convert them to a \code{gamViz} object using the \link{getViz} function.
 It is essentially a shortcut.
 }
 \details{
-WARNING: Model comparisions (e.g. with \code{anova}) should only be done using the mixed model part as described in \link[gamm4:gamm4]{gamm4::gamm4}.
+WARNING: Model comparisons (e.g. with \code{anova}) should only be done using the mixed model part as described in \link[gamm4:gamm4]{gamm4::gamm4}.
 For \link[mgcv:gamm]{mgcv::gamm} please refer to the original help file.
 }
 \examples{

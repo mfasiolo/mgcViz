@@ -4,9 +4,9 @@
 \alias{plot.mgcv.smooth.MD}
 \title{Plotting slice of higher-dimensional smooth effects}
 \usage{
-\method{plot}{mgcv.smooth.MD}(x, fix, n = 40, xlim = NULL, ylim = NULL,
-  maxpo = 10000, too.far = c(0.1, NA), trans = identity,
-  seWithMean = FALSE, unconditional = FALSE, ...)
+\method{plot}{mgcv.smooth.MD}(x, fix, n = 40, xlim = NULL,
+  ylim = NULL, maxpo = 10000, too.far = c(0.1, NA),
+  trans = identity, seWithMean = FALSE, unconditional = FALSE, ...)
 }
 \arguments{
 \item{x}{a smooth effect object, extracted using \link[mgcViz:sm]{mgcViz::sm}.}

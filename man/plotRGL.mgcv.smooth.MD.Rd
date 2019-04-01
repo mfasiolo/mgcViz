@@ -5,9 +5,9 @@
 \title{Visualizing a 2D slice of a smooth effects in 3D}
 \usage{
 \method{plotRGL}{mgcv.smooth.MD}(x, fix, se = TRUE, n = 40,
-  residuals = FALSE, type = "auto", maxpo = 1000, too.far = c(0, NA),
-  xlab = NULL, ylab = NULL, main = NULL, xlim = NULL, ylim = NULL,
-  se.mult = 1, trans = identity, seWithMean = FALSE,
+  residuals = FALSE, type = "auto", maxpo = 1000, too.far = c(0,
+  NA), xlab = NULL, ylab = NULL, main = NULL, xlim = NULL,
+  ylim = NULL, se.mult = 1, trans = identity, seWithMean = FALSE,
   unconditional = FALSE, ...)
 }
 \arguments{

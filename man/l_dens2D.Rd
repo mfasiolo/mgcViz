@@ -3,12 +3,13 @@
 \name{l_dens2D}
 \alias{l_dens2D}
 \alias{l_dens}
-\alias{l_dens}
 \title{Adding density estimate heatmap}
 \usage{
-l_dens2D(type, n = c(50, 50), bw = NULL, tol = 1e-06, trans = sqrt, ...)
+l_dens2D(type, n = c(50, 50), bw = NULL, tol = 1e-06, trans = sqrt,
+  ...)
 
-l_dens(type, n = c(50, 50), bw = NULL, tol = 1e-06, trans = sqrt, ...)
+l_dens(type, n = c(50, 50), bw = NULL, tol = 1e-06, trans = sqrt,
+  ...)
 }
 \arguments{
 \item{type}{for 1D effect plots, if set to "cond" then the conditional residual

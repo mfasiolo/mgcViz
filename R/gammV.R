@@ -10,8 +10,8 @@
 #' @param REML same as in [gamm4::gamm4]
 #' @param aGam list of further arguments to be passed to [mgcv::gamm] or [gamm4::gamm4].
 #' @param aViz list of arguments to be passed to [getViz].
-#' @param keepGAMObj if \code{TRUE} a copy of the gamViz Object is kept under $gam to assure comatibility with [mgcv::gamm] and [gamm4::gamm4]. Defaults to \code{FALSE}.
-#' @details WARNING: Model comparisions (e.g. with \code{anova}) should only be done using the mixed model part as described in [gamm4::gamm4]. 
+#' @param keepGAMObj if \code{TRUE} a copy of the gamViz Object is kept under $gam to assure compatibility with [mgcv::gamm] and [gamm4::gamm4]. Defaults to \code{FALSE}.
+#' @details WARNING: Model comparisons (e.g. with \code{anova}) should only be done using the mixed model part as described in [gamm4::gamm4]. 
 #' For [mgcv::gamm] please refer to the original help file.
 #' @return An object of class "gamViz" which can, for instance, be plotted using [plot.gamViz]. Also the object has the following additional elements:
 #' \itemize{

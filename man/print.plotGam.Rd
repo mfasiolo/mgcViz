@@ -4,7 +4,8 @@
 \alias{print.plotGam}
 \title{Printing the output of plot.gamViz}
 \usage{
-\method{print}{plotGam}(x, ask = TRUE, pages = NULL, addLay = TRUE, ...)
+\method{print}{plotGam}(x, ask = TRUE, pages = NULL, addLay = TRUE,
+  ...)
 }
 \arguments{
 \item{x}{an object of class \code{plotGam}.}
