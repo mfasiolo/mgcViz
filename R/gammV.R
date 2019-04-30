@@ -46,6 +46,7 @@
 #' }
 #' 
 #' @importFrom stats gaussian
+#' @importFrom gamm4 gamm4
 #' @rdname gammV
 #' @export gammV
 #
