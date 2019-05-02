@@ -6,11 +6,8 @@
 
 gamm4V <- function(formula, random, family = gaussian(), data = list(), REML = TRUE, aGam = list(), aViz = list(), keepGAMObj = FALSE){
 
-  if (!requireNamespace("gamm4", quietly = T)) {
-    stop("gamm4V: Please install the package \"gamm4\"", call. = F)
-  }
-
-  obj <- do.call(get("gamm4", asNamespace("gamm4")), c(list("formula" = formula, "random" = random, "family" = family, "data" = data, "REML" = REML), aGam))
+  obj <- do.call("gamm4", c(list("formula" = formula, "random" = random, 
+                                 "family" = family, "data" = quote(data), "REML" = REML), aGam))
 
   mer <- obj$mer
 

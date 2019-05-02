@@ -50,10 +50,9 @@
 #' @rdname gammV
 #' @export gammV
 #
-
 gammV <- function(formula, random, family = gaussian(), data = list(), method = "REML", aGam = list(), aViz = list(), keepGAMObj = FALSE){
 
-  obj <- do.call("gamm", c(list("formula" = formula, "random" = random, "family" = family, "data" = data, "method" = method), aGam))
+  obj <- do.call("gamm", c(list("formula" = formula, "random" = random, "family" = family, "data" = quote(data), "method" = method), aGam))
 
   lme <- obj$lme
 

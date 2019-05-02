@@ -13,6 +13,7 @@ Depends:
     ggplot2,
     rgl
 Imports:
+    gamm4,
     matrixStats,
     viridis,
     GGally,
