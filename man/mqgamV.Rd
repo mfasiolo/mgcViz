@@ -4,7 +4,7 @@
 \alias{mqgamV}
 \title{Fit multiple QGAM models and get a mgamViz object}
 \usage{
-mqgamV(form, data, qu, lsig = NULL, err = 0.05, aQgam = list(),
+mqgamV(form, data, qu, lsig = NULL, err = NULL, aQgam = list(),
   aViz = list())
 }
 \arguments{

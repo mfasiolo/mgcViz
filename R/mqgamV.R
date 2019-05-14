@@ -32,7 +32,7 @@
 #' @rdname mqgamV
 #' @export mqgamV
 #
-mqgamV <- function(form, data, qu, lsig = NULL, err = 0.05,  aQgam = list(), aViz = list()){
+mqgamV <- function(form, data, qu, lsig = NULL, err = NULL,  aQgam = list(), aViz = list()){
   
   obj <- do.call("mqgam", c(list("form" = form, "qu" = qu, 
                                  "data" = data, "lsig" = lsig, "err" = err), aQgam))

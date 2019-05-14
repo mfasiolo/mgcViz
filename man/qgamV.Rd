@@ -4,7 +4,7 @@
 \alias{qgamV}
 \title{Fit a QGAM model and get a gamViz object}
 \usage{
-qgamV(form, data, qu, lsig = NULL, err = 0.05, aQgam = list(),
+qgamV(form, data, qu, lsig = NULL, err = NULL, aQgam = list(),
   aViz = list())
 }
 \arguments{
