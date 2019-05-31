@@ -9,7 +9,7 @@ Description: Extension of the 'mgcv' package, providing visual tools for General
 Depends:
     R (>= 3.4),
     mgcv (>= 1.8-28),
-    qgam (>= 1.3),
+    qgam (>= 1.2.3),
     ggplot2,
     rgl
 Imports:
