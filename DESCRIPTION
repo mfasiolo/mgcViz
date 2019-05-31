@@ -1,15 +1,15 @@
 Package: mgcViz
 Title: Visualisations for Generalized Additive Models
-Date: 2019-01-10
-Version: 0.1.3
+Date: 2019-05-31
+Version: 0.1.4
 Authors@R: c(person("Matteo", "Fasiolo", email = "matteo.fasiolo@gmail.com", role = c("aut", "cre")),
   person("Raphael", "Nedellec", email = "raphael.nedellec@edf.fr", role = c("aut")), 
   person("Yannig", "Goude", role = c("ctb")), person("Simon", "N. Wood", role = c("ctb")))
 Description: Extension of the 'mgcv' package, providing visual tools for Generalized Additive Models that exploit the additive structure of such models, scale to large data sets and can be used in conjunction with a wide range of response distributions. The focus is providing visual methods for better understanding the model output and for aiding model checking and development beyond simple exponential family regression. The graphical framework is based on the layering system provided by 'ggplot2'.
 Depends:
     R (>= 3.4),
-    mgcv (>= 1.8-24),
-    qgam (>= 1.2.2),
+    mgcv (>= 1.8-28),
+    qgam (>= 1.3),
     ggplot2,
     rgl
 Imports:
