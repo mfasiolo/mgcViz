@@ -10,15 +10,19 @@ init:
 install:
   ps: Bootstrap
 
-cache:
-  - C:\RLibrary
+#cache:
+#  - C:\RLibrary
 
 # Adapt as necessary starting from here
+
+environment:
+  global:
+    R_VERSION: stable
+    USE_RTOOLS: true
 
 build_script:
   - travis-tool.sh install_github mfasiolo/qgam
   - travis-tool.sh install_deps
-
 
 test_script:
   - travis-tool.sh run_tests
