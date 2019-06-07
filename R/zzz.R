@@ -1,6 +1,10 @@
 
 .onLoad <- function(libname = find.package("grattan"), pkgname = "grattan"){
   
+  if( packageVersion("qgam") < "1.3.0" ){
+    message("qgam version < 1.3.0 installed, argument err will be set to 0.05 in qgamV and mqgamV calls. \n Update to qgam 1.3.0 for automatic err selection")
+  }
+  
   # CRAN Note avoidance
   if(getRversion() >= "2.15.1") 
     utils::globalVariables(

@@ -28,11 +28,16 @@
 #' 
 #' # Either way, we all effects by doing
 #' print(plot(b, allTerms = TRUE), pages = 1)
+#' 
 #'
 #' @rdname mqgamV
 #' @export mqgamV
 #
 mqgamV <- function(form, data, qu, lsig = NULL, err = NULL,  aQgam = list(), aViz = list()){
+  
+  if( is.null(err) && packageVersion("qgam") < "1.3.0" ) {  
+    err <- 0.05
+  }
   
   obj <- do.call("mqgam", c(list("form" = form, "qu" = qu, 
                                  "data" = data, "lsig" = lsig, "err" = err), aQgam))
