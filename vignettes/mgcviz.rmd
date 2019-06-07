@@ -227,7 +227,7 @@ Importantly, `mgcViz::qq.gam` can handle large datasets by discretizing the QQ-p
 plotting. For instance, let's increase `n.samp` in the previous example:
 ```{r 22, results='hide'}
 set.seed(0)
-n.samp <- 50000
+n.samp <- 20000
 dat <- gamSim(1,n=n.samp,dist="binary",scale=.33)
 p <- binomial()$linkinv(dat$f) ## binomial p
 n <- sample(c(1,3),n.samp,replace=TRUE) ## binomial n
@@ -299,12 +299,12 @@ This function allows to verify how the residuals vary along one covariate. Consi
 following model:
 ```{r 26}
 set.seed(4124)
-n <- 1e4
+n <- 5e3
 x <- rnorm(n); y <- rnorm(n);
 z <- as.factor( sample(letters[1:6], n, replace = TRUE) )
 
 ob <- (x)^2 + (y)^2 + (0.2*abs(x) + 1)  * rnorm(n)
-b <- bam(ob ~ s(x,k=30) + s(y, k=30) + z, discrete = TRUE)
+b <- gam(ob ~ s(x) + s(y) + z)
 b <- getViz(b)
 ```
 
@@ -348,11 +348,11 @@ inside `b`. `l_gridCheck1D` simply bins the residuals according to their $x$ val
 example where the mean effect follows the Rosenbrock function:
 ```{r 31}
 set.seed(566)
-n <- 1e4
+n <- 5e3
 X <- data.frame("x1"=rnorm(n, 0.5, 0.5), "x2"=rnorm(n, 1.5, 1), 
                 "fac"=as.factor( sample(letters[1:6], n, replace = TRUE) ))
 X$y <- (1-X$x1)^2 + 100*(X$x2 - X$x1^2)^2 + rnorm(n, 0, 2)
-b <- bam(y ~ te(x1, x2, k = 5), data = X, discrete = TRUE)
+b <- gam(y ~ te(x1, x2, k = 5), data = X)
 b <- getViz(b, nsim = 50)
 ```
 
@@ -383,10 +383,10 @@ listLayers( ck1 )
 The most sophisticated layer is probably `l_glyphs2D` which we illustrate here using an heteroscedastic model:
 ```{r 36}
 set.seed(4124)
-n <- 1e4
+n <- 5e3
 dat <- data.frame("x1" = rnorm(n), "x2" = rnorm(n))
 dat$y <- (dat$x1)^2 + (dat$x2)^2 + (1*abs(dat$x1) + 1)  * rnorm(n)
-b <- bam(y ~ s(x1,k=30) + s(x2, k=30), data = dat, discrete = TRUE)
+b <- gam(y ~ s(x1) + s(x2), data = dat)
 b <- getViz(b)
 
 ck <- check2D(b, x1 = "x1", x2 = "x2", type = "tnormal")
@@ -434,7 +434,7 @@ smooths. For example, here we are fitting a model containing a smooth along `x2`
 of the `fac` factor variable:
 ```{r 39, results='hide'}
 set.seed(6898)
-dat <- gamSim(1,n=1500,dist="normal",scale=20)
+dat <- gamSim(1,n=500,dist="normal",scale=20)
 dat$fac <- as.factor( sample(c("A1", "A2", "A3"), nrow(dat), replace = TRUE) ) 
 bs <- "cr"; k <- 12
 b <- gam(y ~ s(x2,bs=bs,by = fac), data=dat)
@@ -457,10 +457,10 @@ them as a sequence of 2D slices. The `plotSlice` function provides such function
 faceting tools offerered by `ggplot2`. For instance, here we are slicing a 4D smooth effect along two variables:
 
 ```{r 40}
-n <- 5e3
+n <- 1e3
 x <- rnorm(n); y <- rnorm(n); z <- rnorm(n); z2 <- rnorm(n)
 ob <- (x-z)^2 + (y-z)^2 + z2^3 + rnorm(n)
-b <- bam(ob ~ s(x, y, z, z2), discrete = TRUE)
+b <- gam(ob ~ s(x, y, z, z2))
 v <- getViz(b)
 
 # Plot slices across "z" and "x"
