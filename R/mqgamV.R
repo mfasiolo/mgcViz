@@ -10,6 +10,7 @@
 #' @param aViz list of arguments to be passed to [getViz].
 #' @return An object of class "mgamViz" which can, for instance, be plotted using [plot.mgamViz].
 #' @name mqgamV
+#' @importFrom utils packageVersion
 #' @examples 
 #' library(mgcViz)
 #' set.seed(2) ## simulate some data...
