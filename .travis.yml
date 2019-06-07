@@ -2,11 +2,11 @@
 
 language: R
 sudo: false
-cache: packages
+# cache: packages
 warnings_are_errors: false
 notifications:
   email: true
 before_install:
   - Rscript -e 'install.packages("mgcv", lib="/home/travis/R-bin/lib/R/library/")'
-r_github_packages: 
- - mfasiolo/qgam
+#r_github_packages: 
+# - mfasiolo/qgam
