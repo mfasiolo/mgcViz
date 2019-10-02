@@ -118,6 +118,20 @@ pterm <- function(o, select){
   }
   
   if(cls == "ordered"){ cls <- "factor" } # We treat ordered factors as simple factors
+  
+  # Here we deal with with smooth effect built "by hand" (e.g. using bs(x0, degree=1))
+  if( grepl("nmatrix", cls, fixed = TRUE) ){
+    
+    carrier.name <- function(term) {
+      if (length(term) > 1L) 
+        carrier.name(term[[2L]])
+      else as.character(term)
+    }
+    
+    cls <- "matrixNumeric"
+    vNam <- carrier.name( str2expression(nam)[[1]] ) # Extract name of covariate x
+    
+  }
 
   out <- list("ism" = select, 
               "name" = nam,

@@ -73,6 +73,7 @@ print.plotGam <- function(x, ask = TRUE, pages = NULL, addLay = TRUE, ...){
                  "PtermNumeric" = .l + l_fitLine() + l_ciLine(),
                  "PtermFactor" = .l + l_ciBar() + l_fitPoints(),
                  "PtermLogical" = .l + l_ciBar() + l_fitPoints(), 
+                 "PtermMatrixNumeric" = .l + l_fitLine() + l_ciLine(),
                  "Multi1D" = .l + l_fitLine(),
                  "Multi2D" = .l + l_fitRaster() + l_fitContour(),
                  "MultiPtermNumeric" = .l + l_ciBar() + l_fitPoints(),

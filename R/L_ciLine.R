@@ -26,7 +26,7 @@ l_ciLine <- function(level = 0.95, mul = NULL, ...){
 
 ######## Internal method 
 #' @noRd
-l_ciLine.1D <- l_ciLine.PtermNumeric <- function(a){
+l_ciLine.1D <- l_ciLine.PtermNumeric <- l_ciLine.PtermMatrixNumeric <- function(a){
   
   xtra <- a$xtra
   a$xtra <- NULL

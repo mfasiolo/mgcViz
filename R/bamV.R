@@ -9,6 +9,11 @@ bamV <- function(formula, family = gaussian(), data = list(), method = "fREML", 
   
   obj <- do.call("getViz", c(list("o" = obj), aViz))
   
+  # Make sure that the stored function call refers to the name of the data set provided 
+  # by the user to bamV (and available in environment where bamV was called), not just 
+  # to "data" (as in the call to bam via do.call)
+  obj$call$data <- match.call()$data
+  
   return( obj )
   
 }

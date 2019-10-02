@@ -57,6 +57,11 @@ gammV <- function(formula, random, family = gaussian(), data = list(), method = 
   lme <- obj$lme
 
   obj <- do.call("getViz", c(list("o" = obj$gam), aViz))
+  
+  # Make sure that the stored function call refers to the name of the data set provided 
+  # by the user to gammV (and available in environment where gammV was called), not just 
+  # to "data" (as in the call to gamm via do.call)
+  obj$call$data <- match.call()$data
 
   if ( keepGAMObj ) { obj$gam <- obj }
   obj$lme <- lme

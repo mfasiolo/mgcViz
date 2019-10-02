@@ -42,6 +42,11 @@ qgamV <- function(form, data, qu, lsig = NULL, err = NULL, aQgam = list(), aViz 
   
   obj <- do.call("getViz", c(list("o" = obj), aViz))
   
+  # Make sure that the stored function call refers to the name of the data set provided 
+  # by the user to qgamV (and available in environment where qgamV was called), not just 
+  # to "data" (as in the call to qgam via do.call)
+  obj$call$data <- match.call()$data
+  
   return( obj )
   
 }

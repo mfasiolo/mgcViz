@@ -23,7 +23,7 @@ l_fitLine <- function(...){
 
 ######## Internal method 
 #' @noRd
-l_fitLine.1D <- l_fitLine.PtermNumeric  <- l_fitLine.Multi1D <- function(a){
+l_fitLine.1D <- l_fitLine.PtermNumeric <- l_fitLine.PtermMatrixNumeric <- l_fitLine.Multi1D <- function(a){
   
   a$data <- a$data$fit
   if( is.null(a$na.rm) ){ a$na.rm <- TRUE}

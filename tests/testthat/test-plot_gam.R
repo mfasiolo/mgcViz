@@ -7,6 +7,6 @@ test_that("plot.gam", {
  dat <- gamSim(1,n=200,dist="normal",scale=2)
  x <- gam(y~s(x0)+s(x1)+s(x2)+s(x3),data=dat)
  
- expect_error(print(plot(x), pages = 1), NA)
+ expect_error(plot(x, pages = 1), NA)
  
 })
