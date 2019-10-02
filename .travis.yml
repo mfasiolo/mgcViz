@@ -1,11 +1,23 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 
 language: R
+
 sudo: false
+
 # cache: packages
+
 warnings_are_errors: false
+
 notifications:
   email: true
+
+# Some libraries need to be installed, otheriwse rgl install fails
+addons:
+  apt:
+    packages:
+      - libgl1-mesa-dev 
+      - libglu1-mesa-dev
+
 before_install:
   - Rscript -e 'install.packages("mgcv", lib="/home/travis/R-bin/lib/R/library/")'
 #r_github_packages: 
