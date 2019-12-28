@@ -4,8 +4,7 @@
 \alias{plot.gamViz}
 \title{Basic GAM plotting}
 \usage{
-\method{plot}{gamViz}(x, n = 100, n2 = 40, select = NULL,
-  allTerms = FALSE, ...)
+\method{plot}{gamViz}(x, n = 100, n2 = 40, select = NULL, allTerms = FALSE, ...)
 }
 \arguments{
 \item{x}{an object of class \code{gamViz}, the output of a \link{getViz} call.}

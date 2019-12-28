@@ -61,7 +61,7 @@ print.plotGam <- function(x, ask = TRUE, pages = NULL, addLay = TRUE, ...){
     
     .l <- switch(.cl, 
                  "fs1D" = .l + l_fitLine() + theme(legend.position="none"),
-                 "1D" = .l + l_fitLine() + l_ciLine(),
+                 "1D" = .l + l_fitLine() + l_ciLine() + l_rug(),
                  "2D" = .l + l_fitRaster() + l_fitContour(), 
                  "MD" = .l + l_fitRaster() + l_fitContour(), 
                  "MDslice" = .l + l_fitRaster() + l_fitContour(), 
@@ -70,14 +70,16 @@ print.plotGam <- function(x, ask = TRUE, pages = NULL, addLay = TRUE, ...){
                  "randomEffect" = .l + l_fitLine() + l_ciLine() + l_points(), 
                  "MultiRandomEffect" = .l + l_points(), 
                  "mrf" = .l + l_poly(), 
-                 "PtermNumeric" = .l + l_fitLine() + l_ciLine(),
-                 "PtermFactor" = .l + l_ciBar() + l_fitPoints(),
-                 "PtermLogical" = .l + l_ciBar() + l_fitPoints(), 
+                 "PtermNumeric" = .l + l_fitLine() + l_ciLine() + l_rug(),
+                 "PtermFactor" = .l + l_ciBar() + l_fitPoints() + l_rug(),
+                 "PtermLogical" = .l + l_ciBar() + l_fitPoints() + l_rug(), 
                  "PtermMatrixNumeric" = .l + l_fitLine() + l_ciLine(),
                  "Multi1D" = .l + l_fitLine(),
                  "Multi2D" = .l + l_fitRaster() + l_fitContour(),
                  "MultiPtermNumeric" = .l + l_ciBar() + l_fitPoints(),
                  "MultiPtermFactor" = .l + l_ciBar() + l_fitPoints(), 
+                 "ALE1DNumeric" = .l + l_fitLine() + l_ciLine() + l_rug(),
+                 "ALE1DFactor" = .l + l_ciBar() + l_fitPoints() + l_rug(),
                   .l
                  )
     

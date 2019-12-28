@@ -4,8 +4,7 @@
 \alias{l_gridCheck2D}
 \title{Binning and checking GAM residuals}
 \usage{
-l_gridCheck2D(gridFun = mean, bw = c(NA, NA), stand = TRUE,
-  binFun = NULL, ...)
+l_gridCheck2D(gridFun = mean, bw = c(NA, NA), stand = TRUE, binFun = NULL, ...)
 }
 \arguments{
 \item{gridFun}{scalar-valued function used to summarize the residuals in each bin.}

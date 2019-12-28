@@ -8,8 +8,7 @@
 \alias{plot.ptermLogical}
 \title{Plotting factor or logical parametric effects}
 \usage{
-\method{plot}{multi.ptermFactor}(x, a.facet = list(), asFact = TRUE,
-  ...)
+\method{plot}{multi.ptermFactor}(x, a.facet = list(), asFact = TRUE, ...)
 
 \method{plot}{multi.ptermLogical}(x, ...)
 

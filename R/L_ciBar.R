@@ -3,7 +3,7 @@
 #' 
 #' @description This layer adds confidence intervals to barplots, such as those produced by factor effects GAM.
 #'
-#' @param level the level of the confidence intervals (e.g. 0.9 means 90\% intervals).
+#' @param level the level of the confidence intervals (e.g. 0.9 means 90% intervals).
 #' @param mul number multiplied by the standard errors when calculating 
 #'            standard error curves. By default \code{NULL}, if
 #'            set to a positive number it will over-ride \code{level}.
@@ -27,7 +27,7 @@ l_ciBar <- function(level = 0.95, mul = NULL, ...){
 ######## Internal method for factor plots
 #' @noRd
 #'
-l_ciBar.PtermFactor <- l_ciBar.MultiPtermNumeric <- l_ciBar.MultiPtermFactor <- function(a){
+l_ciBar.PtermFactor <- l_ciBar.MultiPtermNumeric <- l_ciBar.MultiPtermFactor <- l_ciBar.ALE1DFactor <- function(a){
   
   xtra <- a$xtra
   a$xtra <- NULL

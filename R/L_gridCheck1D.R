@@ -12,7 +12,7 @@
 #'                \code{mean(r)*sqrt(length(r))}, where \code{r} is the vector of 
 #'                residuals in that bin.
 #' @param n number of grid intervals along the relevant covariate.
-#' @param level the level of the confidence intervals (e.g. 0.9 means 90\% intervals).
+#' @param level the level of the confidence intervals (e.g. 0.9 means 90% intervals).
 #' @param stand if "none" the residuals in each bin are transformed by \code{gridFun} and
 #'              the result statistics are plotted directly. If "sc" the statistics 
 #'              in each bin are scaled and centered using the mean and standard

@@ -20,7 +20,7 @@ l_rug <- function(...){
 
 ######## Internal method for factor 1D plots
 #' @noRd
-l_rug.PtermFactor <- l_rug.Check1DFactor <- function(a){
+l_rug.PtermFactor <- l_rug.Check1DFactor <- l_rug.ALE1DFactor <- function(a){
   
   if( is.null(a$position) ) { a$position <- position_jitter(width = 0.25, height = 0) }
   
@@ -59,7 +59,7 @@ l_rug.Check0DScalarNumeric <- function(a){
 ######## Internal method for numeric 1D plots
 #' @noRd
 l_rug.1D <- l_rug.Multi1D <- l_rug.Check1DNumeric <- 
-  l_rug.PtermNumeric <- l_rug.Check0DVectorNumeric <- function(a){
+  l_rug.PtermNumeric <- l_rug.Check0DVectorNumeric <- l_rug.ALE1DNumeric <- function(a){
   
   if( is.null(a$mapping) ) { a$mapping <- aes(x = x) }
   

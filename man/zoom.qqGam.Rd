@@ -4,10 +4,22 @@
 \alias{zoom.qqGam}
 \title{Efficiently zooming on GAM QQ-plots}
 \usage{
-\method{zoom}{qqGam}(o, xlim = NULL, ylim = NULL, discrete = NULL,
-  ngr = 1000, adGrid = TRUE, CI = FALSE, worm = FALSE,
-  showReps = FALSE, a.qqpoi = list(), a.ablin = list(),
-  a.cipoly = list(), a.replin = list(), ...)
+\method{zoom}{qqGam}(
+  o,
+  xlim = NULL,
+  ylim = NULL,
+  discrete = NULL,
+  ngr = 1000,
+  adGrid = TRUE,
+  CI = FALSE,
+  worm = FALSE,
+  showReps = FALSE,
+  a.qqpoi = list(),
+  a.ablin = list(),
+  a.cipoly = list(),
+  a.replin = list(),
+  ...
+)
 }
 \arguments{
 \item{o}{the output of \code{mgcViz::qq.gamViz}.}

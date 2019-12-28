@@ -4,8 +4,7 @@
 \alias{plot.mrf.smooth}
 \title{Plotting Markov random field smooths}
 \usage{
-\method{plot}{mrf.smooth}(x, trans = identity, seWithMean = FALSE,
-  unconditional = FALSE, ...)
+\method{plot}{mrf.smooth}(x, trans = identity, seWithMean = FALSE, unconditional = FALSE, ...)
 }
 \arguments{
 \item{x}{a smooth effect object, extracted using \link[mgcViz:sm]{mgcViz::sm}.}

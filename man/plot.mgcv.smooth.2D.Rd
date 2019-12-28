@@ -6,13 +6,32 @@
 \alias{plot.multi.mgcv.smooth.2D}
 \title{Plotting two dimensional smooth effects}
 \usage{
-\method{plot}{mgcv.smooth.2D}(x, n = 40, xlim = NULL, ylim = NULL,
-  maxpo = 10000, too.far = 0.1, trans = identity,
-  seWithMean = FALSE, unconditional = FALSE, ...)
+\method{plot}{mgcv.smooth.2D}(
+  x,
+  n = 40,
+  xlim = NULL,
+  ylim = NULL,
+  maxpo = 10000,
+  too.far = 0.1,
+  trans = identity,
+  seWithMean = FALSE,
+  unconditional = FALSE,
+  ...
+)
 
-\method{plot}{multi.mgcv.smooth.2D}(x, n = 30, xlim = NULL,
-  ylim = NULL, maxpo = 10000, too.far = 0.1, trans = identity,
-  seWithMean = FALSE, unconditional = FALSE, a.facet = list(), ...)
+\method{plot}{multi.mgcv.smooth.2D}(
+  x,
+  n = 30,
+  xlim = NULL,
+  ylim = NULL,
+  maxpo = 10000,
+  too.far = 0.1,
+  trans = identity,
+  seWithMean = FALSE,
+  unconditional = FALSE,
+  a.facet = list(),
+  ...
+)
 }
 \arguments{
 \item{x}{a smooth effect object, extracted using \link[mgcViz:sm]{mgcViz::sm}.}

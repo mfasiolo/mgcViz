@@ -4,10 +4,21 @@
 \alias{plot.sos.smooth}
 \title{Plotting smooths on the sphere}
 \usage{
-\method{plot}{sos.smooth}(x, n = 40, xlim = NULL, ylim = NULL,
-  maxpo = 10000, too.far = 0.1, phi = 30, theta = 30,
-  trans = identity, scheme = 0, seWithMean = FALSE,
-  unconditional = FALSE, ...)
+\method{plot}{sos.smooth}(
+  x,
+  n = 40,
+  xlim = NULL,
+  ylim = NULL,
+  maxpo = 10000,
+  too.far = 0.1,
+  phi = 30,
+  theta = 30,
+  trans = identity,
+  scheme = 0,
+  seWithMean = FALSE,
+  unconditional = FALSE,
+  ...
+)
 }
 \arguments{
 \item{x}{a smooth effect object, extracted using \link[mgcViz:sm]{mgcViz::sm}.}

@@ -4,7 +4,7 @@
 #' @description This layer adds a polygon representing the confidence band of a 
 #'              smooth, random or parametric effect plots.
 #'
-#' @param level coverage level (e.g. 0.9 means 90\% intervals). Should be in (0, 1).
+#' @param level coverage level (e.g. 0.9 means 90% intervals). Should be in (0, 1).
 #' @param mul number multiplied by the standard errors when calculating 
 #'            standard error curves. By default \code{NULL}, if
 #'            set to a positive number it will over-ride \code{level}.
@@ -26,7 +26,7 @@ l_ciPoly <- function(level = 0.95, mul = NULL, ...){
 
 ######## Internal method 
 #' @noRd
-l_ciPoly.1D <- l_ciPoly.PtermNumeric <- function(a){
+l_ciPoly.1D <- l_ciPoly.PtermNumeric <- l_ciPoly.ALE1DNumeric <- function(a){
   
   xtra <- a$xtra
   a$xtra <- NULL

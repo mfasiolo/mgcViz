@@ -4,8 +4,15 @@
 \alias{check1D}
 \title{Checking GAM residuals or responses along one covariate}
 \usage{
-check1D(o, x, type = "auto", maxpo = 10000, na.rm = TRUE,
-  trans = NULL, useSim = TRUE)
+check1D(
+  o,
+  x,
+  type = "auto",
+  maxpo = 10000,
+  na.rm = TRUE,
+  trans = NULL,
+  useSim = TRUE
+)
 }
 \arguments{
 \item{o}{an object of class \code{gamViz}.}

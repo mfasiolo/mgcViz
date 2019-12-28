@@ -21,7 +21,7 @@ l_simLine <- function(...){
 
 ######## Internal method 
 #' @noRd
-l_simLine.1D <- function(a){
+l_simLine.1D <- l_simLine.ALE1DNumeric <- function(a){
   
   a$data <- a$data$sim
   

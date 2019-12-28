@@ -7,13 +7,11 @@
 \alias{plot.ptermNumeric}
 \title{Plotting numeric parametric effects}
 \usage{
-\method{plot}{ptermMatrixNumeric}(x, n = 100, xlim = NULL,
-  trans = identity, ...)
+\method{plot}{ptermMatrixNumeric}(x, n = 100, xlim = NULL, trans = identity, ...)
 
 \method{plot}{multi.ptermNumeric}(x, ...)
 
-\method{plot}{ptermNumeric}(x, n = 100, xlim = NULL, maxpo = 10000,
-  trans = identity, ...)
+\method{plot}{ptermNumeric}(x, n = 100, xlim = NULL, maxpo = 10000, trans = identity, ...)
 }
 \arguments{
 \item{x}{a numerical parametric effect object, extracted using \link[mgcViz:pterm]{mgcViz::pterm}.}

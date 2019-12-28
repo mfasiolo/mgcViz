@@ -4,8 +4,7 @@
 \alias{l_gridQCheck2D}
 \title{Binning and checking QGAM residuals}
 \usage{
-l_gridQCheck2D(qu = NULL, bw = c(NA, NA), stand = TRUE,
-  binFun = NULL, ...)
+l_gridQCheck2D(qu = NULL, bw = c(NA, NA), stand = TRUE, binFun = NULL, ...)
 }
 \arguments{
 \item{qu}{the quantile of interest. Should be in (0, 1).}

@@ -7,15 +7,31 @@
 \alias{qqline}
 \title{Quantile-Quantile Plots}
 \usage{
-qqnorm(y, ylim, main = "Normal Q-Q Plot",
-  xlab = "Theoretical Quantiles", ylab = "Sample Quantiles",
-  datax = FALSE)
+qqnorm(
+  y,
+  ylim,
+  main = "Normal Q-Q Plot",
+  xlab = "Theoretical Quantiles",
+  ylab = "Sample Quantiles",
+  datax = FALSE
+)
 
-qqplot(x, y, xlab = deparse(substitute(x)),
-  ylab = deparse(substitute(y)), main = "Q-Q Plot")
+qqplot(
+  x,
+  y,
+  xlab = deparse(substitute(x)),
+  ylab = deparse(substitute(y)),
+  main = "Q-Q Plot"
+)
 
-qqline(y, datax = FALSE, distribution = qnorm, probs = c(0.25, 0.75),
-  qtype = 7, ...)
+qqline(
+  y,
+  datax = FALSE,
+  distribution = qnorm,
+  probs = c(0.25, 0.75),
+  qtype = 7,
+  ...
+)
 }
 \arguments{
 \item{y, }{The second or only data sample.}

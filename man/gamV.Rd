@@ -5,11 +5,23 @@
 \alias{gamV}
 \title{Fit a GAM model and get a gamViz object}
 \usage{
-bamV(formula, family = gaussian(), data = list(), method = "fREML",
-  aGam = list(), aViz = list())
+bamV(
+  formula,
+  family = gaussian(),
+  data = list(),
+  method = "fREML",
+  aGam = list(),
+  aViz = list()
+)
 
-gamV(formula, family = gaussian(), data = list(), method = "REML",
-  aGam = list(), aViz = list())
+gamV(
+  formula,
+  family = gaussian(),
+  data = list(),
+  method = "REML",
+  aGam = list(),
+  aViz = list()
+)
 }
 \arguments{
 \item{formula, family, data, method}{same arguments as in \link[mgcv:gam]{mgcv::gam} or \link[mgcv:bam]{mgcv::bam}.}

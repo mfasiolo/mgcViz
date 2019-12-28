@@ -4,8 +4,15 @@
 \alias{l_gridCheck1D}
 \title{Binning and checking GAM residuals}
 \usage{
-l_gridCheck1D(gridFun = NULL, n = 20, level = 0.8, stand = "none",
-  showReps = TRUE, showObs = TRUE, ...)
+l_gridCheck1D(
+  gridFun = NULL,
+  n = 20,
+  level = 0.8,
+  stand = "none",
+  showReps = TRUE,
+  showObs = TRUE,
+  ...
+)
 }
 \arguments{
 \item{gridFun}{scalar-valued function used to summarize the residuals in each bin.

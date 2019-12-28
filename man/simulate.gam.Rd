@@ -4,9 +4,18 @@
 \alias{simulate.gam}
 \title{Simulating responses from a GAM object}
 \usage{
-\method{simulate}{gam}(object, nsim = 1, seed = NULL,
-  method = "auto", newdata, u = NULL, w = NULL, offset = NULL,
-  trans = NULL, ...)
+\method{simulate}{gam}(
+  object,
+  nsim = 1,
+  seed = NULL,
+  method = "auto",
+  newdata,
+  u = NULL,
+  w = NULL,
+  offset = NULL,
+  trans = NULL,
+  ...
+)
 }
 \arguments{
 \item{object}{the output of a \code{gam()} or \code{bam()} call.}

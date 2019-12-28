@@ -9,7 +9,7 @@
 #' @param o an object of class \code{gamViz}, the output of a \code{getViz()} call.
 #' @param rep how many replicate datasets to generate to simulate quantiles of the residual distribution. 
 #'            Relevant only if \code{method} is set to \code{"simul1"} or \code{"simul2"}.
-#' @param level the level of the confidence intervals (e.g. 0.9 means 90\% intervals). 
+#' @param level the level of the confidence intervals (e.g. 0.9 means 90% intervals). 
 #' @param method the method used to calculate the QQ-plot and, possibly, the confidence intervals. If set
 #'               to (\code{"tunif"}) \code{"tnormal"} the residuals are transformed to (uniform) normal, for which
 #'               analytic expression for the confidence intervals are available. If set to \code{"simul1"} or 

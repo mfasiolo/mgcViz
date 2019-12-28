@@ -5,12 +5,27 @@
 \alias{gammV}
 \title{Fit a GAMM or GAMM4 model and get a gamViz object}
 \usage{
-gamm4V(formula, random, family = gaussian(), data = list(),
-  REML = TRUE, aGam = list(), aViz = list(), keepGAMObj = FALSE)
+gamm4V(
+  formula,
+  random,
+  family = gaussian(),
+  data = list(),
+  REML = TRUE,
+  aGam = list(),
+  aViz = list(),
+  keepGAMObj = FALSE
+)
 
-gammV(formula, random, family = gaussian(), data = list(),
-  method = "REML", aGam = list(), aViz = list(),
-  keepGAMObj = FALSE)
+gammV(
+  formula,
+  random,
+  family = gaussian(),
+  data = list(),
+  method = "REML",
+  aGam = list(),
+  aViz = list(),
+  keepGAMObj = FALSE
+)
 }
 \arguments{
 \item{formula, random, family, data}{same arguments as in \link[mgcv:gamm]{mgcv::gamm} or \link[gamm4:gamm4]{gamm4::gamm4}.}

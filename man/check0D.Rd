@@ -4,8 +4,14 @@
 \alias{check0D}
 \title{Checking GAM simulated residuals or responses}
 \usage{
-check0D(o, type = "auto", maxpo = 10000, na.rm = TRUE,
-  trans = NULL, useSim = TRUE)
+check0D(
+  o,
+  type = "auto",
+  maxpo = 10000,
+  na.rm = TRUE,
+  trans = NULL,
+  useSim = TRUE
+)
 }
 \arguments{
 \item{o}{an object of class \code{gamViz}.}

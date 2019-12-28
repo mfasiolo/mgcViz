@@ -4,8 +4,7 @@
 \alias{plot.fs.interaction.1D}
 \title{Plotting one dimensional smooth factor interactions}
 \usage{
-\method{plot}{fs.interaction.1D}(x, n = 100, xlim = NULL,
-  trans = identity, ...)
+\method{plot}{fs.interaction.1D}(x, n = 100, xlim = NULL, trans = identity, ...)
 }
 \arguments{
 \item{x}{a smooth effect object.}

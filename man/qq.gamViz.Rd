@@ -4,11 +4,26 @@
 \alias{qq.gamViz}
 \title{QQ plots for gam model residuals}
 \usage{
-\method{qq}{gamViz}(o, rep = 10, level = 0.8, method = "auto",
-  type = "auto", CI = "none", worm = FALSE, showReps = FALSE,
-  sortFun = NULL, discrete = NULL, ngr = 1000, xlim = NULL,
-  ylim = NULL, a.qqpoi = list(), a.ablin = list(),
-  a.cipoly = list(), a.replin = list(), ...)
+\method{qq}{gamViz}(
+  o,
+  rep = 10,
+  level = 0.8,
+  method = "auto",
+  type = "auto",
+  CI = "none",
+  worm = FALSE,
+  showReps = FALSE,
+  sortFun = NULL,
+  discrete = NULL,
+  ngr = 1000,
+  xlim = NULL,
+  ylim = NULL,
+  a.qqpoi = list(),
+  a.ablin = list(),
+  a.cipoly = list(),
+  a.replin = list(),
+  ...
+)
 }
 \arguments{
 \item{o}{an object of class \code{gamViz}, the output of a \code{getViz()} call.}

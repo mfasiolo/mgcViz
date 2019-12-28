@@ -4,8 +4,7 @@
 \alias{plot.mgamViz}
 \title{Plotting multiple quantile GAMs}
 \usage{
-\method{plot}{mgamViz}(x, n = 100, n2 = 40, select = NULL,
-  allTerms = FALSE, ...)
+\method{plot}{mgamViz}(x, n = 100, n2 = 40, select = NULL, allTerms = FALSE, ...)
 }
 \arguments{
 \item{x}{an object of class \code{mgamViz}, the output of a \link{getViz} call. Alternatively x can

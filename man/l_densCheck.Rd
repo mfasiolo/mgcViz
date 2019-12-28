@@ -4,8 +4,7 @@
 \alias{l_densCheck}
 \title{Checking residuals conditional density}
 \usage{
-l_densCheck(n = c(80, 80), bw = NULL, tol = 1e-06, dFun = NULL,
-  ...)
+l_densCheck(n = c(80, 80), bw = NULL, tol = 1e-06, dFun = NULL, ...)
 }
 \arguments{
 \item{n}{vector of two positive integers, indicating the number of grid points

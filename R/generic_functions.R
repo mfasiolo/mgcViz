@@ -56,6 +56,19 @@ plotDiff <- function(...) UseMethod("plotDiff")
 #' @export qq
 qq <- function(...) UseMethod("qq")
 
+#'
+#' Generic function for Accumulated Local Effect (ALE)
+#'
+#' @description Generic function for producing ALE effects, to be plottied using the \code{plot} generic.
+#' @param o the model we want to use to produce the ALE effect.
+#' @param ... arguments to be passed to methods.
+#' @references Apley, D.W., and Zhu, J, 2016. Visualizing the effects of predictor variables in black 
+#'             box supervised learning models. arXiv preprint arXiv:1612.08468.
+#' @seealso ALE.gam
+#' @rdname ALE
+#' @export ALE
+ALE <- function(o, ...) UseMethod("ALE")
+
 ###### Internal generics
 .prepare <- function(...) UseMethod(".prepare")
 

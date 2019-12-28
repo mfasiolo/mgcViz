@@ -4,8 +4,17 @@
 \alias{postSim}
 \title{Posterior simulation from a GAM object}
 \usage{
-postSim(o, nsim, newdata, trans = NULL, method = "auto", w = NULL,
-  offset = NULL, savePar = FALSE, ...)
+postSim(
+  o,
+  nsim,
+  newdata,
+  trans = NULL,
+  method = "auto",
+  w = NULL,
+  offset = NULL,
+  savePar = FALSE,
+  ...
+)
 }
 \arguments{
 \item{o}{the output of a \code{gam()} or \code{bam()} call.}

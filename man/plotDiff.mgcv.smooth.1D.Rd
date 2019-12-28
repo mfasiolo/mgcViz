@@ -4,8 +4,7 @@
 \alias{plotDiff.mgcv.smooth.1D}
 \title{Plotting differences between two 1D smooth effects}
 \usage{
-\method{plotDiff}{mgcv.smooth.1D}(s1, s2, n = 100, trans = identity,
-  unconditional = FALSE, ...)
+\method{plotDiff}{mgcv.smooth.1D}(s1, s2, n = 100, trans = identity, unconditional = FALSE, ...)
 }
 \arguments{
 \item{s1}{a smooth effect object, extracted using \link[mgcViz:sm]{mgcViz::sm}.}
@@ -35,7 +34,7 @@ smooth effects. Mainly meant to be used with by-factor smooths.
 \details{
 Let sd be the difference between the fitted smooths, that is: sd = s1 - s2.
 sd is a vector of length n, and its covariance matrix is
-Cov(sd) = X1\%\emph{\%Sig11\%}\%t(X1) + X2\%\emph{\%Sig22\%}\%t(X2) - X1\%\emph{\%Sig12\%}\%t(X2) - X2\%\emph{\%Sig12\%}\%t(X1),
+Cov(sd) = X1\\%\emph{\\%Sig11\\%}\\%t(X1) + X2\\%\emph{\\%Sig22\\%}\\%t(X2) - X1\\%\emph{\\%Sig12\\%}\\%t(X2) - X2\\%\emph{\\%Sig12\\%}\\%t(X1),
 where: X1 (X2) and Sig11 (Sig22) are the design matrix and the covariance matrix
 of the coefficients of s1 (s2), while Sig12 is the cross-covariance matrix between
 the coefficients of s1 and s2. To get the confidence intervals we need only diag(Cov(sd)),

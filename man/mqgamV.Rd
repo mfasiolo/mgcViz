@@ -4,8 +4,7 @@
 \alias{mqgamV}
 \title{Fit multiple QGAM models and get a mgamViz object}
 \usage{
-mqgamV(form, data, qu, lsig = NULL, err = NULL, aQgam = list(),
-  aViz = list())
+mqgamV(form, data, qu, lsig = NULL, err = NULL, aQgam = list(), aViz = list())
 }
 \arguments{
 \item{form, data, qu, lsig, err}{same arguments as in \link[qgam:mqgam]{qgam::mqgam}.}

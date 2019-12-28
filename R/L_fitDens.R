@@ -37,7 +37,7 @@ l_fitDens <- function(n = 50, level = 0.95, trans = identity, ...){
 
 ######## Internal method 
 #' @noRd
-l_fitDens.1D <- l_fitDens.PtermNumeric  <- function(a){
+l_fitDens.1D <- l_fitDens.PtermNumeric <- l_fitDens.ALE1DNumeric  <- function(a){
   
   xtra <- a$xtra
   a$xtra <- NULL

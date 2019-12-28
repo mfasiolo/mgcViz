@@ -4,10 +4,17 @@
 \alias{check.gamViz}
 \title{Some diagnostics for a fitted gam model}
 \usage{
-\method{check}{gamViz}(obj, type = c("auto", "deviance", "pearson",
-  "response", "tunif", "tnormal"), k.sample = 5000, k.rep = 200,
-  maxpo = 10000, a.qq = list(), a.hist = list(), a.respoi = list(),
-  ...)
+\method{check}{gamViz}(
+  obj,
+  type = c("auto", "deviance", "pearson", "response", "tunif", "tnormal"),
+  k.sample = 5000,
+  k.rep = 200,
+  maxpo = 10000,
+  a.qq = list(),
+  a.hist = list(),
+  a.respoi = list(),
+  ...
+)
 }
 \arguments{
 \item{obj}{an object of class \code{gamViz}, the output of a \code{getViz()} call.}

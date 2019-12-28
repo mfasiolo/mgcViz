@@ -6,13 +6,29 @@
 \alias{plot.multi.mgcv.smooth.1D}
 \title{Plotting one dimensional smooth effects}
 \usage{
-\method{plot}{mgcv.smooth.1D}(x, n = 100, xlim = NULL, maxpo = 10000,
-  trans = identity, unconditional = FALSE, seWithMean = FALSE,
-  nsim = 0, ...)
+\method{plot}{mgcv.smooth.1D}(
+  x,
+  n = 100,
+  xlim = NULL,
+  maxpo = 10000,
+  trans = identity,
+  unconditional = FALSE,
+  seWithMean = FALSE,
+  nsim = 0,
+  ...
+)
 
-\method{plot}{multi.mgcv.smooth.1D}(x, n = 100, xlim = NULL,
-  maxpo = 10000, trans = identity, unconditional = FALSE,
-  seWithMean = FALSE, asFact = NULL, ...)
+\method{plot}{multi.mgcv.smooth.1D}(
+  x,
+  n = 100,
+  xlim = NULL,
+  maxpo = 10000,
+  trans = identity,
+  unconditional = FALSE,
+  seWithMean = FALSE,
+  asFact = NULL,
+  ...
+)
 }
 \arguments{
 \item{x}{a smooth effect object, extracted using \link[mgcViz:sm]{mgcViz::sm}.}

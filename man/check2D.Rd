@@ -4,8 +4,16 @@
 \alias{check2D}
 \title{Checking GAM residuals along two covariates}
 \usage{
-check2D(o, x1, x2, type = "auto", maxpo = 10000, na.rm = TRUE,
-  trans = NULL, useSim = TRUE)
+check2D(
+  o,
+  x1,
+  x2,
+  type = "auto",
+  maxpo = 10000,
+  na.rm = TRUE,
+  trans = NULL,
+  useSim = TRUE
+)
 }
 \arguments{
 \item{o}{an object of class \code{gamViz}.}

@@ -4,9 +4,19 @@
 \alias{plot.mgcv.smooth.MD}
 \title{Plotting slice of higher-dimensional smooth effects}
 \usage{
-\method{plot}{mgcv.smooth.MD}(x, fix, n = 40, xlim = NULL,
-  ylim = NULL, maxpo = 10000, too.far = c(0.1, NA),
-  trans = identity, seWithMean = FALSE, unconditional = FALSE, ...)
+\method{plot}{mgcv.smooth.MD}(
+  x,
+  fix,
+  n = 40,
+  xlim = NULL,
+  ylim = NULL,
+  maxpo = 10000,
+  too.far = c(0.1, NA),
+  trans = identity,
+  seWithMean = FALSE,
+  unconditional = FALSE,
+  ...
+)
 }
 \arguments{
 \item{x}{a smooth effect object, extracted using \link[mgcViz:sm]{mgcViz::sm}.}
@@ -30,7 +40,7 @@ in areas that are too far form any observation. The distance will be calculated 
 using the variables which are not in \code{fix} (see above). Hence in two dimensions,
 not in the full d+2 dimensions. Set it to -1 to plot the whole
 smooth. The second entry determines which residuals and covariates pairs are closed
-enough to the selected slice. If left to \code{NA} on the 10\% of points which are
+enough to the selected slice. If left to \code{NA} on the 10\\% of points which are
 closest (in terms of scaled Euclidean distance) to the current slice will be plotted.
 Set it to -1 to plot all the residuals.}
 

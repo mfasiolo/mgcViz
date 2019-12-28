@@ -4,9 +4,18 @@
 \alias{plotDiff.sos.smooth}
 \title{Plotting differences between two smooths on the sphere}
 \usage{
-\method{plotDiff}{sos.smooth}(s1, s2, n = 40, too.far = 0.1,
-  phi = 30, theta = 30, scheme = 0, trans = identity,
-  unconditional = FALSE, ...)
+\method{plotDiff}{sos.smooth}(
+  s1,
+  s2,
+  n = 40,
+  too.far = 0.1,
+  phi = 30,
+  theta = 30,
+  scheme = 0,
+  trans = identity,
+  unconditional = FALSE,
+  ...
+)
 }
 \arguments{
 \item{s1}{a smooth effect object, extracted using \link[mgcViz:sm]{mgcViz::sm}.}
@@ -48,7 +57,7 @@ effects on the sphere. Mainly meant to be used with by-factor smooths.
 \details{
 Let sd be the difference between the fitted smooths, that is: sd = s1 - s2.
 sd is a vector of length n, and its covariance matrix is
-Cov(sd) = X1\%\emph{\%Sig11\%}\%t(X1) + X2\%\emph{\%Sig22\%}\%t(X2) - X1\%\emph{\%Sig12\%}\%t(X2) - X2\%\emph{\%Sig12\%}\%t(X1),
+Cov(sd) = X1\\%\emph{\\%Sig11\\%}\\%t(X1) + X2\\%\emph{\\%Sig22\\%}\\%t(X2) - X1\\%\emph{\\%Sig12\\%}\\%t(X2) - X2\\%\emph{\\%Sig12\\%}\\%t(X1),
 where: X1 (X2) and Sig11 (Sig22) are the design matrix and the covariance matrix
 of the coefficients of s1 (s2), while Sig12 is the cross-covariance matrix between
 the coefficients of s1 and s2. To get the confidence intervals we need only diag(Cov(sd)),
