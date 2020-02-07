@@ -75,7 +75,14 @@ simulate.gam <- function(object, nsim = 1, seed = NULL, method = "auto", newdata
     
   } 
   
-  out <- .simulate.gam(mu = mu, w = w, sig = o$sig2, method = method, fam = o$family, nsim = nsim, u = u, trans = trans)
+  # Special cases: return straight away
+  if(o$family$family == "Multivariate normal"){
+    out <- rlply(nsim, function(.nouse) rmvn(nrow(mu), mu, solve(crossprod(o$family$data$R))))
+    return( out )
+  }
+   
+  out <- .simulate.gam(mu = mu, w = w, sig = o$sig2, method = method, fam = o$family, 
+                         nsim = nsim, u = u, trans = trans)
   
   # We want nsim rows and number of columns depending on trans() 
   if( is.vector(out) ) { 

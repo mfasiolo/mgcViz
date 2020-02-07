@@ -67,7 +67,7 @@
 #' ck + l_gridCheck1D(gridFun = sd)
 #' 
 #' @importFrom matrixStats colSds
-#' @importFrom plyr aaply
+#' @importFrom plyr aaply llply
 #' @rdname check1D
 #' @export check1D
 #' 
@@ -90,9 +90,10 @@ check1D <- function(o, x, type = "auto", maxpo = 1e4, na.rm = TRUE, trans = NULL
   
   # Get data, responses and type of residuals
   tmp <- .getDataTypeY(o = o, type = type)
-  y <- tmp$y
+  y <- as.matrix( tmp$y )
   data <- tmp$data
   type <- tmp$type
+  dy <- ncol(y)
   
   # Get the covariate of interest from the dataset
   xnm <- "x" # If `x` is char, get related vector from dataframe
@@ -103,13 +104,18 @@ check1D <- function(o, x, type = "auto", maxpo = 1e4, na.rm = TRUE, trans = NULL
   }
   x <- as.vector( x ) # Needed for functional GAMS
   
-  if(length(x) != length(y)){ stop("length(x) != length(y)") }
+  if(length(x) != nrow(y)){ stop("length(x) != nrow(y)") }
   
   # Discard NAs
   if( na.rm ){
     good <- complete.cases(y, x)
-    y <- y[ good ]
+    y <- y[good, ]
     x <- x[ good ]
+  }
+  
+  if( dy > 1 && is.null(trans) ){
+    message("Response y is vector-valued, using trans <- function(y) drop(rowSums(y)) to reduce it to a vector")
+    trans <- function(.y, ...) drop(rowSums(.y))
   }
   
   ### 2. a) Transform simulated responses to residuals (unless type == "y")
