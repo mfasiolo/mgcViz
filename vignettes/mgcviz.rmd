@@ -477,7 +477,7 @@ References
 -   Buuren, S. v. and Fredriks, M. (2001) Worm plot: a simple diagnostic device for modelling
 growth reference curves, Statistics in medicine, 20, 1259–1277.
 
--   Fasiolo, M., Nedellec, R., Goude, Y. and Wood, S.N. (2018). Scalable visualisation methods for modern Generalized Additive Models. arXiv preprint arXiv:1809.10632.
+-   Fasiolo, M., Nedellec, R., Goude, Y. and Wood, S.N., 2019. Scalable visualization methods for modern generalized additive models. Journal of computational and Graphical Statistics, pp.1-9.
 
 -   Murdoch, D. (2001) Rgl: An r interface to opengl, in Proceedings of DSC, p. 2.
 

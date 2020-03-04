@@ -22,6 +22,8 @@
 #'         using \code{plot.ALEXD} (only \code{X=1} is provided at the moment).
 #' @references Apley, D.W., and Zhu, J, 2016. Visualizing the effects of predictor variables in black 
 #'             box supervised learning models. arXiv preprint arXiv:1612.08468.
+#' @author Matteo Fasiolo and Christian Capezza, with some internal code having been adapted from the ALEPlot 
+#'         package of Dan Apley.
 #' @seealso [plot.ALE1D]
 #' @examples
 #' # Example using Tweedie distribution

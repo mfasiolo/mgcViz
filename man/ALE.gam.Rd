@@ -61,3 +61,7 @@ box supervised learning models. arXiv preprint arXiv:1612.08468.
 \seealso{
 \link{plot.ALE1D}
 }
+\author{
+Matteo Fasiolo and Christian Capezza, with some internal code having been adapted from the ALEPlot
+package of Dan Apley.
+}

@@ -12,6 +12,8 @@
 #' @return An objects of class \code{plotSmooth}.
 #' @references Apley, D.W., and Zhu, J, 2016. Visualizing the effects of predictor variables in black 
 #'             box supervised learning models. arXiv preprint arXiv:1612.08468.
+#' @author Matteo Fasiolo and Christian Capezza, with some internal code having been adapted from the ALEPlot 
+#'         package of Dan Apley.
 #' @examples 
 #' 
 #' library(mgcViz)
