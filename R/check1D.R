@@ -127,7 +127,7 @@ check1D <- function(o, x, type = "auto", maxpo = 1e4, na.rm = TRUE, trans = NULL
   sub <- tmp$sub
   
   ### 3. Build output object
-  res <- data.frame("x" = x, "y" = y, "sub" = sub)
+  res <- data.frame("x" = x, "y" = y, "sub" = sub, stringsAsFactors = TRUE)
   pl <- ggplot(data = res, mapping = aes(x = x, y = y)) + theme_bw() + 
         theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + 
         labs(x = xnm, y = ifelse(type == "y", "y", "r"))

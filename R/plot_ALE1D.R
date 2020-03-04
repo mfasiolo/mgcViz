@@ -61,7 +61,8 @@ plot.ALE1D <- function(x, trans = identity, maxpo = 1e4, nsim = 0, ...) {
     
     .dat$sim <- data.frame("x" = rep(.dat$fit$x, nsim), 
                            "ty" = trans(as.vector(simFx)), 
-                           "id" = as.factor(rep(1:nsim, each = nrow(simFx))))
+                           "id" = as.factor(rep(1:nsim, each = nrow(simFx))), 
+                           stringsAsFactors = TRUE)
   }
   
   .pl <- ggplot(data = .dat$fit, aes("x" = x, "y" = ty)) +

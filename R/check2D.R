@@ -169,7 +169,7 @@ check2D <- function(o, x1, x2, type = "auto", maxpo = 1e4, na.rm = TRUE, trans =
   }
   
   ### 3. Build output object
-  res <- data.frame("x" = x1, "y" = x2, "z" = y, "sub" = sub)
+  res <- data.frame("x" = x1, "y" = x2, "z" = y, "sub" = sub, stringsAsFactors = TRUE)
   pl <- ggplot(data = res, mapping = aes(x = x, y = y, z = z)) + theme_bw() + 
     theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + 
     labs(x = xnm1, y = xnm2)

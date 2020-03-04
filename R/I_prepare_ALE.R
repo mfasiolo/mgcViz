@@ -6,7 +6,8 @@
   
   .x <- data[[xnam]]
   
-  if( inherits(.x, "factor") ) {
+  if( inherits(.x, "factor") || inherits(.x, "character") ) {
+    .x <- as.factor(.x)
     .cls <- "factor"
     .data <- .prepare.ALE.factor(o = o, xnam = xnam, data = data, type = type, K = K,
                                  predFun = predFun, jacFun = jacFun, varFun, center = center, ...)

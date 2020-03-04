@@ -44,7 +44,8 @@ plot.multi.ptermFactor <- function(x, a.facet = list(), asFact = TRUE, ...) {
                          "y" = as.vector( sapply(.fitDat, "[[", "y") ), 
                          "ty" = as.vector( sapply(.fitDat, "[[", "ty") ),  
                          "id" = rep(.idNam, each = length(.fitDat[[1]]$x)), 
-                         "se" = as.vector( sapply(.fitDat, "[[", "se") ))
+                         "se" = as.vector( sapply(.fitDat, "[[", "se") ), 
+                         stringsAsFactors = TRUE)
   if( asFact ){ .dat$fit$id <- as.factor( .dat$fit$id ) }
   
   # Drop base level if it is present

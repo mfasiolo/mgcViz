@@ -13,7 +13,7 @@
 
   nf <- length(x$flev)
   fac <- rep(x$flev, rep(n, nf))
-  dat <- data.frame(fac, xx)
+  dat <- data.frame(as.factor(fac), xx)
   names(dat) <- c(x$fterm, x$base$term)
   X <- PredictMat(x, dat)
   xlabel <- if (is.null(xlab)) x$base$term else xlab

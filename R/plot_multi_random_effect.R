@@ -35,7 +35,8 @@ plot.multi.random.effect <- function(x, trans = identity, ...) {
   .dat$fit <- data.frame("x" = as.vector( sapply(.fitDat, "[[", "x") ), 
                          "y" = as.vector( sapply(.fitDat, "[[", "y") ), 
                          "ty" = as.vector( sapply(.fitDat, "[[", "ty") ),  
-                         "id" = as.factor(rep(.idNam, each = length(.fitDat[[1]]$x))))
+                         "id" = as.factor(rep(.idNam, each = length(.fitDat[[1]]$x))), 
+                         stringsAsFactors = TRUE)
   
   .dat$misc <- list("trans" = trans)
   

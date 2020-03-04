@@ -154,7 +154,7 @@ l_gridCheck2D.Check2DNumericNumeric <- function(a){
   if( is.na(bw[2]) ){ bw[2] <- diff(range(y))/20 }
   
   ### 2. Plotting
-  a$data <- data.frame("x" = x, "y" = y, "z" = 1:length(x))
+  a$data <- data.frame("x" = x, "y" = y, "z" = 1:length(x), stringsAsFactors = TRUE)
   a$mapping <- aes(x=x, y=y, z=z)
   a$binwidth <- bw
   a$fun <- gridWrapper
