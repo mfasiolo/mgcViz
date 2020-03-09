@@ -6,7 +6,7 @@ citEntry(entry = "Article",
          title = "Scalable visualisation methods for modern Generalized Additive Models.", 
          journal = "Arxiv preprint", 
          year = 2018, 
-         url = "https://arxiv.org/abs/1707.03307", 
+         url = "https://arxiv.org/abs/1809.10632", 
          textVersion=paste(
 			       "Fasiolo M., Nedellec R., Goude Y. and Wood S. N. (2018)",
 			       "Scalable visualisation methods for modern Generalized Additive Models.", 
