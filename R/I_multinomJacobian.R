@@ -14,6 +14,7 @@
   DaDe <- sapply(1:(K - 1), function(.kk) {
     alpha[, jj] * (as.numeric(jj == .kk + 1) - alpha[, .kk + 1])
   })
+  if(nrow(alpha) == 1) { DaDe <- matrix(DaDe, nrow = 1) }
   
   # Dalpha/Dbeta = Dalpha/Deta * Deta/Dbeta
   X <- model.matrix(o, newdata = dat)
