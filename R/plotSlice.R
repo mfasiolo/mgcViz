@@ -127,5 +127,7 @@ plotSlice <- function(x, fix, a.facet = list(), ...){
   out <- structure(list("ggObj" = .pl, "data" = .dat, "type" = c("MD", "slice")), 
                    class = c("plotSmooth", "gg")) 
   
+  return( out )
+  
 }
 
