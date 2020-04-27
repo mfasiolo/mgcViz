@@ -23,10 +23,11 @@
 #'                   by simulation.
 #' @param nsim number of smooth effect curves to be simulated from the posterior distribution. 
 #'             These can be plotted using the \link{l_simLine} layer. See Examples section below. 
-#' @param asFact determines whether to use a factor or colour bar legend for plot.multi.mgcv.smooth.1D. 
-#'               When working with models fitted with \link{mqgamV}, the default is 
-#'               \code{FALSE} for less than 10 quantiles, \code{TRUE} otherwise. For other models the 
-#'               default is \code{TRUE}. 
+#' @param asFact determines whether to use a factor or colour bar legend for plot.multi.mgcv.smooth.1D.
+#'               For most models the default is \code{TRUE}. When working with QGAM models fitted with 
+#'               \link{mqgamV}, the default is \code{FALSE} for less than 10 quantiles, 
+#'               \code{TRUE} otherwise. For QGAM models there a third option, \code{asFact = "force"}, 
+#'               which forces the use of a discrete colour scale.
 #' @param ... currently unused.
 #' @return An objects of class \code{plotSmooth}.
 #' @references Marra, G and S.N. Wood (2012) Coverage Properties of Confidence Intervals for 
