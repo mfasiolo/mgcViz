@@ -18,7 +18,7 @@
 #'               offsets used during model fitting, unless offset is explicitly provided. 
 #' @param savePar if \code{TRUE} than also the simulated parameters will be returned.
 #' @param ... arguments to be passed to \link{vcov.gam}.
-#' @return If \code{savePar == FALSE} the function will return a matrix where each row is a vector of 
+#' @return If \code{savePar == FALSE} the function will return a matrix where each column is a vector of 
 #'         simulated responses or a transformed version of it. If \code{savePar == TRUE} it will return
 #'         a list where the \code{$simY} entry will contain the simulated responses and \code{$simBeta}
 #'         the simulated parameters.
@@ -34,7 +34,7 @@
 #' sim <- postSim(o = b, nsim = n, unconditional = TRUE)
 #' 
 #' # Posterior simulations in grey and data in red
-#' plot(rep(mcycle$times, n), as.vector(t(sim)), col = "grey", 
+#' plot(rep(mcycle$times, n), as.vector(sim), col = "grey", 
 #'      ylab = "Acceleration", xlab = "Times")
 #' points(mcycle$times, mcycle$accel, col = 2)
 #' 
@@ -42,7 +42,7 @@
 #' # conditional variance, which can be solved using flexible GAMLSS model:
 #' b <- gam(list(accel~s(times, k=20), ~s(times)), data=mcycle, family = gaulss)
 #' sim <- postSim(o = b, nsim = n)
-#' plot(rep(mcycle$times, n), as.vector(t(sim)), col = "grey", 
+#' plot(rep(mcycle$times, n), as.vector(sim), col = "grey", 
 #'      ylab = "Acceleration", xlab = "Times")
 #' points(mcycle$times, mcycle$accel, col = 2)
 #' 
@@ -81,12 +81,13 @@ postSim <- function(o, nsim, newdata, trans = NULL, method = "auto",
                        newdata = newdata, savePar = savePar)
   }
   
-  # We want nsim rows and number of columns depending on trans() 
+  # We want nsim columns and number of rows depending on trans() 
   if( is.vector(out[["simY"]]) ) { 
-    out[["simY"]] <- as.matrix( out[["simY"]] )
-    if(nsim == 1) { out[["simY"]] <- t(out[["simY"]]) }
+    out[["simY"]] <- as.matrix( out[["simY"]] ) 
+  } else {
+    out[["simY"]] <- t( out[["simY"]] )
   }
-  
+
   if( !savePar ) { out <- out[["simY"]] }
   
   return( out )
@@ -116,15 +117,15 @@ postSim <- function(o, nsim, newdata, trans = NULL, method = "auto",
   
   simBeta <- NULL
   if( savePar ){
-    simBeta <- rmvn(nsim, cf, V)
+    simBeta <- as.matrix( mgcv::rmvn(nsim, cf, V) )
+    if(nsim > 1) { simBeta <- t( simBeta ) }
   }
   
   # Simulate a vector of responses for each vector of coefficients, and transform it using trans()
   simY <- laply(1:nsim,
                 function(ii)
                 {
-                  beta <- if( savePar ) { simBeta[ii, , drop = TRUE] } else { rmvn(1, cf, V) }
-                  
+                  beta <- if( savePar ) { simBeta[ , ii, drop = TRUE] } else { rmvn(1, cf, V) }
                   mu <- lnki( X %*% beta + offI )
                   # Simulated and transform
                   drop(.simulate.gam(mu = mu, w = w, sig = o$sig2, method = method, 

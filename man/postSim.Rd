@@ -42,7 +42,7 @@ offsets used during model fitting, unless offset is explicitly provided.}
 \item{...}{arguments to be passed to \link{vcov.gam}.}
 }
 \value{
-If \code{savePar == FALSE} the function will return a matrix where each row is a vector of
+If \code{savePar == FALSE} the function will return a matrix where each column is a vector of
 simulated responses or a transformed version of it. If \code{savePar == TRUE} it will return
 a list where the \code{$simY} entry will contain the simulated responses and \code{$simBeta}
 the simulated parameters.
@@ -62,7 +62,7 @@ n <- 10
 sim <- postSim(o = b, nsim = n, unconditional = TRUE)
 
 # Posterior simulations in grey and data in red
-plot(rep(mcycle$times, n), as.vector(t(sim)), col = "grey", 
+plot(rep(mcycle$times, n), as.vector(sim), col = "grey", 
      ylab = "Acceleration", xlab = "Times")
 points(mcycle$times, mcycle$accel, col = 2)
 
@@ -70,7 +70,7 @@ points(mcycle$times, mcycle$accel, col = 2)
 # conditional variance, which can be solved using flexible GAMLSS model:
 b <- gam(list(accel~s(times, k=20), ~s(times)), data=mcycle, family = gaulss)
 sim <- postSim(o = b, nsim = n)
-plot(rep(mcycle$times, n), as.vector(t(sim)), col = "grey", 
+plot(rep(mcycle$times, n), as.vector(sim), col = "grey", 
      ylab = "Acceleration", xlab = "Times")
 points(mcycle$times, mcycle$accel, col = 2)
 

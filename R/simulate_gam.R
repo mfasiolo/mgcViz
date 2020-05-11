@@ -24,7 +24,7 @@
 #'               unless their are explicitly provided. If \code{newdata==NULL} then simulations will use the 
 #'               offsets used during model fitting, and \code{offset} argument will be ignored. 
 #' @param ... currently not used.
-#' @return A matrix where each row is a vector of simulated responses. The number of columns
+#' @return A matrix where each column is a vector of simulated responses. The number of rows
 #'         is equal to the number of responses in the fitted object.
 #' @examples 
 #' library(mgcViz)
@@ -34,7 +34,7 @@
 #' b <- gam(y~s(x0)+s(x1)+s(x2)+s(x3),data=dat)
 #' 
 #' # Simulate three vectors of responses
-#' matplot(t(simulate(b, nsim = 3)), pch = 19, col = c(1, 3, 4)) 
+#' matplot(simulate(b, nsim = 3), pch = 19, col = c(1, 3, 4)) 
 #'
 #' @importFrom plyr raply aaply laply
 #' @export simulate.gam
@@ -90,7 +90,7 @@ simulate.gam <- function(object, nsim = 1, seed = NULL, method = "auto", newdata
     if(nsim == 1) { out <- t(out) }
   }
   
-  return( unname(out) )
+  return( t(unname(out)) )
   
 }
 
