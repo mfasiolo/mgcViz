@@ -106,6 +106,7 @@ l_rug.2D <- l_rug.sos0 <- l_rug.sos1 <- l_rug.Check2DNumericNumeric <- l_rug.MDs
 #' @noRd
 .l_rug <- function(a){
   a$data <- a$data$res[a$data$res$sub, ]
+  if( is.null(a$data) ){ return(NULL) }
   a$inherit.aes <- FALSE
   if( is.null(a$size) ){ a$size <- 0.2 }
   
