@@ -40,7 +40,7 @@
       if (is.null(o$gObj$residuals) || is.null(o$gObj$weights)) {
         partial.resids <- FALSE
       } else {
-        wr <- sqrt(o$gObj$weights)
+        wr <- sqrt(abs(o$gObj$weights))
         w.resid <- o$gObj$residuals * wr
       }
     }
