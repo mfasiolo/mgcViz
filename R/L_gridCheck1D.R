@@ -195,7 +195,16 @@ l_gridCheck1D.Check1DFactor <- l_gridCheck1D.Check1DLogical <- function(a){
     if(level > 0){
       datCI <- data.frame("x" = goX, "ll" = conf[1, ], "ul" = conf[2, ])
       if(cls == "factor"){
-        out[[2+showObs]] <- geom_errorbar(data = datCI, aes(x = x, ymin = ll, ymax = ul), na.rm = TRUE, colour = "red", inherit.aes = FALSE)
+        a$colour <- 2
+        a$shape <- 3
+        a$size <- 2
+        out[[2+showObs]] <- geom_point(data = datCI, aes(x = x, y = ll), 
+                                       na.rm = TRUE, colour = "red", shape = 3, size = 2, inherit.aes = FALSE)
+        out[[3+showObs]] <- geom_point(data = datCI, aes(x = x, y = ul), 
+                                       na.rm = TRUE, colour = "red", shape = 3, size = 2, inherit.aes = FALSE)
+        
+        # out[[2+showObs]] <- geom_errorbar(data = datCI, aes(x = x, ymin = ll, ymax = ul), na.rm = TRUE, colour = "red", inherit.aes = FALSE)
+        # out[[3+showObs]] <- geom_errorbar(data = datCI, aes(x = x, ymin = ll, ymax = ul), na.rm = TRUE, colour = "red", inherit.aes = FALSE)
       }else{
         out[[2+showObs]] <- geom_line(data = datCI, aes(x = as.numeric(x), y = ll), na.rm = TRUE, linetype = 2, colour = "red")
         out[[3+showObs]] <- geom_line(data = datCI, aes(x = as.numeric(x), y = ul), na.rm = TRUE, linetype = 2, colour = "red")
