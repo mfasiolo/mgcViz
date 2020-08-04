@@ -65,7 +65,7 @@ l_gridCheck1D <- function(gridFun = NULL, n = 20, level = 0.8, stand = "none", s
 ######## Internal method for numeric covariates
 #' @noRd
 l_gridCheck1D.Check1DNumeric <- function(a){
- 
+  
   a$xtra$class <- "numeric"
   
   .l_gridCheck1D( a )
@@ -104,7 +104,7 @@ l_gridCheck1D.Check1DFactor <- l_gridCheck1D.Check1DLogical <- function(a){
   n <- xtra$n
   level <- xtra$level
   cls <- xtra$class 
-
+  
   ### 2. Computation on grid
   if(cls == "numeric"){ # Bin observed data
     grid <- seq(min(x), max(x), length.out = n)
@@ -131,15 +131,15 @@ l_gridCheck1D.Check1DFactor <- l_gridCheck1D.Check1DLogical <- function(a){
     
     # Bin simulated data 
     if(cls == "numeric"){
-     inS <- findInterval(x, grid, rightmost.closed = T)
-     lev <- sort( unique(inS) ) 
-     # lev <- lev[ (lev != 0) & (lev != n) ]   # Discard x's that fall outside grid 
+      inS <- findInterval(x, grid, rightmost.closed = T)
+      lev <- sort( unique(inS) ) 
+      # lev <- lev[ (lev != 0) & (lev != n) ]   # Discard x's that fall outside grid 
     }
     if(cls == "factor"){
       inS <- x
       lev <- grX 
     }
-     
+    
     # Calculate function for each bin and each repetition
     grS <- matrix(NA, rep, length(lev))
     for( ir in 1:rep ){ 
@@ -194,13 +194,17 @@ l_gridCheck1D.Check1DFactor <- l_gridCheck1D.Check1DLogical <- function(a){
     }
     if(level > 0){
       datCI <- data.frame("x" = goX, "ll" = conf[1, ], "ul" = conf[2, ])
-      out[[2+showObs]] <- geom_line(data = datCI, aes(x = as.numeric(x), y = ll), na.rm = TRUE, linetype = 2, colour = "red")
-      out[[3+showObs]] <- geom_line(data = datCI, aes(x = as.numeric(x), y = ul), na.rm = TRUE, linetype = 2, colour = "red")
+      if(cls == "factor"){
+        out[[2+showObs]] <- geom_errorbar(data = datCI, aes(x = x, ymin = ll, ymax = ul), na.rm = TRUE, colour = "red", inherit.aes = FALSE)
+      }else{
+        out[[2+showObs]] <- geom_line(data = datCI, aes(x = as.numeric(x), y = ll), na.rm = TRUE, linetype = 2, colour = "red")
+        out[[3+showObs]] <- geom_line(data = datCI, aes(x = as.numeric(x), y = ul), na.rm = TRUE, linetype = 2, colour = "red")
+      }
     }
   }
-
+  
   class(out) <- "listOfLayers"
-
+  
   return( out )
   
 }
