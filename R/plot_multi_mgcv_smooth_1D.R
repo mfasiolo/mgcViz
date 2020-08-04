@@ -16,9 +16,11 @@ plot.multi.mgcv.smooth.1D <- function(x, n = 100, xlim = NULL, maxpo = 1e4, tran
             "ylab" = gsub("\\d|,| |\\.", replacement = "", x = tmp[[1]]$ggObj$labels$y))
   names( P$data ) <- names( x )
   
+  
+  
   # 2) Produce output object
   out <- .plot.multi.mgcv.smooth.1D(P = P, trans = trans, 
-                                    asFact = asFact, isMQGAM =  attr(x, "isMQGAM"))
+                                    asFact = asFact, isMQGAM = attr(x, "isMQGAM"))
   
   class(out) <- c("plotSmooth", "gg")
   
@@ -28,6 +30,11 @@ plot.multi.mgcv.smooth.1D <- function(x, n = 100, xlim = NULL, maxpo = 1e4, tran
 ############### Internal function
 #' @noRd
 .plot.multi.mgcv.smooth.1D <- function(P, trans, asFact, isMQGAM) {
+  
+  if( !is.null(asFact) && asFact == "force" ){ 
+    asFact <- TRUE
+    isMQGAM <- FALSE 
+  }
   
   .fitDat <- lapply(P$data, "[[", "fit")
   
