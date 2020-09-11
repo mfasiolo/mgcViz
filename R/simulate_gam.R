@@ -23,7 +23,7 @@
 #'               must be a list of vectors. NB: if \code{newdata!=NULL} the offsets will be assumed to be zero, 
 #'               unless their are explicitly provided. If \code{newdata==NULL} then simulations will use the 
 #'               offsets used during model fitting, and \code{offset} argument will be ignored. 
-#' @param ... currently not used.
+#' @param ... extra arguments passed to \code{predict.gam}.
 #' @return A matrix where each column is a vector of simulated responses. The number of rows
 #'         is equal to the number of responses in the fitted object.
 #' @examples 
@@ -57,7 +57,7 @@ simulate.gam <- function(object, nsim = 1, seed = NULL, method = "auto", newdata
     
   } else{ # (b) the user-defined offset is added to linear predictor
     
-    mu <- predict(o, newdata = newdata, type = "link")
+    mu <- predict(o, newdata = newdata, type = "link", ...)
     if( is.null(w) ){ w <- mu*0 + 1 }
     
     # Dealing with offset and inverting link function

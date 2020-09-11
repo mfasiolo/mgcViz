@@ -47,7 +47,7 @@ It must take a vector as argument, but it can output a vector or a scalar.
 Potentially useful for saving storage (e.g. by transforming each simulated vector
 to a scalar). If left to \code{NULL} then \code{trans = identity} will be used.}
 
-\item{...}{currently not used.}
+\item{...}{extra arguments passed to \code{predict.gam}.}
 }
 \value{
 A matrix where each column is a vector of simulated responses. The number of rows
