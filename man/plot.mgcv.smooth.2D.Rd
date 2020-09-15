@@ -34,7 +34,7 @@
 )
 }
 \arguments{
-\item{x}{a smooth effect object, extracted using \link[mgcViz:sm]{mgcViz::sm}.}
+\item{x}{a smooth effect object, extracted using \link{sm}.}
 
 \item{n}{sqrt of the number of grid points used to compute the effect plot.}
 

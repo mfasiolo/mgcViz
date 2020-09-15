@@ -7,7 +7,7 @@
 \method{plotDiff}{mgcv.smooth.1D}(s1, s2, n = 100, trans = identity, unconditional = FALSE, ...)
 }
 \arguments{
-\item{s1}{a smooth effect object, extracted using \link[mgcViz:sm]{mgcViz::sm}.}
+\item{s1}{a smooth effect object, extracted using \link{sm}.}
 
 \item{s2}{another smooth effect object.}
 

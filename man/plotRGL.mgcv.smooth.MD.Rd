@@ -26,7 +26,7 @@
 )
 }
 \arguments{
-\item{x}{a smooth effect object, extracted using \link[mgcViz:sm]{mgcViz::sm}.}
+\item{x}{a smooth effect object, extracted using \link{sm}.}
 
 \item{fix}{a named vector indicating which variables must be kept fixed and to what values.
 When plotting a smooth in (d+2) dimensions, then d variables must be fixed.}

@@ -7,7 +7,7 @@
 \usage{
 gamm4V(
   formula,
-  random,
+  random = NULL,
   family = gaussian(),
   data = list(),
   REML = TRUE,
@@ -18,7 +18,7 @@ gamm4V(
 
 gammV(
   formula,
-  random,
+  random = NULL,
   family = gaussian(),
   data = list(),
   method = "REML",

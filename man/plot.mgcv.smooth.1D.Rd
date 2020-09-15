@@ -31,7 +31,7 @@
 )
 }
 \arguments{
-\item{x}{a smooth effect object, extracted using \link[mgcViz:sm]{mgcViz::sm}.}
+\item{x}{a smooth effect object, extracted using \link{sm}.}
 
 \item{n}{number of grid points used to compute main effect and c.i. lines.
 For a nice smooth plot this needs to be several times the estimated degrees of

@@ -4,7 +4,7 @@
 #' @export gamm4V
 #
 
-gamm4V <- function(formula, random, family = gaussian(), data = list(), REML = TRUE, aGam = list(), aViz = list(), keepGAMObj = FALSE){
+gamm4V <- function(formula, random = NULL, family = gaussian(), data = list(), REML = TRUE, aGam = list(), aViz = list(), keepGAMObj = FALSE){
 
   obj <- do.call("gamm4", c(list("formula" = formula, "random" = random, 
                                  "family" = family, "data" = quote(data), "REML" = REML), aGam))

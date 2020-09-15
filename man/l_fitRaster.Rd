@@ -8,7 +8,7 @@ l_fitRaster(pTrans = function(.p) 1, noiseup = FALSE, mul = 1, ...)
 }
 \arguments{
 \item{pTrans}{a function from (0, 1) to (0, 1) which takes as input a p-value and returns a value,
-\code{alpha}, which will be passed on to \link[ggplot2:geom_raster]{ggplot2::geom_raster}, and will determine
+\code{alpha}, which will be passed on to \link[ggplot2:geom_tile]{ggplot2::geom_raster}, and will determine
 the opacity of the heat-map. The p-value quantifies the significance of the smooth
 effect at each location (x1, x2). By default \code{pTrans} returns 1, but if we
 set it to, say, \code{pTrans = function(.p) .p<0.05} then the regions with p-values

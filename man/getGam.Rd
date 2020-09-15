@@ -7,7 +7,7 @@
 getGam(o)
 }
 \arguments{
-\item{o}{a \code{gamViz} object, the output of \link[mgcViz:getViz]{mgcViz::getViz}.}
+\item{o}{a \code{gamViz} object, the output of \link{getViz}.}
 }
 \description{
 Function for converting a \code{gamViz} object to a \code{gamObject}.

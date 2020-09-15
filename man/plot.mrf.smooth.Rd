@@ -7,7 +7,7 @@
 \method{plot}{mrf.smooth}(x, trans = identity, seWithMean = FALSE, unconditional = FALSE, ...)
 }
 \arguments{
-\item{x}{a smooth effect object, extracted using \link[mgcViz:sm]{mgcViz::sm}.}
+\item{x}{a smooth effect object, extracted using \link{sm}.}
 
 \item{trans}{monotonic function to apply to the smooth and residuals, before plotting.
 Monotonicity is not checked.}

@@ -14,7 +14,7 @@
 \method{plot}{ptermNumeric}(x, n = 100, xlim = NULL, maxpo = 10000, trans = identity, ...)
 }
 \arguments{
-\item{x}{a numerical parametric effect object, extracted using \link[mgcViz:pterm]{mgcViz::pterm}.}
+\item{x}{a numerical parametric effect object, extracted using \link{pterm}.}
 
 \item{n}{number of grid points used to compute main effect and c.i. lines.}
 

@@ -25,7 +25,7 @@
 )
 }
 \arguments{
-\item{x}{a smooth effect object, extracted using \link[mgcViz:sm]{mgcViz::sm}.}
+\item{x}{a smooth effect object, extracted using \link{sm}.}
 
 \item{se}{when TRUE (default) upper and lower surfaces are added to the plot at \code{se.mult}
 (see below) standard deviations for the fitted surface.}

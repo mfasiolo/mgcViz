@@ -11,7 +11,7 @@
 \method{plot}{multi.ptermInteraction}(x, ...)
 }
 \arguments{
-\item{x}{a parametric interaction object, extracted using \link[mgcViz:pterm]{mgcViz::pterm}.}
+\item{x}{a parametric interaction object, extracted using \link{pterm}.}
 
 \item{...}{currently unused.}
 }

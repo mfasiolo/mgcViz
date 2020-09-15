@@ -11,7 +11,7 @@
 \method{plot}{random.effect}(x, trans = identity, ...)
 }
 \arguments{
-\item{x}{a random effect object, extracted using \link[mgcViz:sm]{mgcViz::sm}.}
+\item{x}{a random effect object, extracted using \link{sm}.}
 
 \item{trans}{monotonic function to apply to the fit, confidence intervals and residuals,
 before plotting. Monotonicity is not checked.}

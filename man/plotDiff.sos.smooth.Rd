@@ -18,7 +18,7 @@
 )
 }
 \arguments{
-\item{s1}{a smooth effect object, extracted using \link[mgcViz:sm]{mgcViz::sm}.}
+\item{s1}{a smooth effect object, extracted using \link{sm}.}
 
 \item{s2}{another smooth effect object.}
 

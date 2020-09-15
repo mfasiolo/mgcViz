@@ -20,7 +20,7 @@ any affect if the \code{plotGam} object already contains some layers.}
 \item{...}{further arguments to be passed to \code{grid.arrange}.}
 }
 \value{
-Returns the output of \link[gridExtra:grid.arrange]{gridExtra::grid.arrange}, invisibly.
+Returns the output of \link[gridExtra:arrangeGrob]{gridExtra::grid.arrange}, invisibly.
 }
 \description{
 This method prints the output of \link{plot.gamViz}.

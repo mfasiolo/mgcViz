@@ -7,7 +7,7 @@
 plotSlice(x, fix, a.facet = list(), ...)
 }
 \arguments{
-\item{x}{a smooth effect object, extracted using \link[mgcViz:sm]{mgcViz::sm}.}
+\item{x}{a smooth effect object, extracted using \link{sm}.}
 
 \item{fix}{a named list of vectors, where the i-th entry of each vector indicates the value we want to
 use for the covariate for i-th slice. When plotting a smooth in (d+2) dimensions,

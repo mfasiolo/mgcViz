@@ -14,7 +14,7 @@ An object of class \code{gamLayer}.
 }
 \description{
 This layer adds a vertical to a plot. It is mainly a
-wrapper around \link[ggplot2:geom_vline]{ggplot2::geom_vline}.
+wrapper around \link[ggplot2:geom_abline]{ggplot2::geom_vline}.
 }
 \seealso{
 See \link{check0D} for examples.

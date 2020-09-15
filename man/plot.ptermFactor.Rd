@@ -17,7 +17,7 @@
 \method{plot}{ptermLogical}(x, maxpo = 10000, trans = identity, ...)
 }
 \arguments{
-\item{x}{a factor or logical parametric effect object, extracted using \link[mgcViz:pterm]{mgcViz::pterm}.}
+\item{x}{a factor or logical parametric effect object, extracted using \link{pterm}.}
 
 \item{a.facet}{arguments to be passed to \link[ggplot2:facet_wrap]{ggplot2::facet_wrap} or \link[ggplot2:facet_grid]{ggplot2::facet_grid}. The former gets
 called when \code{fix} contains one vector, the latter when \code{fix} contains two vectors.}

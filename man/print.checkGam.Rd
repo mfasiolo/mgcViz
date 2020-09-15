@@ -9,7 +9,7 @@
 \arguments{
 \item{x}{the output of \code{check.gamViz}.}
 
-\item{lay}{the \code{layout_matrix} passed to \link[gridExtra:grid.arrange]{gridExtra::grid.arrange}.}
+\item{lay}{the \code{layout_matrix} passed to \link[gridExtra:arrangeGrob]{gridExtra::grid.arrange}.}
 
 \item{...}{further arguments to be passed to \code{grid.arrange}.}
 }
