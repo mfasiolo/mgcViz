@@ -18,7 +18,7 @@ addons:
       - libgl1-mesa-dev 
       - libglu1-mesa-dev
 
-before_install:
-  - Rscript -e 'install.packages("mgcv", lib="/home/travis/R-bin/lib/R/library/")'
+#before_install:
+#  - Rscript -e 'install.packages("mgcv", lib="/home/travis/R-bin/lib/R/library/")'
 #r_github_packages: 
 # - mfasiolo/qgam
