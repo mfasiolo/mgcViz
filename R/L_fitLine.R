@@ -24,7 +24,7 @@ l_fitLine <- function(...){
 ######## Internal method 
 #' @noRd
 l_fitLine.1D <- l_fitLine.PtermNumeric <- l_fitLine.PtermMatrixNumeric <- 
-                l_fitLine.Multi1D <- l_fitLine.ALE1DNumeric <- function(a){
+                l_fitLine.Multi1D <- l_fitLine.ALE1DNumeric <- l_fitLine.singleIndex1D <- function(a){
   
   a$data <- a$data$fit
   if( is.null(a$na.rm) ){ a$na.rm <- TRUE}

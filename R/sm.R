@@ -49,6 +49,10 @@ sm <- function(o, select){
     cl[which(cl=="fs.interaction")] <- paste("fs.interaction.", o$smooth[[select]]$dim, "D", sep='')
   }
   
+  if("si.smooth" %in% cl){
+    cl[which(cl=="si.smooth")] <- paste("si.smooth.", o$smooth[[select]]$dim, "D", sep='')
+  }
+  
   class(out) <- cl
   
   return( out )
