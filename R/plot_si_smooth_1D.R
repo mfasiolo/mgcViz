@@ -17,13 +17,13 @@
 #' @export plot.si.smooth.1D
 #' @export
 #' 
-plot.si.smooth.1D <- function(x, n = 100, xlim = NULL, trans = identity, ...)  {
+plot.si.smooth.1D <- function(x, n = 100, xlim = NULL, maxpo = 1e4, trans = identity, ...)  {
   
   # 1) Prepare data
   P <- .prepareNested(o = x, n = n, xlim = xlim, ...)
   
   # 2) Produce output object
-  out <- .plot.si.smooth.1D(x = P$smooth, P = P, trans = trans)
+  out <- .plot.si.smooth.1D(x = P$smooth, P = P, trans = trans, maxpo = maxpo)
   
   class(out) <- c("plotSmooth", "gg")
   
@@ -32,9 +32,25 @@ plot.si.smooth.1D <- function(x, n = 100, xlim = NULL, trans = identity, ...)  {
 
 ########################
 #' @noRd
-.plot.si.smooth.1D <- function(x, P, trans) {
+.plot.si.smooth.1D <- function(x, P, trans, maxpo) {
   
   .dat <- list()
+  
+  if ( !is.null(P$raw) ) {
+    # Construct data.frame of partial residuals
+    res <- data.frame("x" = as.vector(P$raw))
+
+    # Exclude residuals falling outside boundaries
+    .dat$res <- res[res$x >= P$xlim[1] & res$x <= P$xlim[2], , drop = FALSE]
+    
+    # Sample if too many points (> maxpo)  
+    nres <- nrow( .dat$res )
+    .dat$res$sub <- if(nres > maxpo) { 
+      sample( c(rep(T, maxpo), rep(F, nres-maxpo)) )
+    } else { 
+      rep(T, nres) 
+    }
+  }
   
   .dat$fit <- data.frame(x = P$x, y = P$fit, ty = trans(P$fit), se = P$se)
   .dat$misc <- list(trans = trans)

@@ -16,11 +16,11 @@
   prange <- (sm$first.para:sm$last.para)[-(1:dsi)]
   beta <- coef( gObj )[ prange ]
   
-  if (is.null(xlim)){ # Generate x sequence for prediction
-    xx <- seq(min(raw), max(raw), length = n)
-  } else {
-    xx <- seq(xlim[1], xlim[2], length = n) 
-  }
+  # Generate x sequence for prediction
+  if (is.null(xlim)){ 
+    xlim <- range(raw)
+  } 
+  xx <- seq(xlim[1], xlim[2], length = n) 
   
   # Compute outer model matrix
   X <- sm$xt$splineDes(x = xx, deriv = 0)$X0
@@ -29,9 +29,11 @@
   
   se <- sqrt(pmax(0, rowSums((X %*% gObj$Vp[prange, prange, drop = FALSE]) * X)))
   
-  xlabel <- paste0(sm$term, " %*% alpha")
-  ylabel <- paste0("s(", sm$term, " %*% alpha)")
-  out <- list("fit" = fit, "x" = xx, "se" = se, xlab = xlabel, ylab = ylabel, main = NULL)
+  edf   <- sum(gObj$edf[prange])
+  ylabel <- .subEDF(paste0("s(proj(", sm$term, "))"), edf)
+  xlabel <- paste0("proj(", sm$term, ")")
+  out <- list("fit" = fit, "x" = xx, "se" = se, "raw" = raw, "xlim" = xlim,
+              xlab = xlabel, ylab = ylabel, main = NULL)
   return(out)
   
 }

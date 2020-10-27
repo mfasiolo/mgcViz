@@ -4,7 +4,7 @@
 \alias{plot.si.smooth.1D}
 \title{Plotting one dimensional single index effects}
 \usage{
-\method{plot}{si.smooth.1D}(x, n = 100, xlim = NULL, trans = identity, ...)
+\method{plot}{si.smooth.1D}(x, n = 100, xlim = NULL, maxpo = 10000, trans = identity, ...)
 }
 \arguments{
 \item{x}{a smooth effect object.}
