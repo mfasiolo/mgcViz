@@ -154,6 +154,6 @@
   }
   return(list(
     "D" = D, "Dq" = Dq, "dm" = dm, "conf" = conf, 
-    "method" = method, "ylab" = paste("normalize", type, "residuals")
+    "method" = method, "ylab" = paste("normalized", type, "residuals")
   ))
 }
