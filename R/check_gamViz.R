@@ -120,6 +120,7 @@ check.gamViz <- function(obj,
         if (boi$iter == 1) 
           cat(".")
         else cat("s.")
+        if( is.null(obj$family$available.derivs) || obj$family$available.derivs > 0 ){
         cat("\nGradient range [", min(boi$grad), ",", max(boi$grad), 
             "]", sep = "")
         cat("\n(score ", obj$gcv.ubre, " & scale ", obj$sig2, 
@@ -130,6 +131,7 @@ check.gamViz <- function(obj,
         else cat("\n")
         cat("eigenvalue range [", min(ev), ",", max(ev), 
             "].\n", sep = "")
+        }
       }
       else {
         cat("\n")
@@ -140,6 +142,7 @@ check.gamViz <- function(obj,
       if (length(obj$sp) == 0) 
         cat("\nModel required no smoothing parameter selection")
       else {
+        if( !is.null(obj$mgcv.conv) ){
         cat("\nSmoothing parameter selection converged after", 
             obj$mgcv.conv$iter, "iteration")
         if (obj$mgcv.conv$iter > 1) 
@@ -152,6 +155,7 @@ check.gamViz <- function(obj,
         if (obj$mgcv.conv$hess.pos.def) 
           cat("The Hessian was positive definite.\n")
         else cat("The Hessian was not positive definite.\n")
+        }
       }
     }
     if (!is.null(obj$rank)) {
