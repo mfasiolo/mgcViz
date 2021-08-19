@@ -28,7 +28,8 @@ Suggests:
     knitr,
     rmarkdown,
     testthat,
-    MASS
+    MASS, 
+    webshot2
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
