@@ -1,7 +1,7 @@
 #' Visualizing a 2D slice of a smooth effects in 3D 
 #' 
 #' @description This method plots an interactive 3D representation of a 2-dimensional
-#'              slice of a multi-dimensional smooth effect, using the [rgl] package.
+#'              slice of a multi-dimensional smooth effect, using the rgl package.
 #'              
 #' @param x a smooth effect object, extracted using [mgcViz::sm].
 #' @param fix a named vector indicating which variables must be kept fixed and to what values.
@@ -57,15 +57,18 @@
 #' 
 #' plotRGL(sm(v, 1), fix = c("z" = 0))
 #' 
+#' # Need to load rgl at this point
+#' \dontrun{
+#' library(rgl)
 #' rgl.close() # Close
 #' 
 #' plotRGL(sm(v, 1), fix = c("z" = 1), residuals = TRUE)
 #' 
 #' # We can still work on the plot, for instance change the aspect ratio
-#' library(rgl)
 #' aspect3d(1, 2, 1)
 #' 
 #' rgl.close() # Close
+#' }
 #' 
 #' @rdname plotRGL.mgcv.smooth.MD
 #' @export plotRGL.mgcv.smooth.MD
@@ -76,6 +79,12 @@ plotRGL.mgcv.smooth.MD <- function(x, fix, se = TRUE, n = 40, residuals = FALSE,
                                    main = NULL, xlim = NULL, ylim = NULL, se.mult = 1, 
                                    trans = identity, seWithMean = FALSE, 
                                    unconditional = FALSE, ...){
+  
+  pack <- requireNamespace("rgl", quietly=TRUE)
+  if( !pack ){
+    message("Please install the rgl package to use this function.")
+    return(NULL)
+  }
   
   if (type == "auto") { type <- .getResTypeAndMethod(x$gObj$family$family)$type }
   if ( length(too.far) == 1 ){ too.far <- c(too.far, NA)  }

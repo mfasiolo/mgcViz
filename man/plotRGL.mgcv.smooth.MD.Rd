@@ -86,7 +86,7 @@ Returns \code{NULL} invisibly.
 }
 \description{
 This method plots an interactive 3D representation of a 2-dimensional
-slice of a multi-dimensional smooth effect, using the \link{rgl} package.
+slice of a multi-dimensional smooth effect, using the rgl package.
 }
 \examples{
 # Example 1: taken from ?mgcv::te, shows how tensor pruduct deals nicely with 
@@ -101,15 +101,18 @@ v <- getViz(b)
 
 plotRGL(sm(v, 1), fix = c("z" = 0))
 
+# Need to load rgl at this point
+\dontrun{
+library(rgl)
 rgl.close() # Close
 
 plotRGL(sm(v, 1), fix = c("z" = 1), residuals = TRUE)
 
 # We can still work on the plot, for instance change the aspect ratio
-library(rgl)
 aspect3d(1, 2, 1)
 
 rgl.close() # Close
+}
 
 }
 \references{

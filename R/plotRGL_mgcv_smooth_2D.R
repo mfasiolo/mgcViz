@@ -1,7 +1,7 @@
 #' Visualizing 2D smooth effects in 3D 
 #' 
 #' @description This method plots an interactive 3D representation of a 2D smooth effect, using
-#'              the [rgl] package.
+#'              the rgl package.
 #' @param x a smooth effect object, extracted using [mgcViz::sm].
 #' @param se when TRUE (default) upper and lower surfaces are added to the plot at \code{se.mult} 
 #'           (see below) standard deviations for the fitted surface.
@@ -15,7 +15,7 @@
 #'               away from data. The data are scaled into the unit square before deciding
 #'               what to exclude, and too.far is a distance within the unit square.
 #'               Setting to zero can make plotting faster for large datasets, but care 
-#'               then needed with interpretation of plots.
+#'               is then needed when interpreting the plots.
 #' @param xlab if supplied then this will be used as the x label of the plot.
 #' @param ylab if supplied then this will be used as the y label of the plot.
 #' @param main used as title for the plot if supplied.
@@ -62,6 +62,9 @@
 #' b1 <- gam(y~s(x,z))
 #' plotRGL(sm(getViz(b1), 1))
 #' 
+#' # Need to load rgl at this point
+#' \dontrun{
+#' library(rgl)
 #' rgl.close() # Close
 #' 
 #' # Fit with tensor products basis and plot (with residuals)
@@ -69,11 +72,10 @@
 #' plotRGL(sm(getViz(b2), 1), residuals = TRUE)
 #' 
 #' # We can still work on the plot, for instance change the aspect ratio
-#' library(rgl)
 #' aspect3d(1, 2, 1)
 #' 
 #' rgl.close() # Close
-#' @importFrom rgl .check3d light3d surface3d axes3d title3d spheres3d aspect3d
+#' }
 #' @rdname plotRGL.mgcv.smooth.2D
 #' @export plotRGL.mgcv.smooth.2D
 #' @export
@@ -83,6 +85,12 @@ plotRGL.mgcv.smooth.2D <- function(x, se = TRUE, n = 40, residuals = FALSE, type
                                    main = NULL, xlim = NULL, ylim = NULL,  se.mult = 1, 
                                    trans = identity, seWithMean = FALSE, 
                                    unconditional = FALSE, ...){
+  
+  pack <- requireNamespace("rgl", quietly=TRUE)
+  if( !pack ){
+    message("Please install the rgl package to use this function.")
+    return(NULL)
+  }
   
   if (type == "auto") { type <- .getResTypeAndMethod(x$gObj$family$family)$type }
   
@@ -145,35 +153,35 @@ plotRGL.mgcv.smooth.2D <- function(x, se = TRUE, n = 40, residuals = FALSE, type
 .plotRGL.mgcv.smooth.2D <- function(P, trans, res = NULL) {
   
   # New window and setup env
-  .check3d()
+  rgl::.check3d()
   
   # Draws non-parametric density
   n <- length(P$x)
-  surface3d(P$x, P$y, matrix(P$fit, n, n), color="#FF2222", alpha=0.5)
+  rgl::surface3d(P$x, P$y, matrix(P$fit, n, n), color="#FF2222", alpha=0.5)
   if( P$plotCI ){
-    surface3d(P$x, P$y, matrix(P$fit + P$se, n, n), 
-              alpha=0.5, color="#CCCCFF",front="lines")
-    surface3d(P$x, P$y, matrix(P$fit - P$se, n, n), 
-              alpha=0.5, color= "#CCCCFF", front="lines")
+    rgl::surface3d(P$x, P$y, matrix(P$fit + P$se, n, n), 
+                   alpha=0.5, color="#CCCCFF",front="lines")
+    rgl::surface3d(P$x, P$y, matrix(P$fit - P$se, n, n), 
+                   alpha=0.5, color= "#CCCCFF", front="lines")
   }
   
   # Draws the simulated data as spheres on the baseline
   if( !is.null(res) ){
     cent = min(P$fit-3*P$se)
-    surface3d(P$x, P$y, matrix(cent, n, n), color="#CCCCFF",
-              front = "lines", back = "lines")
-    axes3d(c('x', 'y', "z")) 
-    title3d(xlab = P$xlab, ylab = P$ylab, main = P$main)
+    rgl::surface3d(P$x, P$y, matrix(cent, n, n), color="#CCCCFF",
+                   front = "lines", back = "lines")
+    rgl::axes3d(c('x', 'y', "z")) 
+    rgl::title3d(xlab = P$xlab, ylab = P$ylab, main = P$main)
     res <- res / max(abs(res)) * max(P$se)
-    spheres3d(P$raw$x, P$raw$y, cent + res, 
-              radius=max(c(abs(P$fit), P$x, P$y))/100, 
-              color= ifelse(res<0, "red", "blue"))
+    rgl::spheres3d(P$raw$x, P$raw$y, cent + res, 
+                   radius=max(c(abs(P$fit), P$x, P$y))/100, 
+                   color= ifelse(res<0, "red", "blue"))
   } else {
-    axes3d(c('x', 'y', "z")) 
-    title3d(xlab = P$xlab, ylab = P$ylab, main = P$main)
+    rgl::axes3d(c('x', 'y', "z")) 
+    rgl::title3d(xlab = P$xlab, ylab = P$ylab, main = P$main)
   }
   
-  aspect3d(1, 1, 1)
+  rgl::aspect3d(1, 1, 1)
   
   return( invisible(NULL) )
   

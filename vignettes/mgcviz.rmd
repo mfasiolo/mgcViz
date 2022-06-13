@@ -178,6 +178,7 @@ via the `rgl` R package. Here is an example where we are plotting a 2D slice of
 a 3D smooth effect, with confidence surfaces:
 ```{r 16, warning = F, webgl=TRUE}
 library(mgcViz)
+library(rgl)
 n <- 500
 x <- rnorm(n); y <- rnorm(n); z <- rnorm(n)
 ob <- (x-z)^2 + (y-z)^2 + rnorm(n)

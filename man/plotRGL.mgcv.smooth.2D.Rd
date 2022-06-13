@@ -44,7 +44,7 @@ from data to be plotted. This is useful since smooths tend to go wild
 away from data. The data are scaled into the unit square before deciding
 what to exclude, and too.far is a distance within the unit square.
 Setting to zero can make plotting faster for large datasets, but care
-then needed with interpretation of plots.}
+is then needed when interpreting the plots.}
 
 \item{xlab}{if supplied then this will be used as the x label of the plot.}
 
@@ -79,7 +79,7 @@ Returns \code{NULL} invisibly.
 }
 \description{
 This method plots an interactive 3D representation of a 2D smooth effect, using
-the \link{rgl} package.
+the rgl package.
 }
 \examples{
 # Example 1: taken from ?mgcv::te, shows how tensor pruduct deals nicely with 
@@ -105,6 +105,9 @@ y <- f + rnorm(n)*0.2
 b1 <- gam(y~s(x,z))
 plotRGL(sm(getViz(b1), 1))
 
+# Need to load rgl at this point
+\dontrun{
+library(rgl)
 rgl.close() # Close
 
 # Fit with tensor products basis and plot (with residuals)
@@ -112,10 +115,10 @@ b2 <- gam(y~te(x,z))
 plotRGL(sm(getViz(b2), 1), residuals = TRUE)
 
 # We can still work on the plot, for instance change the aspect ratio
-library(rgl)
 aspect3d(1, 2, 1)
 
 rgl.close() # Close
+}
 }
 \references{
 Marra, G and S.N. Wood (2012) Coverage Properties of Confidence Intervals for
