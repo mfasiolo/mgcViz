@@ -8,7 +8,9 @@
 #' @param type if set to "link" (the default option) the model output will be the linear predictor, if
 #'             set to "response" the model output is on the scale of the response.
 #' @param nbin number of intervals into which the predictor range is divided 
-#'             when calculating the ALE effects.
+#'             when calculating the ALE effects. Ignored for factor predictors of if the \code{bins} argument is provided.
+#' @param bins a grid defining the interval into which the predictor should be binned. Determined
+#'             automatically by default. Ignored for factor predictors.
 #' @param oind relevant only when the model \code{o} has multiple linear predictors (e.g. for GAMLSS models
 #'             or for \code{multinom} regression). \code{oind} is the index of the output variable used for
 #'             the ALE effect (i.e., only \code{predict(o)[ , oind]}.
@@ -39,13 +41,17 @@
 #' 
 #' plot(ALE(b, "x2", type = "response", oind = 1))
 #' 
+#' # With manually chosen bins
+#' plot(ALE(b, "x2", type = "response", oind = 1, 
+#'          bins = c(0.1, 0.25, 0.5, 0.6, 0.9, 0.95, 0.99, 1)))
+#' 
 #' @importFrom stats model.matrix ecdf cmdscale formula
 #' @name ALE.gam
 #' @rdname ALE.gam
 #' @export ALE.gam
 #' @export
 #'
-ALE.gam <- function(o, x, newdata = NULL, type = "link", nbin = 40, oind = 1, center = 1, ...) {
+ALE.gam <- function(o, x, newdata = NULL, type = "link", nbin = 40, bins = NULL, oind = 1, center = 1, ...) {
   
   if( !(type %in% c("link", "response")) ) { stop("Argument \"type\" must be either \"link\" or \"response\"") }
   
@@ -68,6 +74,9 @@ ALE.gam <- function(o, x, newdata = NULL, type = "link", nbin = 40, oind = 1, ce
     # Case 1: special case where the Jacobian is full (not block-diagonal)
     if( .t == "response" && .f$family %in% c("multinom", "stackPredictiveFamily")  ){ 
       return( .multinomJacobian(.o, .d, oind, ...)  )
+    } 
+    if( .t == "response" && !is.null(.f$jacobian)  ){ 
+      return( .jacobian_wrap(.o, .d, oind, ...)  )
     } 
     # Below we cover GAM and GAMLSS (and multinom + stack only if .t == "link")
     .x <- model.matrix(.o, newdata = .d)
@@ -93,7 +102,7 @@ ALE.gam <- function(o, x, newdata = NULL, type = "link", nbin = 40, oind = 1, ce
   varFun <- function(.o, .t, ...){
     .V <- vcov(.o, ...)
     .lpi <- attr(.o$formula, "lpi")
-    .respMulti <- (.o$family$family %in% c("multinom", "stackPredictiveFamily")) && (.t == "response")
+    .respMulti <- (.o$family$family %in% c("multinom") || !is.null(o$family$jacobian)) && (.t == "response")
     # If we are using multinomial parametrization AND we are on response scale, 
     # then we don't discard elements of .V (because Jacobian will be full) 
     if( !is.null(.lpi) && !.respMulti  ) {
@@ -102,7 +111,7 @@ ALE.gam <- function(o, x, newdata = NULL, type = "link", nbin = 40, oind = 1, ce
     return( .V )
   }
   
-  out <- .prepare.ALE(o = o, xnam = x, data = data, type = type, K = nbin, predFun = predFun, 
+  out <- .prepare.ALE(o = o, xnam = x, data = data, type = type, K = nbin, bins = bins, predFun = predFun, 
                       jacFun = jacFun, varFun = varFun, center = center, ...)
 
   return( out )

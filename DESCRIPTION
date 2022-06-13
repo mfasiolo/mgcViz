@@ -1,7 +1,7 @@
 Package: mgcViz
 Title: Visualisations for Generalized Additive Models
-Date: 2021-08-19
-Version: 0.1.8
+Date: 2021-09-30
+Version: 0.1.9
 Authors@R: c(person("Matteo", "Fasiolo", email = "matteo.fasiolo@gmail.com", role = c("aut", "cre")),
   person("Raphael", "Nedellec", email = "raphael.nedellec@edf.fr", role = c("aut")), 
   person("Yannig", "Goude", role = c("ctb")), 
@@ -12,8 +12,7 @@ Depends:
     R (>= 3.4),
     mgcv (>= 1.8-28),
     qgam (>= 1.2.3),
-    ggplot2,
-    rgl
+    ggplot2
 Imports:
     gamm4,
     matrixStats,
@@ -25,16 +24,17 @@ Imports:
     shiny,
     miniUI
 Suggests:
+    rgl,
     knitr,
     rmarkdown,
     testthat,
     MASS, 
     webshot2
-Additional_repositories:  https://dmurdoch.github.io/drat
+Additional_repositories: https://dmurdoch.github.io/drat
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
 URL: https://github.com/mfasiolo/mgcViz

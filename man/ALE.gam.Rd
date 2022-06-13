@@ -4,7 +4,17 @@
 \alias{ALE.gam}
 \title{Create Accumulated Local Effects (ALE) for GAMs}
 \usage{
-\method{ALE}{gam}(o, x, newdata = NULL, type = "link", nbin = 40, oind = 1, center = 1, ...)
+\method{ALE}{gam}(
+  o,
+  x,
+  newdata = NULL,
+  type = "link",
+  nbin = 40,
+  bins = NULL,
+  oind = 1,
+  center = 1,
+  ...
+)
 }
 \arguments{
 \item{o}{a fitted GAM model.}
@@ -18,7 +28,10 @@ If \code{NULL} the data contained in \code{o} will be used.}
 set to "response" the model output is on the scale of the response.}
 
 \item{nbin}{number of intervals into which the predictor range is divided
-when calculating the ALE effects.}
+when calculating the ALE effects. Ignored for factor predictors of if the \code{bins} argument is provided.}
+
+\item{bins}{a grid defining the interval into which the predictor should be binned. Determined
+automatically by default. Ignored for factor predictors.}
 
 \item{oind}{relevant only when the model \code{o} has multiple linear predictors (e.g. for GAMLSS models
 or for \code{multinom} regression). \code{oind} is the index of the output variable used for
@@ -52,6 +65,10 @@ dat$y <- rTweedie(exp(dat$f),p=1.3,phi=.5) ## Tweedie response
 b <- gam(list(y~s(x0)+s(x1)+s(x2)+s(x3),~1,~1), family=twlss(), data=dat)
 
 plot(ALE(b, "x2", type = "response", oind = 1))
+
+# With manually chosen bins
+plot(ALE(b, "x2", type = "response", oind = 1, 
+         bins = c(0.1, 0.25, 0.5, 0.6, 0.9, 0.95, 0.99, 1)))
 
 }
 \references{

@@ -2,19 +2,19 @@
 # Prepare ALE effects
 # This function will be called by ALE.gam
 #############
-.prepare.ALE <- function(o, xnam, data, type, K, predFun, jacFun, varFun, center, ...) {
+.prepare.ALE <- function(o, xnam, data, type, K, bins, predFun, jacFun, varFun, center, ...) {
   
   .x <- data[[xnam]]
   
   if( inherits(.x, "factor") || inherits(.x, "character") ) {
     .x <- as.factor(.x)
     .cls <- "factor"
-    .data <- .prepare.ALE.factor(o = o, xnam = xnam, data = data, type = type, K = K,
+    .data <- .prepare.ALE.factor(o = o, xnam = xnam, data = data, type = type, K = K, bins = bins,
                                  predFun = predFun, jacFun = jacFun, varFun, center = center, ...)
   }
   if( inherits(.x, "numeric") || inherits(.x, "integer") ) {
     .cls <- "numeric"
-    .data <- .prepare.ALE.numeric(o = o, xnam = xnam, data = data, type = type, K = K, 
+    .data <- .prepare.ALE.numeric(o = o, xnam = xnam, data = data, type = type, K = K, bins = bins,
                                   predFun = predFun, jacFun = jacFun, varFun, center = center, ...)
   }
   
@@ -28,7 +28,7 @@
 ##############
 # Prepare ALE effects: factor case
 #############
-.prepare.ALE.factor <- function(o, xnam, data, type, K, predFun, jacFun, varFun, center, ...) {
+.prepare.ALE.factor <- function(o, xnam, data, type, K, bins, predFun, jacFun, varFun, center, ...) {
   ####
   ## The code here is based on the ALEPLot package of Dan Apley. 
   ## See https://cran.r-project.org/web/packages/ALEPlot/index.html
@@ -144,7 +144,7 @@
 ##############
 # Prepare ALE effects: numeric case
 #############
-.prepare.ALE.numeric <- function(o, xnam, data, type, K, predFun, jacFun, varFun, center, ...) {
+.prepare.ALE.numeric <- function(o, xnam, data, type, K, bins, predFun, jacFun, varFun, center, ...) {
   ####
   ## The code here is based on the ALEPLot package of Dan Apley. 
   ## See https://cran.r-project.org/web/packages/ALEPlot/index.html
@@ -157,9 +157,13 @@
   J <- which(names(data) == xnam)
   
   # Create bins along x_j
-  z <- c(min(x), 
-         as.numeric(quantile(x,seq(1/K,1,length.out=K), type=1)))
-  z <- unique(z)     # necessary when z could have repeated values 
+  z <- bins
+  if( is.null(z) ){
+    z <- as.numeric(quantile(x,seq(1/K,1,length.out=K), type=1))
+  }
+  z <- unique(c(min(x), z)) # necessary when z could have repeated values 
+  print(bins)
+  print(z)
   K <- length(z) - 1 # set K to the number of intervals on z
   
   # Bin the data: i-th entry of bnum indicates the bin to which x_ij belongs
