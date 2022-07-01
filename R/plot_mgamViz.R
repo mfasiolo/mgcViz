@@ -74,7 +74,8 @@ plot.mgamViz <- function(x, n = 100, n2 = 40, select = NULL, allTerms = FALSE, .
   wrap <- function(.smo, .n, .n2, ...){
     
     if( !any(c("multi.ptermNumeric", "multi.ptermFactor", "multi.ptermLogical", 
-               "multi.mgcv.smooth.1D", "multi.mgcv.smooth.2D") %in% class(.smo)) ) { return(NULL) }
+               "multi.mgcv.smooth.1D", "multi.mgcv.smooth.2D") %in% class(.smo)) ||
+        "multi.fs.interaction.1D" %in% class(.smo) ) { return(NULL) }
     if( "multi.mgcv.smooth.2D" %in% class(.smo) ) { .n <- .n2 }
     
     return( suppressMessages(plot(x = .smo, n = .n, ...)) )
