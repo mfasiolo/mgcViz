@@ -114,10 +114,10 @@
   # Dfx is (K+1) x p matrix with p = length(beta) and K = number of intervals 
   data1 <- data[rowInd1, , drop = FALSE]
   data2 <- data[rowInd2, , drop = FALSE]
-  Dfx2 <- lapply(1:(nlv-1), function(.ii) colSums(jacFun(.o = o, .d = X2[X2[[xnam]] == x[.ii+1], ], .t = type, ...) - 
-                                                  jacFun(.o = o, .d = data2[data2[[xnam]] == x[.ii], ], .t = type, ...)))
-  Dfx1 <- lapply(2:nlv, function(.ii) colSums(jacFun(.o = o, .d = data1[data1[[xnam]] == x[.ii], ], .t = type, ...) - 
-                                              jacFun(.o = o, .d = X1[X1[[xnam]] == x[.ii-1], ], .t = type, ...)))
+  Dfx2 <- lapply(1:(nlv-1), function(.ii) colSums(jacFun(.o = o, .d = X2[X2[[xnam]] == x[.ii+1], ], .t = type, ...)$J - 
+                                                  jacFun(.o = o, .d = data2[data2[[xnam]] == x[.ii], ], .t = type, ...)$J))
+  Dfx1 <- lapply(2:nlv, function(.ii) colSums(jacFun(.o = o, .d = data1[data1[[xnam]] == x[.ii], ], .t = type, ...)$J - 
+                                              jacFun(.o = o, .d = X1[X1[[xnam]] == x[.ii-1], ], .t = type, ...)$J))
   Dfx <- ( do.call("rbind", Dfx2) + do.call("rbind", Dfx1) ) / ntot
   Dfx <- apply(Dfx, 2, cumsum)
   Dfx <- rbind(0, Dfx) # First row is 0 because f(z_0) is 0
@@ -129,10 +129,11 @@
   }
   if( center == 2 ){ # ... by adding E(mu(z_0))
     fx <- fx + mean(mu[data[[xnam]] == x[1]])
-    Dfx <- t(t(Dfx) + colMeans(jacFun(.o = o, .d = data[data[[xnam]] == x[1], ], .t = type, ...)))
+    Dfx <- t(t(Dfx) + colMeans(jacFun(.o = o, .d = data[data[[xnam]] == x[1], ], .t = type, ...)$J))
   }
   
-  V <- Dfx %*% varFun(.o = o, .t = type, ...) %*% t(Dfx)
+  # Compute Jacobian once (the actual data it unimportant), to check whether it's sparse
+  V <- Dfx %*% varFun(.o = o, .t = type, .J = jacFun(.o = o, .d = X2[1:2, ], .t = type, ...), ...) %*% t(Dfx)
   
   out <- list("ALE" = data.frame(x = x, y = fx, se = sqrt(diag(V))), "varALE" = V)
   
@@ -162,8 +163,6 @@
     z <- as.numeric(quantile(x,seq(1/K,1,length.out=K), type=1))
   }
   z <- unique(c(min(x), z)) # necessary when z could have repeated values 
-  print(bins)
-  print(z)
   K <- length(z) - 1 # set K to the number of intervals on z
   
   # Bin the data: i-th entry of bnum indicates the bin to which x_ij belongs
@@ -190,12 +189,12 @@
   # Now we get cov(fx) using the delta method
   # Get derivatives of ALE effect f(z) wrt beta, for z_1, ..., z_K
   # Dfx is (K+1 x p) matrix with p = length(beta) 
-  Dfx <- lapply(1:K, function(.bn) colMeans(jacFun(.o = o, .d = X2[bnum == .bn, ], .t = type, ...) -  
-                                            jacFun(.o = o, .d = X1[bnum == .bn, ], .t = type, ...)))
+  Dfx <- lapply(1:K, function(.bn) colMeans(jacFun(.o = o, .d = X2[bnum == .bn, ], .t = type, ...)$J -  
+                                            jacFun(.o = o, .d = X1[bnum == .bn, ], .t = type, ...)$J))
   Dfx <- do.call("rbind", Dfx)
   Dfx <- apply(Dfx, 2, cumsum) 
   Dfx <- rbind(0, Dfx) # First row is 0 because f(z_0) is 0
-  
+
   # Now we center the ALE effect...
   if( center == 1 ) { # ... by substracting E(fx), as in Apley's paper
     fx <- fx - sum((fx[1:K]+fx[2:(K+1)])/2*b1)/sum(b1)
@@ -203,10 +202,11 @@
   }
   if( center == 2 ){ # ... by adding E(mu(z_0))
     fx <- fx + mean(mu1[bnum == 1])
-    Dfx <- t(t(Dfx) + colMeans(jacFun(.o = o, .d = X1[bnum == 1, ], .t = type, ...)))
+    Dfx <- t(t(Dfx) + colMeans(jacFun(.o = o, .d = X1[bnum == 1, ], .t = type, ...)$J))
   }
 
-  V <- Dfx %*% varFun(.o = o, .t = type, ...) %*% t(Dfx)
+  # Compute Jacobian once (the actual data it unimportant), to check whether it's sparse
+  V <- Dfx %*% varFun(.o = o, .t = type, .J = jacFun(.o = o, .d = X2[1:2, ], .t = type, ...), ...) %*% t(Dfx)
   
   out <- list("ALE" = data.frame(x = z, y = fx, se = sqrt(diag(V))), "varALE" = V)
   
