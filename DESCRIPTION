@@ -1,7 +1,7 @@
 Package: mgcViz
 Title: Visualisations for Generalized Additive Models
-Date: 2021-09-30
-Version: 0.1.9
+Date: 2022-11-28
+Version: 0.1.10
 Authors@R: c(person("Matteo", "Fasiolo", email = "matteo.fasiolo@gmail.com", role = c("aut", "cre")),
   person("Raphael", "Nedellec", email = "raphael.nedellec@edf.fr", role = c("aut")), 
   person("Yannig", "Goude", role = c("ctb")), 
@@ -34,7 +34,7 @@ Additional_repositories: https://dmurdoch.github.io/drat
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.2
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
 URL: https://github.com/mfasiolo/mgcViz

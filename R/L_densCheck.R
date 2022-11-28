@@ -106,13 +106,16 @@ l_densCheck.Check1DNumeric <- function(a){
   }
   
   ### 2. Density Estimation 
-  # Computed joint or conditional residual density
-  estYcX <- .fastKernDens(dat = a$data$res, xlimit = NULL, ylimit = NULL,
+  # Compute joint or conditional residual density
+  yv <- as.vector(a$data$res$y)
+  M <- cbind(rep(a$data$res$x, length(yv) / nrow(a$data$res)), yv)
+
+  estYcX <- .fastKernDens(dat = M, xlimit = NULL, ylimit = NULL,
                           cond = TRUE, bw = xtra$bw, ngr = xtra$n, tol = xtra$tol)$dXY
   
   ### 3. Plotting
   a$data <- data.frame("z" = xtra$dFun(.ed=as.numeric(t(estYcX$fhat)), 
-                                       .gr=estYcX$x2, .y=a$data$res$y), 
+                                       .gr=estYcX$x2, .y=yv), 
                        "x" = rep(estYcX$x1, each=xtra$n[1]), 
                        "y" = rep(estYcX$x2, xtra$n[2]))
   a$mapping <- aes(x = x, y = y, fill = z)

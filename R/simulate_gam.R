@@ -80,6 +80,10 @@ simulate.gam <- function(object, nsim = 1, seed = NULL, method = "auto", newdata
     out <- rlply(nsim, function(.nouse) rmvn(nrow(mu), mu, solve(crossprod(o$family$data$R))))
     return( out )
   }
+  if(grepl("Multivariate normal - Covariance modelling via", o$family$family, fixed = TRUE)){
+    out <- rlply(nsim, function(.nouse) o$family$rd(mu = mu, wt = NULL, scale = NULL))
+    return( out )
+  }
    
   out <- .simulate.gam(mu = mu, w = w, sig = o$sig2, method = method, fam = o$family, 
                          nsim = nsim, u = u, trans = trans)

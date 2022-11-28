@@ -91,30 +91,39 @@ l_gridCheck1D.Check1DFactor <- l_gridCheck1D.Check1DLogical <- function(a){
   xtra <- a$xtra
   a$xtra <- NULL
   
-  if( is.null(xtra$gridFun) ){
-    xtra$gridFun <- function(.x){
-      .o <- mean(.x) * sqrt(length(.x))
-      return( .o )
-    }
-  }
-  
   x <- a$data$res$x
-  y <- a$data$res$y
+  y <- as.matrix(a$data$res$y)
   sim <- a$data$sim
   n <- xtra$n
   level <- xtra$level
   cls <- xtra$class 
+  dy <- ncol(y)
+  
+  usr_fun <- xtra$gridFun
+  if( is.null(usr_fun) ){
+    xtra$gridFun <- function(.x){
+      .o <- mean(.x) * sqrt(length(.x))
+      return( .o )
+    }
+  } else {
+    if( dy > 1 ){
+      xtra$gridFun <- function(.x){
+        if( !is.matrix(.x) ){ .x <- matrix(.x, ncol = dy) }
+        return( usr_fun(.x) )
+      } 
+    }
+  }
   
   ### 2. Computation on grid
   if(cls == "numeric"){ # Bin observed data
     grid <- seq(min(x), max(x), length.out = n)
     inX <- findInterval(x, grid, rightmost.closed = T)
     grX <- tapply(x, inX, mean)     # Averaging x inside each bin
-    grY <- tapply(y, inX, xtra$gridFun)
+    grY <- sapply(split.data.frame(y, inX), xtra$gridFun)
   }
   if(cls == "factor"){ # Bin observed data
     grid <- grX <- levels( x )
-    grY <- tapply(y, x, xtra$gridFun)
+    grY <- sapply(split.data.frame(y, x), xtra$gridFun)
   }
   
   rep <- 0
@@ -127,7 +136,7 @@ l_gridCheck1D.Check1DFactor <- l_gridCheck1D.Check1DLogical <- function(a){
       }
     }
   } else {  # YES simulations!
-    rep <- nrow( sim )
+    rep <- length( sim )
     
     # Bin simulated data 
     if(cls == "numeric"){
@@ -143,7 +152,7 @@ l_gridCheck1D.Check1DFactor <- l_gridCheck1D.Check1DLogical <- function(a){
     # Calculate function for each bin and each repetition
     grS <- matrix(NA, rep, length(lev))
     for( ir in 1:rep ){ 
-      grS[ir, ] <- sapply(lev, function(.ii) { xtra$gridFun(sim[ir, inS==.ii]) } ) 
+      grS[ir, ] <- sapply(lev, function(.ii) { xtra$gridFun(as.matrix(sim[[ir]])[inS==.ii, , drop = FALSE]) } ) 
     }
     
     # Standardize grS and grY

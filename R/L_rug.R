@@ -50,7 +50,7 @@ l_rug.Check0DScalarNumeric <- function(a){
     return(NULL)
   }
   
-  a$data$res <- data.frame("x" = drop(a$data$sim), "sub" = rep(TRUE, nrow(a$data$res)))
+  a$data$res <- data.frame("x" = as.vector(unlist(a$data$sim)), "sub" = rep(TRUE, nrow(a$data$res)))
 
   l_rug.1D( a )
   
@@ -106,6 +106,11 @@ l_rug.2D <- l_rug.sos0 <- l_rug.sos1 <- l_rug.Check2DNumericNumeric <- l_rug.MDs
 #' @noRd
 .l_rug <- function(a){
   a$data <- a$data$res[a$data$res$sub, ]
+  if( is.matrix(a$data$y) ){
+    tmp <- as.vector(a$data$y)
+    a$data <- data.frame(x = rep(a$data$x, length(tmp)/nrow(a$data)), 
+                         y = tmp)
+  }
   if( is.null(a$data) ){ return(NULL) }
   a$inherit.aes <- FALSE
   if( is.null(a$size) ){ a$size <- 0.2 }

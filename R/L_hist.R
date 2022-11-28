@@ -26,10 +26,10 @@ l_hist.Check0DVectorNumeric <- function(a){
   # Get data out of original object
   obs <- a$data$res$x
   sim <- a$data$sim
-  nsim <- ifelse(is.null(sim), 0, nrow(sim))
+  nsim <- ifelse(is.null(sim), 0, length(sim))
   n <- length(obs)
   
-  a$data <- data.frame("x" = c(obs, as.vector(sim)), 
+  a$data <- data.frame("x" = c(obs, as.vector(unlist(sim))), 
                        "id" = factor(c(rep("obs", n), rep("sim", n*nsim))))
   
   if( is.null(a$mapping) ) { 
@@ -57,7 +57,7 @@ l_hist.Check0DScalarNumeric <- function(a){
     return(NULL)
   }
   
-  a$data <- data.frame("x" = as.vector(a$data$sim))
+  a$data <- data.frame("x" = as.vector(unlist(a$data$sim)))
   
   if( is.null(a$mapping) ) { 
     a$mapping <- aes("x" = x, "y" = stat(density))

@@ -145,11 +145,6 @@ check2D <- function(o, x1, x2, type = "auto", maxpo = 1e4, na.rm = TRUE, trans =
     x2 <- x2[ good ]
   }
   
-  if( dy > 1 && is.null(trans) ){
-    message("Response y is vector-valued, using trans <- function(y) drop(rowSums(y)) to reduce it to a vector")
-    trans <- function(.y, ...) drop(rowSums(.y))
-  }
-  
   ### 2. a) Transform simulated responses to residuals (unless type == "y")
   ###    b) Apply optional transformation to observed and simulated y's
   ###    c) Obtain subsample indexes
@@ -169,7 +164,8 @@ check2D <- function(o, x1, x2, type = "auto", maxpo = 1e4, na.rm = TRUE, trans =
   }
   
   ### 3. Build output object
-  res <- data.frame("x" = x1, "y" = x2, "z" = y, "sub" = sub, stringsAsFactors = TRUE)
+  res <- data.frame("x" = x1, "y" = x2, "sub" = sub, stringsAsFactors = TRUE)
+  res$z <- y # Add y now because it might be a matrix
   pl <- ggplot(data = res, mapping = aes(x = x, y = y, z = z)) + theme_bw() + 
     theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + 
     labs(x = xnm1, y = xnm2)

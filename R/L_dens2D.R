@@ -61,7 +61,10 @@ l_dens2D.1D <- l_dens2D.Check1DNumeric <- l_dens2D.PtermNumeric <- function(a){
   }
   
   # Computed joint or conditional residual density
-  dXY <- .fastKernDens(dat = a$data$res, xlimit = NULL, ylimit = NULL,
+  yv <- as.vector(a$data$res$y)
+  M <- cbind(rep(a$data$res$x, length(yv) / nrow(a$data$res)), yv)
+  
+  dXY <- .fastKernDens(dat = M, xlimit = NULL, ylimit = NULL,
                        cond = (xtra$type == "cond"), bw = xtra$bw, ngr = xtra$n, 
                        tol = xtra$tol)$dXY
   

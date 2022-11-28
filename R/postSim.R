@@ -82,11 +82,12 @@ postSim <- function(o, nsim, newdata, trans = NULL, method = "auto",
   }
   
   # We want nsim columns and number of rows depending on trans() 
-  if( is.vector(out[["simY"]]) ) { 
+  if( is.vector(out[["simY"]][[1]]) ) {
+    if(nsim > 1){
+      out[["simY"]] <- do.call("cbind", out[["simY"]])
+    }
     out[["simY"]] <- as.matrix( out[["simY"]] ) 
-  } else {
-    out[["simY"]] <- t( out[["simY"]] )
-  }
+  } 
 
   if( !savePar ) { out <- out[["simY"]] }
   
@@ -122,14 +123,14 @@ postSim <- function(o, nsim, newdata, trans = NULL, method = "auto",
   }
   
   # Simulate a vector of responses for each vector of coefficients, and transform it using trans()
-  simY <- laply(1:nsim,
+  simY <- llply(1:nsim,
                 function(ii)
                 {
                   beta <- if( savePar ) { simBeta[ , ii, drop = TRUE] } else { rmvn(1, cf, V) }
                   mu <- lnki( X %*% beta + offI )
                   # Simulated and transform
-                  drop(.simulate.gam(mu = mu, w = w, sig = o$sig2, method = method, 
-                                     fam = o$family, nsim = 1, u = NULL, trans = trans))
+                  unname(drop(.simulate.gam(mu = mu, w = w, sig = o$sig2, method = method, 
+                                           fam = o$family, nsim = 1, u = NULL, trans = trans)))
                 })
   
   return( list("simY" = unname(simY), "simBeta" = unname(simBeta)) )
@@ -154,7 +155,7 @@ postSim <- function(o, nsim, newdata, trans = NULL, method = "auto",
       if( missing(newdata) ){                 # We re-calculate it for each term using original data
         offset <- lapply(1:nte, 
                          function(.ii){
-                           drop(muHat[ , .ii] - X[ , lpi[[.ii]]] %*% cf[lpi[[.ii]]])
+                           drop(muHat[ , .ii] - X[ , lpi[[.ii]], drop = FALSE] %*% cf[lpi[[.ii]]])
                          })
       } else {                                # If we are using new data we need the user
         message("NB no offset provided")      # to provide the offset
@@ -168,17 +169,17 @@ postSim <- function(o, nsim, newdata, trans = NULL, method = "auto",
   }
   
   # Simulate a vector of responses for each vector of coefficients, and transform it using trans()
-  simY <- laply(1:nsim,  
+  simY <- llply(1:nsim,  
                 function(ii)
                 {
                   beta <- if( savePar ) { simBeta[ii, , drop = TRUE] } else { rmvn(1, cf, V) }
                   mu <- t( laply(1:nte, # Need to do it term by term
                                  function(.ii){
-                                   lnki[[.ii]]( X[ , lpi[[.ii]]] %*% beta[lpi[[.ii]]] + offI[[.ii]] )
+                                   lnki[[.ii]]( X[ , lpi[[.ii]], drop = FALSE] %*% beta[lpi[[.ii]]] + offI[[.ii]] )
                                  }) )
                   # Simulated and transform
-                  drop(.simulate.gam(mu = mu, w = w, sig = o$sig2, method = method, 
-                                     fam = o$family, nsim = 1, u = NULL, trans = trans) )
+                  unname(drop(.simulate.gam(mu = mu, w = w, sig = o$sig2, method = method, 
+                                           fam = o$family, nsim = 1, u = NULL, trans = trans) ))
                 })
   
   return( list("simY" = unname(simY), "simBeta" = unname(simBeta)) )

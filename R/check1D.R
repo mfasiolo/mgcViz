@@ -113,11 +113,6 @@ check1D <- function(o, x, type = "auto", maxpo = 1e4, na.rm = TRUE, trans = NULL
     x <- x[ good ]
   }
   
-  if( dy > 1 && is.null(trans) ){
-    message("Response y is vector-valued, using trans <- function(y) drop(rowSums(y)) to reduce it to a vector")
-    trans <- function(.y, ...) drop(rowSums(.y))
-  }
-  
   ### 2. a) Transform simulated responses to residuals (unless type == "y")
   ###    b) Apply optional transformation to observed and simulated y's
   ###    c) Obtain subsample indexes
@@ -127,7 +122,8 @@ check1D <- function(o, x, type = "auto", maxpo = 1e4, na.rm = TRUE, trans = NULL
   sub <- tmp$sub
   
   ### 3. Build output object
-  res <- data.frame("x" = x, "y" = y, "sub" = sub, stringsAsFactors = TRUE)
+  res <- data.frame("x" = x, "sub" = sub, stringsAsFactors = TRUE)
+  res$y <- y # Add y now because it might be a matrix
   pl <- ggplot(data = res, mapping = aes(x = x, y = y)) + theme_bw() + 
         theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + 
         labs(x = xnm, y = ifelse(type == "y", "y", "r"))

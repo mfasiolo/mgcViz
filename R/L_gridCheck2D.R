@@ -104,7 +104,8 @@ l_gridCheck2D.Check2DNumericNumeric <- function(a){
     if( a$data$misc$resType == "y" ){
       message("Using l_gridQCheck2D might not make sense with residual type == \"y\". See ?check2D")
     }
-    if( is.null(a$xtra$qu) ){ 
+    xtra$qu <- attr(xtra$gridFun, "qu")
+    if( is.null(xtra$qu) ){ 
       if( is.null(a$data$misc$qu) ){ stop("Please specify argument qu in the call to l_gridQCheck1D") }
       xtra$qu <- a$data$misc$qu 
     }
@@ -120,16 +121,14 @@ l_gridCheck2D.Check2DNumericNumeric <- function(a){
     .f <- function(.ii, .r, .sim, .stand){
 
       if( length(.ii) ){
-        .r <- .r[ .ii ]
+        .r <- .r[.ii, , drop = FALSE]
         .o <- .ifun( .r )
-        
         if( .stand ){
           if( !is.null(.sim) ){ # Standardize using simulated stats
-            sk <- apply(.sim[ , .ii, drop = F], 1, .ifun)
+            sk <- sapply(.sim, function(.x) .ifun(.x[.ii, , drop = FALSE]))
             .o <- (.o - mean(sk)) / sd(sk)
           }
         }
-        
         return( .o )
       } else {
         return( NA)
@@ -142,7 +141,7 @@ l_gridCheck2D.Check2DNumericNumeric <- function(a){
   
   x <- a$data$res$x
   y <- a$data$res$y
-  z <- a$data$res$z   # Observed residuals
+  z <- as.matrix(a$data$res$z)   # Observed residuals
   sim <- a$data$sim   # Simulated residuals
   
   if( stand && is.null(sim) ){

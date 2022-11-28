@@ -50,6 +50,9 @@ listLayers <- function(o){
     lay <- gsub(paste0(".", ty), '', lay)
   }
   
+  # Layer l_gridQCheck2D needs to added manually, because it is implemented via l_gridCheck2D
+  if( "l_gridCheck2D" %in% lay){ lay <- c(lay, "l_gridQCheck2D") }
+  
   return(lay)
 
 } 

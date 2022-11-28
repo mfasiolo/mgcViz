@@ -75,6 +75,12 @@ l_points.Check1DNumeric <- l_points.PtermNumeric <- function(a){
   
   a$data <- a$data$res[a$data$res$sub, ]
   
+  if( is.matrix(a$data$y) ){
+    tmp <- as.vector(a$data$y)
+    a$data <- data.frame(x = rep(a$data$x, length(tmp)/nrow(a$data)), 
+                         y = tmp)
+  }
+  
   a$inherit.aes <- FALSE
   if( is.null(a$mapping)){ a$mapping <- aes(x = x, y = y) }
   if( is.null(a$shape) ) { a$shape <- 46 } 

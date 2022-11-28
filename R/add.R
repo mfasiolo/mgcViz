@@ -7,7 +7,6 @@
 #' @method + plotSmooth
 # #' @rdname plotSmooth-add
 #' @noRd
-#' @examples
 #'
 addPlotSmooth <- function(e1, e2) {
   
@@ -58,7 +57,6 @@ addPlotSmooth <- function(e1, e2) {
 #' @method + plotGam
 # #' @rdname plotGam-add
 #' @noRd
-#' @examples
 #'
 addPlotGam <- function(e1, e2) {
   

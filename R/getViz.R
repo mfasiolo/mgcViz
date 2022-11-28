@@ -87,12 +87,12 @@ getViz <- function(o, nsim = 0, post = FALSE, newdata, ...){
   # NB: we do not allow to use trans() here, as it might lead to problems with check1D and check2D
   if( nsim > 0 ){ 
     if( post ){ # Posterior simulations OR ...
-      tryCatch(o$store$sim <- t(postSim(o, nsim = nsim, newdata = newdata, trans = NULL, savePar = FALSE, ...)), 
+      tryCatch(o$store$sim <- postSim(o, nsim = nsim, newdata = newdata, trans = NULL, savePar = FALSE, ...), 
                error = function(e){ 
                  message( paste("postSim() failed:", e$message) ) 
                })
     } else {    # ... parameters fixed at MAP 
-      tryCatch(o$store$sim <- t(simulate(o, nsim = nsim, newdata = newdata, trans = NULL, ...)), 
+      tryCatch(o$store$sim <- simulate(o, nsim = nsim, newdata = newdata, trans = NULL, ...), 
                error = function(e){ 
                  message( paste("simulate.gam() failed:", e$message) ) 
                })
