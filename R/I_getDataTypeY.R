@@ -3,6 +3,7 @@
 #
 .getDataTypeY <- function(o, type){
   
+  o$y <- as.matrix(o$y)
   d <- ncol(o$y)
   
   if( !is.null(o$store$newdata) ){ # (1) Newdata has been provided, so this is a predictive check OR ...
