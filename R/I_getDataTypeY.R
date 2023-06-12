@@ -3,10 +3,12 @@
 #
 .getDataTypeY <- function(o, type){
   
+  d <- ncol(o$y)
+  
   if( !is.null(o$store$newdata) ){ # (1) Newdata has been provided, so this is a predictive check OR ...
-    ynam <- if(is.list(o$formula)){ o$formula[[1]][[2]] } else { o$formula[[2]] }
+    ynam <- if(is.list(o$formula)){ lapply(1:d, function(ii) o$formula[[ii]][[2]]) } else { list(o$formula[[2]]) }
     data <- o$store$newdata
-    y <- data[[ynam]]
+    y <- sapply(ynam, function(nm) data[[nm]])
     if(type == "auto") { type <- "y" }
     if(type != "y") { 
       stop("Predictive checks on newdata can be performed only with raw observations (type == \"y\"). See ?check0D") 
