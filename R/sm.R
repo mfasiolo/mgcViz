@@ -30,6 +30,12 @@ sm <- function(o, select){
   
   if( !inherits(o, "gamViz") ){ stop("Argument 'o' should be of class 'gamViz'. See ?getViz") }
   
+  # We should just use un-weighted raw residuals for plots
+  if("qgam" %in% class(o)){
+    o$residuals <- residuals(o, type = "response")
+    o$weights <- o$weights * 0 + 1 
+  }
+  
   m <- length(o$smooth) # number of smooth effects
   
   if(length(select)>1){ stop("select should be a scalar") }
