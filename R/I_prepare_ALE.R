@@ -2,6 +2,8 @@
 # Prepare ALE effects
 # This function will be called by ALE.gam
 #############
+#' @noRd
+#' @export
 .prepare.ALE <- function(o, xnam, data, type, K, bins, predFun, jacFun, varFun, center, ...) {
   
   .x <- data[[xnam]]

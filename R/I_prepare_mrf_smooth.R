@@ -1,8 +1,10 @@
+#' @noRd
+#' @export
 .prepare.mrf.smooth <- function(x, data, label, se1.mult, se2.mult,
                                 partial.resids, se, n, n2,
                                 xlab, ylab, main,
                                 ylim, xlim, too.far,
-                                trans, phi, theta, scheme) {
+                                trans, phi, theta, scheme, ...) {
   
   raw <- data[x$term][[1]]
   dat <- data.frame(x=factor(names(x$xt$polys),levels=levels(x$knots)))
@@ -13,4 +15,4 @@
   return(list(X=X, scale=FALSE, se=FALSE, raw=raw, xlab=xlabel, ylab=ylabel,
               main=label))
   
-} ## end prepare.sos.smooth
+}

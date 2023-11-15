@@ -1,4 +1,5 @@
 #' @noRd
+#' @export
 .prepare.fs.interaction <- function(x, data = NULL, label = "",
                                     n = 100, xlab = NULL, ylab = NULL, main = NULL,
                                     ylim = NULL, xlim = NULL, ...) {

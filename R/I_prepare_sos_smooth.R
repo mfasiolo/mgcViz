@@ -1,8 +1,10 @@
+#' @noRd
+#' @export
 .prepare.sos.smooth <- function(x, data, label, se1.mult = 1, se2.mult = 1,
                                 partial.resids = NULL, se, n, n2,
                                 xlab = NULL, ylab = NULL, main = NULL,
                                 ylim = NULL, xlim = NULL, too.far,
-                                trans, phi, theta, scheme) {
+                                trans, phi, theta, scheme, ...) {
   
   ## plot method function for sos.smooth terms
   if (scheme == 1){ 

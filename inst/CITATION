@@ -1,16 +1,15 @@
 citHeader("To cite the mgcViz package in publications use:")
 
-citEntry(entry = "Article", 
-         author = personList(as.person("Matteo Fasiolo"), as.person("Raphael Nedellec"), 
-                           as.person("Yannig Goude"), as.person("Simon N. Wood") ),
-         title = "Scalable visualisation methods for modern Generalized Additive Models.", 
-         journal = "Arxiv preprint", 
-         year = 2018, 
-         url = "https://arxiv.org/abs/1809.10632", 
-         textVersion=paste(
-			       "Fasiolo M., Nedellec R., Goude Y. and Wood S. N. (2018)",
-			       "Scalable visualisation methods for modern Generalized Additive Models.", 
-			       "ArXiv preprint arXiv:1809.10632."
-			       ))
+bibentry(
+ bibtype="Article",
+ title="Scalable visualisation methods for modern Generalized Additive Models.",
+ journal="Journal of the Royal Statistical Society (B)",
+ volume= "29",
+ number="1",
+ pages="78-86",
+ year="2020",
+ author="Fasiolo, Matteo and Nedellec, Rapha{\"e}l and Goude, Yannig and Wood, Simon N",
+ textVersion="Fasiolo, M., Nedellec, R., Goude, Y. and Wood, S.N., 2020. Scalable visualization methods for modern generalized additive models. Journal of computational and Graphical Statistics, 29(1), pp.78-86." )
+
 			       
 citFooter("As mgcViz is often updated, you may want to cite its version number. Find it with 'help(package=mgcViz)'.")

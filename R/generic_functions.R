@@ -71,5 +71,3 @@ ALE <- function(o, ...) UseMethod("ALE")
 
 ###### Internal generics
 .prepare <- function(...) UseMethod(".prepare")
-
-.plot <- function(...) UseMethod(".plot")

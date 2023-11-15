@@ -38,6 +38,7 @@
 #' @param ... Other graphics parameters to pass on to plotting commands. 
 #' See details for smooth plot specific options.
 #' @noRd
+#' @export
 .prepare.mgcv.smooth <- function(x, data = NULL, label = "", se1.mult = 1, se2.mult = 2,
                                  n = 100, n2 = 40,  xlab = NULL, ylab = NULL, 
                                  main = NULL, ylim = NULL, xlim = NULL, 
