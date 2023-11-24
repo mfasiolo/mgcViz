@@ -44,7 +44,7 @@ listLayers <- function(o){
   lay <- lay[ startsWith(lay, "l_") & endsWith(lay, paste0(".", ty)) ]
   
   if( length(lay) == 0 ) {  
-    message(paste0("No layers available for objects of type", ty)) 
+    message(paste0("No layers available for objects of type ", ty)) 
     lay <- NULL
   } else {
     lay <- gsub(paste0(".", ty), '', lay)

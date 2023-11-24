@@ -1,5 +1,5 @@
 #'
-#' Plotting one dimensional single index effects
+#' Plotting one dimensional nested effects
 #' 
 #' @description This method should be used to plot smooth effects 
 #'              of class \code{"si.smooth.1D"}.
@@ -15,23 +15,25 @@
 #'              Monotonicity is not checked. 
 #' @param ... currently unused.
 #' @return An object of class \code{c("plotSmooth", "gg")}.
-#' @name plot.si.smooth.1D
-#' @rdname plot.si.smooth.1D
-# @export plot.si.smooth.1D
-# @export
+#' @name plot.nested1D
+#' @rdname plot.nested1D
+#' @export plot.nested1D
+#' @export
 #' 
-plot.si.smooth.1D <- function(x, n = 100, xlim = NULL, maxpo = 1e4, trans = identity, inner = FALSE, ...)  {
+plot.nested1D <- function(x, n = 100, xlim = NULL, maxpo = 1e4, trans = identity, inner = FALSE, ...)  {
   
   if( inner ){
     # 1) Prepare data
-    P <- .prepareInnerSi(o = x, n = n, xlim = xlim, ...)
+    P <- .prepareInnerNested(o = x, n = n, xlim = xlim, ...)
+    
+    out <- .plot.si.inner.smooth.1D(P = P, trans = trans)
     
   } else {
     # 1) Prepare data
-    P <- .prepareNested(o = x, n = n, xlim = xlim, ...)
+    P <- .prepareOuterNested(o = x, n = n, xlim = xlim, ...)
     
     # 2) Produce output object
-    out <- .plot.si.smooth.1D(x = P$smooth, P = P, trans = trans, maxpo = maxpo)
+    out <- .plot.outer.nested.1D(x = P$smooth, P = P, trans = trans, maxpo = maxpo)
   }
   
   class(out) <- c("plotSmooth", "gg")
@@ -41,14 +43,14 @@ plot.si.smooth.1D <- function(x, n = 100, xlim = NULL, maxpo = 1e4, trans = iden
 
 ########################
 #' @noRd
-.plot.si.smooth.1D <- function(x, P, trans, maxpo) {
+.plot.outer.nested.1D <- function(x, P, trans, maxpo) {
   
   .dat <- list()
   
   if ( !is.null(P$raw) ) {
     # Construct data.frame of partial residuals
     res <- data.frame("x" = as.vector(P$raw))
-
+    
     # Exclude residuals falling outside boundaries
     .dat$res <- res[res$x >= P$xlim[1] & res$x <= P$xlim[2], , drop = FALSE]
     
@@ -68,5 +70,27 @@ plot.si.smooth.1D <- function(x, n = 100, xlim = NULL, maxpo = 1e4, trans = iden
     labs(title = P$main, x = P$xlab, y = P$ylab) + theme_bw() + 
     theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
   
-  return( list("ggObj" = .pl, "data" = .dat, type = c("singleIndex", "1D")) )
+  return( list("ggObj" = .pl, "data" = .dat, type = c("nested", "1D")) )
+}
+
+########################
+#' @noRd
+.plot.si.inner.smooth.1D <- function(P, trans) {
+  
+  .dat <- list()
+  .dat$fit <- data.frame("x"  = as.factor(P$x),
+                         "y"  = unname(P$fit),
+                         "ty"  = trans( unname(P$fit) ),
+                         "se" = unname(P$se) )
+  .dat$misc <- list("trans" = trans)
+  
+  .pl <- ggplot(data = .dat$fit, aes("x" = x, "y" = ty)) +
+    labs(title = P$main, x = P$xlab, y = P$ylab) +
+    scale_x_discrete() +
+    theme_bw() +
+    theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) 
+  
+  return( structure(list("ggObj" = .pl, "data" = .dat, "type" = c("singleIndexInner", "Factor")), 
+                    class = c("plotSmooth",  "gg")) )
+  
 }

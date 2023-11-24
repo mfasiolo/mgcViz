@@ -20,7 +20,8 @@ l_fitPoints <- function(...){
 ######## Internal method for factor plots
 #' @noRd
 #'
-l_fitPoints.PtermFactor <- l_fitPoints.MultiPtermNumeric <- l_fitPoints.ALE1DFactor <- function(a){
+l_fitPoints.PtermFactor <- l_fitPoints.MultiPtermNumeric <- 
+                           l_fitPoints.ALE1DFactor <- l_fitPoints.singleIndexInnerFactor <- function(a){
   
   if( is.null(a$shape) ){ a$shape <- 19}
   if( is.null(a$size) ){ a$size <- 2}

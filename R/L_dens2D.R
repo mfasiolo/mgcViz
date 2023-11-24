@@ -50,7 +50,8 @@ l_dens <- l_dens2D
 
 ######## Internal method 
 #' @noRd
-l_dens2D.1D <- l_dens2D.Check1DNumeric <- l_dens2D.PtermNumeric <- function(a){
+l_dens2D.1D <- l_dens2D.Check1DNumeric <- l_dens2D.PtermNumeric <- 
+  l_dens2D.nested1D <- function(a){
   
   xtra <- a$xtra
   a$xtra <- NULL

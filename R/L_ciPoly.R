@@ -26,7 +26,8 @@ l_ciPoly <- function(level = 0.95, mul = NULL, ...){
 
 ######## Internal method 
 #' @noRd
-l_ciPoly.1D <- l_ciPoly.PtermNumeric <- l_ciPoly.ALE1DNumeric <- function(a){
+l_ciPoly.1D <- l_ciPoly.PtermNumeric <- l_ciPoly.ALE1DNumeric <- 
+  l_ciPoly.nested1D <- function(a){
   
   xtra <- a$xtra
   a$xtra <- NULL
