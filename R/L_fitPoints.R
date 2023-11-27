@@ -21,7 +21,7 @@ l_fitPoints <- function(...){
 #' @noRd
 #'
 l_fitPoints.PtermFactor <- l_fitPoints.MultiPtermNumeric <- 
-                           l_fitPoints.ALE1DFactor <- l_fitPoints.singleIndexInnerFactor <- function(a){
+                           l_fitPoints.ALE1DFactor <- l_fitPoints.siFactor <- function(a){
   
   if( is.null(a$shape) ){ a$shape <- 19}
   if( is.null(a$size) ){ a$size <- 2}

@@ -20,7 +20,7 @@ l_fitContour <- function(...){
 ######## Internal method 
 #' @noRd
 l_fitContour.2D <- l_fitContour.sos1 <- 
-l_fitContour.sos0 <- l_fitContour.MDslice <- function(a){
+l_fitContour.sos0 <- l_fitContour.MDslice <- l_fitContour.mgks2D <- function(a){
   
   a$data <- a$data$fit
   if( is.null(a$mapping) ) { a$mapping <- aes(z = tz) }

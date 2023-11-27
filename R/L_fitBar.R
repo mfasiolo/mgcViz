@@ -26,7 +26,7 @@ l_fitBar <- function(a.aes = list(), ...){
 #' @noRd
 #'
 l_fitBar.PtermFactor <- l_fitBar.MultiPtermNumeric <- l_fitBar.MultiPtermFactor <- 
-                        l_fitBar.ALE1DFactor <- l_fitBar.singleIndexInnerFactor <- function(a){
+                        l_fitBar.ALE1DFactor <- l_fitBar.siFactor <- function(a){
   
   a$data <- a$data$fit
   if( is.null(a$na.rm) ){ a$na.rm <- TRUE}

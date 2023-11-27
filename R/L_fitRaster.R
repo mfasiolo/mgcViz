@@ -48,7 +48,7 @@ l_fitRaster.sos0 <- function(a){
 
 ######## Internal method 
 #' @noRd
-l_fitRaster.2D <- l_fitRaster.sos1 <- l_fitRaster.MDslice <- function(a){
+l_fitRaster.2D <- l_fitRaster.sos1 <- l_fitRaster.MDslice <- l_fitRaster.mgks2D <- function(a){
   
   xtra <- a$xtra
   a$xtra <- NULL

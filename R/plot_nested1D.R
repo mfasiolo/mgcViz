@@ -4,6 +4,8 @@
 #' @description This method should be used to plot smooth effects 
 #'              of class \code{"si.smooth.1D"}.
 #' @param x a smooth effect object.
+#' @param inner if TRUE we are doing to plot the inner transformation, rather that then
+#'              outer smooth effect. 
 #' @param n number of grid points used to compute main effect and c.i. lines. 
 #'          For a nice smooth plot this needs to be several times the estimated degrees of 
 #'          freedom for the smooth.
@@ -20,13 +22,13 @@
 #' @export plot.nested1D
 #' @export
 #' 
-plot.nested1D <- function(x, n = 100, xlim = NULL, maxpo = 1e4, trans = identity, inner = FALSE, ...)  {
+plot.nested1D <- function(x, inner = FALSE, n = 100, xlim = NULL, ylim = NULL, maxpo = 1e4, trans = identity,  ...)  {
   
   if( inner ){
     # 1) Prepare data
-    P <- .prepareInnerNested(o = x, n = n, xlim = xlim, ...)
+    P <- .prepareInnerNested(o = x, n = n, xlim = xlim, ylim = ylim, ...)
     
-    out <- .plot.si.inner.smooth.1D(P = P, trans = trans)
+    out <- .plot.inner.nested.smooth.1D(P = P, trans = trans, maxpo = maxpo)
     
   } else {
     # 1) Prepare data
@@ -70,12 +72,55 @@ plot.nested1D <- function(x, n = 100, xlim = NULL, maxpo = 1e4, trans = identity
     labs(title = P$main, x = P$xlab, y = P$ylab) + theme_bw() + 
     theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
   
-  return( list("ggObj" = .pl, "data" = .dat, type = c("nested", "1D")) )
+  return( list("ggObj" = .pl, "data" = .dat, type = "1D") )
 }
 
 ########################
 #' @noRd
-.plot.si.inner.smooth.1D <- function(P, trans) {
+.plot.inner.nested.smooth.1D <- function(P, trans, maxpo) {
+  
+  if( is.null(P) ) { return(NULL) }
+  
+  if(P$type == "nexpsm"){
+    return( .plot.mgcv.smooth.1D(x = NULL, P = P, trans = trans, maxpo = maxpo) )
+  }
+  
+  if(P$type == "mgks"){
+    .dat <- list()
+    # 1) Build dataset on fitted effect
+    .dat$fit <- data.frame("z" = drop( P$fit ),
+                           "tz" = drop( trans(P$fit) ),
+                           "x" = rep(P$x, length(P$fit) / length(P$x)),
+                           "y" = rep(P$y, each = length(P$fit) / length(P$x)),
+                           "se" = P$se)
+    
+    # 2) Build dataset on residuals
+    P$raw <- data.frame(z = P$p.resid, x = P$X0[ , 1], y = P$X0[ , 2])
+    if( !is.null(P$raw) ){
+      
+      # Exclude residuals falling outside boundaries
+      .dat$res <- P$raw[P$raw$x >= P$xlim[1] & P$raw$x <= P$xlim[2] &
+                          P$raw$y >= P$ylim[1] & P$raw$y <= P$ylim[2] , , drop = FALSE]
+      
+      # Sample if too many points (> maxpo)
+      nres <- nrow( .dat$res )
+      .dat$res$sub <- if(nres > maxpo) {
+        sample( c(rep(T, maxpo), rep(F, nres-maxpo)) )
+      } else {
+        rep(T, nres)
+      }
+    }
+    
+    .dat$misc <- list("trans" = trans)
+    
+    .pl <- ggplot(data = .dat$fit, aes(x = x, y = y, z = z)) +
+      labs(title = P$main, x = P$xlab, y = P$ylab) +
+      theme_bw() +
+      theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+    
+    return( list("ggObj" = .pl, "data" = .dat, "type" = c("mgks", "2D")) )
+    
+  }
   
   .dat <- list()
   .dat$fit <- data.frame("x"  = as.factor(P$x),
@@ -86,11 +131,10 @@ plot.nested1D <- function(x, n = 100, xlim = NULL, maxpo = 1e4, trans = identity
   
   .pl <- ggplot(data = .dat$fit, aes("x" = x, "y" = ty)) +
     labs(title = P$main, x = P$xlab, y = P$ylab) +
-    scale_x_discrete() +
     theme_bw() +
     theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) 
-  
-  return( structure(list("ggObj" = .pl, "data" = .dat, "type" = c("singleIndexInner", "Factor")), 
+
+  return( structure(list("ggObj" = .pl, "data" = .dat, "type" = c("si", "Factor")), 
                     class = c("plotSmooth",  "gg")) )
   
 }

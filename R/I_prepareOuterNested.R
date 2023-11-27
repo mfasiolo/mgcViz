@@ -10,17 +10,20 @@
   alpha <- si$alpha
   dsi <- length( alpha )
   
+  rescale <- function(x){ exp(alpha[1]) * (x - si$xm) }
+  
   type <- class(o)[1]
   if( type == "si" ){
    raw <- sort( si$X %*% alpha )
+   rescale <- function(x) x # No rescaling needed!
    trnam <- "proj"
   } 
   if( type == "nexpsm" ){
-   raw <- exp(alpha[1]) * (expsmooth(y = si$x, Xi = si$X, beta = alpha[-1])$d0 - si$xm)
+   raw <- expsmooth(y = si$x, Xi = si$X, beta = alpha[-1])$d0
    trnam <- "expsm"
   }
   if( type == "mgks" ){
-    raw <- exp(alpha[1]) * (mgks(y = si$x, X = si$X, X0 = si$X0, beta = alpha[-1])$d0 - si$xm)
+    raw <- mgks(y = si$x, X = si$X, X0 = si$X0, beta = alpha[-1])$d0
     trnam <- "mgks"
   }
 
@@ -35,7 +38,7 @@
   xx <- seq(xlim[1], xlim[2], length = n) 
   
   # Compute outer model matrix
-  X <- sm$xt$basis$evalX(x = xx, deriv = 0)$X0
+  X <- sm$xt$basis$evalX(x = rescale(xx), deriv = 0)$X0
   
   fit <- X %*% beta
   

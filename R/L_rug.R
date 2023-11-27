@@ -94,7 +94,7 @@ l_rug.Check2DFactorFactor <- function(a){
 
 ######## Internal method for numeric/numeric 2D plots
 #' @noRd
-l_rug.2D <- l_rug.sos0 <- l_rug.sos1 <- l_rug.Check2DNumericNumeric <- l_rug.MDslice <- function(a){
+l_rug.2D <- l_rug.sos0 <- l_rug.sos1 <- l_rug.Check2DNumericNumeric <- l_rug.MDslice <- l_rug.mgks2D <- function(a){
   
   if( is.null(a$mapping) ) { a$mapping <- aes(x = x, y = y) }
   
