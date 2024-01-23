@@ -19,7 +19,7 @@
    trnam <- "proj"
   } 
   if( type == "nexpsm" ){
-   raw <- expsmooth(y = si$x, Xi = si$X, beta = alpha[-1])$d0
+   raw <- expsmooth(y = si$x, Xi = si$X, beta = alpha[-1], times = si$times)$d0
    trnam <- "expsm"
   }
   if( type == "mgks" ){
