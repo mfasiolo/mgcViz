@@ -23,7 +23,7 @@
    trnam <- "expsm"
   }
   if( type == "mgks" ){
-    raw <- mgks(y = si$x, X = si$X, X0 = si$X0, beta = alpha[-1])$d0
+    raw <- mgks(y = si$x, dist = si$dist, beta = alpha[-1])$d0
     trnam <- "mgks"
   }
 
