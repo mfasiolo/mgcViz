@@ -33,7 +33,7 @@
     Jac <- inner$d1
     nobs <- length(fit)
     se <- sqrt(pmax(0, rowSums((Jac %*% Va) * Jac)))
-    edf   <- sum(gObj$edf[prange[-1]])
+    edf   <- sum(gObj$edf[prange])
     ylabel <- .subEDF(paste0("expsm(", sm$term, ")"), edf)
     xlabel <- "Index"
     if( !is.null(xlim) ) {
@@ -51,7 +51,11 @@
                 "xlim" = xlim, 
                 xlab = xlabel, ylab = ylabel, main = NULL, type = "nexpsm")
   } else {
-    alpha <- drop(B %*% alpha)
+    a0 <- si$a0
+    if( is.null(a0) ){
+      a0 <- alpha * 0
+    }
+    alpha <- drop(B %*% (alpha + a0))
     Va <- B %*% Va %*% t(B)
     se <- sqrt(pmax(0, diag(Va)))
     edf   <- sum(gObj$edf[prange])

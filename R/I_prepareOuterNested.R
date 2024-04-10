@@ -8,13 +8,14 @@
   sm <- gObj$smooth[[ o$ism ]]
   si <- sm$xt$si
   alpha <- si$alpha
+  a0 <- si$a0
   dsi <- length( alpha )
   
   rescale <- function(x){ exp(alpha[1]) * (x - si$xm) }
   
   type <- class(o)[1]
   if( type == "si" ){
-   raw <- sort( si$X %*% alpha )
+   raw <- sort( si$X %*% (alpha + a0) )
    rescale <- function(x) x # No rescaling needed!
    trnam <- "proj"
   } 
