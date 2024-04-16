@@ -134,7 +134,7 @@ check2D <- function(o, x1, x2, type = "auto", maxpo = 1e4, na.rm = TRUE, trans =
   x2 <- as.vector( x2 )
   
   if( length(x1) != nrow(y) || length(x2) != nrow(y) ){ 
-    stop("x1 and x2 should be a vector of same lenght as residuals(o)") 
+    stop("x1 and x2 should be a vector of same length as residuals(o)") 
   }
   
   # Discard NAs

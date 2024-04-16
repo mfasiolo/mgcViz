@@ -32,7 +32,7 @@ l_dens1D.Check0DVectorNumeric <- function(a){
                        "id" = factor(c(rep("obs", n), rep("sim", n*nsim))))
   
   if( is.null(a$mapping) ) { 
-    a$mapping <- aes("x" = x, "y" = stat(density), "colour" = id, "fill" = id)
+    a$mapping <- aes("x" = x, "y" = after_stat(density), "colour" = id, "fill" = id)
   }
   
   a$inherit.aes <- FALSE
@@ -59,7 +59,7 @@ l_dens1D.Check0DScalarNumeric <- function(a){
   a$data <- data.frame("x" = as.vector(unlist(a$data$sim)))
   
   if( is.null(a$mapping) ) { 
-    a$mapping <- aes("x" = x, "y" = stat(density))
+    a$mapping <- aes("x" = x, "y" = after_stat(density))
   }
   if( is.null(a$fill) ){ a$fill = "#56B4E9" }
   
