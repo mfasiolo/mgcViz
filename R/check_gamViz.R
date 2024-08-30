@@ -55,12 +55,16 @@ check.gamViz <- function(obj,
   if( inherits(obj, "qgam") ){ return( check.qgam(obj) ) }
   
   type <- match.arg(type)
-  if (type == "auto") { type <- .getResTypeAndMethod(obj$family$family)$type }
+  if (type == "auto") { type <- .getResTypeAndMethod(obj$family)$type }
   
   # Overwriting user-provided argument lists
   a.all <- .argMaster("check.gamViz")
   for(nam in names(a.all)){
     assign(nam, .argSetup(a.all[[nam]], get(nam), nam, verbose = FALSE), envir = environment())
+  }
+  
+  if(is.null(a.qq$type)){
+    a.qq$type <- type
   }
   
   resid <- residuals(obj, type = type)

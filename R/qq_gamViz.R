@@ -181,7 +181,7 @@ qq.gamViz <- function(o, rep = 10,
   CI     <- match.arg(CI, c("normal", "quantile", "none"))
   method <- match.arg(method, c("auto", "simul1", "simul2", "tnormal", "tunif", "normal"))
   type   <- match.arg(type, c("auto", "deviance", "pearson", "response", "tunif", "tnormal"))
-  tmp <- .getResTypeAndMethod(o$family$family)
+  tmp <- .getResTypeAndMethod(o$family)
   if (method == "auto") { method = tmp$method }
   if (type == "auto") { type = tmp$type }
   if (level < 0 || level > 1){

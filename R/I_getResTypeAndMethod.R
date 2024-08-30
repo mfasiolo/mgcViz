@@ -3,16 +3,14 @@
 
 .getResTypeAndMethod <- function(fam){
   
-  type <- switch(fam, 
-                 "shash" = "tnormal", 
-                 "gaulss" = "deviance",
-                 "deviance") # Default
+  type <- "deviance"
+  method <- "simul1"
   
-  method <- switch(fam, 
-                   "shash" = "tnormal",
-                   "gaulss" = "normal",
-                   "simul1") # Default
-  
+  if( !is.null(fam$cdf) ){
+    type <- "tnormal"
+    method <- "tnormal"
+  }
+
   return( list("type" = type, "method" = method) )
           
 }

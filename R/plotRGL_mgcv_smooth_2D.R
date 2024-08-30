@@ -92,7 +92,7 @@ plotRGL.mgcv.smooth.2D <- function(x, se = TRUE, n = 40, residuals = FALSE, type
     return(NULL)
   }
   
-  if (type == "auto") { type <- .getResTypeAndMethod(x$gObj$family$family)$type }
+  if (type == "auto") { type <- .getResTypeAndMethod(x$gObj$family)$type }
   
   P <- .prepareP(o = x, unconditional = unconditional, residuals = residuals, 
                  resDen = "none", se = TRUE, se.mult = se.mult, n = NULL, n2 = n,  

@@ -20,7 +20,7 @@
       y <- o$y
     } else {
       # Returns the appropriate residual type for each GAM family
-      if( type=="auto" ) { type <- .getResTypeAndMethod(o$family$family)$type }
+      if( type=="auto" ) { type <- .getResTypeAndMethod(o$family)$type }
       y <- residuals(o, type = type)
     }
   }
