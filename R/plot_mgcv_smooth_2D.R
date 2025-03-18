@@ -83,7 +83,7 @@ plot.mgcv.smooth.2D <- function(x, n = 40, xlim = NULL, ylim = NULL, maxpo = 1e4
 
 ############### Internal function
 #' @noRd
-.plot.mgcv.smooth.2D <- function(x, P, trans, maxpo) {
+.plot.mgcv.smooth.2D <- function(x, P, trans, maxpo, flip = FALSE) {
   
   .dat <- list()
   # 1) Build dataset on fitted effect
@@ -115,6 +115,18 @@ plot.mgcv.smooth.2D <- function(x, n = 40, xlim = NULL, ylim = NULL, maxpo = 1e4
   }
   
   .dat$misc <- list("trans" = trans)
+  
+  if(flip){
+    .dat2 <- .dat
+    .dat2$fit$x <- .dat$fit$y 
+    .dat2$fit$y <- .dat$fit$x
+    .dat2$res$x <- .dat$res$y
+    .dat2$res$y <- .dat$res$x
+    .dat <- .dat2
+    tmp <- P$xlab
+    P$xlab <- P$ylab
+    P$ylab <- tmp
+  }
   
   .pl <- ggplot(data = .dat$fit, aes(x = x, y = y, z = z)) +
     labs(title = P$main, x = P$xlab, y = P$ylab) + 

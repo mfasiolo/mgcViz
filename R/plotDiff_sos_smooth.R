@@ -34,6 +34,7 @@
 #'             Generalized Additive Model Components. Scandinavian Journal of Statistics.
 #' @name plotDiff.sos.smooth
 #' @examples 
+#' \dontrun{
 #' #### 1) Simulate data and add factors uncorrelated to the response
 #' library(mgcViz)
 #' set.seed(0)
@@ -81,6 +82,7 @@
 #' 
 #' # Plot p-values for significance of differences
 #' pl1 + l_pvRaster() + l_pvContour(breaks=c(0.05, 0.1, 0.2, 0.3, 0.5))
+#' }
 #' @rdname plotDiff.sos.smooth
 #' @export plotDiff.sos.smooth
 #' @export

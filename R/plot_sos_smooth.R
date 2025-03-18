@@ -105,7 +105,7 @@ plot.sos.smooth <- function(x, n = 40, xlim = NULL, ylim = NULL, maxpo = 1e4,
 
   } else { # standard 2D plot
     
-    out <- .plot.mgcv.smooth.2D(x = P$smooth, P = P, trans = trans, maxpo = maxpo)
+    out <- .plot.mgcv.smooth.2D(x = P$smooth, P = P, trans = trans, maxpo = maxpo, flip = TRUE)
     out$type <- "sos1"
     
   }
