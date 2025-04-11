@@ -1,6 +1,5 @@
 
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/mgcViz)](https://cran.r-project.org/package=mgcViz)
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/mfasiolo/mgcViz?branch=master&svg=true)](https://ci.appveyor.com/project/mfasiolo/mgcViz)
 
 # **mgcViz**: visual tools for Generalized Additive Models
 
