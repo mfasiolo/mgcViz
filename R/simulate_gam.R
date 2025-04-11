@@ -14,12 +14,12 @@
 #'              It must take a vector as argument, but it can output a vector or a scalar.
 #'              Potentially useful for saving storage (e.g. by transforming each simulated vector
 #'              to a scalar). If left to \code{NULL} then \code{trans = identity} will be used.
-#' @param newdata Optional new data frame or list to be passed to \link{predict.gam}.
+#' @param newdata Optional new data frame or list to be passed to \link[mgcv]{predict.gam}.
 #' @param u a matrix where each row is a vector of uniform random variables in (0, 1).
 #'          This will be used to simulate responses only if \code{method = "qf"}. 
 #' @param w vector of prior weights to be used in the simulations. If \code{newdata==NULL} then
 #'          \code{w} is set to \code{object$prior.weights} otherwise it is a vector of ones.
-#' @param offset numeric vector of offsets. For GAMs with multiple linear predictor (see eg \link{gaulss}) it
+#' @param offset numeric vector of offsets. For GAMs with multiple linear predictor (see eg \link[mgcv]{gaulss}) it
 #'               must be a list of vectors. NB: if \code{newdata!=NULL} the offsets will be assumed to be zero, 
 #'               unless their are explicitly provided. If \code{newdata==NULL} then simulations will use the 
 #'               offsets used during model fitting, and \code{offset} argument will be ignored. 

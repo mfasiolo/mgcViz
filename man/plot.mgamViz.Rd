@@ -30,7 +30,7 @@ An object of class \code{c("plotGam", "gg")}.
 }
 \description{
 This function is similar to \link{plot.gamViz}, but it is used
-to plot multiple quantile GAM models fitted using \link{mqgamV} or \link{mqgam}.
+to plot multiple quantile GAM models fitted using \link{mqgamV} or \link[qgam]{mqgam}.
 It allows plotting standards 1D and 2D smooths, and parametric effects,
 It is basically a wrapper around plotting methods that are specific to
 individual smooth effect classes (such as \link{plot.multi.mgcv.smooth.1D}).

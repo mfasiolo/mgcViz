@@ -9,7 +9,7 @@
 #'             of regression coefficients from a Gaussian approximation to the posterior, and then we simulate
 #'             a vector of response using each parameter vector. If \code{FALSE}, then \code{nsim} vectors of 
 #'             responses are simulated using parameters fixed at the posterior mode. 
-#' @param newdata Optional new data frame used to perform the simulations. To be passed to \link{predict.gam} and, 
+#' @param newdata Optional new data frame used to perform the simulations. To be passed to \link[mgcv]{predict.gam} and, 
 #'                if \code{post == TRUE}, to \code{postSim}.
 #' @param ... extra arguments to be passed to \link{simulate.gam} (if \code{post==FALSE}) or
 #'            \link{postSim} (if \code{post==TRUE}). For instance, we could pass prior 

@@ -13,8 +13,8 @@ l_glyphs2D(
   polar = FALSE,
   height = ggplot2::rel(0.95),
   width = ggplot2::rel(0.95),
-  y_scale = I,
-  x_scale = I,
+  y_scale = identity,
+  x_scale = identity,
   ...
 )
 }

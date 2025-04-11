@@ -5,19 +5,19 @@
 #'              Gaussian posterior approximation of a gamObject.
 #' @param o the output of a \code{gam()} or \code{bam()} call.
 #' @param nsim the number of simulated vectors of responses. A positive integer.
-#' @param newdata Optional new data frame used to perform the simulations. To be passed to \link{predict.gam}.
+#' @param newdata Optional new data frame used to perform the simulations. To be passed to \link[mgcv]{predict.gam}.
 #' @param trans function used to transform or summarize each vector of simulated responses. 
 #'              It must take a vector as argument, but it can output a vector or a scalar.
 #'              Potentially useful for saving storage (e.g. by transforming each simulated vector
 #'              to a scalar). If left to \code{NULL} then \code{trans = identity} will be used.
 #' @param method the method used for the simulation of responses. See \link{simulate.gam}.
 #' @param w vector of prior weights of each response. See \link{simulate.gam}. 
-#' @param offset numeric vector of offsets. For GAMs with multiple linear predictor (see eg \link{gaulss}) it
+#' @param offset numeric vector of offsets. For GAMs with multiple linear predictor (see eg \link[mgcv]{gaulss}) it
 #'               must be a list of vectors. If \code{newdata!=NULL} the offsets will be assumed to be zero, 
 #'               unless their are explicitly provided. If \code{newdata==NULL} the simulations will use the 
 #'               offsets used during model fitting, unless offset is explicitly provided. 
 #' @param savePar if \code{TRUE} than also the simulated parameters will be returned.
-#' @param ... arguments to be passed to \link{vcov.gam}.
+#' @param ... arguments to be passed to \link[mgcv]{vcov.gam}.
 #' @return If \code{savePar == FALSE} the function will return a matrix where each column is a vector of 
 #'         simulated responses or a transformed version of it. If \code{savePar == TRUE} it will return
 #'         a list where the \code{$simY} entry will contain the simulated responses and \code{$simBeta}

@@ -27,6 +27,8 @@ freedom for the smooth.}
 
 \item{xlim}{if supplied then this pair of numbers are used as the x limits for the plot.}
 
+\item{ylim}{if supplied then this pair of numbers are used as the y limits for the plot.}
+
 \item{maxpo}{maximum number of residuals points that will be used by layers such as
 \code{resRug()} and \code{resPoints()}. If number of datapoints > \code{maxpo},
 then a subsample of \code{maxpo} points will be taken.}

@@ -2,7 +2,7 @@
 #' Plotting multiple quantile GAMs
 #'
 #' @description This function is similar to [plot.gamViz], but it is used 
-#'              to plot multiple quantile GAM models fitted using [mqgamV] or [mqgam]. 
+#'              to plot multiple quantile GAM models fitted using [mqgamV] or \link[qgam]{mqgam}. 
 #'              It allows plotting standards 1D and 2D smooths, and parametric effects, 
 #'              It is basically a wrapper around plotting methods that are specific to 
 #'              individual smooth effect classes (such as [plot.multi.mgcv.smooth.1D]).

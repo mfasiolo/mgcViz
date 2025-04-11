@@ -28,7 +28,7 @@ plotting methods for each effect (e.g. to \link{plot.mgcv.smooth.1D}).}
 An object of class \code{c("plotGam", "gg")}.
 }
 \description{
-This function is the \code{mgcViz} equivalent of \link{plot.gam}. It is the workhorse of the
+This function is the \code{mgcViz} equivalent of \link[mgcv]{plot.gam}. It is the workhorse of the
 \code{mgcViz} package, and allows plotting (almost) any type of smooth,
 parametric or random effects. It is basically a wrapper around plotting
 methods that are specific to individual smooth effect classes (such as

@@ -1,7 +1,7 @@
 #############################################
 #' Basic GAM plotting
 #'
-#' @description This function is the \code{mgcViz} equivalent of [plot.gam]. It is the workhorse of the
+#' @description This function is the \code{mgcViz} equivalent of \link[mgcv]{plot.gam}. It is the workhorse of the
 #'              \code{mgcViz} package, and allows plotting (almost) any type of smooth, 
 #'              parametric or random effects. It is basically a wrapper around plotting
 #'              methods that are specific to individual smooth effect classes (such as 

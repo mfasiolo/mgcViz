@@ -10,6 +10,7 @@
 #'          For a nice smooth plot this needs to be several times the estimated degrees of 
 #'          freedom for the smooth.
 #' @param xlim if supplied then this pair of numbers are used as the x limits for the plot.
+#' @param ylim if supplied then this pair of numbers are used as the y limits for the plot.
 #' @param maxpo maximum number of residuals points that will be used by layers such as
 #'              \code{resRug()} and \code{resPoints()}. If number of datapoints > \code{maxpo},
 #'              then a subsample of \code{maxpo} points will be taken.

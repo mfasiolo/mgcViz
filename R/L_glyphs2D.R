@@ -77,7 +77,7 @@
 #'
 l_glyphs2D <- function(glyFun, ggLay = "geom_points", n = c(4, 4), mapping = NULL,  
                         data = NULL, polar = FALSE, height = ggplot2::rel(0.95), 
-                        width = ggplot2::rel(0.95), y_scale = I, x_scale = I, ...){
+                        width = ggplot2::rel(0.95), y_scale = identity, x_scale = identity, ...){
   arg <- list(...)
   arg$xtra <- list("glyFun" = glyFun, "ggLay" = ggLay, "n" = n, "mapping" = mapping,
                    "data" = data, "polar" = polar, "height" = height, "width" = width, 
