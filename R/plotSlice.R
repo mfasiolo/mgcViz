@@ -120,7 +120,7 @@ plotSlice <- function(x, fix, a.facet = list(), ...){
     .pl <- .pl + do.call("facet_wrap", a.facet)
   }
   if( grD == 2 ){
-    if( is.null(a.facet$facets) ){ a.facet$facets <- paste0(".fx.", gridVar[1], " ~ .fx.", gridVar[2]) }
+    if( is.null(a.facet$rows) ){ a.facet$rows <- paste0(".fx.", gridVar[1], " ~ .fx.", gridVar[2]) }
     .pl <- .pl + do.call("facet_grid", a.facet)
   }
   
