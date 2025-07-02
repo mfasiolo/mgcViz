@@ -4,6 +4,11 @@
 #
 .prepareOuterNested <- function(o, n, xlim, ...){
   
+  if(!exists("expsmooth") || !exists("mgks") ){
+    expsmooth <- mgks <- function(x){}
+    stop("Please install the gamFactory package.")
+  }
+  
   gObj <- o$gObj
   sm <- gObj$smooth[[ o$ism ]]
   si <- sm$xt$si
