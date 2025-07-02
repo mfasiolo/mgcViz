@@ -16,6 +16,7 @@
 #' @return An objects of class \code{plotSmooth}.
 #' @name plotSlice
 #' @examples 
+#' \dontrun{
 #' ### Example 1: plotting slices of 3D smooth
 #' # Simulate data and fit GAM
 #' library(mgcViz)
@@ -53,6 +54,7 @@
 #' pl <- plotSlice(x = sm(v, 1), 
 #'                 fix = list("z" = 0, "x" = seq(-3, 3, length.out = 9)))
 #' pl + l_fitRaster() + l_fitContour() + l_points() + l_rug()
+#' }
 #' 
 #' @importFrom plyr alply
 #' @importFrom stats as.formula
