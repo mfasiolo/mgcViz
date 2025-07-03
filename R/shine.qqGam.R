@@ -7,8 +7,6 @@
 #' @param ... currently not used.
 #' @details In RStudio, this function returns a call to \code{qq.gamViz} that reproduces the last plot
 #'         rendered in the interactive shiny window.
-#' @importFrom shiny fillRow fillCol selectizeInput sliderInput plotOutput brushOpts reactiveValues reactive renderPlot observeEvent runGadget dialogViewer stopApp
-#' @importFrom miniUI miniPage gadgetTitleBar miniContentPanel
 #' @export shine.qqGam
 #' @export
 #' @examples 
@@ -28,19 +26,27 @@
 #'               , family = binomial, data = dat,
 #'               weights = n, method = "REML")
 #' lr.fit <- getViz(lr.fit)
+#' 
+#' # Need to load shiny and miniUI at this point
 #' # launch shiny gagdet
 #' shine(qq(lr.fit))
 #'  
 #' }
 #' 
 shine.qqGam <- function(o, ...){
+  pack1 <- requireNamespace("shiny", quietly=TRUE)
+  pack2 <- requireNamespace("miniUI", quietly=TRUE)
+  if( !pack1 || !pack2 ){
+    message("Please install the shiny and miniUI packages to use this function.")
+    return(NULL)
+  }
   name_obj <- deparse(substitute(o))
-  ui <- miniPage(
-    gadgetTitleBar("Q-Q GAM"),
-    miniContentPanel(
-      fillRow(flex = c(1, 4),
-              fillCol(
-                selectizeInput(
+  ui <- miniUI::miniPage(
+    miniUI::gadgetTitleBar("Q-Q GAM"),
+    miniUI::miniContentPanel(
+      shiny::fillRow(flex = c(1, 4),
+              shiny::fillCol(
+                shiny::selectizeInput(
                   inputId = "shape",
                   label = "Point shape", choices = c(".", 1:25)),
                 # colourpicker::colourInput( # Removed colourpicker import
@@ -48,7 +54,7 @@ shine.qqGam <- function(o, ...){
                 #   label = "Line color",
                 #   value = "red"
                 # ),
-                selectizeInput(
+                shiny::selectizeInput(
                   inputId = "ci",
                   label = "Conf. Int. ?",
                   choices = c(TRUE, FALSE),
@@ -59,13 +65,13 @@ shine.qqGam <- function(o, ...){
                 #   label = "CI color",
                 #   value = "gray80"
                 # ),
-                selectizeInput(
+                shiny::selectizeInput(
                   inputId = "show_reps",
                   label = "Show repetitions ?",
                   choices = c(TRUE, FALSE),
                   selected = "FALSE"
                 ),
-                selectizeInput(
+                shiny::selectizeInput(
                   inputId = "worm",
                   label = "Worm-plot ?",
                   choices = c(TRUE, FALSE),
@@ -76,7 +82,7 @@ shine.qqGam <- function(o, ...){
                 #   label = "Color for rep.",
                 #   value = "black"
                 # ),
-                sliderInput(
+                shiny::sliderInput(
                   inputId = "rep_alpha",
                   label = "Alpha for rep.",
                   min = 0, max = 1,
@@ -84,23 +90,23 @@ shine.qqGam <- function(o, ...){
                   value = 0.05
                 )
               ),
-              plotOutput("plot", height = "100%",
+              shiny::plotOutput("plot", height = "100%",
                          dblclick = "plot_dblclick",
-                         brush = brushOpts(id = "plot_brush",
-                                           resetOnNew = TRUE))
+                         brush = shiny::miniPage(id = "plot_brush",
+                                                 resetOnNew = TRUE))
       )
     )
   )
   server <- function(input, output, session) {
-    ranges <- reactiveValues(x = NULL, y = NULL)
-    shape <- reactive(
+    ranges <- shiny::reactiveValues(x = NULL, y = NULL)
+    shape <- shiny::reactive(
       if (input$shape %in% as.character(1:25)) {
         as.integer(input$shape)
       } else {
         input$shape
       }
     )
-    output$plot <- renderPlot(
+    output$plot <- shiny::renderPlot(
       zoom(o, xlim = ranges$x, ylim = ranges$y,
            CI = as.logical(input$ci),
            showReps = as.logical(input$show_reps),
@@ -111,7 +117,7 @@ shine.qqGam <- function(o, ...){
            a.replin = list(colour = "black", 
                            alpha = input$rep_alpha) )
     )
-    observeEvent(input$plot_dblclick, {
+    shiny::observeEvent(input$plot_dblclick, {
       brush <- input$plot_brush
       if (!is.null(brush)) {
         ranges$x <- c(brush$xmin, brush$xmax)
@@ -121,7 +127,7 @@ shine.qqGam <- function(o, ...){
         ranges$y <- NULL
       }
     })
-    observeEvent(input$done, {
+    shiny::observeEvent(input$done, {
       ## This produces a zoom() call, that can be used to reproduce the shiny plot
       ## Commented it out avoid importing rstudioapi
       # if (rstudioapi::isAvailable()){
@@ -143,10 +149,10 @@ shine.qqGam <- function(o, ...){
       #      )
       #   rstudioapi::insertText(callText)
       # }
-      stopApp()
+      shiny::stopApp()
     })
   }
-  runGadget(ui, server, viewer = dialogViewer(dialogName = "Q-Q GAM",
+  shiny::runGadget(ui, server, viewer = shiny::dialogViewer(dialogName = "Q-Q GAM",
                                               height = 900, width = 900))
 }
 

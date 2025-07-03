@@ -20,10 +20,10 @@ Imports:
     GGally,
     KernSmooth,
     gridExtra,
-    plyr,
-    shiny,
-    miniUI
+    plyr
 Suggests:
+    shiny,
+    miniUI,
     rgl,
     knitr,
     rmarkdown,
