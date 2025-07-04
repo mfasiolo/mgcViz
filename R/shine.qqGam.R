@@ -92,7 +92,7 @@ shine.qqGam <- function(o, ...){
               ),
               shiny::plotOutput("plot", height = "100%",
                          dblclick = "plot_dblclick",
-                         brush = shiny::miniPage(id = "plot_brush",
+                         brush = miniUI::miniPage(id = "plot_brush",
                                                  resetOnNew = TRUE))
       )
     )
