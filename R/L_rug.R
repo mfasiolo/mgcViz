@@ -113,7 +113,7 @@ l_rug.2D <- l_rug.sos0 <- l_rug.sos1 <- l_rug.Check2DNumericNumeric <- l_rug.MDs
   }
   if( is.null(a$data) ){ return(NULL) }
   a$inherit.aes <- FALSE
-  if( is.null(a$size) ){ a$size <- 0.2 }
+  if( is.null(a$linewidth) ){ a$linewidth <- 0.2 }
   
   if( is.null(a$mapping$y) && ("PositionJitter" %in% class(a$position)) ){
     a$mapping <-  aes(x = x, y = y)
