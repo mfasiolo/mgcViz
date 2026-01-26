@@ -36,6 +36,11 @@
     inner <- expsmooth(y = si$x, Xi = si$X, beta = alpha, deriv = 1)
     fit <- inner$d0
     Jac <- inner$d1
+    if( !is.null(si$times) ){
+      # Discard predictions beyond observed times (usually set to +Inf)
+      fit <- fit[1:max(si$times)]
+      Jac <- Jac[1:max(si$times), ]
+    }
     nobs <- length(fit)
     se <- sqrt(pmax(0, rowSums((Jac %*% Va) * Jac)))
     edf   <- sum(gObj$edf[prange])
