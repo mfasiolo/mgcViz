@@ -28,6 +28,7 @@ This function allows to slice a multi-dimensional (D > 2) smooth effect,
 and to plot the resulting sequence of 2D slices in an array of plots.
 }
 \examples{
+\dontrun{
 ### Example 1: plotting slices of 3D smooth
 # Simulate data and fit GAM
 library(mgcViz)
@@ -65,5 +66,6 @@ pl + l_fitRaster() + l_fitContour() + l_points() + l_rug()
 pl <- plotSlice(x = sm(v, 1), 
                 fix = list("z" = 0, "x" = seq(-3, 3, length.out = 9)))
 pl + l_fitRaster() + l_fitContour() + l_points() + l_rug()
+}
 
 }
