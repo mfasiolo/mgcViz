@@ -7,6 +7,7 @@
 \method{plot}{nested1D}(
   x,
   inner = FALSE,
+  smooth = FALSE,
   n = 100,
   xlim = NULL,
   ylim = NULL,
