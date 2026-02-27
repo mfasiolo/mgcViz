@@ -164,6 +164,7 @@
   # if( type == "mgks" ){
   #   d <- ncol(si$X0)
   #   if( d != 2 ){ return( NULL ) }
+  #   # ONLY 2D case handled at the moment!!
   #
   #   if( !is.null(xlim) ) xlim <- sort(xlim) else xlim <- range(si$X[ , 1])
   #   if( !is.null(ylim) ) ylim <- sort(ylim) else ylim <- range(si$X[ , 2])
@@ -182,10 +183,12 @@
   #   edf   <- sum(gObj$edf[prange[-1]])
   #
   #   mainlab <- .subEDF(paste0("mgks(", sm$term, ")"), edf)
+  #   ylabel <- "X[ , 2]"
+  #   xlabel <- "X[ , 1]"
   #   out <- list("fit" = fit, "X" = si$X, "se" = se, "x" = xx, "y" = yy,
   #               "p.resid" = si$x, "X0" = si$X0,
   #               "xlim" = xlim, "ylim" = ylim,
-  #               "xlab" = "X[ , 1]", "ylab" = "X[ , 2]", "main" = mainlab, type = "mgks")
+  #               "xlab" = xlabel, "ylab" = ylabel, "main" = mainlab, type = "mgks")
   # }
   
   return(out)

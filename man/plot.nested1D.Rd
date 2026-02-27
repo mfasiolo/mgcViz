@@ -22,6 +22,9 @@
 \item{inner}{if TRUE we are doing to plot the inner transformation, rather that then
 outer smooth effect.}
 
+\item{smooth}{only suitable for type of "si_nexpsm",
+if TRUE then plot data after inner transformation, rather than coefficients.}
+
 \item{n}{number of grid points used to compute main effect and c.i. lines.
 For a nice smooth plot this needs to be several times the estimated degrees of
 freedom for the smooth.}
