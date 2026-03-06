@@ -45,6 +45,7 @@
       alpha_nexp <- si$alpha_nexp
       n_si <- si$n_si
       n_nexp <- si$n_nexp
+      positive_si <- si$positive_si
       
       if (is.null(alpha_center)) {
         alpha_center <- alpha_si * 0
@@ -62,6 +63,14 @@
       edf   <- sum(gObj$edf[prange])
       ylabel <- .subEDF(paste0("Inner_coef(", sm$term, ")"), edf)
       xlabel <- "Index (NEXP + SI)"
+      
+      if (positive_si) {
+        alpha_si <- exp(alpha_si)
+        alpha_si <- alpha_si / sum(alpha_si, na.rm = TRUE)
+        # alpha_si <- (alpha_si - min(alpha_si, na.rm = TRUE)) / (max(alpha_si, na.rm = TRUE) - min(alpha_si, na.rm = TRUE))
+        se <- rep(NA, length(se))
+        alpha <- c(alpha_nexp, alpha_si)
+      }
       
       out <- list(
         fit = unname(alpha),
