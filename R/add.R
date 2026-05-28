@@ -3,9 +3,6 @@
 #'
 #' @param e1 an object of class \code{plotSmooth}.
 #' @param e2 a plot component, as described below.
-# #' @export
-#' @method + plotSmooth
-# #' @rdname plotSmooth-add
 #' @noRd
 #'
 addPlotSmooth <- function(e1, e2) {
@@ -14,7 +11,7 @@ addPlotSmooth <- function(e1, e2) {
   
   # If e2 is a gamLayer, we need to call the corresponding layer internal.
   # This returns either a ggplot or a list of ggplots (with class listOfLayers)
-  if( "gamLayer" %in% class(e2) ){
+  if (inherits(e2, "gamLayer")) {
     empty <- FALSE
     e2$arg$data <- e1$data 
     fun <- tryCatch(get( paste(e2$fun, ".", paste(e1$type, collapse = ''), sep = '') ), 
@@ -53,9 +50,6 @@ addPlotSmooth <- function(e1, e2) {
 #'
 #' @param e1 an object of class \code{plotGam}.
 #' @param e2 a plot component, as described below.
-# #' @export
-#' @method + plotGam
-# #' @rdname plotGam-add
 #' @noRd
 #'
 addPlotGam <- function(e1, e2) {
