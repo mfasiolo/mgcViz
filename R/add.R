@@ -83,12 +83,35 @@ addPlotGam <- function(e1, e2) {
 }
 
 #' @export
-"+.plotSmooth" <- function(e1, e2) {
-  addPlotSmooth(e1, e2)
+#' @method + gg
+"+.gg" <- function(e1, e2) {
+  
+  if (inherits(e1, "plotSmooth")) {
+    return(addPlotSmooth(e1, e2))
+  }
+  
+  if (inherits(e1, "plotGam")) {
+    return(addPlotGam(e1, e2))
+  }
+  
+  .addGGplot2(e1, e2)
 }
 
-#' @export
-"+.plotGam" <- function(e1, e2) {
-  addPlotGam(e1, e2)
+#' Add a component to a ggplot object using ggplot2's own machinery.
+#'
+#' This avoids calling `p + x` from inside `+.gg`, which would recurse
+#' back into this method, and avoids `%+%`, which is soft-deprecated in
+#' ggplot2 >= 4.0.0.
+#' @noRd
+.addGGplot2 <- function(e1, e2) {
+  
+  ns <- asNamespace("ggplot2")
+  
+  if (exists("add_gg", envir = ns, inherits = FALSE)) {
+    return(get("add_gg", envir = ns)(e1, e2))
+  }
+  
+  get("+.gg", envir = ns)(e1, e2)
 }
+
 
