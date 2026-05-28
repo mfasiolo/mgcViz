@@ -97,21 +97,21 @@ addPlotGam <- function(e1, e2) {
   .addGGplot2(e1, e2)
 }
 
-#' Add a component to a ggplot object using ggplot2's own machinery.
+#' Add a ggplot layer to a ggplot object using ggplot2's own machinery.
 #'
-#' This avoids calling `p + x` from inside `+.gg`, which would recurse
-#' back into this method, and avoids `%+%`, which is soft-deprecated in
+#' This avoids calling `e1 + e2` from inside `+.gg`, which would recurse
+#' back into itself, and avoids `%+%`, which is soft-deprecated in
 #' ggplot2 >= 4.0.0.
 #' @noRd
 .addGGplot2 <- function(e1, e2) {
   
-  ns <- asNamespace("ggplot2")
-  
-  if (exists("add_gg", envir = ns, inherits = FALSE)) {
-    return(get("add_gg", envir = ns)(e1, e2))
+  if (utils::packageVersion("ggplot2") >= "4.0.0") {
+    return(ggplot2::add_gg(e1, e2))
   }
   
-  get("+.gg", envir = ns)(e1, e2)
+  # This is run only for ggplot2 < 4.0.0, where add_gg() is not available and 
+  # the use of %+% was not soft-deprecated.
+  ggplot2::`%+%`(e1, e2)
 }
 
 
