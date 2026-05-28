@@ -102,7 +102,9 @@ check1D <- function(o, x, type = "auto", maxpo = 1e4, na.rm = TRUE, trans = NULL
     if( !(x %in% names(data)) ) stop("(x %in% names(data)) == FALSE")
     x <- xfull <- data[[x]]
   }
-  x <- as.vector( x ) # Needed for functional GAMS
+  # as.vector() needed for functional GAMS, but we do not want to convert factors 
+  # to characters otherwise we lose the order of the levels
+  if (!is.factor(x)) { x <- as.vector( x ) } 
   
   if(length(x) != nrow(y)){ stop("length(x) != nrow(y)") }
   

@@ -62,3 +62,60 @@ test_that("l_gridCheck2D shows all factor levels for factor/numeric and factor/f
   
   expect_equal(length(unique(d$y[!is.na(d$value)])), nf)
 })
+
+test_that("check2D preserves supplied factor level order", {
+  
+  library(mgcv)
+  library(mgcViz)
+  
+  set.seed(566)
+  
+  n <- 1000
+  
+  X <- data.frame(
+    x1 = rnorm(n, 0.5, 0.5),
+    x2 = rnorm(n, 1.5, 1),
+    fac = factor(
+      sample(c(2, 6, 10, 14, 18, 22), n, replace = TRUE),
+      levels = c("2", "6", "10", "14", "18", "22")
+    )
+  )
+  
+  X$y <- (1 - X$x1)^2 + 100 * (X$x2 - X$x1^2)^2 + rnorm(n, 0, 2)
+  
+  b <- gam(y ~ te(x1, x2, k = 5), data = X)
+  b <- getViz(b, nsim = 20)
+  
+  ## Factor supplied directly
+  ck1 <- check2D(b, x1 = X$fac, x2 = "x2")
+  
+  expect_equal(
+    levels(ck1$data$res$x),
+    c("2", "6", "10", "14", "18", "22")
+  )
+  
+  ck1_1d <- check1D(b, x = X$fac)
+  
+  expect_equal(
+    levels(ck1_1d$data$res$x),
+    c("2", "6", "10", "14", "18", "22")
+  )
+  
+  ## Factor supplied by name, if present in stored data
+  b2 <- gam(y ~ te(x1, x2, k = 5), data = X)
+  b2 <- getViz(b2, nsim = 20, newdata = X)
+  
+  ck2 <- check2D(b2, x1 = "fac", x2 = "x2")
+  
+  expect_equal(
+    levels(ck2$data$res$x),
+    c("2", "6", "10", "14", "18", "22")
+  )
+  
+  ck2_1d <- check1D(b2, x = X$fac)
+  
+  expect_equal(
+    levels(ck2_1d$data$res$x),
+    c("2", "6", "10", "14", "18", "22")
+  )
+})
