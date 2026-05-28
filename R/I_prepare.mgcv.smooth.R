@@ -16,7 +16,7 @@
 #' @param x Is a smooth object, usually part of a `gam' fit. It has an attribute
 #' `coefficients` containg the coefs for the smooth, but usually these
 #' are not needed.
-#' @param data 
+#' @param data If supplied then this is the data frame to produce the plot from.
 #' @param n Number of points used for each 1-d plot - for a nice smooth plot
 #'   this needs to be several times the estimated degrees of freedom for the
 #'   smooth. Default value 100.

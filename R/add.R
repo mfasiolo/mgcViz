@@ -32,14 +32,14 @@ addPlotSmooth <- function(e1, e2) {
   }
   
   # If e2 is a "listOfLayers" (list of ggplots) add them one by one.
-  # Calling directly ggplot %+% here.
+  # Calling directly ggplot + here.
   if( "listOfLayers" %in% class(e2) ){
     empty <- FALSE
     for(ii in 1:length(e2)){
-      e1$ggObj <- e1$ggObj %+% e2[[ii]]
+      e1$ggObj <- e1$ggObj + e2[[ii]]
     } 
   } else {
-    e1$ggObj <- e1$ggObj %+% e2
+    e1$ggObj <- e1$ggObj + e2
   }
   
   e1$empty <- empty
@@ -82,30 +82,13 @@ addPlotGam <- function(e1, e2) {
   return( e1 )
 }
 
-
 #' @export
-"+.gg" <- function(e1, e2) {
-  
-  if( inherits(e1, "plotSmooth") ){
-    
-    return( addPlotSmooth(e1, e2) )
-    
-  } else { 
-    
-    if( inherits(e1, "plotGam") ){
-      
-      return( addPlotGam(e1, e2) )
-      
-    } else { # ggplot2 addition %+%
-      
-      return( e1 %+% e2 )
-      
-    }
-    
-  } 
-  
+"+.plotSmooth" <- function(e1, e2) {
+  addPlotSmooth(e1, e2)
 }
 
-#' #' @rdname plotSmooth-add
-#' #' @export
-#' "%+%" <- `+.plotSmooth`
+#' @export
+"+.plotGam" <- function(e1, e2) {
+  addPlotGam(e1, e2)
+}
+
