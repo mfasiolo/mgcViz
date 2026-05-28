@@ -54,27 +54,41 @@ l_gridCheck2D <- function(gridFun = mean, bw = c(NA, NA), stand = TRUE, binFun =
 
 ######## Internal method factor/numeric data
 #' @noRd
-l_gridCheck2D.Check2DFactorNumeric <- function(a){
+l_gridCheck2D.Check2DFactorNumeric <- function(a) {
   
-  if( is.na(a$xtra$bw[1]) ) { a$xtra$bw[1] <- 1 }
+  if (is.na(a$xtra$bw[1])) {
+    a$xtra$bw[1] <- 1
+  }
   
-  if( is.null(a$xtra$binFun) ){ a$xtra$binFun <- "stat_summary_2d" }
+  if (is.null(a$xtra$binFun)) {
+    a$xtra$binFun <- "stat_summary_2d"
+  }
   
-  .l_gridCheck2D( a )
+  # Set boundary for factor axis to ensure bins are centered on factor levels
+  a <- .setFactor2DBoundary(a, fac = c(TRUE, FALSE))
   
+  .l_gridCheck2D(a)
 }
 
 ######## Internal method factor/factor data
 #' @noRd
-l_gridCheck2D.Check2DFactorFactor <- function(a){
-  
-  if( is.na(a$xtra$bw[1]) ) { a$xtra$bw[1] <- 1 }
-  if( is.na(a$xtra$bw[2]) ) { a$xtra$bw[2] <- 1 }
-  
-  if( is.null(a$xtra$binFun) ){ a$xtra$binFun <- "stat_summary_2d" }
-  
-  .l_gridCheck2D( a )
-  
+l_gridCheck2D.Check2DFactorFactor <- function(a) {
+
+  if (is.na(a$xtra$bw[1])) {
+    a$xtra$bw[1] <- 1
+  }
+
+  if (is.na(a$xtra$bw[2])) {
+    a$xtra$bw[2] <- 1
+  }
+
+  if (is.null(a$xtra$binFun)) {
+    a$xtra$binFun <- "stat_summary_2d"
+  }
+
+  a <- .setFactor2DBoundary(a, fac = c(TRUE, TRUE))
+
+  .l_gridCheck2D(a)
 }
 
 ######## Internal method for numeric/numeric data
@@ -170,5 +184,37 @@ l_gridCheck2D.Check2DNumericNumeric <- function(a){
   
   return( out )
   
+}
+
+######## Internal helper for factor axes in 2D binning
+#' @noRd
+.setFactor2DBoundary <- function(a, fac = c(FALSE, FALSE)) {
+  
+  if (!any(fac)) {
+    return(a)
+  }
+  
+  # ggplot2 < 4.0.0 used the older origin-based binning code.
+  # Passing boundary there would be ignored and may generate warnings.
+  if (utils::packageVersion("ggplot2") < "4.0.0") {
+    return(a)
+  }
+  
+  # Respect explicit user bin-positioning choices.
+  if (!is.null(a$boundary) || !is.null(a$center) || !is.null(a$breaks)) {
+    return(a)
+  }
+  
+  # Only set boundary for mgcViz's default rectangular binning layer.
+  # Do not assume that a custom binFun accepts a boundary argument.
+  if (!identical(a$xtra$binFun, "stat_summary_2d")) {
+    return(a)
+  }
+  
+  # Factor levels are placed at integer positions, so bins should have
+  # boundaries halfway between integers.
+  a$boundary <- ifelse(fac, 0.5, 0)
+  
+  a
 }
 
