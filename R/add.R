@@ -32,14 +32,14 @@ addPlotSmooth <- function(e1, e2) {
   }
   
   # If e2 is a "listOfLayers" (list of ggplots) add them one by one.
-  # Calling directly ggplot + here.
-  if( "listOfLayers" %in% class(e2) ){
+  # Calling directly .addGGplot2() here because we are adding 2 ggplot objects.
+  if (inherits(e2, "listOfLayers")) {
     empty <- FALSE
-    for(ii in 1:length(e2)){
-      e1$ggObj <- e1$ggObj + e2[[ii]]
-    } 
+    for (ii in seq_along(e2)) {
+      e1$ggObj <- .addGGplot2(e1$ggObj, e2[[ii]])
+    }
   } else {
-    e1$ggObj <- e1$ggObj + e2
+    e1$ggObj <- .addGGplot2(e1$ggObj, e2)
   }
   
   e1$empty <- empty
@@ -65,7 +65,7 @@ addPlotGam <- function(e1, e2) {
                      function(.l){
                        return( withCallingHandlers(.l + e2,
                                                    warning = function(w){ 
-                                                     if(any(grepl("layer available for type", w))){ 
+                                                     if(any(grepl("layer available for type", conditionMessage(w)))){ 
                                                        invokeRestart( "muffleWarning" )
                                                      }
                                                    }) )
