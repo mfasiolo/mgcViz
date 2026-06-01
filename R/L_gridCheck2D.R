@@ -66,6 +66,7 @@ l_gridCheck2D.Check2DFactorNumeric <- function(a) {
   
   # Set boundary for factor axis to ensure bins are centered on factor levels
   a <- .setFactor2DBoundary(a, fac = c(TRUE, FALSE))
+  a <- .fix2DBinningArgs(a)
   
   .l_gridCheck2D(a)
 }
@@ -87,6 +88,7 @@ l_gridCheck2D.Check2DFactorFactor <- function(a) {
   }
 
   a <- .setFactor2DBoundary(a, fac = c(TRUE, TRUE))
+  a <- .fix2DBinningArgs(a)
 
   .l_gridCheck2D(a)
 }
@@ -214,6 +216,30 @@ l_gridCheck2D.Check2DNumericNumeric <- function(a){
   # Factor levels are placed at integer positions, so bins should have
   # boundaries halfway between integers.
   a$boundary <- ifelse(fac, 0.5, 0)
+  
+  a
+}
+
+######## Internal helper for ggplot2 >= 4.0.0 binning args
+#' @noRd
+.fix2DBinningArgs <- function(a) {
+  
+  if (utils::packageVersion("ggplot2") < "4.0.0") {
+    return(a)
+  }
+  
+  if (!identical(a$xtra$binFun, "stat_summary_2d")) {
+    return(a)
+  }
+  
+  # ggplot2::stat_summary_2d() has boundary = 0 by default.
+  # If the user supplies center but not boundary, we must explicitly pass
+  # boundary = NULL, otherwise ggplot2 sees both boundary and center.
+  if (!is.null(a$center) &&
+      is.null(a$breaks) &&
+      !("boundary" %in% names(a))) {
+    a["boundary"] <- list(NULL)
+  }
   
   a
 }
