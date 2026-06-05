@@ -7,11 +7,14 @@
 \method{plot}{nested1D}(
   x,
   inner = FALSE,
+  smooth = FALSE,
   n = 100,
   xlim = NULL,
   ylim = NULL,
   maxpo = 10000,
   trans = identity,
+  ci = TRUE,
+  a_in = FALSE,
   ...
 )
 }
@@ -20,6 +23,9 @@
 
 \item{inner}{if TRUE we are doing to plot the inner transformation, rather that then
 outer smooth effect.}
+
+\item{smooth}{only suitable for type of "si_nexpsm",
+if TRUE then plot data after inner transformation, rather than coefficients.}
 
 \item{n}{number of grid points used to compute main effect and c.i. lines.
 For a nice smooth plot this needs to be several times the estimated degrees of
@@ -35,6 +41,12 @@ then a subsample of \code{maxpo} points will be taken.}
 
 \item{trans}{monotonic function to apply to the smooth and residuals, before plotting.
 Monotonicity is not checked.}
+
+\item{ci}{only suitable for type of "si_nexpsm",
+if FALSE then plot coef without confidence interval.}
+
+\item{a_in}{only suitable for type of "si_nexpsm",
+if TRUE then plot optimized coef.}
 
 \item{...}{currently unused.}
 }

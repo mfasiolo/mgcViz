@@ -32,6 +32,11 @@
     raw <- mgks(y = si$x, dist = si$dist, beta = alpha[-1])$d0
     trnam <- "mgks"
   }
+  if( type == "si_nexpsm" ){
+    raw <- sm$xt$xa
+    rescale <- function(x) x
+    trnam <- "si_nexpsm"
+  }
 
   # Get regression coeff of outer smooth
   prange <- (sm$first.para:sm$last.para)[-(1:dsi)]

@@ -1,43 +1,121 @@
-
 ##########
 # Internal method
-#
-.prepareInnerNested <- function(o, n, xlim, ylim = NULL, ...){
-  
-  if(!exists("expsmooth") || !exists("mgks") ){
-    expsmooth <- mgks <- function(x){}
+##########
+.prepareInnerNested <- function(o,
+                                n,
+                                xlim,
+                                ylim,
+                                smooth,
+                                a_in,
+                                ...) {
+  if (!exists("expsmooth") || !exists("mgks")) {
+    expsmooth <- mgks <- function(x) {
+      
+    }
     stop("Please install the gamFactory package.")
   }
   
   gObj <- o$gObj
-  sm <- gObj$smooth[[ o$ism ]]
+  sm <- gObj$smooth[[o$ism]]
   
   si <- sm$xt$si
-  alpha <- si$alpha 
+  alpha <- si$alpha
   B <- si$B
   
-  da <- length( alpha )
+  da <- length(alpha)
   prange <- (sm$first.para:sm$last.para)[1:da]
   type <- class(o)[1]
   
   # Remove scale parameter of inner transformation
-  if( type != "si" ){
+  if (type %in% c("mgks", "nexpsm")) {
     prange <- prange[-1]
-    da <- da-1
+    da <- da - 1
     alpha <- alpha[-1]
-    if(is.null(B)){
+    if (is.null(B)) {
       B <- diag(1, nrow = length(alpha))
     }
   }
   
   Va <- gObj$Vp[prange, prange, drop = FALSE]
   
-  if( type == "nexpsm" ){
-    inner <- expsmooth(y = si$x, Xi = si$X, beta = alpha, deriv = 1)
+  if (type == "si_nexpsm") {
+    if (!smooth) {
+      # coef plot (Only alpha_si)
+      alpha_center <- si$alpha_center
+      alpha_si <- si$alpha_si
+      n_si <- si$n_si
+      n_nexp <- si$n_nexp
+      positive_si <- si$positive_si
+      
+      if (is.null(alpha_center)) {
+        alpha_center <- alpha_si * 0
+      }
+      
+      alpha_si <- drop(si$B_si %*% (alpha_si + alpha_center))
+      
+      Va_si <- si$B_si %*% Va[(n_nexp + 1):(n_nexp + n_si), (n_nexp + 1):(n_nexp + n_si), drop = FALSE] %*% t(si$B_si)
+      se_si <- sqrt(pmax(0, diag(Va_si)))
+      
+      # Consistently use
+      lower <- alpha_si - 2 * se_si
+      upper <- alpha_si + 2 * se_si
+      
+      edf   <- sum(gObj$edf[prange])
+      ylabel <- .subEDF(paste0("Inner_coef(", sm$term, ")"), edf)
+      #number of edf = length(alpha_si + alpha_nexp)
+      #but we only plot alpha_si here
+      xlabel <- "Index (SI)"
+      
+      if (positive_si && !a_in) {
+        exp_alpha <- exp(alpha_si)
+        sum_exp <- sum(exp_alpha, na.rm = TRUE)
+        
+        alpha_si <- exp_alpha / sum_exp
+        
+        lower <- exp(lower) / sum_exp
+        upper <- exp(upper) / sum_exp
+      }
+      
+      out <- list(
+        fit = unname(alpha_si),
+        x = 1:length(alpha_si),
+        se = rep(NA, length(alpha_si)), #use NA otherwise there is error in plot function
+        lower = unname(lower), 
+        upper = unname(upper),
+        xlab = xlabel,
+        ylab = ylabel,
+        main = NULL,
+        type = "si_nexpsm_coef"
+      )
+    } else {
+      # smooth eff plot
+      xa <- sm$xt$xa #values after smooth
+      times <- 1:length(xa)
+      edf   <- sum(gObj$edf[prange])
+      ylabel <- .subEDF(paste0("expsm(", sm$term, ")"), edf)
+      xlabel <- "Index"
+      
+      out <- list(
+        fit = xa,
+        x = times,
+        xlab = xlabel,
+        ylab = ylabel,
+        main = NULL,
+        type = "si_nexpsm_xa"
+      )
+    }
+  }
+  
+  if (type == "nexpsm") {
+    inner <- expsmooth(
+      y = si$x,
+      Xi = si$X,
+      beta = alpha,
+      deriv = 1
+    )
     fit <- inner$d0
     Jac <- inner$d1
-    if( !is.null(si$times) ){
-      # Discard predictions beyond observed times (usually set to +Inf)
+    if (!is.null(si$times)) {
       fit <- fit[1:max(si$times)]
       Jac <- Jac[1:max(si$times), ]
     }
@@ -46,7 +124,8 @@
     edf   <- sum(gObj$edf[prange])
     ylabel <- .subEDF(paste0("expsm(", sm$term, ")"), edf)
     xlabel <- "Index"
-    if( !is.null(xlim) ) {
+    
+    if (!is.null(xlim)) {
       xlim <- sort(xlim)
       xlim[1] <- max(xlim[1], 1)
       xlim[2] <- min(xlim[2], nobs)
@@ -56,13 +135,25 @@
       xlim <- c(1, nobs)
       ii <- 1:nobs
     }
-    out <- list("fit" = fit[ii], "x" = ii, "se" = se[ii],
-                "p.resid" = si$x[ii], "raw" = ii, 
-                "xlim" = xlim, 
-                xlab = xlabel, ylab = ylabel, main = NULL, type = "nexpsm")
-  } else {
+    
+    out <- list(
+      "fit" = fit[ii],
+      "x" = ii,
+      "se" = se[ii],
+      "p.resid" = si$x[ii],
+      "raw" = ii,
+      "xlim" = xlim,
+      xlab = xlabel,
+      ylab = ylabel,
+      main = NULL,
+      type = "nexpsm"
+    )
+    
+  }
+  
+  if (type == "si") {
     a0 <- si$a0
-    if( is.null(a0) ){
+    if (is.null(a0)) {
       a0 <- alpha * 0
     }
     alpha <- drop(B %*% (alpha + a0))
@@ -71,46 +162,46 @@
     edf   <- sum(gObj$edf[prange])
     ylabel <- .subEDF(paste0("Inner_coef(", sm$term, ")"), edf)
     xlabel <- "Index"
-    out <- list("fit" = alpha, "x" = 1:da, "se" = se,
-                xlab = xlabel, ylab = ylabel, main = NULL, type = "si")
+    
+    out <- list(
+      "fit" = alpha,
+      "x" = 1:da,
+      "se" = se,
+      xlab = xlabel,
+      ylab = ylabel,
+      main = NULL,
+      type = "si"
+    )
+    
   }
+  
   # NOT CLEAR HOW TO DO THIS WITH DISTANCEs
   # if( type == "mgks" ){
   #   d <- ncol(si$X0)
-  #   if( d != 2 ){ # ONLY 2D case handled at the moment!!
-  #     return( NULL )
-  #   }
-  #   if( !is.null(xlim) ) {
-  #     xlim <- sort(xlim)
-  #   } else {
-  #     xlim <- range(si$X[ , 1])
-  #   }
-  #   if( !is.null(ylim) ) {
-  #     ylim <- sort(ylim)
-  #   } else {
-  #     ylim <- range(si$X[ , 2])
-  #   }
-  #   
+  #   if( d != 2 ){ return( NULL ) }
+  #   # ONLY 2D case handled at the moment!!
+  #
+  #   if( !is.null(xlim) ) xlim <- sort(xlim) else xlim <- range(si$X[ , 1])
+  #   if( !is.null(ylim) ) ylim <- sort(ylim) else ylim <- range(si$X[ , 2])
+  #
   #   xx <- rep(seq(xlim[1], xlim[2], length.out = n), n)
   #   yy <- rep(seq(ylim[1], ylim[2], length.out = n), rep(n, n))
-  #   
   #   X <- cbind(xx, yy)
+  #
   #   si$x <- as.matrix(si$x)
-  #   if( ncol(si$x) > 1 ){
-  #     si$x <- colMeans(si$x)
-  #   }
-  #   
+  #   if( ncol(si$x) > 1 ){ si$x <- colMeans(si$x) }
+  #
   #   inner <- mgks(y = si$x, X = X, X0 = si$X0, beta = alpha[-1], deriv = 1)
   #   fit <- inner$d0
   #   Jac <- inner$d1
   #   se <- sqrt(pmax(0, rowSums((Jac %*% Va[-1, -1, drop = FALSE]) * Jac)))
   #   edf   <- sum(gObj$edf[prange[-1]])
-  #   
+  #
   #   mainlab <- .subEDF(paste0("mgks(", sm$term, ")"), edf)
   #   ylabel <- "X[ , 2]"
   #   xlabel <- "X[ , 1]"
   #   out <- list("fit" = fit, "X" = si$X, "se" = se, "x" = xx, "y" = yy,
-  #               "p.resid" = si$x, "X0" = si$X0, 
+  #               "p.resid" = si$x, "X0" = si$X0,
   #               "xlim" = xlim, "ylim" = ylim,
   #               "xlab" = xlabel, "ylab" = ylabel, "main" = mainlab, type = "mgks")
   # }

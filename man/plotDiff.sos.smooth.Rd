@@ -64,6 +64,7 @@ the coefficients of s1 and s2. To get the confidence intervals we need only diag
 which here is calculated efficiently (without computing the whole of Cov(sd)).
 }
 \examples{
+\dontrun{
 #### 1) Simulate data and add factors uncorrelated to the response
 library(mgcViz)
 set.seed(0)
@@ -111,6 +112,7 @@ pl1 + l_fitRaster() + l_fitContour()
 
 # Plot p-values for significance of differences
 pl1 + l_pvRaster() + l_pvContour(breaks=c(0.05, 0.1, 0.2, 0.3, 0.5))
+}
 }
 \references{
 Marra, G and S.N. Wood (2012) Coverage Properties of Confidence Intervals for
