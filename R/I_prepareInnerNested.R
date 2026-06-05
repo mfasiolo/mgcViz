@@ -4,8 +4,9 @@
 .prepareInnerNested <- function(o,
                                 n,
                                 xlim,
-                                ylim = NULL,
-                                smooth = FALSE,
+                                ylim,
+                                smooth,
+                                a_in,
                                 ...) {
   if (!exists("expsmooth") || !exists("mgks")) {
     expsmooth <- mgks <- function(x) {
@@ -39,10 +40,9 @@
   
   if (type == "si_nexpsm") {
     if (!smooth) {
-      # coef plot
+      # coef plot (Only alpha_si)
       alpha_center <- si$alpha_center
       alpha_si <- si$alpha_si
-      alpha_nexp <- si$alpha_nexp
       n_si <- si$n_si
       n_nexp <- si$n_nexp
       positive_si <- si$positive_si
@@ -52,30 +52,36 @@
       }
       
       alpha_si <- drop(si$B_si %*% (alpha_si + alpha_center))
-      alpha_nexp <- drop(si$B_nexp %*% alpha_nexp)
-      alpha <- c(alpha_nexp, alpha_si)
       
-      Va_nexp <- si$B_nexp %*% Va[1:n_nexp, 1:n_nexp, drop = FALSE] %*% t(si$B_nexp)
       Va_si <- si$B_si %*% Va[(n_nexp + 1):(n_nexp + n_si), (n_nexp + 1):(n_nexp + n_si), drop = FALSE] %*% t(si$B_si)
       se_si <- sqrt(pmax(0, diag(Va_si)))
-      se_nexp <- sqrt(pmax(0, diag(Va_nexp)))
-      se <- c(se_nexp, se_si)
+      
+      # Consistently use
+      lower <- alpha_si - 2 * se_si
+      upper <- alpha_si + 2 * se_si
+      
       edf   <- sum(gObj$edf[prange])
       ylabel <- .subEDF(paste0("Inner_coef(", sm$term, ")"), edf)
-      xlabel <- "Index (NEXP + SI)"
+      #number of edf = length(alpha_si + alpha_nexp)
+      #but we only plot alpha_si here
+      xlabel <- "Index (SI)"
       
-      if (positive_si) {
-        alpha_si <- exp(alpha_si)
-        alpha_si <- alpha_si / sum(alpha_si, na.rm = TRUE)
-        # alpha_si <- (alpha_si - min(alpha_si, na.rm = TRUE)) / (max(alpha_si, na.rm = TRUE) - min(alpha_si, na.rm = TRUE))
-        se <- rep(NA, length(se))
-        alpha <- c(alpha_nexp, alpha_si)
+      if (positive_si && !a_in) {
+        exp_alpha <- exp(alpha_si)
+        sum_exp <- sum(exp_alpha, na.rm = TRUE)
+        
+        alpha_si <- exp_alpha / sum_exp
+        
+        lower <- exp(lower) / sum_exp
+        upper <- exp(upper) / sum_exp
       }
       
       out <- list(
-        fit = unname(alpha),
-        x = 1:da,
-        se = se,
+        fit = unname(alpha_si),
+        x = 1:length(alpha_si),
+        se = rep(NA, length(alpha_si)), #use NA otherwise there is error in plot function
+        lower = unname(lower), 
+        upper = unname(upper),
         xlab = xlabel,
         ylab = ylabel,
         main = NULL,

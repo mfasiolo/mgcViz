@@ -8,6 +8,10 @@
 #'              outer smooth effect.
 #' @param smooth only suitable for type of "si_nexpsm",
 #'               if TRUE then plot data after inner transformation, rather than coefficients.
+#' @param ci only suitable for type of "si_nexpsm",
+#'           if FALSE then plot coef without confidence interval.
+#' @param a_in only suitable for type of "si_nexpsm",
+#'             if TRUE then plot optimized coef.
 #' @param n number of grid points used to compute main effect and c.i. lines.
 #'          For a nice smooth plot this needs to be several times the estimated degrees of
 #'          freedom for the smooth.
@@ -33,6 +37,8 @@ plot.nested1D <- function(x,
                           ylim = NULL,
                           maxpo = 1e4,
                           trans = identity,
+                          ci = TRUE,
+                          a_in = FALSE,
                           ...)  {
   if (inner) {
     # 1) Prepare data
@@ -42,12 +48,14 @@ plot.nested1D <- function(x,
       xlim = xlim,
       ylim = ylim,
       smooth = smooth,
+      a_in,
       ...
     )
     
     out <- .plot.inner.nested.smooth.1D(P = P,
                                         trans = trans,
-                                        maxpo = maxpo)
+                                        maxpo = maxpo,
+                                        ci = ci)
     
   } else {
     # 1) Prepare data
@@ -116,23 +124,33 @@ plot.nested1D <- function(x,
 
 ########################
 #' @noRd
-.plot.inner.nested.smooth.1D <- function(P, trans, maxpo) {
+.plot.inner.nested.smooth.1D <- function(P, trans, maxpo, ci) {
   if (is.null(P)) {
     return(NULL)
   }
   
   if (P$type == "si_nexpsm_coef") {
-    # plot coef [alpha_nexp, alpha_si]
+    # plot coef [alpha_si]
     .dat <- list()
     .dat$fit <- data.frame(
-      "x"  = P$x,
-      "y"  = P$fit,
-      "ty" = trans(P$fit),
-      "se" = P$se
+      "x"        = P$x,
+      "y"        = P$fit,
+      "ty"       = trans(P$fit),
+      "se"       = P$se,
+      "lower"    = P$lower,
+      "upper"    = P$upper,
+      "ty_lower" = trans(P$lower),
+      "ty_upper" = trans(P$upper)
     )
     .dat$misc <- list("trans" = trans)
     
-    .pl <- ggplot(data = .dat$fit, aes(x = x, y = ty)) +
+    .pl <- ggplot(data = .dat$fit, aes(x = x, y = ty))
+    .pl <- .pl + 
+      geom_errorbar(aes(ymin = ty_lower, ymax = ty_upper), 
+                    linetype = "dashed")
+    
+    .pl <- .pl +
+      geom_point(color = "black", size = 2) +
       labs(title = P$main,
            x = P$xlab,
            y = P$ylab) +
@@ -140,13 +158,18 @@ plot.nested1D <- function(x,
       theme(panel.grid.major = element_blank(),
             panel.grid.minor = element_blank())
     
+    # if ci is FALSE, we still want to show the error bars (dashed lines), but not the points.
+    if (!ci) {
+      .pl <- .pl + coord_cartesian(ylim = c(0, min(1, (max(.dat$fit$ty, na.rm = TRUE)+0.1))))
+    }
+    
     out <- list(
       "ggObj" = .pl,
-      "data" = .dat,
-      "type" = c("si", "Factor")
+      "data"  = .dat,
+      "type"  = c("si", "Factor")
     )
     
-  } else if (P$type == "si_nexpsm_xa") {
+  }else if (P$type == "si_nexpsm_xa") {
     # plot data after smooth
     .dat <- list()
     .dat$fit <- data.frame(

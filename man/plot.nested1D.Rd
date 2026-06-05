@@ -13,6 +13,8 @@
   ylim = NULL,
   maxpo = 10000,
   trans = identity,
+  ci = TRUE,
+  a_in = FALSE,
   ...
 )
 }
@@ -39,6 +41,12 @@ then a subsample of \code{maxpo} points will be taken.}
 
 \item{trans}{monotonic function to apply to the smooth and residuals, before plotting.
 Monotonicity is not checked.}
+
+\item{ci}{only suitable for type of "si_nexpsm",
+if FALSE then plot coef without confidence interval.}
+
+\item{a_in}{only suitable for type of "si_nexpsm",
+if TRUE then plot optimized coef.}
 
 \item{...}{currently unused.}
 }
