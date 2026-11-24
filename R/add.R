@@ -94,11 +94,13 @@ addPlotGam <- function(e1, e2) {
 # Prefer mgcViz's addition method over a component's Ops method (e.g.
 # Ops.ggproto registered by S7). Only handle a plot on the left of `+`.
 # These methods are registered conditionally in .onLoad for R >= 4.3.0.
+#' @exportS3Method NULL
 #' @noRd
 chooseOpsMethod.plotSmooth <- function(x, y, mx, my, cl, reverse) {
   !reverse && identical(mx, `+.gg`)
 }
 
+#' @exportS3Method NULL
 #' @noRd
 chooseOpsMethod.plotGam <- chooseOpsMethod.plotSmooth
 
