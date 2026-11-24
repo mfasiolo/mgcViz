@@ -106,7 +106,7 @@ We can extract the parametric effect `x3` using the `pterm` function (which is
 the parametric equivalent of `sm`). We can then plot the two effects on a grid using
 the `gridPrint` function:
 ```{r 8a, message = F, warning = F, fig.width=10, fig.height=4}
-gridPrint(plot(sm(b, 1)) + l_fitRaster() + l_fitContour() + labs(title = NULL) + guides(fill=FALSE),
+gridPrint(plot(sm(b, 1)) + l_fitRaster() + l_fitContour() + labs(title = NULL) + guides(fill="none"),
           plot(pterm(b, 1)) + l_ciPoly() + l_fitLine(), ncol = 2)
 ```
 

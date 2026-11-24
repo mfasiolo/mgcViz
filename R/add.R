@@ -91,6 +91,17 @@ addPlotGam <- function(e1, e2) {
   .addGGplot2(e1, e2)
 }
 
+# Prefer mgcViz's addition method over a component's Ops method (e.g.
+# Ops.ggproto registered by S7). Only handle a plot on the left of `+`.
+# These methods are registered conditionally in .onLoad for R >= 4.3.0.
+#' @noRd
+chooseOpsMethod.plotSmooth <- function(x, y, mx, my, cl, reverse) {
+  !reverse && identical(mx, `+.gg`)
+}
+
+#' @noRd
+chooseOpsMethod.plotGam <- chooseOpsMethod.plotSmooth
+
 #' Add a ggplot layer to a ggplot object using ggplot2's own machinery.
 #'
 #' This avoids calling `e1 + e2` from inside `+.gg`, which would recurse

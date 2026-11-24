@@ -1,5 +1,13 @@
 
 .onLoad <- function(...){
+  # chooseOpsMethod was introduced in R 4.3.0. Conditional registration
+  # preserves loading on older R versions supported by DESCRIPTION.
+  if (getRversion() >= "4.3.0") {
+    registerS3method("chooseOpsMethod", "plotSmooth", chooseOpsMethod.plotSmooth,
+                     envir = asNamespace("base"))
+    registerS3method("chooseOpsMethod", "plotGam", chooseOpsMethod.plotGam,
+                     envir = asNamespace("base"))
+  }
   
   # CRAN Note avoidance
   if(getRversion() >= "2.15.1") 
